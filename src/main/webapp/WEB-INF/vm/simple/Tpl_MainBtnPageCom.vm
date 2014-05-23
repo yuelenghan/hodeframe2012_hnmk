@@ -1,0 +1,170 @@
+#set ($addBtn = $parameters.get('addBtn'))
+#if(($addBtn == "yes") || ($addBtn == 1))
+	#set($addBtn="yes")
+#end
+#set ($addBtnTitle = $parameters.get('addBtnTitle'))
+#set ($addBtnOnClick = $parameters.get('addBtnOnClick'))
+
+#set ($delBtn = $parameters.get('delBtn'))
+#if(($delBtn == "yes") || ($delBtn == 1))
+	#set($delBtn="yes")
+#end
+
+#set ($delBtnTitle = $parameters.get('delBtnTitle'))
+#set ($delBtnOnClick = $parameters.get('delBtnOnClick'))
+
+#set ($prtBtn = $parameters.get('prtBtn'))
+#if(($prtBtn == "yes") || ($prtBtn == 1))
+	#set($prtBtn="yes")
+#end
+
+#set ($closeBtnOnClick = $parameters.get('closeBtnOnClick'))
+
+#set ($closeBtn = $parameters.get('closeBtn'))
+#if(($closeBtn == "yes") || ($closeBtn == 1))
+	#set($closeBtn="yes")
+#end
+
+
+#set ($prtBtnTitle = $parameters.get('prtBtnTitle'))
+#set ($prtBtnOnClick = $parameters.get('prtBtnOnClick'))
+
+#set ($returnBtn = $parameters.get('returnBtn'))
+#if(($returnBtn == "yes") || ($returnBtn == 1))
+	#set($returnBtn="yes")
+#end
+#set ($returnBtnTitle = $parameters.get('returnBtnTitle'))
+#set ($returnBtnOnClick = $parameters.get('returnBtnOnClick'))
+
+
+#set ($optArr = $parameters.get('optArr'))
+
+#set ($actionName = $parameters.get('actionName'))
+#if((!$actionName)||($actionName==""))
+	#set($actionName="showList.action")
+#end
+
+#set ($formName = $parameters.get('formName'))
+#if((!$formName)||($formName==""))
+	#set($formName="frmPagination")
+#end
+
+#set ($methodName = $parameters.get('methodName'))
+#if((!$methodName)||($methodName==""))
+	#set($methodName="POST")
+#end
+
+#set ($onSubmit = $parameters.get('onSubmit'))
+
+#set ($needHiddenParams = $parameters.get('needHiddenParams'))
+#if((!$needHiddenParams)||($needHiddenParams==""))
+	#set($needHiddenParams="true")
+#end
+
+#set ($hiddenParams = $parameters.get('hiddenParams'))
+
+#set ($needPagination = $parameters.get('needPagination'))
+#if((!$needPagination)||($needPagination==""))
+	#set($needPagination="yes")
+#end
+
+
+#set ($strTableWidth = $parameters.get('strTableWidth'))
+#if((!$strTableWidth)||($strTableWidth==""))
+	#set($strTableWidth="100%")
+#end
+
+#set ($needjs = $parameters.get('needjs'))
+#if((!$needjs)||($needjs==""))
+	#set($needjs="yes")
+#end
+
+#set ($maxlength = $pagination.getIntPageLength())
+
+<table width="$strTableWidth" border="0" cellspacing="0" cellpadding="1" align='center' class="tableColor" >
+	<tr class='trPageContent'>
+   <td  height="30" width=10 valign="bottom">&nbsp;</td>
+		#if($addBtn=="yes")
+			 <td  width=30  width=80 valign="bottom">#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_add.gif" $!addBtnOnClick $!addBtnTitle 1)</td>
+			 <td  width=3 valign="bottom"></td>
+		#end
+		#if($delBtn=="yes")
+			<td  width=30 width=80  valign="bottom">#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_delete.gif" $!delBtnOnClick $!delBtnTitle 1)</td>
+			 <td  width=3 valign="bottom"></td>
+		#end
+		#if($prtBtn=="yes")
+			<td  width=30 width=80  valign="bottom">#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_print.gif" $!prtBtnOnClick $!prtBtnTitle 1)</td>
+			 <td  width=3 valign="bottom"></td>
+		#end
+		#if($closeBtn=="yes")
+			<td  width=30 width=80  valign="bottom">#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_close.gif" $!closeBtnOnClick '' 1)</td>
+			 <td  width=3 valign="bottom"></td>
+		#end
+		#if($returnBtn=="yes")
+			<td  width=30 width=80  valign="bottom">#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_return.gif" $!returnBtnOnClick $!returnBtnTitle 1)</td>
+			 <td  width=3 valign="bottom"></td>
+		#end
+		#if($checkBtn=="yes")
+			<td  width=30 width=80  valign="bottom">#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_check2.gif" $!checkBtnOnClick $!checkBtnTitle 1)</td>
+			 <td  width=3 valign="bottom"></td>
+		#end
+
+		#foreach($i in [1..$optArr.size()])
+			#set($thisID = $i - 1 )
+			<td valign="bottom" width=80 >$!optArr.get($thisID)
+			 <td  width=3 valign="bottom"></td>
+		#end
+	</td>
+	<td  height="30">&nbsp;</td>
+	#if(($needPagination==1) || ($needPagination=="yes"))
+	<td  class="white" align="right">
+			#if($pagination.intTotalNum>0)
+					<SCRIPT LANGUAGE="JavaScript">
+					<!--
+					function gotoPage${formName}(page)
+					{
+						document.${formName}.elements["pagination.intCurrPage"].value=page;
+						document.${formName}.submit();
+					}
+					//-->
+					</SCRIPT>
+				<table border="0" cellspacing="0" cellpadding="1">
+				#bodytag( Component "template=Tpl_FormHeaderCom.vm" )
+					#param( "actionName" "$!actionName" )
+					#param( "formName" "$!formName" )
+					#param( "methodName" "$!methodName" )
+					#param( "onSubmit" "$!onSubmit" )
+					#param( "needHiddenParams" "$!needHiddenParams" )
+					#param( "hiddenParams" "$!hiddenParams" )
+					#param( "exceptParam" "pagination.intCurrPage" )
+				#end
+				<tr class='trPageContent'>
+					<td valign='bottom'>$stack.findValue("getText('global.page.totalNumLabel', {$pagination.intTotalNum})")&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td valign='bottom'>$stack.findValue("getText('global.page.totalPagesLabel', {$pagination.intLastPage})")&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td valign='bottom'>$stack.findValue("getText('global.page.currPageLabel', {$pagination.intCurrPage})")&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td valign='bottom'>
+						#foreach($page in $pagination.aryIntWhileNum)
+							#if($page==$pagination.intCurrPage)
+								<font color='red'>${page}</font>&nbsp;&nbsp;
+							#else
+								<a href="javascript:gotoPage${formName}(${page})">${page}</a>&nbsp;&nbsp;
+							#end
+						#end
+					</td>
+					<td valign='bottom'>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						$action.getText('global.page.gotoPageLabel')
+						<input type="text" name="pagination.intCurrPage" maxlength="$maxlength" size="$maxlength" value="$!pagination.intNextPage" class="inputText">
+						$action.getText('global.page.pageLabel')&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<td valign='bottom'>
+						<input type="submit" name="BtnPage" value="$action.getText('global.page.btnPageLabel')" class="inputButton">
+					</td>
+				</tr>
+				#parse("$action.getText('config.vmPath')/simple/Tpl_FormFooter.vm")
+				</table>
+			#end
+	</td>
+	#end
+	</tr>
+</table>

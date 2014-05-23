@@ -1,0 +1,71 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##��ǰ������
+##**********************
+
+##��ʾ��ǰ����������
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.user.operation.edit')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##��Ϣ�༭��
+##**********************
+
+#hodeSysUI_EditBodyHeader("updatePersonnelUser.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showMsg("$!action.getText('rbac.user.form.strAccount')$action.getText('global.interpunction.colon')" 1 "right" 0)
+	#hodeSysUI_showMsg("$!user.strUserAccount" 1 "left" 0)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strName')"  1 1 "objInfo.strName" "$!objInfo.strName"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strTel')"  1 0 "objInfo.strTel" "$!objInfo.strTel"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strUserUnitName')"  1 0 "objInfo.strUserUnitName" "$!objInfo.strUserUnitName"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strMobile')"  1 0 "objInfo.strMobile" "$!objInfo.strMobile"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strAddress')"  1 0 "objInfo.strAddress" "$!objInfo.strAddress"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strZipCode')"  1 0 "objInfo.strZipCode" "$!objInfo.strZipCode"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strEmail')"  1 0 "objInfo.strEmail" "$!objInfo.strEmail"   20 20 "")
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_EditBodyFoot(['save','reset'] "2")
+
+
+
+##JavaScript��ݺϷ���У��
+##����У��JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##���ع��Ч��JavaScript
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

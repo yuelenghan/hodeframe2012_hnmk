@@ -1,0 +1,21 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+
+##-------------------------------------------------------------
+##**********************
+##��Ϣ��ʾ��
+##**********************
+
+##���|�޸�|ɾ����Ϣ��ʾҳHeader
+#bodytag( Component "template=AfterOperationFormComponentHeader.vm" )
+	#param("operationType" "edit")
+	#param("actionName" "$objSearch.strReturnURL")
+	#param("needHiddenParams" "true")
+	#param("afterOperationTitle" "$action.getText('workflownormal.main.operation.editSuccess')")
+#end
+##���|�޸�|ɾ����Ϣ��ʾҳFooter
+#include("$action.getText('config.vmPath')/simple/AfterOperationFormFooter.vm")
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

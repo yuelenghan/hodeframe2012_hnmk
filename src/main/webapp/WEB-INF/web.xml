@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<web-app version="2.4">
+
+	<!-- web.xml是项目核心配置文件 只能由TeamLeader修改 -->
+	<display-name>hode Framework</display-name>
+	<distributable/>
+
+	<!-- Set Character Encoding -->
+	<filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Load ApplicationContext ConfigLocation -->
+	<context-param>
+    	<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/classes/config/common/ApplicationContext.xml,
+
+			/WEB-INF/classes/config/rbac/bean/applicationContext-Service.xml,
+			/WEB-INF/classes/config/rbac/bean/applicationContext-Action.xml,
+
+			/WEB-INF/classes/config/dictionary/bean/applicationContext-Service.xml,
+			/WEB-INF/classes/config/dictionary/bean/applicationContext-Action.xml,
+
+			/WEB-INF/classes/config/webeditor/bean/applicationContext-Service.xml,
+			/WEB-INF/classes/config/webeditor/bean/applicationContext-Action.xml,
+
+			/WEB-INF/classes/config/message/bean/applicationContext-Service.xml,
+			/WEB-INF/classes/config/message/bean/applicationContext-Action.xml,
+
+
+
+			/WEB-INF/classes/config/train/bean/applicationContext-Service.xml,
+			/WEB-INF/classes/config/train/bean/applicationContext-Action.xml,
+		</param-value>
+	</context-param>
+
+
+	<servlet>
+        <servlet-name>downloadHTMLToTxT</servlet-name>
+        <servlet-class>com.hode.framework.commons.file.DownloadHTMLToTXT</servlet-class>
+    </servlet>
+
+   <servlet-mapping>
+        <servlet-name>downloadHTMLToTxT</servlet-name>
+        <url-pattern>/servlet/downloadHTMLToTxT</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+        <servlet-name>verifyIdentity</servlet-name>
+        <servlet-class>com.hode.ajax.verifyIdentity_ajax</servlet-class>
+    </servlet>
+
+   <servlet-mapping>
+        <servlet-name>verifyIdentity</servlet-name>
+        <url-pattern>/servlet/verifyIdentity</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+        <servlet-name>selectApply</servlet-name>
+        <servlet-class>com.hode.ajax.selectApply_ajax</servlet-class>
+    </servlet>
+
+   <servlet-mapping>
+        <servlet-name>selectApply</servlet-name>
+        <url-pattern>/servlet/selectApply</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+        <servlet-name>selectApplyOptions</servlet-name>
+        <servlet-class>com.hode.ajax.selectApplyOptions_ajax</servlet-class>
+    </servlet>
+
+   <servlet-mapping>
+        <servlet-name>selectApplyOptions</servlet-name>
+        <url-pattern>/servlet/selectApplyOptions</url-pattern>
+    </servlet-mapping>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+	  <listener-class>com.opensymphony.xwork.spring.SpringObjectFactoryListener</listener-class>
+	</listener>
+
+	<!-- rbac.user  -->
+	<listener>
+	  <listener-class>com.hode.rbac.listener.UserSessionListener</listener-class>
+	</listener>
+	<listener>
+	  <listener-class>com.hode.train.util.TrainListener</listener-class>
+	</listener>
+
+    <servlet>
+        <servlet-name>webwork</servlet-name>
+        <servlet-class>com.opensymphony.webwork.dispatcher.ServletDispatcher</servlet-class>
+		<load-on-startup>1</load-on-startup>
+    </servlet>
+
+	<servlet-mapping>
+        <servlet-name>webwork</servlet-name>
+        <url-pattern>*.action</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+        <servlet-name>fileDownloadSrv</servlet-name>
+        <servlet-class>com.hode.framework.commons.file.FileDownloadSrv</servlet-class>
+    </servlet>
+
+   <servlet-mapping>
+        <servlet-name>fileDownloadSrv</servlet-name>
+        <url-pattern>/servlet/fileDownload</url-pattern>
+    </servlet-mapping>
+
+
+
+	<servlet>
+        <servlet-name>DownloadCertExcel</servlet-name>
+        <servlet-class>com.hode.train.util.DownloadCertExcel</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>DownloadCertExcel</servlet-name>
+        <url-pattern>/servlet/DownloadCertExcel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ExportWord</servlet-name>
+        <servlet-class>com.hode.train.util.ExportWord</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>ExportWord</servlet-name>
+        <url-pattern>/servlet/ExportWord</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>signUp</servlet-name>
+        <servlet-class>com.hode.train.util.SignUp</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>signUp</servlet-name>
+        <url-pattern>/servlet/signUp</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getAllTrainUnit</servlet-name>
+        <servlet-class>com.hode.train.util.GetAllTrainUnit</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>getAllTrainUnit</servlet-name>
+        <url-pattern>/servlet/getAllTrainUnit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>processSignUp</servlet-name>
+        <servlet-class>com.hode.train.util.ProcessSignUp</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>processSignUp</servlet-name>
+        <url-pattern>/servlet/processSignUp</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+        <servlet-name>imageUpload</servlet-name>
+        <servlet-class>com.hode.train.util.ImageUpload</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>imageUpload</servlet-name>
+        <url-pattern>/servlet/imageUpload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>dataFileUpload</servlet-name>
+        <servlet-class>com.hode.train.util.DataFileUpload</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>dataFileUpload</servlet-name>
+        <url-pattern>/servlet/dataFileUpload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>imageFileUpload</servlet-name>
+        <servlet-class>com.hode.train.util.ImageFileUpload</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>imageFileUpload</servlet-name>
+        <url-pattern>/servlet/imageFileUpload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>imagesDownload</servlet-name>
+        <servlet-class>com.hode.train.util.ImagesDownload</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>imagesDownload</servlet-name>
+        <url-pattern>/servlet/imagesDownload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getPrintTicketInfo</servlet-name>
+        <servlet-class>com.hode.train.util.GetPrintTicketInfo</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>getPrintTicketInfo</servlet-name>
+        <url-pattern>/servlet/getPrintTicketInfo</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>usePersonRecord</servlet-name>
+        <servlet-class>com.hode.train.util.UsePersonRecord</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>usePersonRecord</servlet-name>
+        <url-pattern>/servlet/usePersonRecord</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>useNewAndUpdate</servlet-name>
+        <servlet-class>com.hode.train.util.UseNewAndUpdate</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>useNewAndUpdate</servlet-name>
+        <url-pattern>/servlet/useNewAndUpdate</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>importRecordPic</servlet-name>
+        <servlet-class>com.hode.train.util.ImportRecordPic</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>importRecordPic</servlet-name>
+        <url-pattern>/servlet/importRecordPic</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+    	<filter-name>trainCertLogFilter</filter-name>
+    	<filter-class>com.hode.train.util.TrainCertLogFilter</filter-class>
+    </filter>
+    <filter-mapping>
+    	<filter-name>trainCertLogFilter</filter-name>
+    	<url-pattern>/train/cert/*</url-pattern>
+    </filter-mapping>
+
+	<!-- Index Page -->
+    <welcome-file-list>
+		<welcome-file>index.action</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+	<error-page>
+        <error-code>500</error-code>
+        <location>/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/index.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
+
+</web-app>

@@ -1,0 +1,9 @@
+<SCRIPT LANGUAGE="JavaScript">
+var userListArr_1 = new Array();
+#set($i = 0)
+#foreach($objInfo in $jsSelectModel.objList1)
+	userListArr_1[$i] = Array("$objInfo.intID","$objInfo.intGroupID","$objInfo.strAccount[$objInfo.strName]");
+	#set($i = $i + 1)
+#end
+parent.initSource_1(userListArr_1,parent.document.frmSelect.source,parent.document.frmSelect.target);
+</SCRIPT>

@@ -1,0 +1,208 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<style type="text/css">
+		td {
+			text-align: center;
+		}
+</style>
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "人员档案信息" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+
+<TABLE width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+	<tr>
+		<td align="center" colspan="3"><h2>基础信息</td>
+	</tr>
+	<tr>
+		<td>姓名：$!detailRecord.personName&nbsp</td>
+		<td>身份证号：$!detailRecord.personID&nbsp</td>
+		<td>性别：$!detailRecord.personSex&nbsp</td>
+	</tr>
+
+	<tr>
+		<td>年龄：$!detailRecord.personAge&nbsp</td>
+		<td>毕业院校：$!detailRecord.personSchool&nbsp</td>
+		<td>所学专业：$!detailRecord.personSpecialty&nbsp</td>
+	</tr>
+
+	<tr>
+		<td>政治面貌：$!detailRecord.personPolitical&nbsp</td>
+		<td>参加工作时间：$!detailRecord.personJobDate&nbsp</td>
+	</tr>
+</table>
+
+<br>
+<hr>
+<br>
+
+<TABLE width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+	<tr>
+		<td align="center" colspan="8"><h2>培训记录</td>
+	</tr>
+	<th>年份</th>
+	<th>培训期次</th>
+	<th>班级</th>
+	<th>单位及部门</th>
+	<th>职务</th>
+	<th>学历</th>
+	<th>健康状况</th>
+	<th>违纪情况</th>
+	#foreach($trainRecord in $detailRecord.trainRecord)
+		<tr>
+			<td>$!trainRecord.trainYear&nbsp</td>
+			<td>$!trainRecord.trainCount&nbsp</td>
+			<td>$!trainRecord.trainCountClass&nbsp</td>
+			<td>$!trainRecord.unitAndPost&nbsp</td>
+			<td>$!trainRecord.title&nbsp</td>
+			<td>$!trainRecord.eduLevel&nbsp</td>
+			<td>$!trainRecord.health&nbsp</td>
+			<td>$!trainRecord.violate&nbsp</td>
+		</tr>
+	#end
+</table>
+
+<br>
+<hr>
+<br>
+
+<TABLE width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+	<tr>
+		<td align="center" colspan="8"><h2>成绩信息</td>
+	</tr>
+	<th>培训期次</th>
+	<th>班级</th>
+	<th>考试期次</th>
+	<th>考试场次</th>
+	<th>理论成绩</th>
+	<th>实操成绩</th>
+	<th>理论成绩(补考)</th>
+	<th>实操成绩(补考)</th>
+	#foreach($scoreRecord in $detailRecord.scoreRecord)
+		<tr>
+			<td>$!scoreRecord.trainCount&nbsp</td>
+			<td>$!scoreRecord.trainCountClass&nbsp</td>
+			<td>$!scoreRecord.scoreCount&nbsp</td>
+			<td>$!scoreRecord.scoreExcam&nbsp</td>
+			<td>$!scoreRecord.fltExamScore1&nbsp</td>
+			<td>$!scoreRecord.fltExamScore2&nbsp</td>
+			<td>$!scoreRecord.fltExamScore3&nbsp</td>
+			<td>$!scoreRecord.fltExamScore4&nbsp</td>
+		</tr>
+	#end
+</table>
+
+<br>
+<hr>
+<br>
+
+<TABLE width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+	<tr>
+		<td align="center" colspan="5"><h2>补证信息</td>
+	</tr>
+	<th>补证日期</th>
+	<th>证书号码</th>
+	<th>单位</th>
+	<th>职务</th>
+	<th>补证理由</th>
+	#foreach($userApplyRecord in $detailRecord.userApplyRecord)
+		<tr>
+			<td>$!userApplyRecord.userApplyDate&nbsp</td>
+			<td>$!userApplyRecord.strCertCode&nbsp</td>
+			<td>$!userApplyRecord.strUserUnitName&nbsp</td>
+			<td>$!userApplyRecord.strUserPost&nbsp</td>
+			<td>$!userApplyRecord.strApplyReason&nbsp</td>
+		</tr>
+	#end
+</table>
+
+<br>
+<hr>
+<br>
+
+<TABLE width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+	<tr>
+		<td align="center" colspan="5"><h2>变更信息</td>
+	</tr>
+	<th>变更日期</th>
+	<th>原单位</th>
+	<th>现单位</th>
+	<th>原职务</th>
+	<th>现职务</th>
+	#foreach($userChangeRecord in $detailRecord.userChangeRecord)
+		<tr>
+			<td>$!userChangeRecord.userChangeDate&nbsp</td>
+			<td>$!userChangeRecord.fromUnit&nbsp</td>
+			<td>$!userChangeRecord.toUnit&nbsp</td>
+			<td>$!userChangeRecord.fromTitle&nbsp</td>
+			<td>$!userChangeRecord.toTitle&nbsp</td>
+		</tr>
+	#end
+</table>
+
+<br>
+<hr>
+<br>
+
+<TABLE width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+	<tr>
+		<td align="center" colspan="5"><h2>图片信息</td>
+	</tr>
+	<tr height=300>
+	 	<td width=300>
+			#if($!detailRecord.pic1 != "")
+				<a href="$!detailRecord.pic1" target="_blank"><img src="$!detailRecord.pic1" width=250 border=0 ></a>
+			#else
+				无相片照片
+			#end
+		</td>
+		<td width=300>
+			#if($!detailRecord.pic2 != "")
+				<a href="$!detailRecord.pic2" target="_blank"><img src="$!detailRecord.pic2" width=250 border=0></a>
+			#else
+				无学历照片
+			#end
+		</td>
+	</tr>
+	<tr height=300>
+		<td width=300>
+			#if($!detailRecord.pic3 != "")
+				<a href="$!detailRecord.pic3" target="_blank"><img src="$!detailRecord.pic3" width=250 border=0></a>
+			#else
+				无体检表照片
+			#end
+		</td>
+		<td width=300>
+			#if($!detailRecord.pic4 != "")
+				<a href="$!detailRecord.pic4" target="_blank"><img src="$!detailRecord.pic4" width=250 border=0></a>
+			#else
+				无相关工作经历证明照片
+			#end
+		</td>
+	</tr>
+</table>
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

@@ -1,0 +1,54 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+##-------------------------------------------------------------
+
+##��ȡȨ������
+
+<SCRIPT LANGUAGE="JavaScript">
+function openUrl(leftUrl,mainUrl)
+{
+	if((leftUrl)&&(leftUrl!=""))
+	{
+		top.childFrameSet.cols="180,*";
+		if(top.leftFrame && top.leftFrame.document)
+			top.leftFrame.location.href="$action.getText('config.prjName')"+leftUrl;
+	}
+	else
+	{
+		top.childFrameSet.cols="0,*";
+	}
+
+	if((mainUrl)&&(mainUrl!=""))
+	{
+		if(top.mainFrame && top.mainFrame.document)
+		top.mainFrame.location.href="$action.getText('config.prjName')"+mainUrl;
+	}
+}
+</SCRIPT>
+<TABLE width="100%">
+<TR>
+	<TD><a onclick="openUrl('/menu/showLeftTree.action','/menu/showList.action')">menu</TD>
+	<TD><a onclick="openUrl('/dictionary/showLeftTree.action','/dictionary/showList.action')">dictionary</TD>
+	<TD><a onclick="openUrl('/rbac/group/showLeftTree.action','/rbac/group/readme.action')">rbac.group</TD>
+	<TD><a onclick="openUrl('/rbac/group/showRoleTree.action','/rbac/role/readme.action')">rbac.role</TD>
+	<TD><a onclick="openUrl('/rbac/privilege/showLeftTree.action','/rbac/privilege/readme.action')">rbac.privilege</TD>
+	<TD><a onclick="openUrl('/rbac/group/showUserTree.action','/rbac/user/readme.action')">rbac.user</TD>
+	<TD><a onclick="openUrl('','/rbac/user/editPasswordForm.action')">rbac.editPasswordForm</TD>
+	<TD><a onclick="openUrl('','/bulletin/showList.action')">bulletin</TD>
+
+	<TD><a onclick="openUrl('','/helper/showList.action')">helper</TD>
+	<TD><a onclick="openUrl('','/index/main.action')">main</TD>
+	<TD><a onclick="openUrl('','/index/loginout.action')">exit</TD>
+</TR>
+<TR>
+	<TD></TD>
+	<TD></TD>
+	<TD></TD>
+	<TD></TD>
+	<TD></TD>
+</TR>
+</TABLE>
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

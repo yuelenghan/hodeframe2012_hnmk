@@ -1,0 +1,64 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+	<package name="train.checkTeac" extends="index" namespace="/train/teacher">
+
+		<action name="showList" class="teacherAction" method="showList">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/theTeacherForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="deleteTeac" class="teacherAction" method="deleteTeac">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/theTeacherForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="addTeac" class="teacherAction" method="addTeac">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/theTeacherForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="copyTeacher" class="teacherAction" method="copyTeacher">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/theTeacherForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="selectListDic" class="teacherAction" method="selectListDic">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/theTeacherSetForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="selectupdate" class="teacherAction" method="selectupdate">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/updateTeacherForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		   <action name="updateTeac" class="teacherAction" method="updateTeac">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/theTeacherSetForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="savListDic" class="teacherAction" method="savListDic">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/theTeacherSetForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		 </action>
+
+
+    </package>
+</xwork>

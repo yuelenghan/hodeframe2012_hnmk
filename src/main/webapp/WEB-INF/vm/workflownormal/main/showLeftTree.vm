@@ -1,0 +1,30 @@
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+##-------------------------------------------------------------
+#hodeSysUI_leftFrameHeader("10")
+#rbac_getGroupModelById($user.intGroupID $groupObj)
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="26" background="$action.getText('config.prjName')/images/myjd/main_1_29.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="20" align="center"><img src="$action.getText('config.prjName')/images/myjd/main_1_45.gif" width="12" height="12" /></td>
+            <td align="center" class="textBlue">一般工作流</td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">
+
+<table width="100%">
+
+	<tr>
+		<td width=10></td><td height="24" align="left"><li><a href="../main/showList.action" target="mainFrame" class="leftMenuL">流程定义</a></li></td>
+	</tr>
+
+
+	<tr>
+		<td width=10></td><td height="24" align="left"><li><a href="../test/showList.action" target="mainFrame" class="leftMenuL">流程示例</a></li></td>
+	</tr>
+
+
+</table>
+#parse("$action.getText('config.vmPath')/simple/Footer_left.vm")

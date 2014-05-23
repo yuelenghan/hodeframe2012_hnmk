@@ -1,0 +1,64 @@
+body, a, table, div, span, td, th, input, select{font-size:12px;font-family: "$action.getText('webeditor.css.font')", Verdana, Arial, Helvetica, sans-serif;}
+body {padding:5px;margin: 0px; border: 0px; background-color: buttonface; }
+
+table.content {background-color:#000000;width:100%;}
+table.content td {background-color:#ffffff;width:12px;height:18px;text-align:center;vertical-align:middle;cursor:hand;}
+.card {cursor:hand;background-color:#3A6EA5;text-align:center;}
+BUTTON {WIDTH: 5em}
+IMG {CURSOR:hand;width:20px;height:20px;}
+
+
+.inputText
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+.inputFile
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+.inputButton
+{
+	BORDER-RIGHT: #3366cc 1px inset;
+	BORDER-TOP: #3366cc 1px inset;
+	VERTICAL-ALIGN: text-bottom;
+	BORDER-LEFT: #3366cc 1px inset;
+	COLOR: black;
+	BORDER-BOTTOM: #3366cc 1px inset;
+	HEIGHT: 18px;
+	BACKGROUND-COLOR: #efefef
+}
+
+.inputSELECT
+{
+    BACKGROUND: #eeeeee;
+    FONT: 8pt verdana,arial,sans-serif
+}
+
+.inputRadio
+{
+}
+.inputCheckbox
+{
+}

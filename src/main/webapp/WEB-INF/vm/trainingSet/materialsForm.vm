@@ -1,0 +1,343 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+#hodeSysBean_checkInArr(11010100 $!permissionIDs $allow_11)	##三级培训机构工作人员
+#hodeSysBean_checkInArr(11010200 $!permissionIDs $allow_12)	##三级培训机构领导
+
+#hodeSysBean_checkInArr(11020100 $!permissionIDs $allow_21)	##省局培训中心工作人员
+#hodeSysBean_checkInArr(11020200 $!permissionIDs $allow_22)	##省局培训中心领导
+#hodeSysBean_checkInArr(11020300 $!permissionIDs $allow_23)	##培训中心下属教学点工作人员
+#hodeSysBean_checkInArr(11020400 $!permissionIDs $allow_24)	##省局人事培训处领导
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "教材设置" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+ <form action="showList.action" method="post">
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "yes")
+   <tr width="100%">
+	<TD align="left">培训对象：
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TraUtil"))
+    #if($allow_11)
+    #set ($rtnList3 = $trainUtil.getBM(1))
+    #else
+    #set ($rtnList3 = $trainUtil.getBM(2))
+    #end
+    #set($resus=$resu)
+     <select name="objSearch.intDictionary" style="width:210px;">
+     <option value="0">==请选择==</option>
+         #foreach($objInfo3 in $rtnList3)
+		 #set($intNowCount=$velocityCount)
+		 #if($objInfo3.intID==$resus)
+         <option value="$objInfo3.intID" selected="selected">$objInfo3.strValue</option>
+         #else
+         <option value="$objInfo3.intID">$objInfo3.strValue</option>
+         #end
+        #end
+     </select>
+	<input type="submit" value="  查 询 ">
+	</TD>
+	<TD>
+
+	</TD>
+  </tr>
+     <TR  class="trEditContent"><TD colspan=2>
+				<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableMainColor' id="table_1">
+					 <TR class="trMainBodyTitle"  id="lawper" >
+					 <td align="center" width="20%">教材名称</td>
+					 <td align="center" width="20%">教材版本</td>
+					 <td align="center" width="20%">出版社名称</td>
+					 <td align="center" width="20%">金额(元)</td>
+					 <td align="center" width="20%">操作</td>
+					 </TR>
+
+			##set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+			##set ($rtnList3 = $trainUtil.getTrainDetailApplyListByApplyID($objInfo.intID))
+			#foreach($tra in $listMat)
+					<TR class="trMainBodyContent"  >
+						<TD align='center'>$tra.strName</TD>
+						<TD align='center'>$tra.strVersion</TD>
+			            <TD align='center'>$tra.strPublisherName</TD>
+			            <TD align='center'>$tra.strPrice</TD>
+			            <TD align='center'><a href="deleteMater.action?objInfo.intID=$tra.intID&objSearch.intDictionary=$resus">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="updatess($tra.intID,$resus);">修改</a></TD>
+					 </TR>
+		    	#end
+
+			<!--<tr class="trMainBodyContent">
+			<TD align='center'>矿井通风设置</TD>
+			<TD align='center'>科学技术文献出版社</TD>
+			<TD align='center'>20</TD>
+			<TD align='center'><a href="#">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">修改</a></TD>
+			</tr>
+			-->
+			<TR class="trMainBodyContent">
+			<td align="center" colspan="5"><input type="button" value="添加教材"  onclick="showPopup(300,200);" ></td>
+		    </TR>
+
+				</table>
+	</td></tr>
+
+<div id="popupcontent" style="width:500px; height:300px">
+     <strong style="width:100%;font-size:16px;text-align:center;height:60px">
+                                     教&nbsp;材&nbsp;信&nbsp;息
+      </strong>
+
+    <strong style="width:100%; text-align:center;height:27px">培训对象：
+     <select name="objInfo.intDictionary" id="intDictionary" style="width:210px;">
+     <option value="0">==请选择==</option>
+         #foreach($objInfo3 in $rtnList3)
+		 #set($intNowCount=$velocityCount)
+         <option value="$objInfo3.intID">$objInfo3.strValue</option>
+        #end
+     </select>
+		</strong>
+	 <strong style="width:100%; text-align:center;height:27px">
+        教材名称：&nbsp;&nbsp;<input type="text" name="objInfo.strName" id="strName" style="width:210px;" >
+      </strong>
+
+      </strong>
+	 <strong style="width:100%; text-align:center;height:27px">
+        教材版本：&nbsp;&nbsp;<input type="text" name="objInfo.strVersion" style="width:210px;" >
+      </strong>
+
+       <strong style="width:100%; text-align:center;height:27px">
+        出&nbsp;&nbsp;版&nbsp;&nbsp;社：&nbsp;<input type="text" name="objInfo.strPublisherName" style="width:210px;" >
+      </strong>
+
+          <strong style="width:100%; text-align:center;height:35px">
+        金&nbsp;额&nbsp;(元)：&nbsp;<input type="text" name="objInfo.strPrice" style="width:210px;" >
+      </strong>
+
+	  <strong style="width:100%; text-align:center;height:80px">
+
+        <input type="button" value=" 保  存 " onClick="add();">
+        <input type="button" value=" 取  消 " onClick="hidePopup();">
+
+      </strong>
+</div>
+</form>
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+// form fields description structure
+var a_fields = {
+         'objInfo.strTrainUnitName': {
+                'l': '培训机构名称',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainRange': {
+                'l': '培训机构资质',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainCode': {
+                'l': '资质证书号码',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainStartDate': {
+                'l': '培训开始时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainEndDate': {
+                'l': '培训结束时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        }
+
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+//验证信息
+function checknum()
+{
+	event.srcElement.value=event.srcElement.value.replace(/[^0-9.]/gi,"");
+}
+
+//添加序列号
+function seralNum()
+{
+	var tableObj=document.getElementById("table_1");
+	var tdstart=document.getElementById("lawper");
+	var tdRow=tdstart.rowIndex + 1;
+	var tableRows=tableObj.rows.length;
+	var tdlast=tableRows - 2;
+	var sunnum=0;
+	for( ; tdRow <= tableRows - 2;  tdRow++)
+	{
+		tableObj.rows[tdRow].cells[0].childNodes(0).value=(tdRow);
+	}
+
+}
+
+function addRow()
+{
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//对象表格总行数
+	var tableRows=tableObj.rows.length;
+
+	//增加开始
+	newRow=tableObj.insertRow(tableRows - 1);
+	newRow.className="trMainBodyContent";
+
+	//开始1
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" CLASS="inputText" size="5" readonly="true" align="middle ">';
+	newRow.appendChild(col);
+	//2
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strSubjectNameArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+	//3
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strSubjectTimeArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherNameArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherDegreeArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherProfessionalArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherTitlesArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherCodeArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	//8
+	var col= document.createElement("<TD align='center'>");
+	col.innerHTML="<input type='button' value='删除' onclick='delRow()' class='inputButton'>";
+	newRow.appendChild(col);
+	seralNum();
+}
+
+//删除行
+function delRow()
+{
+
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//当前是第几行
+	var nowRowobj=event.srcElement.parentElement.parentElement;
+	var nowRow=nowRowobj.rowIndex;
+	if(confirm("确定删除此条记录吗？"))
+	{
+		tableObj.deleteRow(nowRow);
+		seralNum();
+	}
+}
+
+</script>
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+<style>
+#popupcontent{   position: absolute;   visibility: hidden;   overflow: hidden;   border:1px solid #CCC;   background-color:#F9F9F9;   border:1px solid #333;   padding:5px;}
+#popupcontent1{   position: absolute;   visibility: hidden;   overflow: hidden;   border:1px solid #CCC;   background-color:#F9F9F9;   border:1px solid #333;   padding:5px;}
+
+</style>
+<script>
+ function add(){
+    var testa = document.getElementById("intDictionary");
+    var s=testa.options[testa.selectedIndex].value;
+    if(s==0){
+    alert("请选择培训对象！");
+    return;
+    }
+    var strName=document.getElementById("strName").value;
+    if(null==strName||""==strName){
+    alert("请输入教材名称！");
+    return;
+    }
+   document.forms[0].action="addMater.action";
+   document.forms[0].submit();
+
+ }
+
+  function selectList(){
+   document.forms[0].action="showList.action";
+   document.forms[0].submit();
+
+ }
+ function updatess(id,isd){
+     window.open('selectUpdate.action?objSearch.intID='+id+'&objSearch.intDictionary='+isd,'','Width=500px;Height=300px')
+ }
+var baseText = null;
+function showPopup(w,h){
+    var popUp = document.getElementById("popupcontent");
+   // var popUps = document.getElementById("popupcontent1");
+    //popUp.style.top = "100px";
+    popUp.style.left = "300px";
+    if (baseText == null) baseText = popUp.innerHTML;
+    popUp.innerHTML = baseText +"<div id=\"statusbar\"></div>";
+    var sbar = document.getElementById("statusbar");
+   // sbar.style.marginTop = (parseInt(h)-60) + "px";
+    popUp.style.visibility = "visible";
+}
+function hidePopup(){
+    var popUp = document.getElementById("popupcontent");
+    popUp.style.visibility = "hidden";
+}
+</script>
+</html>
+

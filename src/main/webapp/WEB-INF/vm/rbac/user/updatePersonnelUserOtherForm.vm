@@ -1,0 +1,81 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.user.operation.edit')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("updatePersonnelUserOther.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showMsg("$!action.getText('rbac.user.form.strAccount')$action.getText('global.interpunction.colon')" 1 "right" 0)
+	#hodeSysUI_showMsg("$!user.strUserAccount" 1 "left" 0)
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("监管系统帐号1"  1 0 "objInfo.strOtherSysUser1" "$!objInfo.strOtherSysUser1"   40 40 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showPassword("监管系统密码1"  1 0 "objInfo.strOtherSysPwd1" "$!objInfo.strOtherSysPwd1"  "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("OA帐号2"  1 0 "objInfo.strOtherSysUser2" "$!objInfo.strOtherSysUser2"   40 40 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showPassword("OA密码2"  1 0 "objInfo.strOtherSysPwd2" "$!objInfo.strOtherSysPwd2"  "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("权利阳光帐号3"  1 0 "objInfo.strOtherSysUser3" "$!objInfo.strOtherSysUser3"   40 40 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showPassword("权利阳光密码3"  1 0 "objInfo.strOtherSysPwd3" "$!objInfo.strOtherSysPwd3"  "")
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("权利阳光帐号4"  1 0 "objInfo.strOtherSysUser4" "$!objInfo.strOtherSysUser4"   40 40 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showPassword("权利阳光密码4"  1 0 "objInfo.strOtherSysPwd4" "$!objInfo.strOtherSysPwd4"  "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("权利阳光帐号5"  1 0 "objInfo.strOtherSysUser5" "$!objInfo.strOtherSysUser5"   40 40 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showPassword("权利阳光密码5"  1 0 "objInfo.strOtherSysPwd5" "$!objInfo.strOtherSysPwd5"  "")
+#hodeSysUI_TrEnd()
+
+
+
+#hodeSysUI_EditBodyFoot(['save','reset'] "2")
+
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

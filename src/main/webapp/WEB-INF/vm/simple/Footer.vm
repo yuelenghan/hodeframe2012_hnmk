@@ -1,0 +1,16 @@
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+	var tr_height = document.getElementById("tr_height");
+	if(tr_height )
+	{
+		var temp=document.body.clientHeight;
+
+		tr_height.height = temp - 50;
+
+	}
+//-->
+</SCRIPT>
+<div align="center" id="divDoData" style="display:none"><img src="$action.getText('config.prjName')/images/operator/opt_loading.gif">
+</div>
+</BODY>
+</HTML>

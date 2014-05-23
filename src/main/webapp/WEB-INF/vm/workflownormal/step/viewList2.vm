@@ -1,0 +1,70 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+
+	#param( "title" "$action.getText('workflownormal.menu')" )
+	#param( "noSearchArea" "yes" )
+	#param( "strSearchName" "" )
+	#param( "strSearchValue" "" )
+#end
+
+
+
+#set ($workFlowUtil = $webwork.bean("com.hode.workflownormal.action.WFNormalUtil"))
+#set ($logList = $workFlowUtil.getCheckListLog($!objInfo.intID,"$objInfo.strFlowType"))
+
+<TABLE align='center'><TR><TD>
+		#set($intCount = 0 )
+		#foreach($objInfo in $logList)
+			#if($intCount > 0 )
+				<table border=0  width=280>
+				<TR>
+					<TD align='center' valign='top' colspan=2>
+						<img src="$action.getText('config.prjName')/images/workflownormal/drawpic.gif" border=0>
+					</TD>
+				</TR>
+				</table>
+			#end
+
+			#set($blflag = $workFlowUtil.isExtrDate("$!objInfo.strDealAcceptDate",$!objInfo.intDealWithDay,"$!objInfo.strOptDate"))
+			#if($!objInfo.strOptDate == "" || $!objInfo.strOptDate == " " )
+				<table border=1 bordercolor=#000000 width=280>
+				#set($thisVal = "<font size=4 color='red' >待审核</font>")
+			#elseif($blflag == true)
+				<table border=1 bordercolor=#000000 width=280 bgcolor=#eb7ed7 >
+				#set($thisVal = "<font size=4 color='#FFFF00' >超时</font>")
+			#else
+				<table border=1 bordercolor=#000000 width=280 bgcolor=#8EDF9A>
+				#set($thisVal = "正常")
+			#end
+				<tr>
+				<td  width=90 align='center'><font color='' >$!objInfo.strFlowStepName </font><BR>$thisVal</TD>
+				<td>
+					提交时间：$!objInfo.strDealAcceptDate <br>
+					处理天数：#if($!objInfo.intDealWithDay == 0 ) 不限 #else $!objInfo.intDealWithDay  #end <br>
+					处理时间：$!objInfo.strOptDate <br>
+					办理部门：$!objInfo.strOptGroupName <br>
+					办理人员：$!objInfo.strOptUserName <br>
+					处理意见：$!objInfo.strOptContent
+				</TD>
+			</TR>
+			</table>
+
+			#set($intCount = $intCount + 1 )
+		#end
+</TD></TR></TABLE>
+<br><br>
+
+#hodeSysUI_EditBodyFoot(['cancel'] "2")
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+

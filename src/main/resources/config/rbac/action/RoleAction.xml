@@ -1,0 +1,93 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+
+    <package name="rbac.role" extends="index" namespace="/rbac/role">
+		<action name="index" class="rbac_roleAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/index.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="readme" class="rbac_roleAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="addForm" class="rbac_roleAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/addForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="add" class="rbac_roleAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/afterAdd.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="editForm" class="rbac_roleAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/editForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objInfo.intID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="edit" class="rbac_roleAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/afterEdit.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objInfo.intID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="del" class="rbac_roleAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/afterDel.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="delForm" class="rbac_roleAction" method="showDeleteFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/delForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objInfo.intID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showPageList" class="rbac_roleAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/showPageList.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="readme" class="rbac_roleAction" method="execute">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/readme.vm</result>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="updatePrivilegeTreeForm" class="rbac_roleAction" method="updatePrivilegeTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/afterPrivilegeTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showPrivilegeTreeForm" class="rbac_roleAction" method="showPrivilegeTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/showPrivilegeTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90020000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="selectRole" class="rbac_roleAction" method="selectRole">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/role/selectRole.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+    </package>
+</xwork>

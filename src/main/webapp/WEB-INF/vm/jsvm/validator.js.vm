@@ -1,0 +1,811 @@
+<script language="javascript">
+/////////////////////////////////////旧的验证方式 start
+var re_dt = /^(\d{4})\-(\d{1,2})\-(\d{1,2})$/,
+re_tm = /^(\d{1,2})\:(\d{1,2})\:(\d{1,2})$/,
+re_dttm = /^(\d{4})\-(\d{1,2})\-(\d{1,2}) (\d{1,2})\:(\d{1,2})(\:(\d{1,2})){0,1}$/,
+a_formats = {
+	'alpha'   : /^[a-zA-Z\.\-]*$/,
+	'alphanum': /^\w+$/,
+	'unsigned': /^\d+$/,
+	'integer' : /^[\+\-]?\d*$/,
+	'real'    : /^[\+\-]?\d*\.?\d*$/,
+	'email'   : /^[\w-\.]+\@[\w\.-]+\.[a-z]{2,4}$/,
+	'phone'   : /^[\d\.\s\-]+$/,
+	'date'    : function (s_date) {
+		// check format
+		if (!re_dt.test(s_date))
+			return false;
+		// check allowed ranges
+		if (RegExp.$3 > 31 || RegExp.$2 > 12)
+			return false;
+		// check number of day in month
+		var dt_test = new Date(RegExp.$1, Number(RegExp.$2-1), RegExp.$3);
+		if (dt_test.getMonth() != Number(RegExp.$2-1))
+			return false;
+		return true;
+	},
+	'time'    : function validate_time(s_time) {
+		// check format
+		if (!re_tm.test(s_time))
+			return false;
+		// check allowed ranges
+		if (RegExp.$1 > 23 || RegExp.$2 > 59 || RegExp.$3 > 59)
+			return false;
+		return true;
+	},
+	'dateTime'    : function (s_dateTime) {
+		// check format
+		if (!re_dttm.test(s_dateTime))
+			return false;
+		// check allowed ranges
+		if (RegExp.$3 > 31 || RegExp.$2 > 12)
+			return false;
+		// check number of day in month
+		var dt_test = new Date(RegExp.$1, Number(RegExp.$2-1), RegExp.$3);
+		if (dt_test.getMonth() != Number(RegExp.$2-1))
+			return false;
+		if (RegExp.$4 > 23 || RegExp.$5 > 59)
+			return false;
+		if (RegExp.$6 != null && RegExp.$7 > 59)
+			return false;
+		return true;
+	}
+},
+a_messages = [
+	'No form name passed to validator construction routine',
+	'No array of "%form%" form fields passed to validator construction routine',
+	'Form "%form%" can not be found in this document',
+	'Incomplete "%n%" form field descriptor entry. "l" attribute is missing',
+	'Can not find form field "%n%" in the form "%form%"',
+	'Can not find label tag (id="%t%")',
+	'Can not verify match. Field "%m%" was not found',
+	'[%l%] 不能为空。',
+	'输入的 [%l%] 必须大于等于 %mn% 个以上字符。',
+	'输入的 [%l%] 必须小于等于 %mx% 个以下字符。',
+	'[%v%] 是无效的 [%l%]。',
+	'[%l%] 必须等于 [%ml%]。',
+	'输入的 [%l%] 必须大于等于 %in%',
+	'输入的 [%l%] 必须小于等于 %ix%',
+	'输入的 [%l%] 必须大于 [%cn%]',
+	'输入的 [%l%] 必须小于 [%cx%]',
+	'输入的 [%l%] 必须等于 [%ce%]',
+]
+
+function validator(s_form, a_fields, o_cfg) {
+	this.f_error = validator_error;
+	this.f_alert = o_cfg && o_cfg.alert
+		? function(s_msg) { alert(s_msg); return false }
+		: function() { return false };
+
+	// check required parameters
+	if (!s_form)
+		return this.f_alert(this.f_error(0));
+	this.s_form = s_form;
+
+	if (!a_fields || typeof(a_fields) != 'object')
+		return this.f_alert(this.f_error(1));
+	this.a_fields = a_fields;
+
+	this.a_2disable = o_cfg && o_cfg['to_disable'] && typeof(o_cfg['to_disable']) == 'object'
+		? o_cfg['to_disable']
+		: [];
+
+	this.exec = validator_exec;
+}
+
+function validator_exec() {
+	var o_form = document.forms[this.s_form];
+	if (!o_form)
+		return this.f_alert(this.f_error(2));
+
+	b_dom = document.body && document.body.innerHTML;
+
+	for (var n_key in this.a_fields) {
+		// check input description entry
+		this.a_fields[n_key]['n'] = n_key;
+		if (!this.a_fields[n_key]['l'])
+			return this.f_alert(this.f_error(3, this.a_fields[n_key]));
+		o_input = o_form.elements[n_key];
+		if (!o_input)
+			return this.f_alert(this.f_error(4, this.a_fields[n_key]));
+		this.a_fields[n_key].o_input = o_input;
+	}
+
+	// reset labels highlight
+	if (b_dom)
+		for (var n_key in this.a_fields)
+			if (this.a_fields[n_key]['t']) {
+				var s_labeltag = this.a_fields[n_key]['t'], e_labeltag = get_element(s_labeltag);
+				if (!e_labeltag)
+					return this.f_alert(this.f_error(5, this.a_fields[n_key]));
+				//	this.a_fields[n_key].o_tag = e_labeltag;
+				//	e_labeltag.className = 'tdEditContentLeft';
+			}
+
+	// collect values depending on the type of the input
+	for (var n_key in this.a_fields) {
+		o_input = this.a_fields[n_key].o_input;
+		if (o_input.value == '' || o_input.value || o_input.checked) // text, password, hidden, checkbox
+			this.a_fields[n_key]['v'] = o_input.value;
+		else if (o_input.options) // select
+			this.a_fields[n_key]['v'] = o_input.selectedIndex > -1
+				? o_input.options[o_input.selectedIndex].value
+				: null;
+		else if (o_input.length > 0) // radiobuton
+			for (var n_index = 0; n_index < o_input.length; n_index++)
+				if (o_input[n_index].checked) {
+					this.a_fields[n_key]['v'] = o_input[n_index].value;
+					break;
+				}
+	}
+
+	// check for errors
+	var n_errors_count = 0,
+		n_another, o_format_check;
+	for (var n_key in this.a_fields) {
+		o_format_check = this.a_fields[n_key]['f'] && a_formats[this.a_fields[n_key]['f']]
+			? a_formats[this.a_fields[n_key]['f']]
+			: null;
+		// reset previous error if any
+		this.a_fields[n_key].n_error = null;
+
+		// check reqired fields
+		if (this.a_fields[n_key]['r'] && !this.a_fields[n_key]['v']) {
+			this.a_fields[n_key].n_error = 1;
+			n_errors_count++;
+		}
+		// check length
+		else if (this.a_fields[n_key]['r'] && this.a_fields[n_key]['mn'] && String(this.a_fields[n_key]['v']).length < this.a_fields[n_key]['mn']) {
+			this.a_fields[n_key].n_error = 2;
+			n_errors_count++;
+		}
+		else if (this.a_fields[n_key]['mx'] && String(this.a_fields[n_key]['v']).length > this.a_fields[n_key]['mx']) {
+			this.a_fields[n_key].n_error = 3;
+			n_errors_count++;
+		}
+		// check format
+		else if (this.a_fields[n_key]['v'] && this.a_fields[n_key]['f'] && (
+			(typeof(o_format_check) == 'function'
+			&& !o_format_check(this.a_fields[n_key]['v']))
+			|| (typeof(o_format_check) != 'function'
+			&& !o_format_check.test(this.a_fields[n_key]['v'])))
+			) {
+			this.a_fields[n_key].n_error = 4;
+			n_errors_count++;
+		}
+		// check match	
+		else if (this.a_fields[n_key]['m']) {
+			for (var n_key2 in this.a_fields)
+				if (n_key2 == this.a_fields[n_key]['m']) {
+					n_another = n_key2;
+					break;
+				}
+			if (n_another == null)
+				return this.f_alert(this.f_error(6, this.a_fields[n_key]));
+			if (this.a_fields[n_another]['v'] != this.a_fields[n_key]['v']) {
+				this.a_fields[n_key]['ml'] = this.a_fields[n_another]['l'];
+				this.a_fields[n_key].n_error = 5;
+				n_errors_count++;
+			}
+		}
+		else if (this.a_fields[n_key]['in'] && this.a_fields[n_key]['v'] < this.a_fields[n_key]['in']) {
+			this.a_fields[n_key].n_error = 6;
+			n_errors_count++;
+		}
+		else if (this.a_fields[n_key]['ix'] && this.a_fields[n_key]['v'] > this.a_fields[n_key]['ix']) {
+			this.a_fields[n_key].n_error = 7;
+			n_errors_count++;
+		}
+		else if (this.a_fields[n_key]['cn'] && this.a_fields[n_key]['v'] < this.a_fields[this.a_fields[n_key]['cn']]['v']) {
+			this.a_fields[n_key].n_error = 8;
+			n_errors_count++;
+		}
+		else if (this.a_fields[n_key]['cx'] && this.a_fields[n_key]['v'] > this.a_fields[this.a_fields[n_key]['cx']]['v']) {
+			this.a_fields[n_key].n_error = 9;
+			n_errors_count++;
+		}		
+		else if (this.a_fields[n_key]['ce'] && this.a_fields[n_key]['v'] != this.a_fields[this.a_fields[n_key]['ce']]['v']) {
+			this.a_fields[n_key].n_error = 10;
+			n_errors_count++;
+		}	
+	}
+
+	// collect error messages and highlight captions for errorneous fields
+	var s_alert_message = '',
+		e_first_error;
+	if (n_errors_count) {
+		for (var n_key in this.a_fields) {
+			var n_error_type = this.a_fields[n_key].n_error,
+				s_message = '';
+				
+			if (n_error_type)
+				s_message = this.f_error(n_error_type + 6, this.a_fields[n_key]);
+
+			if (s_message) {
+				if (!e_first_error)
+					e_first_error = o_form.elements[n_key];
+				s_alert_message += s_message + "\n";
+				// highlighted state parameters assigned here
+				if (b_dom && this.a_fields[n_key].o_tag)
+					this.a_fields[n_key].o_tag.className = 'tfvHighlight';
+			}
+		}
+		alert(s_alert_message);
+		// set focus to first errorneous field
+		if (e_first_error.focus)
+		{
+			if(e_first_error.type.indexOf('hidden')<0 && (e_first_error.type.indexOf('textarea')>-1 && e_first_error.style.display.indexOf('none')<0 ) )
+				e_first_error.focus();
+			//e_first_error.focus();
+		}
+			
+		// cancel form submission if errors detected
+		return false;
+	}
+	
+	for (n_key in this.a_2disable)
+		if (o_form.elements[this.a_2disable[n_key]])
+			o_form.elements[this.a_2disable[n_key]].disabled = true;
+	
+	return true;
+}
+
+function validator_error(n_index) {
+	var s_ = a_messages[n_index], n_i = 1, s_key;
+	for (; n_i < arguments.length; n_i ++)
+		for (s_key in arguments[n_i])
+		{
+			if((s_key == "cn") || (s_key == "cx") || (s_key == "ce"))
+			{
+				s_ = s_.replace('%' + s_key + '%', this.a_fields[arguments[n_i][s_key]]['l']);
+			}
+			else
+			{
+				s_ = s_.replace('%' + s_key + '%', arguments[n_i][s_key]);
+			}
+		}
+	s_ = s_.replace('%form%', this.s_form);
+	return s_
+}
+
+function get_element (s_id) {
+	return (document.all ? document.all[s_id] : (document.getElementById ? document.getElementById(s_id) : null));
+}
+
+function doData(bool)
+{
+	if(bool)
+	{
+		var divDoData = document.getElementById("divDoData");
+		if(divDoData)
+		{
+			var left = screen.width/2-200;
+			var top = screen.height/2-200;
+			divDoData.style.position = "absolute";
+			divDoData.style.left = left;
+			divDoData.style.top = top;
+			divDoData.style.display = "";
+		}
+		return true;
+	}
+	else
+		return false;
+}
+
+/////////////////////////////////////旧的验证方式 end
+
+
+/////////////////////////////////////新的 验证方式
+
+ /*************************************************
+	checkValidata v1.01
+	code by xdju
+	[email]wfsr@cunite.com[/email]
+	[url]http://www.cunite.com[/url]
+*************************************************/
+ HodeSoftValidator = {
+	ErrorMessage : ["以下原因导致提交失败：\n"],
+	ErrorItem : [document.forms[0]],
+	Zh :  /^[\u0391-\uFFE5]+$/,
+	En : /^[A-Za-z]+$/,
+	EnNumber : /^[A-Za-z\d]+$/,
+	Alpha : /^[a-zA-Z\.\-]*$/,
+	URL : /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,
+	Email : /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+	IdCard : /^\d{15}(\d{2}[A-Za-z0-9])?$/,
+	Mobile : /^1[3|5|8][0-9]\d{8}$/,
+	Number : /^\d+$/,
+	Integer : /^[-\+]?\d+$/,
+	Real : /^[-\+]?\d+(\.\d+)?$/,
+	Repeat : "value == document.getElementsByName(getAttribute('to'))[0].value",
+	ZipCode : /^[1-9]\d{5}$/,
+	Tel : /(^\d{3,4}-\d{7,8})$|(^\d{11,12})$/,
+	Group : "this.MustChecked(getAttribute('name'), getAttribute('mingroup'), getAttribute('maxgroup'))",
+	selectGroup : /.+/,
+
+	checkValidata : function(theForm, mode){
+		var obj = theForm || event.srcElement;
+		var count = obj.elements.length;
+		this.ErrorMessage.length = 1;
+		this.ErrorItem.length = 1;
+		this.ErrorItem[0] = obj;
+		var intCount = 0;
+		for(var i=0;i<count;i++)
+		{
+			with(obj.elements[i])
+			{
+				var _require = getAttribute("require");
+
+				var _dataType = getAttribute("dataType");
+				var _maxlen = getAttribute("maxlen");
+				var _maxequlen = getAttribute("maxequlen");
+				var _minlen = getAttribute("minlen");
+				var _minequlen = getAttribute("minequlen");
+				var _equlen = getAttribute("equlen");
+
+				var _maxval = getAttribute("maxval");
+				var _maxequval = getAttribute("maxequval");
+				var _minval = getAttribute("minval");
+				var _minequval = getAttribute("minequval");
+				var _equval = getAttribute("equval");
+				var value_new = value;
+				if(_dataType == "Number" || _dataType == "Integer" )
+				{
+					_maxval = parseInt(_maxval);
+					_maxequval = parseInt(_maxequval);
+					_minequval = parseInt(_minequval);
+					_equval = parseInt(_equval);
+				}
+				else if( _dataType == "Real" )
+				{
+					value_new = parseFloat(value);
+					_maxval = parseFloat(_maxval);
+					_maxequval = parseFloat(_maxequval);
+					_minequval = parseFloat(_minequval);
+					_equval = parseFloat(_equval);
+				}
+
+				if(_require == "true")
+				{
+					if(value_new == "")
+					{
+						intCount ++ ;
+						this.AddError(intCount,i,"“"+getAttribute("msg")+"”为必填项");
+					}
+				}
+				if(value_new )
+				{
+					/******************************** 数据类型判断 start ************************/
+					switch(_dataType)		
+					{
+						case "Zh" :	//中文
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”必须为中文");
+							}
+							break;
+						case "En" :	//英文
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”必须为英文");
+							}
+							break;
+						case "EnNumber" :	//英文和数字
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”必须为英文字母或数字");
+							}
+							break;
+						case "Alpha" :	//英文及下划线等之类的
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”必须为无效的数据");
+							}
+							break;
+						case "URL" :	//网址
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”必须为合法的网址");
+							}
+							break;
+						case "Email" :	//Email
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”必须为合法的邮件地址");
+							}
+							break;
+						case "IdCard" :	//身份证
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”为无效的证件号码");
+							}
+							break;
+						case "Mobile" :	//Mobile
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”为无效的号码");
+							}
+							break;
+						case "Tel" :	//Tel
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”为无效的号码");
+							}
+							break;
+
+						case "ZipCode" :	//邮政编码
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”为无效的数据");
+							}
+							break;
+						case "Number" :	//数字
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”为无效的数字");
+							}
+							break;
+						case "Integer" :	//Integer
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”为无效的数字");
+							}
+							break;
+						case "Real" :	//Real
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”为无效的数字");
+							}
+							break;
+						case "selectGroup" :	//下拉选中
+							if(!this[_dataType].test(value_new)){
+								intCount ++ ;
+								this.AddError(intCount,i,"“"+getAttribute("msg")+"”必须要选择");
+							}
+							break;
+						case "Repeat" :	//Repeat 判断与某一个数值一致
+							if(!eval(this[_dataType]))	{
+								intCount ++ ;
+								this.AddError(intCount,i, "“"+getAttribute("msg")+"”与“"+getAttribute("msg1")+"”不一致");
+							}
+							break;
+						case "Group" :	//Repeat 判断与某一个数值一致
+							if(!eval(this[_dataType]))	{
+								intCount ++ ;
+								if(getAttribute('maxgroup') && getAttribute('mingroup') )
+								{
+									this.AddError(intCount,i, "“"+getAttribute("msg")+"”选择数必须在“"+getAttribute('mingroup')+"~"+getAttribute('maxgroup')+"”之间");
+								}
+								else if(getAttribute('mingroup') )
+								{
+									this.AddError(intCount,i, "“"+getAttribute("msg")+"”选择数必须大于“"+getAttribute('mingroup')+"”");
+								}
+								else if(getAttribute('maxgroup') ){
+									this.AddError(intCount,i, "“"+getAttribute("msg")+"”选择数必须小于“"+getAttribute('maxgroup'));
+								}
+
+
+							}
+							break;
+						
+					}//switch(_dataType)
+					/******************************** 数据类型判断 end ************************/
+					
+					if(_maxlen )
+					{
+						if(value_new.length >= _maxlen)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”长度不能够大于"+_maxlen);
+						}
+					}
+					if(_maxequlen )
+					{
+						if(value_new.length > _maxequlen)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”长度不能够大于"+_maxequlen);
+						}
+					}
+					if(_minlen )
+					{
+						if(value_new.length <= _minlen)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”长度不能够小于"+_minlen);
+						}
+					}
+					if(_minequlen )
+					{
+						if(value_new.length < _minequlen)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”长度不能够小于"+_minequlen);
+						}
+					}
+
+
+					if(_equlen )
+					{
+						if(value_new.length != _equlen)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”长度必须等于"+_equlen);
+						}
+					}
+
+
+					if(_maxval )
+					{
+						
+						if(value_new >= _maxval)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”数值不能够大于"+_maxval);
+						}
+					}
+					if(_maxequval )
+					{
+						if(value_new > _maxequval)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”数值不能够大于"+_maxequval);
+						}
+					}
+					if(_minval )
+					{
+						if(value_new <= _minval)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”数值不能够小于"+_minval);
+						}
+					}
+					if(_minequval )
+					{
+						if(value_new < _minequval)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”数值不能够小于"+_minequval);
+						}
+					}
+
+					if(_equval )
+					{
+						if(value_new != _equval)
+						{
+							intCount ++ ;
+							this.AddError(intCount,i,"“"+getAttribute("msg")+"”数值必须等于"+_equval);
+						}
+					}
+					
+				}//if(value_new != "")
+
+			}//with(obj.elements[i])
+		}//for(var i=0;i<count;i++)
+		if(this.ErrorMessage.length > 1){
+
+			mode = mode || 1;
+			var errCount = this.ErrorItem.length;
+			switch(mode){
+			case 2 :
+				for(var i=1;i<errCount;i++)
+					this.ErrorItem[i].style.color = "red";
+			case 1 :
+				alert(this.ErrorMessage.join(""));
+				this.ErrorItem[1].focus();
+				break;
+			case 3 :
+				for(var i=1;i<errCount;i++){
+				try{
+					var span = document.createElement("SPAN");
+					span.id = "__ErrorMessagePanel";
+					span.style.color = "red";
+					this.ErrorItem[i].parentNode.appendChild(span);
+					span.innerHTML = this.ErrorMessage[i].replace(/\d+:/,"*");
+					}
+					catch(e){alert(e.description);}
+				}
+				this.ErrorItem[1].focus();
+				break;
+			default :
+				alert(this.ErrorMessage.join(""));
+				break;
+			}
+			return false;
+		}
+		return true;
+	}, //checkValidata
+	ClearState : function(elem){
+		with(elem){
+			if(style.color == "red")
+				style.color = "";
+			var lastNode = parentNode.childNodes[parentNode.childNodes.length-1];
+			if(lastNode.id == "__ErrorMessagePanel")
+				parentNode.removeChild(lastNode);
+		}
+	}, //AddError
+	MustChecked : function(name, min, max){
+		var groups = document.getElementsByName(name);
+		var hasChecked = 0;
+		min = (min)?min:0;
+		max = max || groups.length;
+		for(var i=groups.length-1;i>=0;i--)
+			if(groups[i].checked) hasChecked++;
+		return min <= hasChecked && hasChecked <= max;
+	},
+	AddError : function(index,intVal,str){
+		this.ErrorItem[this.ErrorItem.length] = this.ErrorItem[0].elements[intVal];
+		this.ErrorMessage[this.ErrorMessage.length] = this.ErrorMessage.length + ":" + str+"\n";
+	} //AddError
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////检测连续整数的长度 
+function Js_checkTel(fieldName,length,alertString)
+{  
+	var i,j,err=0,f,temp;
+	for(i=0;i<fieldName.value.length;i++)
+	{		
+		f=fieldName.value.substring(i,i+1);
+		f=f*1;
+		if((f>=0) && (f<=9)) 
+		{
+			err=err+1;  
+			if(err>length) 
+				temp=1; 
+		}
+		else  
+		{
+			err=0; 
+		}
+	}
+	if(temp)
+	{
+		return true; 
+	}
+	else
+	{
+		alert(alertString); 
+		return false 
+	};
+}
+
+//////////////限制TextArea区的文字输入数量 
+function Js_textCounter(field, countfield, maxlimit)
+{
+	// 定义函数，传入3个参数，分别为表单区的名字，表单域元素名，字符限制；
+	if (field.value.length > maxlimit) 	//如果元素区字符数大于最大字符数，按照最大字符数截断； 
+		field.value = field.value.substring(0, maxlimit);
+	else	//在记数区文本框内显示剩余的字符数； 
+		countfield.value = maxlimit - field.value.length;
+}
+//////////删除连续空格  
+function Js_KillSpace(x)
+{
+	while((x.length>0) && (x.charAt(0)==' '))
+		x = x.substring(1,x.length)
+	while((x.length>0) && (x.charAt(x.length-1)==' '))
+		x = x.substring(0,x.length-1)
+	return x
+}
+//////////判断字符串a的每个字符是不是在字符串b中  
+function Js_isNumberString (InString,RefString)
+{
+	if(InString.length==0) 
+	{
+		return 0;
+	}
+	for (Count=0; Count < InString.length; Count++)  
+	{
+		TempChar= InString.substring (Count, Count+1);
+		if(RefString.indexOf (TempChar, 0)==-1)  
+		{	
+			return 0;
+		}
+	}
+	return 1;
+}
+//////////判断字符串a的每个字符是不是整数  
+function Js_isInt(y)
+{
+	isIntj=0;
+	for(isInti=0;isInti<y.length;isInti++)
+	{
+		isIntf=y.substring(isInti,isInti+1);
+		isIntf=parseInt(isIntf);
+		if((isIntf>=0)||(isIntf<=9)) 
+		{
+			isIntj++;
+		}
+	}
+	if(y.length==isIntj)
+		return 1
+	else return 0
+}
+function doData(bool)
+{
+	if(bool)
+	{
+		var divDoData = document.getElementById("divDoData");
+		if(divDoData)
+		{
+			var left = screen.width/2-200;
+			var top = screen.height/2-200;
+			divDoData.style.position = "absolute";
+			divDoData.style.left = left;
+			divDoData.style.top = top;
+			divDoData.style.display = "";
+		}
+		return true;
+	}
+	else
+		return false;
+}
+
+function fPopUpCalendarDlg(ctrlobj) 
+{
+	showx = event.screenX - event.offsetX - 4 - 210 ; // + deltaX;
+	showy = event.screenY - event.offsetY + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+	retval = window.showModalDialog("$action.getText('config.prjName')/js/calendardlg.htm", "", "dialogWidth:200px; dialogHeight:230px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null ) {
+		ctrlobj.value = retval;
+	}
+}
+function fPopUpCalendarTimeDlg(obj,path)
+{
+	var width = 375;
+	var height = 280;
+	
+	var left = window.screenLeft + obj.offsetLeft + 2;
+	var top = window.screenTop + obj.offsetTop + obj.offsetHeight;
+	if (parseInt((left + width),10) > parseInt(screen.availWidth,10)) left = left - width + obj.offsetWidth - 2;
+	if ((top + height) > screen.availHeight) top = top - height - obj.offsetHeight + 2;	
+	
+	retval = window.showModalDialog("$action.getText('config.prjName')/js/calendardlg_time.htm", window, "dialogWidth:"+width+"px; dialogHeight:"+height+"px; dialogLeft:"+left+"px; dialogTop:"+top+"px; status:no;");
+
+	if( retval != null ) 
+	{
+		if(retval.length>10)
+			retval=retval.substr(0,retval.length-3);
+		obj.value = retval;
+	}
+}
+/*
+'l': '新密码',  // 提醒的名称
+'r': false,    // 是否必须验证	true false
+'f': 'alphanum',	//验证类型	alpha：字母包括大小写	alphanum：字母数字	unsigned：正整数		integer：整数		real:小数	email:邮件	phone:电话 
+'t': 't_objInfo.strPassword',// id的标签，用于提醒使用
+'m': 'objInfo.strConfirmPassword',     //验证必须等于某一个字段
+'mn': 2,       // 输入的最小长度
+'mx': 100       // 输入的最大长度
+'in':'objInfo.strConfirmPassword' 	必须大于等于
+'ix':'objInfo.strConfirmPassword' 	必须小于等于
+'cn':'objInfo.strConfirmPassword' 	必须大于
+'cx':'objInfo.strConfirmPassword' 	必须小于
+'ce':'objInfo.strConfirmPassword' 	//必须等于某个值	
+
+*/
+</script>

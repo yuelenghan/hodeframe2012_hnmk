@@ -1,0 +1,127 @@
+
+
+#############��� ����ֵ�ļ�ֵ������ ��ȡ Ψһ��һ����ݼ�
+#macro (dictionary_getDictionaryFirstInfo $intType  $obj_dictionary_Info )
+	#set ($dictionaryUtil = $webwork.bean("com.hode.dictionary.action.DictionaryUtil"))
+	#set ($obj_dictionary_Info = $dictionaryUtil.getDictionaryFirstInfo($intType))
+#end
+
+#macro (dictionary_getDictionaryInfo $intType $strKey $obj_dictionary_Info )
+	#set ($dictionaryUtil = $webwork.bean("com.hode.dictionary.action.DictionaryUtil"))
+	#set ($obj_dictionary_Info = $dictionaryUtil.getDictionaryInfo($intType, $strKey))
+#end
+#macro (dictionary_getDictionaryValue $intType $strKey $strRtnValue )
+	#set ($dictionaryUtil = $webwork.bean("com.hode.dictionary.action.DictionaryUtil"))
+	#set ($obj_dictionary_Info = $dictionaryUtil.getDictionaryInfo($intType, $strKey))
+	#set ($strRtnValue = $obj_dictionary_Info.strValue)
+#end
+
+
+#macro (dictionary_getList $intType $blnFirst $returnList)
+	#set ($dictionaryUtil = $webwork.bean("com.hode.dictionary.action.DictionaryUtil"))
+	#set ($returnList = $dictionaryUtil.getDictionaryList($intType,$blnFirst))
+#end
+
+#macro(dictionary_getSelectKeyAndVal $name $intType $checked $readType $intIsNeedAll $intIsKey)
+	#dictionary_getList($intType false $returnList)
+	<select class='inputSelect' name="$name" size=1 $readType onChange="chgObj(this)">
+			#if($intIsNeedAll == 1 || $intIsNeedAll == "1" || $intIsNeedAll == "yes")
+				<option value=''>$action.getText("global.operation.pleaseSelect")</option>
+			#elseif($intIsNeedAll == 2)
+				<option value=''>$action.getText("global.operation.all")</option>
+			#elseif($intIsNeedAll == 3)
+				<option value=''></option>
+			#end
+			#foreach($i in $returnList)
+				#if($intIsKey == 1 || $intIsKey == "1" || $intIsKey == "yes")
+					<option value="$!i.intID" #if($checked=="$!i.intID") selected #end >$!i.strValue</option>
+				#else
+					<option value="$!i.intID" #if($checked==$!i.strValue) selected #end >$!i.strValue</option>
+				#end
+
+			#end
+	</select>
+#end
+
+
+#macro(dictionary_getSelectKeyAndVal2 $name $intType $checked $readType $intIsNeedAll $intIsKey)
+	#dictionary_getList($intType false $returnList)
+	<select class='inputSelect' name="$name" size=1 $readType>
+			#if($intIsNeedAll == 1 || $intIsNeedAll == "1" || $intIsNeedAll == "yes")
+				<option value=''>$action.getText("global.operation.pleaseSelect")</option>
+			#elseif($intIsNeedAll == 2)
+				<option value=''>$action.getText("global.operation.all")</option>
+			#elseif($intIsNeedAll == 3)
+				<option value=''></option>
+			#end
+			#foreach($i in $returnList)
+				#if($intIsKey == 1 || $intIsKey == "1" || $intIsKey == "yes")
+					<option value="$!i.intID" #if($checked==$!i.strValue) selected #end >$!i.strValue</option>
+				#else
+					<option value="$!i.strValue" #if($checked==$!i.intID) selected #end >$!i.strValue</option>
+				#end
+
+			#end
+	</select>
+#end
+
+#macro(dictionary_getSelectKeyAndVal3 $name $intType $intIsKey)
+	#dictionary_getList($intType false $returnList)
+	<select class='inputSelect' name="$name" size=1 $readType>
+		<option value="0">��ѡ��</option>
+			#foreach($i in $returnList)
+				#if($intIsKey == 1 || $intIsKey == "1" || $intIsKey == "yes")
+					<option value="$!i.intID">$!i.strValue</option>
+				#else
+					<option value="$!i.strValue" >$!i.strValue</option>
+				#end
+			#end
+	</select>
+#end
+
+#macro(dictionary_getFirstKeyAndVal $intType $firstKey)
+	#dictionary_getList($intType false $returnList)
+			#set($j=0)
+			#foreach($i in $returnList)
+				#if($j == 0)
+					#set($firstKey = $!i.intID)
+				#end
+				#set($j = $j + 1)
+			#end
+#end
+
+#macro(dictionary_getButtonKeyAndVal $name $intType $checked $strButtonType $strNbsp $intIsKey)
+	#dictionary_getList($intType false $returnList)
+
+	#if($strButtonType == "checkbox")
+		#set($sType ="$!strNbsp<input type='checkbox' class='inputCheckbox'")
+	#elseif($strButtonType =="radio")
+		#set($sType ="$!strNbsp<input type='radio' class='inputRadio'")
+	#else
+		#set($sType ="$!strNbsp<input type='radio' class='inputRadio'")
+	#end
+
+	#foreach($i in $returnList)
+		#if($intIsKey == 1 || $intIsKey == "1" || $intIsKey == "yes")
+			#hodeSysBean_checkInArr($!i.strKey $checked $rtn)
+			 $sType name="$name" value="$!i.strKey"	#if($rtn) checked #end	>$!i.strValue
+		#else
+			#hodeSysBean_checkInArr($!i.strValue $checked $rtn)
+			 $sType name="$name" value="$!i.strValue"	#if($rtn) checked #end	>$!i.strValue
+		#end
+	#end
+#end
+
+
+#macro(dictionary_getStrKeyAndVal $intType $checked  $strNbsp $intIsKey)
+	#dictionary_getList($intType true $returnList)
+	#foreach($i in $returnList)
+		#if($intIsKey == 1 || $intIsKey == "1" || $intIsKey == "yes")
+			#hodeSysBean_checkInArr($!i.strKey $checked $rtn)
+			#if($rtn) $!i.strValue $strNbsp	#end
+		#else
+			#hodeSysBean_checkInArr($!i.strValue $checked $rtn)
+			#if($rtn) $!i.strValue $strNbsp	#end
+		#end
+	#end
+#end

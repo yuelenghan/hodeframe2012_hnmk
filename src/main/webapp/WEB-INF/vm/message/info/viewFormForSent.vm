@@ -1,0 +1,77 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('message.operation.sentInfo')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+
+
+#hodeSysUI_EditBodyHeader("" "" "" "")
+
+#hodeSysUI_TrBeginMainBody(5)
+    #hodeSysBean_htmlSpecChars($!{objInfo.strContent} $rtn)
+	#hodeSysBean_nl2br($!rtn $rtn)
+	#hodeSysUI_showMsg("" "$!action.getText('message.form.content')" 1 0 "$rtn" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_optViewMultiFile("$!action.getText('message.form.attContent')" 1 "1" "left" $!fileAttrUpload.listAttachs)
+
+#set($userList = "")
+#if($!objInfo.strReceiveAccountList != "")
+	#set($userList = "$userList $!objInfo.strReceiveAccountList")
+#end
+
+#if($!objInfo.strReceiveUserNameList != "")
+	#set($userList = "$userList $!objInfo.strReceiveUserNameList")
+#end
+
+#if($!objInfo.strReceiveDeptNameList != "")
+	#set($userList = "$userList $!objInfo.strReceiveDeptNameList")
+#end
+
+#if($!objInfo.strReceiveRoleNameList != "")
+	#set($userList = "$userList$!objInfo.strReceiveRoleNameList")
+#end
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "$!action.getText('message.form.receiveUserIDList')" 1 0 "$!userList" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "$!action.getText('message.form.sentTime')" 1 0 "$!{objInfo.dtmSentTime}" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_EditBodyFoot(['close'] "2")
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+function frmSubmit()
+{
+	frmOperation.submit();
+}
+
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

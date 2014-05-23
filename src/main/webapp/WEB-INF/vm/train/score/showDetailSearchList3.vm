@@ -1,0 +1,185 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "考试成绩查询" )
+#end
+
+
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >考试场次：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainScoreDetailInfo.strScoreExam" id="trainScoreDetailInfo.strScoreExam" CLASS="inputText" maxlength="20" size="20"   VALUE="$!trainScoreDetailInfo.strScoreExam" >
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >姓名：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainScoreDetailInfo.strStudentName" id="trainScoreDetailInfo.strStudentName" CLASS="inputText" maxlength="20" size="20"   VALUE="$!trainScoreDetailInfo.strStudentName" >
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >身份证号码：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainScoreDetailInfo.strStudentIDCode" id="trainScoreDetailInfo.strStudentIDCode" CLASS="inputText" maxlength="20" size="20"   VALUE="$!trainScoreDetailInfo.strStudentIDCode" >
+	</TD>
+	<td></td>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showDetailSearchList2.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+
+
+	#hodeSysUI_TdMainBody("序号" "center" "" 0)
+	#hodeSysUI_TdMainBody("姓名" "center" "" 0)
+	#hodeSysUI_TdMainBody("身份证号" "center" "" 0)
+	#hodeSysUI_TdMainBody("理论成绩" "center" "" 0)
+	#hodeSysUI_TdMainBody("实操成绩" "center" "" 0)
+	#hodeSysUI_TdMainBody("考试期次" "center" "" 0)
+	#hodeSysUI_TdMainBody("考试场次" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训班次" "center" "" 0)
+	#hodeSysUI_TdMainBody("补考" "center" "" 0)
+	#hodeSysUI_TdMainBody("违纪情况" "center" "" 0)
+
+
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo3 in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+		#if($objInfo3.intIsImport == 1 && $objInfo3.intIsImport1 == 1)
+			<td align="center" rowspan=2>$intNowCount</td>
+			<td align="center" rowspan=2>$objInfo3.strStudentName</td>
+			<td align="center" rowspan=2>$objInfo3.strStudentIDCode</td>
+			<td align="center">$objInfo3.fltExamScore1</td>
+			<td align="center">$objInfo3.fltExamScore2</td>
+			<td align="center">$objInfo3.strScoreCount</td>
+			<td align="center">$objInfo3.strScoreExam</td>
+			<td align="center">$objInfo3.strTrainCount</td>
+			<td align="center">&nbsp;</td>
+			<td align="center">$objInfo3.strExamRule</td>
+			#hodeSysUI_TrEnd()
+
+			#if($intNowCount % 2 == 0)
+				#hodeSysUI_TrBeginMainBody(2)
+			#else
+				#hodeSysUI_TrBeginMainBody(3)
+			#end
+			<td align="center">$objInfo3.fltExamScore3</td>
+			<td align="center">$objInfo3.fltExamScore4</td>
+			<td align="center">$objInfo3.strScoreCount1</td>
+			<td align="center">$objInfo3.strScoreExam</td>
+			<td align="center">$objInfo3.strTrainCount1</td>
+			<td align="center">补</td>
+			<td align="center">$objInfo3.strExamRule1</td>
+			#hodeSysUI_TrEnd()
+		#elseif($objInfo3.intIsImport == 1)
+			<td align="center">$intNowCount</td>
+			<td align="center">$objInfo3.strStudentName</td>
+			<td align="center">$objInfo3.strStudentIDCode</td>
+			<td align="center">$objInfo3.fltExamScore1</td>
+			<td align="center">$objInfo3.fltExamScore2</td>
+			<td align="center">$objInfo3.strScoreCount</td>
+			<td align="center">$objInfo3.strScoreExam</td>
+			<td align="center">$objInfo3.strTrainCount</td>
+			<td align="center">&nbsp;</td>
+			<td align="center">$objInfo3.strExamRule</td>
+			#hodeSysUI_TrEnd()
+		#elseif($objInfo3.intIsImport1 == 1)
+			<td align="center">$intNowCount</td>
+			<td align="center">$objInfo3.strStudentName</td>
+			<td align="center">$objInfo3.strStudentIDCode</td>
+			<td align="center">$objInfo3.fltExamScore3</td>
+			<td align="center">$objInfo3.fltExamScore4</td>
+			<td align="center">$objInfo3.strScoreCount1</td>
+			<td align="center">$objInfo3.strScoreExam</td>
+			<td align="center">$objInfo3.strTrainCount1</td>
+			<td align="center">补</td>
+			<td align="center">$objInfo3.strExamRule1</td>
+			#hodeSysUI_TrEnd()
+		#end
+#end
+
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showDetailSearchList2.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript

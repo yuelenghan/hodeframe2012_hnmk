@@ -1,0 +1,409 @@
+<HTML>
+<HEAD>
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+
+<script language="JavaScript">
+var sAction = "INSERT";
+var sTitle = "$action.getText('webeditor.dialog.fieldset.insert')";
+
+var oControl;
+var oSeletion;
+var sRangeType;
+
+var sFromUrl = "http://";
+var sAlt = "";
+var sBorder = "0";
+var sBorderColor = "";
+var sFilter = "";
+var sAlign = "";
+var sWidth = "";
+var sHeight = "";
+var sVSpace = "";
+var sHSpace = "";
+
+var sCheckFlag = "file";
+
+oSelection = dialogArguments.eWebEditor.document.selection.createRange();
+sRangeType = dialogArguments.eWebEditor.document.selection.type;
+
+if (sRangeType == "Control")
+{
+	if (oSelection.item(0).tagName == "IMG")
+	{
+		sAction = "MODI";
+		sTitle = "$action.getText('webeditor.dialog.fieldset.modify')";
+		sCheckFlag = "url";
+		oControl = oSelection.item(0);
+		sFromUrl = oControl.getAttribute("src", 2);
+		sAlt = oControl.alt;
+		sBorder = oControl.border;
+		sBorderColor = oControl.style.borderColor;
+		sFilter = oControl.style.filter;
+		sAlign = oControl.align;
+		sWidth = oControl.width;
+		sHeight = oControl.height;
+		sVSpace = oControl.vspace;
+		sHSpace = oControl.hspace;
+	}
+}
+
+
+document.write("<title>$action.getText('webeditor.dialog.img.title')-" + sTitle + "-</title>");
+
+
+// ��ʼֵ
+function InitDocument()
+{
+	SearchSelectValue(d_filter, sFilter);
+	SearchSelectValue(d_align, sAlign.toLowerCase());
+
+	d_fromurl.value = sFromUrl;
+	d_alt.value = sAlt;
+	d_border.value = sBorder;
+	d_bordercolor.value = sBorderColor;
+	s_bordercolor.style.backgroundColor = sBorderColor;
+	d_width.value = sWidth;
+	d_height.value = sHeight;
+	d_vspace.value = sVSpace;
+	d_hspace.value = sHSpace;
+}
+
+
+// ͼƬ��Դ��ѡ����¼�
+function RadioClick(what)
+{
+	if (what=="url")
+	{
+		d_checkfromfile.checked=false;
+		d_fromurl.disabled=false;
+		d_checkfromurl.checked=true;
+		d_file.myform.uploadfile.disabled=true;
+	}
+	else
+	{
+		d_checkfromurl.checked=false;
+		d_file.myform.uploadfile.disabled=false;
+		d_checkfromfile.checked=true;
+		d_fromurl.disabled=true;
+	}
+}
+
+// �ϴ�֡�������ʱִ��
+function UploadLoaded()
+{
+	// ��ʼradio
+	RadioClick(sCheckFlag);
+}
+
+// �ϴ�����
+function UploadError(sErrDesc)
+{
+	AbleItems();
+	RadioClick('file');
+	divProcessing.style.display="none";
+	try
+	{
+		BaseAlert(d_file.myform.uploadfile,sErrDesc);
+	}
+	catch(e){}
+}
+
+// �ļ��ϴ����ʱִ��,�����ϴ��ļ���
+function UploadSaved(sPathFileName)
+{
+	d_fromurl.value = sPathFileName;
+	ReturnValue();
+}
+
+// �����ڷ���ֵ
+function ReturnValue()
+{
+	sFromUrl = d_fromurl.value;
+	//sFromUrl = d_fileurl.value;
+	sAlt = d_alt.value;
+	sBorder = d_border.value;
+	sBorderColor = d_bordercolor.value;
+	sFilter = d_filter.options[d_filter.selectedIndex].value;
+	sAlign = d_align.value;
+	sWidth = d_width.value;
+	sHeight = d_height.value;
+	sVSpace = d_vspace.value;
+	sHSpace = d_hspace.value;
+
+	if (sAction == "MODI")
+	{
+		oControl.src = sFromUrl;
+		oControl.alt = sAlt;
+		oControl.border = sBorder;
+		oControl.style.borderColor = sBorderColor;
+		oControl.style.filter = sFilter;
+		oControl.align = sAlign;
+		oControl.width = sWidth;
+		oControl.height = sHeight;
+		oControl.style.width = sWidth;
+		oControl.style.height = sHeight;
+		oControl.vspace = sVSpace;
+		oControl.hspace = sHSpace;
+	}
+	else
+	{
+		var sHTML = '';
+		if (sFilter!="")
+		{
+			sHTML=sHTML+'filter:'+sFilter+';';
+		}
+		if (sBorderColor!="")
+		{
+			sHTML=sHTML+'border-color:'+sBorderColor+';';
+		}
+		if (sHTML!="")
+		{
+			sHTML=' style="'+sHTML+'"';
+		}
+		sHTML = '<img id=eWebEditor_TempElement_Img src="'+sFromUrl+'"'+sHTML;
+		if (sBorder!="")
+		{
+			sHTML=sHTML+' border="'+sBorder+'"';
+		}
+		if (sAlt!="")
+		{
+			sHTML=sHTML+' alt="'+sAlt+'"';
+		}
+		if (sAlign!="")
+		{
+			sHTML=sHTML+' align="'+sAlign+'"';
+		}
+		if (sWidth!="")
+		{
+			sHTML=sHTML+' width="'+sWidth+'"';
+		}
+		if (sHeight!="")
+		{
+			sHTML=sHTML+' height="'+sHeight+'"';
+		}
+		if (sVSpace!="")
+		{
+			sHTML=sHTML+' vspace="'+sVSpace+'"';
+		}
+		if (sHSpace!="")
+		{
+			sHTML=sHTML+' hspace="'+sHSpace+'"';
+		}
+		sHTML=sHTML+'>';
+		dialogArguments.insertHTML(sHTML);
+
+		var oTempElement = dialogArguments.eWebEditor.document.getElementById("eWebEditor_TempElement_Img");
+		oTempElement.src = sFromUrl;
+		oTempElement.removeAttribute("id");
+
+	}
+
+	window.returnValue = null;
+	window.close();
+}
+
+// ��ȷ��ʱִ��
+function ok()
+{
+	// �������������Ч��
+	d_border.value = ToInt(d_border.value);
+	d_width.value = ToInt(d_width.value);
+	d_height.value = ToInt(d_height.value);
+	d_vspace.value = ToInt(d_vspace.value);
+	d_hspace.value = ToInt(d_hspace.value);
+	// �߿���ɫ����Ч��
+	if (!IsColor(d_bordercolor.value))
+	{
+		BaseAlert(d_bordercolor,"$action.getText('webeditor.dialog.img.errorValue')");
+		return false;
+	}
+
+	if (d_checkfromurl.checked)
+	{
+		// ����ֵ
+		ReturnValue();
+	}
+	else
+	{
+		// �ϴ��ļ��ж�
+		if (!d_file.CheckUploadForm())
+			return false;
+		// ʹ���������Ч
+		DisableItems();
+		// ��ʾ�����ϴ�ͼƬ
+		divProcessing.style.display="";
+		// �ϴ��?�ύ
+		d_file.myform.submit();
+	}
+}
+
+// ʹ�����������Ч
+function DisableItems()
+{
+	d_checkfromfile.disabled=true;
+	d_checkfromurl.disabled=true;
+	d_fromurl.disabled=true;
+	d_alt.disabled=true;
+	d_border.disabled=true;
+	d_bordercolor.disabled=true;
+	d_filter.disabled=true;
+	d_align.disabled=true;
+	d_width.disabled=true;
+	d_height.disabled=true;
+	d_vspace.disabled=true;
+	d_hspace.disabled=true;
+	Ok.disabled=true;
+}
+
+// ʹ�����������Ч
+function AbleItems()
+{
+	d_checkfromfile.disabled=false;
+	d_checkfromurl.disabled=false;
+	d_fromurl.disabled=false;
+	d_alt.disabled=false;
+	d_border.disabled=false;
+	d_bordercolor.disabled=false;
+	d_filter.disabled=false;
+	d_align.disabled=false;
+	d_width.disabled=false;
+	d_height.disabled=false;
+	d_vspace.disabled=false;
+	d_hspace.disabled=false;
+	Ok.disabled=false;
+}
+
+</script>
+
+<BODY bgColor=menu LeftMARGIN=0 TopMARGIN=0 onload="InitDocument()">
+
+<table border=0 cellpadding=0 cellspacing=0 align=center>
+<tr>
+	<td>
+	<fieldset>
+	<legend>$action.getText('webeditor.dialog.img.imgSource')</legend>
+	<table border ="0" cellpadding=0 cellspacing=0>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td width=54 align=right onclick="RadioClick('file')"><input type=radio id="d_checkfromfile" value="1" onclick="RadioClick('file')">$action.getText('webeditor.dialog.backimage.upload')</td>
+		<td width=5></td>
+		<td colspan=5><Script Language=JavaScript>
+		document.write('<iframe id=d_file frameborder=0 src="$action.getText('config.prjName')/webeditor/showImgUpload.action" width="100%" height="25" scrolling=no></iframe>');
+		</Script>
+		</td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td width=54 align=right onclick="RadioClick('url')"><input type=radio id="d_checkfromurl" value="1" onclick="RadioClick('url')">$action.getText('webeditor.dialog.backimage.network')</td>
+		<td width=5></td>
+		<td colspan=5>&nbsp;<input type=text id="d_fromurl" style="width:243px" size=30 value="" class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	</table>
+	</fieldset>
+	</td>
+</tr>
+<tr><td height=5></td></tr>
+<tr>
+	<td>
+	<fieldset>
+	<legend>$action.getText('webeditor.dialog.backimage.effect')</legend>
+	<table border=0 cellpadding=0 cellspacing=0>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.img.readText')</td>
+		<td width=5></td>
+		<td colspan=5><input type="text" id=d_alt size=38 value="" style="width:243px" class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td noWrap>$action.getText('webeditor.dialog.img.border')</td>
+		<td width=5></td>
+		<td><input type=text id=d_border size=10 value="" ONKEYPRESS="event.returnValue=IsDigit();" class='inputText'></td>
+		<td width=40></td>
+		<td noWrap>$action.getText('webeditor.dialog.fieldset.colorForBorder')</td>
+		<td width=5></td>
+		<td><table border=0 cellpadding=0 cellspacing=0><tr><td><input type=text id=d_bordercolor size=7 value="" class='inputText'></td><td><img border=0 src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/rect.gif" width=18 style="cursor:hand" id=s_bordercolor onclick="SelectColor('bordercolor')"></td></tr></table></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.img.extraEffect')</td>
+		<td width=5></td>
+		<td>
+			<select id=d_filter style="width:72px" size=1 class='inputSELECT'>
+				#webEditor_filter()
+            </select>
+		</td>
+		<td width=40></td>
+		<td>$action.getText('webeditor.dialog.table.alignType')</td>
+		<td width=5></td>
+		<td>
+			<select id=d_align size=1 style="width:72px" class='inputSELECT'>
+				#webEditor_imgAlign()
+			</select>
+		</td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.img.width')</td>
+		<td width=5></td>
+		<td><input type=text id=d_width size=10 value="" ONKEYPRESS="event.returnValue=IsDigit();" maxlength=4 class='inputText'></td>
+		<td width=40></td>
+		<td>$action.getText('webeditor.dialog.img.height')</td>
+		<td width=5></td>
+		<td><input type=text id=d_height size=10 value="" ONKEYPRESS="event.returnValue=IsDigit();" maxlength=4 class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.img.topsize')</td>
+		<td width=5></td>
+		<td><input type=text id=d_vspace size=10 value="" ONKEYPRESS="event.returnValue=IsDigit();" maxlength=2 class='inputText'></td>
+		<td width=40></td>
+		<td>$action.getText('webeditor.dialog.img.leftsize')</td>
+		<td width=5></td>
+		<td><input type=text id=d_hspace size=10 value="" ONKEYPRESS="event.returnValue=IsDigit();" maxlength=2 class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	</table>
+	</fieldset>
+	</td>
+</tr>
+<tr><td height=5></td></tr>
+<tr>
+	<td align=right>
+		<input type=submit value="$action.getText('webeditor.dialog.ok')" id=Ok onclick="ok()" class='inputButton'>&nbsp;&nbsp;
+		<input type=button value="$action.getText('webeditor.dialog.cancel')" onclick="window.close();" class='inputButton'>
+	</td>
+</tr>
+</table>
+
+<div id=divProcessing style="width:200px;height:30px;position:absolute;left:70px;top:100px;display:none">
+<table border=0 cellpadding=0 cellspacing=1 bgcolor="#000000" width="100%" height="100%">
+	<tr>
+		<td bgcolor=#3A6EA5>
+		<marquee align="middle" behavior="alternate" scrollamount="5">
+			<font color=#FFFFFF>$action.getText('webeditor.dialog.file.watingInfo')</font>
+		</marquee>
+		</td>
+	</tr>
+</table>
+</div>
+</body>
+</html>

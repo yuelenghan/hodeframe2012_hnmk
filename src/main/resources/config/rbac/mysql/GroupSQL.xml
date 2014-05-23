@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="rbac.group">
+	<typeAlias alias="rbac_groupModel" type="com.hode.rbac.model.GroupModel"/>
+
+	<resultMap id="rbac_groupResult" class="rbac_groupModel">
+		<result property="intID" column="intID"/>
+		<result property="strName" column="strName"/>
+		<result property="intFatherID" column="intFatherID"/>
+		<result property="intLevel" column="intLevel"/>
+		<result property="intOrderID" column="intOrderID"/>
+		<result property="strDescribe" column="strDescribe"/>
+		<result property="intIsDelete" column="intIsDelete"/>
+		<result property="intGroupType" column="intGroupType"/>
+		<result property="intGroupFlag" column="intGroupFlag"/>
+		<result property="strMachineCode" column="strMachineCode"/>
+		<result property="strAddress" column="strAddress"/>
+		<result property="strZipCode" column="strZipCode"/>
+		<result property="strTel" column="strTel"/>
+		<result property="strFax" column="strFax"/>
+		<result property="strMobile" column="strMobile"/>
+		<result property="strEmail" column="strEmail"/>
+		<result property="strAttrContent" column="strAttrContent"/>
+	</resultMap>
+
+	<cacheModel id="rbac_groupCache"
+		type="MEMORY"
+		readOnly="false"
+		serialize="true">
+		<flushInterval hours="120"/>
+		<flushOnExecute statement="rbac.group.insertObject"/>
+		<flushOnExecute statement="rbac.group.updateObject"/>
+		<flushOnExecute statement="rbac.group.deleteObject"/>
+		<flushOnExecute statement="rbac.group.deleteGroup"/>
+		<flushOnExecute statement="rbac.group.moveGroup"/>
+		<property name="size" value="2000" />
+		<property name="reference-type" value="SOFT" />
+	</cacheModel>
+
+
+	<select id="getObjectInfo" parameterClass="rbac_groupModel" resultMap="rbac_groupResult">
+		SELECT *
+		FROM rbac_group
+		WHERE intID = #intID#
+		AND intIsDelete != 1
+	</select>
+
+	<select id="getObjectList" resultMap="rbac_groupResult" cacheModel="rbac_groupCache">
+		SELECT *
+		FROM rbac_group
+		WHERE intIsDelete != 1
+		ORDER BY intFatherID ASC, intOrderID ASC ,intID DESC
+	</select>
+
+	<select id="getAllObjectList" resultMap="rbac_groupResult" >
+		SELECT *
+		FROM rbac_group
+		WHERE intIsDelete != 1
+		AND intLevel >=2
+		ORDER BY intFatherID ASC, intOrderID ASC ,intID DESC
+	</select>
+
+	<select id="getPageObjectList" parameterClass="rbac_groupModel" resultMap="rbac_groupResult">
+		SELECT *
+		FROM rbac_group
+		WHERE intFatherID = #intFatherID#
+		AND intIsDelete != 1
+		ORDER BY intFatherID ASC, intOrderID ASC ,intID DESC
+		LIMIT #intStart#,#intOffset#
+	</select>
+
+	<select id="getRecordCount" parameterClass="rbac_groupModel" resultClass="int">
+		SELECT count(intID) AS intTotalNumber
+		FROM rbac_group
+		WHERE intFatherID = #intFatherID#
+		AND intIsDelete != 1
+	</select>
+
+	<select id="getChildObjectList" parameterClass="rbac_groupModel" resultMap="rbac_groupResult">
+		SELECT *
+		FROM rbac_group
+		WHERE intFatherID = #intFatherID#
+		AND intIsDelete != 1
+		ORDER BY intFatherID ASC, intOrderID ASC ,intID DESC
+	</select>
+
+	<select id="checkObjectExists" parameterClass="rbac_groupModel" resultClass="int">
+    	SELECT count(intID) AS intTotalNumber
+		FROM rbac_group
+		WHERE strName=#strName#
+		AND intFatherID=#intFatherID#
+		AND intIsDelete != 1
+		<dynamic >
+			<isGreaterThan prepend="AND" property="intID" compareValue="0">
+				intID!=#intID#
+			</isGreaterThan>
+		</dynamic>
+	</select>
+
+	<insert id="insertObject" parameterClass="rbac_groupModel">
+		INSERT INTO rbac_group(
+			intFatherID,
+			strName,
+			strDescribe,
+			intOrderID,
+			intLevel,
+			intGroupType,
+			intGroupFlag,
+			intIsDelete,
+			strMachineCode,
+			strFax,
+			strTel,
+			strMobile,
+			strAddress,
+			strZipCode,
+			strEmail,
+			strDirPath,
+			strAttrContent
+			)
+		VALUES (
+			#intFatherID#,
+			#strName#,
+			#strDescribe#,
+			#intOrderID#,
+			#intLevel#,
+			#intGroupType#,
+			#intGroupFlag#,
+			0,
+			#strMachineCode#,
+			#strFax#,
+			#strTel#,
+			#strMobile#,
+			#strAddress#,
+			#strZipCode#,
+			#strEmail#,
+			#strDirPath#,
+			#strAttrContent#
+			)
+	</insert>
+
+	<update id="updateObject" parameterClass="rbac_groupModel">
+		UPDATE rbac_group
+		SET
+			strName = #strName#,
+			strDescribe = #strDescribe#,
+			intOrderID = #intOrderID#,
+			strMachineCode=#strMachineCode#,
+			strFax=#strFax#,
+			strTel=#strTel#,
+			strMobile=#strMobile#,
+			strAddress=#strAddress#,
+			strZipCode=#strZipCode#,
+			strDirPath = #strDirPath#
+		WHERE intID = #intID#
+		AND intGroupType != 0
+	</update>
+
+
+	<update id="updateGroupSign" parameterClass="rbac_groupModel">
+		UPDATE rbac_group
+		SET
+			strName = #strName#,
+			strFax=#strFax#,
+			strTel=#strTel#,
+			strMobile=#strMobile#,
+			strDirPath = #strDirPath#,
+			strZipCode = #strZipCode#
+		WHERE intID = #intID#
+	</update>
+	<update id="deleteObject" parameterClass="int">
+		UPDATE rbac_group
+		SET intIsDelete = 1
+		WHERE intID = #intID#
+		AND intGroupType != 0
+	</update>
+
+	<update id="deleteGroup" parameterClass="string">
+		UPDATE rbac_group
+		SET intIsDelete = 1
+		WHERE intID IN ($strIDs$)
+		AND intGroupType != 0
+	</update>
+	<select id="getGroupByGroupCode" parameterClass="string" resultClass="rbac_groupModel">
+		SELECT * FROM rbac_group
+		WHERE strMachineCode LIKE '%$strMachineCode$%'
+		LIMIT 0, 1
+	</select>
+
+	<select id="getGroupListByIds" parameterClass="string" resultMap="rbac_groupResult">
+		SELECT *
+		FROM rbac_group
+		WHERE intID IN ($gids$)
+		AND intIsDelete != 1
+	</select>
+
+	<select id="getUserIDListByGroupIDs" parameterClass="string" resultClass="int">
+		SELECT intID
+		FROM rbac_user
+		WHERE intGroupID IN ($gids$)
+		AND intIsDelete != 1
+	</select>
+
+	<select id="getRoleIDListByGroupIDs" parameterClass="string" resultClass="int">
+		SELECT intID
+		FROM rbac_role
+		WHERE intGroupID IN ($gids$)
+	</select>
+
+	<delete id="deleteUserPrivilegeByUserIDs" parameterClass="string">
+		DELETE FROM rbac_user_privilege
+		WHERE intUserID IN ($uids$)
+	</delete>
+
+	<delete id="deleteUserRoleByUserIDs" parameterClass="string">
+		DELETE FROM rbac_user_role
+		WHERE intUserID IN ($uids$)
+	</delete>
+
+	<delete id="deleteUserByUserIDs" parameterClass="string">
+		UPDATE rbac_user
+		SET intIsDelete = 1
+		WHERE intID IN ($uids$)
+	</delete>
+
+	<delete id="deleteRolePrivilegeByRoleIDs" parameterClass="string">
+		DELETE FROM rbac_role_privilege
+		WHERE intRoleID IN ($rids$)
+	</delete>
+
+	<delete id="deleteUserRoleByRoleIDs" parameterClass="string">
+		DELETE FROM rbac_user_role
+		WHERE intRoleID IN ($rids$)
+	</delete>
+
+	<delete id="deleteRoleByRoleIDs" parameterClass="string">
+		DELETE FROM rbac_role
+		WHERE intID IN ($rids$)
+	</delete>
+
+	<update id="moveGroup" parameterClass="rbac_groupModel">
+		UPDATE rbac_group
+		SET intFatherID = #intFatherID#
+		WHERE intID = #intID#
+	</update>
+
+</sqlMap>

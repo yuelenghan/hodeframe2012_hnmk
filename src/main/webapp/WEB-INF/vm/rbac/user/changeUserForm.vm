@@ -1,0 +1,85 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "切换帐号" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("changeUserInfo.action" "return checkLogin()" "post" "")
+
+<INPUT TYPE="hidden" NAME="intLineNum">
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td align="right">当前用户 ：</td>
+	<td>$!user.strUserAccount</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	<td align="right">切换帐号 ：</td>
+	<td><input type="hidden" name="objInfo.intID" id="objInfo.intID" value="">
+	<input type="text" name="strUserName" id="strUserName" value="" class='inputText'>&nbsp;&nbsp;<input type="button" class="inputButton" name="btn" value=" ... " onclick="fPopUpSelectGroupUnitDlg('./selectUser.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intID','strUserName');"></td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+##parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+
+    var intLineNum=10;
+    if(screen.height<=600)		//高度判断
+    {
+    	intLineNum	=10;
+    }
+    else if(screen.height<=800)
+    {
+    	intLineNum	=10;
+    }
+	else if(screen.height<=1100)
+    {
+    	intLineNum	=15;
+    }
+	else if(screen.height<=1300)
+    {
+    	intLineNum	=20;
+    }
+	else
+    {
+    	intLineNum	=30;
+    }
+	function checkLogin()
+	{
+
+		if(document.getElementById("objInfo.intID").value == "" )
+		{
+			alert("请选择用户");
+			return false;
+		}
+		document.frmOperation.intLineNum.value=intLineNum;
+		document.frmOperation.submit();
+		return true;
+	}
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

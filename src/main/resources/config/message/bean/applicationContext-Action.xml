@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean name="messageInfoAction" class="com.hode.message.action.MessageInfoAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="messageInfoIbatisServiceProxy"/>
+		</property>
+	</bean>
+	<bean name="messageMobileAction" class="com.hode.message.action.MessageMobileAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="messageMobileIbatisServiceProxy"/>
+		</property>
+	</bean>
+</beans>

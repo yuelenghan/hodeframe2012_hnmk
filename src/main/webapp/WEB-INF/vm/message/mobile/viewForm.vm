@@ -1,0 +1,45 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "手机短信$action.getText('global.interpunction.right')查看" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+#hodeSysUI_EditBodyHeader("viewForm.action" "return doData(v.exec())" "post" "yes")
+#set($showWidth='20%')
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showMsg1 ("" "$!action.getText('发送号码')" "3" "" "$!objInfo.strToMobile")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showMsg1 ("" "$!action.getText('内容')" "3" "" "$!objInfo.strContent")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	<TD align="right" width="20%" id="">发送号码：</TD>
+	<TD align="left" colspan=3>
+		#if($objInfo.intSendType==0)
+			未发送
+		#else
+			已发送
+		#end
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$!objInfo.intID")
+
+#hodeSysUI_EditBodyFoot(['cancel'] "4")
+<BR>
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

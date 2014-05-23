@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+<TITLE>$action.getText('webeditor.dialog.symbal.title')</TITLE>
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+<SCRIPT language=JavaScript>
+
+// ѡ�����¼�
+function cardClick(cardID){
+	var obj;
+	for (var i=1;i<7;i++){
+		obj=document.all("card"+i);
+		obj.style.backgroundColor="#3A6EA5";
+		obj.style.color="#FFFFFF";
+	}
+	obj=document.all("card"+cardID);
+	obj.style.backgroundColor="#FFFFFF";
+	obj.style.color="#3A6EA5";
+
+	for (var i=1;i<7;i++){
+		obj=document.all("content"+i);
+		obj.style.display="none";
+	}
+	obj=document.all("content"+cardID);
+	obj.style.display="";
+}
+
+// Ԥ��
+function SymbolOver(){
+	var el=event.srcElement;
+	preview.innerHTML=el.innerHTML;
+}
+
+// �������
+function SymbolClick(){
+	var el=event.srcElement;
+	if (el.innerHTML=="&nbsp;") return;
+	dialogArguments.insertHTML(el.innerHTML);
+	window.returnValue = null;
+	window.close();
+}
+
+</script>
+</HEAD>
+
+<BODY bgcolor=menu>
+
+<table border=0 cellpadding=0 cellspacing=0><tr valign=top><td>
+
+
+<table border=0 cellpadding=3 cellspacing=0>
+<tr align=center>
+	<td class="card" onclick="cardClick(1)" id="card1">$action.getText('webeditor.dialog.symbal.card1')</td>
+	<td width=2></td>
+	<td class="card" onclick="cardClick(2)" id="card2">$action.getText('webeditor.dialog.symbal.card2')</td>
+	<td width=2></td>
+	<td class="card" onclick="cardClick(3)" id="card3">$action.getText('webeditor.dialog.symbal.card3')</td>
+	<td width=2></td>
+	<td class="card" onclick="cardClick(4)" id="card4">$action.getText('webeditor.dialog.symbal.card4')</td>
+	<td width=2></td>
+	<td class="card" onclick="cardClick(5)" id="card5">$action.getText('webeditor.dialog.symbal.card5')</td>
+	<td width=2></td>
+	<td class="card" onclick="cardClick(6)" id="card6">$action.getText('webeditor.dialog.symbal.card6')</td>
+</tr>
+<tr>
+	<td bgcolor=#ffffff align=center valign=middle colspan=11>
+	<table border=0 cellpadding=3 cellspacing=1 class="content" id="content1">
+		#webEditor_symbalContent1()
+	</table>
+	<table border=0 cellpadding=3 cellspacing=1 class="content" id="content2">
+		#webEditor_symbalContent2()
+	</table>
+	<table border=0 cellpadding=3 cellspacing=1 class="content" id="content3">
+		#webEditor_symbalContent3()
+	</table>
+	<table border=0 cellpadding=3 cellspacing=1 class="content" id="content4">
+		#webEditor_symbalContent4()
+	</table>
+	<table border=0 cellpadding=3 cellspacing=1 class="content" id="content5">
+		#webEditor_symbalContent5()
+	</table>
+	<table border=0 cellpadding=3 cellspacing=1 class="content" id="content6">
+		#webEditor_symbalContent6()
+	</table>
+
+	</td>
+</tr>
+</table>
+
+
+</td><td width=10></td><td>
+
+<table border=0 cellpadding=0 cellspacing=0>
+<tr><td height=25></td></tr>
+<tr><td align=center>$action.getText('webeditor.dialog.symbal.browse')</td></tr>
+<tr><td height=10></td></tr>
+<tr><td align=center valign=middle><table border=0 cellpadding=0 cellspacing=1 bgcolor=#000000><tr><td bgcolor=#ffffff style="font-size:32px;color:#0000ff" id=preview align=center valign=middle width=50 height=50></td></tr></table></td></tr>
+<tr><td height=52></td></tr>
+<tr><td align=center><input type=button value="$action.getText('webeditor.dialog.cancel')" onclick="window.close();" class='inputButton'></td></tr>
+</table>
+
+</td></tr></table>
+
+<script language=javascript>
+cardClick(1);
+</script>
+
+</BODY>
+</HTML>

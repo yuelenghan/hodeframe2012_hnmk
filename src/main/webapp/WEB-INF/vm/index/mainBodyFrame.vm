@@ -1,0 +1,339 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>河南煤监局安全资格培训网上审批系统</title>
+<link href="images/1.css" rel="stylesheet" type="text/css" />
+</head>
+<style>
+
+body{margin:0; padding:0; font-size:12px; background-color:#FFFFFF; color:#FFFFFF; line-height:24px;}
+.login{ background:url(../images/hnmk/loginbj.gif) no-repeat center top #0065bf; color:#000000;}
+.login_srk{ width:151px; height:23px; line-height:23px; background:url(../images/hnmk/login_input_bj.gif) repeat-x; border:1px solid #b9b9b9;}
+.yelwz{ color:#ffea00;font-size:12px;}
+.whitewz{ color:#ffffff;}
+.blackwz{color:#000000;}
+.top{width:100%;height:89px;background:url(../images/hnmk/topbj.gif) no-repeat;background-color:#138ddc;}
+.dh1{
+	width:124px;
+	background-image: url(../images/hnmk/menu_1.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh1_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_1.gif);
+	background-repeat: no-repeat;
+
+}
+.dh2{
+	width:124px;
+	background-image: url(../images/hnmk/menu_2.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh2_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_2.gif);
+	background-repeat: no-repeat;
+
+}
+.dh3{
+	width:124px;
+	background-image: url(../images/hnmk/menu_3.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh3_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_3.gif);
+	background-repeat: no-repeat;
+
+}
+.dh4{
+	width:124px;
+	background-image: url(../images/hnmk/menu_4.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh4_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_4.gif);
+	background-repeat: no-repeat;
+
+}
+.dh5{
+	width:124px;
+	background-image: url(../images/hnmk/menu_5.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh5_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_5.gif);
+	background-repeat: no-repeat;
+
+}
+.dh6{
+	width:124px;
+	background-image: url(../images/hnmk/menu_6.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh6_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_6.gif);
+	background-repeat: no-repeat;
+
+}
+.dh7{
+	width:124px;
+	background-image: url(../images/hnmk/menu_7.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh7_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_7.gif);
+	background-repeat: no-repeat;
+
+}
+.dh8{
+	width:124px;
+	background-image: url(../images/hnmk/menu_8.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh8_current{
+	width:124px;
+	background-image: url(../images/hnmk/menu_8.gif);
+	background-repeat: no-repeat;
+
+}
+
+
+.user{ background:url(../images/hnmk/ico.gif) no-repeat; height:24px; width:247px; line-height:24px; color:#FFFFFF;font-size:12px;}
+.user a:link,.user a:visited,.user a:hover,.user a:active{ color:#FFFFFF; text-decoration:none; padding-left:35px;}
+.left{ background:url(../images/hnmk/left_bt.gif) no-repeat top #e2f5ff;}
+.left_bt{ line-height:34px; font-size:14px; font-weight:bold; text-align:center;}
+.dqwz{ background:url(../images/hnmk/dqwz_bj.gif) repeat-x; height:34px; line-height:34px; color:#0378c3; text-indent:10px;}
+.border-left{ border-left:1px solid #0ca3e7; color:#000000;}
+.footer{ background-color:#299ae2; color:#FFFFFF; text-align:center; line-height:24px;}
+.buttom{ background:url(../images/hnmk/buttom1_bj.gif) no-repeat; width:92px; height:26px; color:#0378c3; margin:0px; padding:0px; border:none; line-height:26px;}
+.buttom2{ background:url(../images/hnmk/buttom2_bj.gif) no-repeat; width:119px; height:34px; color:#ffffff; margin:0px; padding:0px; border:none; font-size:14px; line-height:34px;}
+.redwz{ color:#FF0000;}
+.td_title{ background-color:#f2f2f2; text-align:right;}
+.border-left a:link,.border-left a:visited,.border-left a:hover,.border-left a:active{ color:#0378c3; text-decoration:underline;}
+
+</style>
+
+<body>
+
+
+
+<script type="text/JavaScript">
+function stopMouse()
+{
+	return false;
+}
+document.oncontextmenu=stopMouse;
+
+intCheck = 0;
+function changeURL(strLeftURL,strMainURL,idValue)
+{
+	intCheck = idValue;
+	changeThisClass(idValue)
+	if(strLeftURL.length<3)
+	{
+		var showLeftTable = document.getElementById("showLeftTable");
+		var showGuidePic = document.getElementById("showGuidePic");
+			showLeftTable.style.display="none";
+			showGuidePic.style.display="none";
+	}
+	else
+	{
+		var showLeftTable = document.getElementById("showLeftTable");
+		var showGuidePic = document.getElementById("showGuidePic");
+			showGuidePic.style.display="";
+			showLeftTable.style.display="";
+	}
+
+	var left = document.getElementById("leftFrame");
+	var main = document.getElementById("mainFrame");
+	left.src=strLeftURL;
+	main.src=strMainURL;
+}
+
+function Submit_onclick()
+{
+	var showLeftTable = document.getElementById("showLeftTable");
+
+	if(showLeftTable.style.display == "")
+	{
+		showLeftTable.style.display="none";
+	}
+	else
+	{
+		showLeftTable.style.display="";
+	}
+}
+function changeThisClass(thisVal)
+{
+	if(thisVal > 15)
+	{
+		for(i = 1;i<=8;i++)
+		{
+			if(document.getElementById("td"+i))
+			{
+				document.getElementById("td"+i).className = "dh"+i+"";
+			}
+		}
+	}
+	else
+	{
+		for(i = 1;i<=8;i++)
+		{
+			if(document.getElementById("td"+i))
+			{
+				if(i == thisVal)
+				{
+					document.getElementById("td"+i).className = "dh"+i+"_current";
+				}
+				else
+				{
+					if(i != intCheck)
+					{
+						document.getElementById("td"+i).className = "dh"+i+"";
+					}
+				}
+			}
+		}
+	}
+}
+</script>
+#rbac_getSessionUser($user)
+#set($permissionIDs = $user.intPrivilegeIDs)
+
+
+
+#hodeSysBean_checkInArr(11010100 $!permissionIDs $allow_11)	##三级培训班查看员
+#hodeSysBean_checkInArr(11010200 $!permissionIDs $allow_12)	##三级培训班填报员
+
+#hodeSysBean_checkInArr(11020100 $!permissionIDs $allow_21)	##省中心查看员
+#hodeSysBean_checkInArr(11020200 $!permissionIDs $allow_22)	##省中心审批员
+
+#hodeSysBean_checkInArr(11030100 $!permissionIDs $allow_31)	##公章管理员
+##set($allow_11 = true)
+##set($allow_12 = true)
+##set($allow_21 = true)
+##set($allow_22 = true)
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="top">
+  <tr>
+#if($intLoginType == 2 )
+    <td width="363" ><img src="../images/hnmk/logo2.gif" width="363" height="89" /></td>
+#else
+    <td width="363" ><img src="../images/hnmk/logo.gif" width="363" height="89" /></td>
+#end
+#if($user.intUserID != 26 && $user.intUserID != 27)
+	#if($user.intUserID != 28)
+		<td width="124" id="td1" class="dh1" onmouseover="changeThisClass(1)" style="cursor:hand" onclick="changeURL('../index/showLeftFrm1.action','../train/apply/readme.action',1)" >&nbsp;</td><!--  -->
+	#end
+	<td width="124" id="td2" class="dh2" onmouseover="changeThisClass(2)" style="cursor:hand" onclick="changeURL('../index/showLeftFrm2.action','../train/apply/readme.action',2)" >&nbsp;</td>
+#end
+
+	<td width="124" id="td3" class="dh3" onmouseover="changeThisClass(3)" style="cursor:hand" onclick="changeURL('../index/showLeftFrm3.action','../train/apply/readme.action',3)" >&nbsp;</td><!-- 证书审批 -->
+
+#if(($allow_21 || $allow_22 || $user.intUserID == 26 || $user.intUserID == 27) && $user.intUserID != 25)
+	#if($user.intUserID != 26)
+		<td width="124" id="td5" class="dh5" style="cursor:hand" onclick="changeURL('../index/showLeftFrm5.action','../train/apply/readme.action',5)">&nbsp;</td><!--  人员补正及变更 -->
+	#end
+#end
+#if($user.intUserID != 25 && $user.intUserID != 26 && $user.intUserID != 27 && $user.intUserID != 28)
+	<td width="124" id="td4" class="dh4" onmouseover="changeThisClass(4)" style="cursor:hand" onclick="changeURL('../index/showLeftFrm4.action','../train/apply/readme.action',4)">&nbsp;</td><!-- 数据统计分析 -->
+#end
+#if($user.intUserID == 1)
+	<td width="124" id="td6" class="dh6" onmouseover="changeThisClass(6)" style="cursor:hand" onclick="changeURL('../rbac/group/showLeftTree.action','../rbac/group/readme.action',6)">&nbsp;</td><!-- 部门管理 -->
+	<td width="124" id="td7" class="dh7" onmouseover="changeThisClass(7)" style="cursor:hand" onclick="changeURL('../rbac/group/showUserTree.action','../rbac/user/readme.action',7)">&nbsp;</td><!-- 用户管理 -->
+#end
+
+	<td width="124" id="td8" class="dh8" style="cursor:hand" onclick="changeURL('../index/showLeftFrm8.action','../train/apply/readme.action',8)">&nbsp;</td><!--  系统设置 -->
+
+
+    <td>&nbsp;</td>
+    <td width="260"><table width="247" border="0" align="left" cellpadding="0" cellspacing="0">
+      <tr>
+#hodeSysBean_getNowDateByFormat("yyyy年M月d日" $strRtnVal)
+        <td height="30" align="right" style="font-size:12px;">你好,<span class="yelwz">$user.strName</span>！$!strRtnVal&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="user">
+　　　　　　　<a href="#" onclick="changeURL('','../rbac/user/editPasswordForm.action',20)">修改密码</a>
+<a href="#" onclick="if (confirm('$action.getText('global.operation.confirmExit')')==true) {top.setCookie('mainContentValue','');top.location.href='$action.getText('config.prjName')/index/loginout.action?intLoginType=$intLoginType'}">退出</a>
+		</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+
+<!-- 
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+	<INPUT TYPE="button" VALUE="退出"  >
+
+	<INPUT TYPE="button" VALUE="首页" onclick="changeURL('','main.action',20)">
+
+ 	<INPUT TYPE="button" VALUE="修改密码" >
+
+	<INPUT TYPE="button" VALUE="部门管理" onclick="changeURL('../rbac/group/showLeftTree.action','../rbac/group/readme.action',6)" >
+	<INPUT TYPE="button" VALUE="角色管理" onclick="changeURL('../rbac/role/readme.action','../rbac/role/showPageList.action',6)"  >
+
+	<INPUT TYPE="button" VALUE="用户管理" onclick="changeURL('../rbac/group/showUserTree.action','../rbac/user/readme.action',6)" >
+	<INPUT TYPE="button" VALUE="权限管理" onclick="changeURL('','../rbac/privilege/showList.action',6)" >
+
+	
+	<INPUT TYPE="button" VALUE="安全资格培训" >
+	<INPUT TYPE="button" VALUE="安全资格考核">
+	<INPUT TYPE="button" VALUE="证书审批">
+	<INPUT TYPE="button" VALUE="数据统计分析" >
+	<INPUT TYPE="button" VALUE="系统管理" >
+
+    
+	</td>
+</tr>
+</table> -->
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#81B4DF">
+  <tr>
+    <td width="181"  align="center" valign="top" bgcolor="#F6FBFF" class="bg_img" id="showLeftTable" style="display:none">
+		<IFRAME id=leftFrame name=leftFrame align=middle src="$!strLeftURL0" frameBorder=0 width=181  scrolling="auto"></IFRAME>
+    </td>
+    <td align="left" valign="top" width="100%"  bgcolor="#FFFFFF"><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="26" rowspan="2" align="left" valign="top" id="showGuidePic" style="display:none"><A href="javascript:Submit_onclick()"><img src="$action.getText('config.prjName')/images/hnmk/main_1_31.gif" width="26"  border="0"></a></td>
+		<td height=25 style="background-color:#EAF8FF" id="hrMenu">
+			<IFRAME id=mainFrame name=mainFrame align=center  scrolling="auto" src="main.action" frameBorder=0 width="100%" ></IFRAME>
+
+		</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var left_1 = document.getElementById("leftFrame");
+var height_1 = document.getElementById("mainFrame");
+var temp=document.body.clientHeight;
+left_1.height = temp - 95;
+height_1.height = temp - 95;
+
+//-->
+</SCRIPT>
+
+</body>
+</html>
+

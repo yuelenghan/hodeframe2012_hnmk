@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.teacher">
+  <typeAlias alias="trainApplyTeacherModel" type="com.hode.train.model.TrainTeacher"/>
+  <typeAlias alias="trainApplyDictionaryTeacherModel" type="com.hode.train.model.TrainDictionaryTeacher"/>
+  <typeAlias alias="trainApplyTeacher" type="com.hode.train.model.TrainApplyTeacher"/>
+
+  <select id="getObjectList" resultClass="trainApplyTeacherModel" parameterClass="trainApplyTeacherModel">
+	SELECT *
+	FROM train_teacher
+	WHERE intCreateUser = #intCreateUser# or intGroup = #intGroup#
+  </select>
+
+  <select id="getObjectList2" resultClass="trainApplyTeacherModel" parameterClass="trainApplyDictionaryTeacherModel">
+	SELECT *
+	FROM train_teacher
+	WHERE intID in(select intTeacher from train_dictionaryteacher where (intCreateUser= #intCreateUser# or intCreateGroup = #intCreateGroup#) and intDictionary=#intDictionary#)
+  </select>
+
+  <select id="getTrainApplyTeacherList" resultClass="trainApplyTeacherModel" parameterClass="trainApplyTeacher">
+  	SELECT *
+	FROM train_teacher
+	WHERE intID in(select intTeacherID from train_apply_teacher where intTrainApplyID = #intTrainApplyID#)
+  </select>
+
+</sqlMap>

@@ -1,0 +1,514 @@
+
+<SCRIPT LANGUAGE="JavaScript">
+function tick() 
+{
+	var year,month,days, hours, minutes, seconds, xfile;
+	var intYear, intMonth, intDate, intHours, intMinutes, intSeconds;
+	var today;
+
+	today = new Date();
+
+	intYear  = today.getYear();
+	intMonth = today.getMonth()+1;
+	intDate  = today.getDate();
+	intHours = today.getHours();
+	intMinutes = today.getMinutes();
+
+	intMonth = intMonth;
+
+	if(intMonth<10){
+		month = "0" + intMonth;
+	}else{
+		month = intMonth;
+	}
+
+	if(intDate<10){
+		days = "0" + intDate;
+	}else{
+		days = intDate;
+	}
+
+	if (intHours < 10) {
+		hours = "0"+ intHours + "时";
+	}else{
+		hours = intHours + "时"
+	}
+
+	if (intMinutes < 10) {
+		minutes = "0"+intMinutes+"分";
+	} else {
+		minutes = intMinutes+"分";
+	}
+
+
+
+	xfile = intYear + "年" + month + "月";
+	xfiled = days + "日";
+//	xfile = month + "月" + days + "日";
+
+	var startDatetime=intYear + "-" + intMonth + "-" + intDate + " 00:00";
+	var endDatetime=intYear + "-" + intMonth + "-" + intDate + " 23:59";
+
+//	var hrefday="<a id='hrefDay' href='showList.action?objSearch.dtmStartDateTime=" + startDatetime + "&objSearch.dtmEndDateTime=" + endDatetime + "&titleString=日程：今天' target='mainFrame'><FONT SIZE='5' COLOR='green'>" + xfiled + "</FONT></a>";
+
+
+//	timeString = xfile + " "+ "<br>" + hours+minutes+seconds;
+//	timeString = xfile + " "+ hours+minutes+seconds;
+	timeString ="<FONT SIZE='2' COLOR='blue'><a id='hrefDay' href='../schedule/showList.action?objSearch.dtmStartDateTime=" + startDatetime + "&objSearch.dtmEndDateTime=" + endDatetime + "&titleString=日程：今天' target='mainFrame'> <FONT SIZE='2' COLOR='blue'>"+  xfile + xfiled + "</FONT></a> " + " " + hours+minutes + "</FONT> ";
+	var ob = document.getElementById('Clock');
+	if(ob)
+		ob.innerHTML = timeString;
+	window.setTimeout("tick();", 1000);
+
+}
+
+window.onload=tick;
+
+var myIdx;
+var gdCtrl = new Object();
+var goSelectTag = new Array();
+var gcGray = "#808080";
+var gcToggle = "#ffff00";
+var gcBG = "#c0cad4";
+var previousObject = null;
+
+var gdCurDate = new Date();
+var giYear = gdCurDate.getFullYear();
+var giMonth = gdCurDate.getMonth()+1;
+var giDay = gdCurDate.getDate();
+var gCalMode = "";
+var gCalDefDate = giDay;
+
+var gMonths = new Array("1","2","3","4","5","6","7","8","9","10","11","12");
+
+
+function fSetDate(iYear, iMonth, iDay){
+  //VicPopCal.style.visibility = "hidden";
+  if ((iYear == 0) && (iMonth == 0) && (iDay == 0)){
+  	gdCtrl.value = "";
+  }else{
+  	iMonth = iMonth + 100 + "";
+  	iMonth = iMonth.substring(1);
+  	iDay   = iDay + 100 + "";
+  	iDay   = iDay.substring(1);
+  	gdCtrl.value = iYear+"/"+iMonth+"/"+iDay;
+  }
+
+  for (i in goSelectTag)
+  document.all.goSelectTag[i].style.visibility = "visible";
+  document.all.goSelectTag.length = 0;
+
+  window.returnValue=gdCtrl.value;
+  window.close();
+}
+function fSetSelected(aCell){
+  var iOffset = 0;
+  var iYear = parseInt(document.all.tbSelYear.value);
+  var iMonth = parseInt(document.all.tbSelMonth.value);
+
+  // aCell.bgColor = gcBG;
+  with (aCell.children["cellText"]){
+  	var iDay = parseInt(innerText);
+  	if (color==gcGray)
+		iOffset = (Victor<10)?-1:1;
+
+	/*** below temp patch by maxiang ***/
+	if( color == gcGray ){
+		iOffset = (iDay < 15 )?1:-1;
+	}
+	/*** above temp patch by maxiang ***/
+
+	iMonth += iOffset;
+	if (iMonth<1) {
+		iYear--;
+		iMonth = 12;
+	}else if (iMonth>12){
+		iYear++;
+		iMonth = 1;
+	}
+  }
+  fSetDate(iYear, iMonth, iDay);
+}
+
+
+function fBuildCal(iYear, iMonth) {
+  var aMonth=new Array();
+  for(i=1;i<7;i++)
+  	aMonth[i]=new Array(i);
+
+  var dCalDate=new Date(iYear, iMonth-1, 1);
+  var iDayOfFirst=dCalDate.getDay();
+  var iDaysInMonth=new Date(iYear, iMonth, 0).getDate();
+  var iOffsetLast=new Date(iYear, iMonth-1, 0).getDate()-iDayOfFirst+1;
+  var iDate = 1;
+  var iNext = 1;
+
+  for (d = 0; d < 7; d++)
+	aMonth[1][d] = (d<iDayOfFirst)?-(iOffsetLast+d):iDate++;
+  for (w = 2; w < 7; w++)
+  	for (d = 0; d < 7; d++)
+		aMonth[w][d] = (iDate<=iDaysInMonth)?iDate++:-(iNext++);
+  return aMonth;
+}
+
+
+function fDrawCal(iYear, iMonth, iCellHeight, sDateTextSize) {
+  var WeekDay = new Array("日","一","二","三","四","五","六");
+  // var styleTD = "bgcolor='"+gcBG+"' bordercolor='"+gcBG+"' valign='middle' align='center' height='"+iCellHeight+"' style='font-size:11px; ";
+  var styleTD = " valign='middle' align='center' height='"+iCellHeight+"' style='font-size:11px; ";
+
+  with (document) {
+	write("<tr style='background: #E1E6E2;line-height:22px;'>");
+
+	for(i=0; i<7; i++)
+		write("<td align='center' style='color: #666666; font-size:10px; font-weight:bold; text-align: center; padding:2px;'>" + WeekDay[i] + "</td>");
+	write("</tr>");
+
+  	for (w = 1; w < 7; w++) {
+		write("<tr style='background: #E1E6E2;line-height:22px;'>");
+		for (d = 0; d < 7; d++)
+		{
+			if(d == 0)
+			{
+				write("<td valign='middle' align='center' style='cursor:hand; color: #555555; background: #F2F5F3;' onClick='this.children[0].click();' onMouseOver='gcBG=this.bgColor;this.bgColor=gcToggle' onMouseOut='this.bgColor=gcBG' >");
+			}
+			else if(d == 6)
+			{
+				write("<td valign='middle' align='center' style='cursor:hand; color: #555555; background: #F2F5F3;' onClick='this.children[0].click();' onMouseOver='gcBG=this.bgColor;this.bgColor=gcToggle' onMouseOut='this.bgColor=gcBG' >");
+			}
+			else
+			{
+				write("<td valign='middle' align='center' bgcolor='white' style='cursor:hand;' onClick='this.children[0].click();' onMouseOver='gcBG=this.bgColor;this.bgColor=gcToggle' onMouseOut='this.bgColor=gcBG' >");
+			}
+			write("<a id=cellLink target=''><font id=cellText color='#FFFFFF'><b> </b></font></a>");
+			write("</td>")
+		}
+		write("</tr>");
+	}
+  }
+}
+
+function fUpdateCal(iYear, iMonth,isFlag)
+{
+	myMonth = fBuildCal(iYear, iMonth);
+	var i = 0;
+	var curDay;
+	var curDate;
+	var curDate2;
+	var meMonth = iMonth;
+	var meYear  = iYear;
+	var thisMonth = meMonth;
+	var thisYear = meYear;
+
+
+	for (w = 0; w < 6; w++)
+	{
+		for (d = 0; d < 7; d++)
+		{
+			with (cellText[(7*w)+d])
+			{
+				Victor = i++;
+				if (myMonth[w+1][d]<0)
+				{
+					color = gcGray;
+					innerText = -myMonth[w+1][d];
+				}
+				else
+				{
+					if( d == 0 )
+					{
+						color = "red";
+					}
+					else if( d == 6 )
+					{
+						color = "blue";
+					}
+					else
+					{
+						color = "black";
+					}
+
+					if((myMonth[w+1][d]==giDay) && (thisMonth==giMonth) && (thisYear == giYear))
+					{
+						color = "red";
+						innerHTML = "<strong>"+giDay+"</strong>";
+					}
+					else
+					{
+						innerText = myMonth[w+1][d];
+					}
+				}
+			}
+			with (cellLink[(7*w)+d])
+			{
+				meMonth = iMonth;
+				meYear  = iYear;
+
+				if (myMonth[w+1][d]<0)
+				{
+					curDay = -myMonth[w+1][d];
+					if( w == 0 )
+					{
+						// prev month
+						if(meMonth == 1)
+						{
+							meMonth = 12;
+							meYear = meYear - 1;
+						}
+						else
+						{
+							meMonth --;
+						}
+					}
+					else
+					{
+						if(meMonth == 12)
+						{
+							meMonth = 1;
+							meYear = meYear + 1;
+						}
+						else
+						{
+							meMonth ++;
+						}
+					}
+				}
+				else
+				{
+					curDay = myMonth[w+1][d];
+				}
+				if(meMonth >= 10 )
+				{
+					curDate = meYear + "-" + meMonth ;
+				}
+				else
+				{
+					curDate = meYear + "-0" + meMonth;
+				}
+
+				if(curDay >= 10 )
+				{
+					curDate2 = curDate + "-" + curDay;
+				}
+				else
+				{
+					curDate2 = curDate + "-0" + curDay;
+				}
+
+				var startDatetime = curDate2 + " 00:00";
+				var endDatetime = curDate2 + " 23:59";
+				if(isFlag)
+				{
+					href ="$action.getText('config.prjName')/schedule/showList.action?objSearch.dtmStartDateTime=" + startDatetime + "&objSearch.dtmEndDateTime=" + endDatetime + "&titleString=日程：" + curDate2;
+
+					href="changeURL('$action.getText('config.prjName')/schedule/leftTreeForm.action','"+href+"')";
+
+					href="javascript:"+href+";window.top.setCookie('cc', 'schedule');";
+
+
+					//href ="config.projectName/oa/schedule/showList.action?objSearch.dtmStartDateTime=" + startDatetime + "&objSearch.dtmEndDateTime=" + endDatetime + "&titleString=日程：" + curDate2;
+					//target = "mainFrame"
+				}
+				else
+				{
+					href ="../schedule/showList.action?objSearch.dtmStartDateTime=" + startDatetime + "&objSearch.dtmEndDateTime=" + endDatetime + "&titleString=日程：" + curDate2;
+					target = "mainFrame"
+				}
+			}
+		}
+	}
+}
+
+function fSetYearMon(iYear, iMon,isFlag){
+  document.all.tbSelMonth.options[iMon-1].selected = true;
+  for (i = 0; i < document.all.tbSelYear.length; i++)
+	if (document.all.tbSelYear.options[i].value == iYear)
+		document.all.tbSelYear.options[i].selected = true;
+  fUpdateCal(iYear, iMon,isFlag);
+}
+
+function fPrevMonth(isFlag){
+var iMon = document.all.selectmonth.options[document.all.selectmonth.selectedIndex].value ;
+ var iYear = document.all.selectyear.options[document.all.selectyear.selectedIndex].value;
+
+  if (--iMon < 1) {
+	  iMon = 12;
+	  if(iMon < 10)
+	  {
+		iMon =  iMon;
+	  }
+	  iYear--;
+	  if(iYear<=1970)
+	  {
+	    iYear=1970;
+	  }
+  }
+
+  document.getElementById("selectmonth").value = iMon;
+  document.getElementById("selectyear").value = iYear;
+
+  fSetYearMon(iYear, iMon,isFlag);
+}
+
+function fNextMonth(isFlag){
+  var iMon = document.all.selectmonth.options[document.all.selectmonth.selectedIndex].value ;
+  var iYear = document.all.selectyear.options[document.all.selectyear.selectedIndex].value ;
+
+  if (++iMon > 12)
+  {
+	  iMon = 1;
+	  iYear++;
+  }
+ 
+  document.getElementById("selectmonth").value = iMon;
+  document.getElementById("selectyear").value = iYear;
+
+
+
+  fSetYearMon(iYear, iMon,isFlag);
+}
+
+function fPrevYear(){
+ var iMon = document.all.selectmonth.options[document.all.selectmonth.selectedIndex].value ;
+ var iYear = document.all.selectyear.options[document.all.selectyear.selectedIndex].value;
+
+    iYear--;	
+	if(iYear<=1970){
+	iYear=1970;
+	}
+
+   document.getElementById("selectyear").value = iYear;
+
+  fSetYearMon(iYear, iMon);
+}
+
+function fNextYear(){
+  var iMon = document.all.selectmonth.options[document.all.selectmonth.selectedIndex].value ;
+  var iYear = document.all.selectyear.options[document.all.selectyear.selectedIndex].value ;
+
+
+  iYear ++;
+  document.getElementById("selectyear").value = iYear;
+  fSetYearMon(iYear, iMon);
+}
+
+
+function fThisWeekBegin(i){
+  var dCalDate=new Date();
+  var year=dCalDate.getYear();
+  var month=dCalDate.getMonth()+1;
+  if(month<10)
+  {
+	 month = "0" + month;
+  }else{
+	 month = month;
+  }
+  var date=dCalDate.getDate();
+  if(date<10)
+  {
+	 date = "0" + date;
+  }else{
+	 date = date;
+  }
+  var day=dCalDate.getDay();
+  if(day<10)
+  {
+	 day = "0" + day;
+  }else{
+	 day = day;
+  }
+
+  //alert(year+" "+month+" "+date+" "+day);
+  date=date-day+0+i*7;
+  while(date<1)
+  {
+  	month=month-1;
+  	while(month<1)
+  	{
+  	  year=year-1;
+  	  month=12;
+  	}
+  	date=new Date(year,month,0).getDate() + date;
+  }
+  //alert(year+" "+month+" "+date+" "+day);
+  return year+"-"+month+"-"+date+" 00:00";
+}
+
+
+function fThisWeekEnd(i){
+  var dCalDate=new Date();
+  var year=dCalDate.getYear();
+  var month=dCalDate.getMonth()+1;
+  if(month<10)
+  {
+	 month = "0" + month;
+  }else{
+	 month = month;
+  }
+  var date=dCalDate.getDate();
+  if(date<10)
+  {
+	 date = "0" + date;
+  }else{
+	 date = date;
+  }
+  var day=dCalDate.getDay();
+  if(day<10)
+  {
+	 day = "0" + day;
+  }else{
+	 day = day;
+  }
+
+  //alert(year+" "+month+" "+date+" "+day);
+  date=date-day+i*7+7 - 1 ;
+  while(date<1)
+  {
+  	month=month-1;
+  	while(month<1)
+  	{
+  	  year=year-1;
+  	  month=12;
+  	}
+  	date=new Date(year,month,0).getDate() + date;
+  }
+  //alert(year+" "+month+" "+date+" "+day);
+  return year+"-"+month+"-"+date+" 23:59";
+}
+
+
+function fThisMonthBegin(i){
+  var dCalDate=new Date();
+  var year=dCalDate.getYear();
+  var month=dCalDate.getMonth();
+  var date="0"+1;
+  var rtnDate = new Date(year,month+i,1);
+  var rtnyear=rtnDate.getYear();
+  var rtnmonth=rtnDate.getMonth()+1;
+  if(rtnmonth<10)
+  {
+	 rtnmonth = "0" + rtnmonth;
+  }else{
+	 rtnmonth = rtnmonth;
+  }
+
+  return rtnyear+"-"+rtnmonth+"-"+date+" 00:00";
+}
+
+function fThisMonthEnd(i){
+  var dCalDate=new Date();
+  var year=dCalDate.getYear();
+  var month=dCalDate.getMonth();
+  var rtnDate = new Date(year,month+i+1,0);
+  var rtnyear=rtnDate.getYear();
+  var rtnmonth=rtnDate.getMonth()+1;
+  if(rtnmonth<10)
+  {
+	 rtnmonth = "0" + rtnmonth;
+  }else{
+	 rtnmonth = rtnmonth;
+  }
+  var date=rtnDate.getDate();
+  return rtnyear+"-"+rtnmonth+"-"+date+" 23:59";
+}
+</SCRIPT>

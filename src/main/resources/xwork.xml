@@ -1,0 +1,136 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<!-- xwork.xml是项目核心配置文件 只能由TeamLeader修改 -->
+<xwork>
+	<include file="webwork-default.xml" />
+
+	<package name="index" extends="webwork-default" namespace="/index">
+
+		<interceptors>
+            <interceptor name="hiddenParameterInterceptor" class="com.hode.framework.interceptor.HiddenParameterInterceptor"/>
+			<interceptor name="permissionUserInterceptor"  class="com.hode.rbac.interceptor.PermissionUserInterceptor"/>
+			<interceptor name="permissionIPInterceptor"	   class="com.hode.rbac.interceptor.PermissionIPInterceptor"/>
+
+			<interceptor-stack name="defaultComponentStack">
+                <interceptor-ref name="component"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+
+			<interceptor-stack name="permissionStack">
+                <interceptor-ref name="permissionUserInterceptor"/>
+                <interceptor-ref name="params"/>
+                 <interceptor-ref name="hiddenParameterInterceptor"/>
+           </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="defaultStack"/>
+
+		<global-results>
+			<result name="error" type="velocity">
+				<param name="location">/WEB-INF/vm/common/error.vm</param>
+			</result>
+			<result name="nopermission" type="velocity">
+				<param name="location">/WEB-INF/vm/common/nopermission.vm</param>
+			</result>
+			<result name="noallowuser" type="velocity">
+				<param name="location">/WEB-INF/vm/common/noallowuser.vm</param>
+			</result>
+			<result name="loginFrm" type="velocity">
+				<param name="location">/WEB-INF/vm/index/loginFrm.vm</param>
+			</result>
+			<result name="deny" type="velocity">
+				<param name="location">/WEB-INF/vm/common/deny.vm</param>
+			</result>
+		</global-results>
+		<action name="loginFrm2" class="rbac_permissionAction"  method="loginFrm2">
+			<result name="success" type="velocity">/WEB-INF/vm/index/login.vm</result>
+		</action>
+		<action name="top" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/top.vm</result>
+		</action>
+		<action name="mainBodyFrame" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/index/mainBodyFrame.vm</result>
+		</action>
+		<action name="main" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/index/main.vm</result>
+		</action>
+		<action name="bottom" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/index/bottom.vm</result>
+		</action>
+
+		<action name="login" class="rbac_permissionAction"  method="login">
+			<result name="success" type="redirect">/index/index.action</result>
+		</action>
+		<action name="index" class="rbac_permissionAction" >
+			<result name="success" type="velocity">/WEB-INF/vm/index/index.vm</result>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="loginout" class="rbac_permissionAction" method="loginout">
+			<result name="success" type="velocity">/WEB-INF/vm/index/loginout.vm</result>
+		</action>
+		<action name="showLeftFrm1" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm1.vm</result>
+		</action>
+		<action name="showLeftFrm2" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm2.vm</result>
+		</action>
+		<action name="showLeftFrm3" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm3.vm</result>
+		</action>
+		<action name="showLeftFrm4" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm4.vm</result>
+		</action>
+		<action name="showLeftFrm5" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm5.vm</result>
+		</action>
+		<action name="showLeftFrm6" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm6.vm</result>
+		</action>
+		<action name="showLeftFrm7" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm7.vm</result>
+		</action>
+		<action name="showLeftFrm8" class="actionSupport">
+			<result name="success" type="velocity">/WEB-INF/vm/index/showLeftFrm8.vm</result>
+		</action>
+
+	</package>
+
+	<!-- rbac -->
+	<include file = "config/rbac/action/GroupAction.xml" />
+	<include file = "config/rbac/action/PrivilegeAction.xml" />
+	<include file = "config/rbac/action/RoleAction.xml" />
+	<include file = "config/rbac/action/UserAction.xml" />
+	<include file = "config/rbac/action/PersonAction.xml" />
+
+	<!-- webeditor -->
+	<include file = "config/webeditor/action/WebeditorAction.xml" />
+
+	<!-- dictionary -->
+	<include file = "config/dictionary/action/DictionaryAction.xml" />
+
+	<!-- message -->
+	<include file = "config/message/action/MessageInfoAction.xml" />
+	<include file = "config/message/action/MessageMobileAction.xml" />
+
+	<include file = "config/train/action/TrainApplyAction.xml" />
+	<include file = "config/train/action/TrainStudentAction.xml" />
+	<include file = "config/train/action/TrainCheckAction.xml" />
+	<include file = "config/train/action/TrainUserApplyAction.xml" />
+	<include file = "config/train/action/TrainUserChangeAction.xml" />
+	<include file = "config/train/action/TrainScoreAction.xml" />
+	<include file = "config/train/action/TrainUserBlackAction.xml" />
+	<include file = "config/train/action/TrainCertAction.xml" />
+	<include file = "config/train/action/TrainPersonAction.xml" />
+
+	<!-- 教学地点/培训依据 -->
+	<include file = "config/train/action/InstitutionsAction.xml" />
+	<!--收费项目  -->
+    <include file = "config/train/action/TrainingProgramsAction.xml" />
+     <!--课程  -->
+    <include file = "config/train/action/CourseAction.xml" />
+
+    <!-- 教师 -->
+    <include file = "config/train/action/TeacherAction.xml" />
+</xwork>   

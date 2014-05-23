@@ -1,0 +1,182 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+#set($intSendType = 1)
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "四小税$action.getText('global.interpunction.right')建筑税$action.getText('global.interpunction.right')税收统计" )
+#end
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("viewList.action" "" "post" "yes")
+
+#hodeSysUI_TrBeginMainBody(7)
+	#hodeSysUI_showMsg ("付款方名称$action.getText('global.interpunction.colon')" 1 "right" 0)
+	<td class="tdBodyContent2" colspan="3">
+		<div align="left">#hodeSysHTMLUI_htmlText ("objSearch.strEnterpriseName" "$!objSearch.strEnterpriseName" "20" "30" "")</div>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(7)
+	#hodeSysUI_showMsg ("年份$action.getText('global.interpunction.colon')" 1 "right" 0)
+	<td class="tdBodyContent2" colspan="3">
+		<div align="left">#hodeSysUI_getNearYear("objSearch.intYear" ${objSearch.intYear})</div>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(7)
+	#hodeSysUI_showMsg ("社区$action.getText('global.interpunction.colon')" 1 "right" 0)
+	<td class="tdBodyContent2" colspan="3" align="left">
+		 #ecomomic_getAllGroupList("objSearch.strAttrArea" "$!objSearch.strAttrArea" 0)
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(7)
+	#hodeSysUI_showMsg ("科室$action.getText('global.interpunction.colon')" 1 "right" 0)
+	<td class="tdBodyContent2" colspan="3" align="left">
+		#rbac_getAllGroupListByFatherId(0 2 $strGroupList)
+        <select name="objSearch.strLinkUnit"  class="inputSelect">
+		<option value="" #if($!objSearch.strLinkUnit=="") selected #end>全部</option>
+	    #foreach($i in $strGroupList)
+		<option value="$i.strName" #if($i.strName == $!objSearch.strLinkUnit) selected #end >$i.strName</option>
+	    #end
+        </select>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(7)
+	#hodeSysUI_showMsg ("查询方式$action.getText('global.interpunction.colon')" 1 "right" 0)
+	<td class="tdBodyContent2">
+		<div align="left"><input type="radio" id="byM" name="seltype" value="1" onclick="checkTrue(this)">按月查询
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<select id="sel3" onchange="z(this.value)">
+				<option selected>请选择</option>
+				<option value=1>1月</option>
+				<option value=2>2月</option>
+				<option value=3>3月</option>
+				<option value=4>4月</option>
+				<option value=5>5月</option>
+				<option value=6>6月</option>
+				<option value=7>7月</option>
+				<option value=8>8月</option>
+				<option value=9>9月</option>
+				<option value=10>10月</option>
+				<option value=11>11月</option>
+				<option value=12>12月</option>
+			</select>
+		</div>
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(7)
+	#hodeSysUI_showMsg ("" 1 "right" 0)
+	<td class="tdBodyContent2" colspan="3">
+		<div align="left"><input type="radio" id="byD" name="seltype" value="2" onclick="checkTrue(this)">按时间段查询
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<select id="sel1" onchange="y(this.value)">
+			<option selected>请选择</option>
+			<option value=1>1月</option>
+			<option value=2>2月</option>
+			<option value=3>3月</option>
+			<option value=4>4月</option>
+			<option value=5>5月</option>
+			<option value=6>6月</option>
+			<option value=7>7月</option>
+			<option value=8>8月</option>
+			<option value=9>9月</option>
+			<option value=10>10月</option>
+			<option value=11>11月</option>
+			<option value=12>12月</option>
+		</select>
+		---
+		<select id="sel2" onchange="x(this.value)">
+			<option selected>请选择</option>
+			<option value=1>1月</option>
+			<option value=2>2月</option>
+			<option value=3>3月</option>
+			<option value=4>4月</option>
+			<option value=5>5月</option>
+			<option value=6>6月</option>
+			<option value=7>7月</option>
+			<option value=8>8月</option>
+			<option value=9>9月</option>
+			<option value=10>10月</option>
+			<option value=11>11月</option>
+			<option value=12>12月</option>
+		</select>
+	</div>
+	</td>
+#hodeSysUI_TrEnd()
+<INPUT TYPE='hidden' name='objSearch.startMonth' id="m1">
+<INPUT TYPE='hidden' name='objSearch.endMonth' id="m2">
+<INPUT TYPE='hidden' name='isForm' value='1'>
+##hodeSysUI_EditBodyFoot(['save','reset','cancel'] "4")
+#hodeSysUI_TrBeginMainBody(2)
+#hodeSysUI_optImg("search" "4" "CENTER")
+#hodeSysUI_TrEnd()
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+<SCRIPT LANGUAGE="JavaScript">
+frmOperation.onsubmit=function()
+{
+	    var q=document.getElementsByName("seltype");
+	    var flag=false;
+	    for(j=0;j<q.length;j++)
+	    if(q[j].checked)
+	    {
+		flag = true;
+	    }
+	    if(!flag)
+	    {
+		alert("请做出选择！");
+		return false;
+	     }
+}
+function z(zz)
+{
+	document.getElementById("m1").value = zz;
+	document.getElementById("m2").value = zz;
+}
+function y(yy)
+{
+	document.getElementById("m1").value = yy;
+}
+function x(xx)
+{
+	document.getElementById("m2").value = xx;
+}
+function checkTrue(c)
+{
+	var sel1=document.getElementById("sel1");
+	var sel2=document.getElementById("sel2");
+	var sel3=document.getElementById("sel3");
+	if(c.checked)
+	{
+		if(c.value==1)
+		{
+			sel1.disabled=true;
+			sel2.disabled=true;
+			sel3.disabled=false;
+		}
+		if(c.value==2)
+		{
+			sel1.disabled=false;
+			sel2.disabled=false;
+			sel3.disabled=true;
+		}
+	}
+}
+</SCRIPT>
+

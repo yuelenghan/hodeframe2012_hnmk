@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.userblack">
+  <typeAlias alias="trainUserBlackModel" type="com.hode.train.model.TrainUserBlackModel"/>
+  <typeAlias alias="trainStudentDetailModel" type="com.hode.train.model.TrainStudentDetailModel"/>
+
+  <select id="getObjectInfo" resultClass="trainUserBlackModel" parameterClass="trainUserBlackModel">
+	SELECT *
+	FROM train_user_black
+	WHERE intID = #intID#
+  </select>
+
+  <select id="getPageObjectList" resultClass="trainUserBlackModel" parameterClass="trainUserBlackModel">
+	select *
+	from train_user_black
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strStudentIDCode">
+		strStudentIDCode like '%$strStudentIDCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strStudentName">
+		strStudentName like '%$strStudentName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchStartDate">
+		<![CDATA[  strEndDate >= #strSearchStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchEndDate">
+		<![CDATA[  strEndDate <= #strSearchEndDate# ]]>
+	</isNotEmpty>
+	ORDER BY intID desc
+	LIMIT #intStart#,#intOffset#
+  </select>
+
+
+  <select id="getRecordCount" resultClass="int" parameterClass="trainUserBlackModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_user_black
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strStudentIDCode">
+		strStudentIDCode like '%$strStudentIDCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strStudentName">
+		strStudentName like '%$strStudentName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchStartDate">
+		<![CDATA[  strEndDate >= #strSearchStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchEndDate">
+		<![CDATA[  strEndDate <= #strSearchEndDate# ]]>
+	</isNotEmpty>
+  </select>
+
+
+  <select id="getIntIsBlack" resultClass="int" parameterClass="trainUserBlackModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_user_black
+	where strStudentIDCode = #strStudentIDCode#
+		<![CDATA[  strEndDate <= #strEndDate# ]]>
+  </select>
+
+  <insert id="insertObject" parameterClass="trainUserBlackModel">
+    INSERT INTO train_user_black(
+		strStudentName,
+		strStudentIDCode,
+		strEndDate,
+		strRemark,
+		intCreateUserID,
+		strCreateUserName,
+		intCreateGroupID,
+		strCreateGroupName,
+		intCreateUnitID,
+		strCreateUnitName,
+		strCreateDate
+		)
+	VALUES (
+		#strStudentName#,
+		#strStudentIDCode#,
+		#strEndDate#,
+		#strRemark#,
+		#intCreateUserID#,
+		#strCreateUserName#,
+		#intCreateGroupID#,
+		#strCreateGroupName#,
+		#intCreateUnitID#,
+		#strCreateUnitName#,
+		#strCreateDate#
+		)
+  </insert>
+  <update id="updateObject" parameterClass="trainUserBlackModel">
+    UPDATE train_user_black
+	SET
+		strStudentName = #strStudentName#,
+		strStudentIDCode = #strStudentIDCode#,
+		strEndDate = #strEndDate#,
+		strRemark = #strRemark#
+	WHERE intID = #intID#
+  </update>
+  <delete id="deleteObject" parameterClass="string">
+		DELETE from train_user_black
+		WHERE intID IN ( $strIDList$ )
+  </delete>
+
+  <select id="getStudentCountByIDCode" parameterClass="string" resultClass="int">
+  	select count(intID) AS intTotalNumber from train_student_detail
+  	where
+  		 strStudentIDCode = $strStudentIDCode$
+  </select>
+
+  <update id="updateStudentDetail" parameterClass="trainStudentDetailModel">
+  	update train_student_detail
+  	set
+  	   intIsBlackUser = #intIsBlackUser#
+  	where strStudentIDCode = #strStudentIDCode#
+  </update>
+</sqlMap>

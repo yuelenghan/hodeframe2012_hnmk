@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="webeditor">
+  <typeAlias alias="webeditorModel" type="com.hode.webeditor.model.WebeditorModel"/>
+
+	<resultMap id="webeditorResult" class="webeditorModel">
+		<result property="intID" column="intID"/>
+		<result property="strSourceFileName" column="strSourceFileName"/>
+		<result property="strFileName" column="strFileName"/>
+		<result property="intFileSize" column="intFileSize"/>
+		<result property="intType" column="intType"/>
+		<result property="intIsDelete" column="intIsDelete"/>
+	</resultMap>
+
+  <select id="getMaxID" resultClass="int">
+    SELECT max(intID) AS intTotalNumber
+	FROM webeditor
+  </select>
+
+  <select id="getObjectInfo" resultMap="webeditorResult" parameterClass="webeditorModel">
+    SELECT intID,strSourceFileName,strFileName,intFileSize,intType,intIsDelete
+	FROM webeditor
+	WHERE intIsDelete = 0 and intID=#intID#
+  </select>
+
+  <select id="getObjectList" resultMap="webeditorResult" parameterClass="webeditorModel">
+   SELECT intID,strSourceFileName,strFileName,intFileSize,intType,intIsDelete
+	FROM webeditor
+	WHERE intIsDelete = 0
+		and intType=#intType#
+	ORDER BY intID asc
+  </select>
+
+  <select id="getPageObjectList" resultMap="webeditorResult" parameterClass="webeditorModel">
+   SELECT intID,strSourceFileName,strFileName,intFileSize,intType,intIsDelete
+	FROM webeditor
+	WHERE intIsDelete = 0
+		and intType=#intType#
+	ORDER BY intID DESC
+  </select>
+
+
+  <select id="getRecordCount" resultClass="int" parameterClass="webeditorModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM webeditor
+	WHERE intIsDelete = 0
+		and intType=#intType#
+  </select>
+
+  <insert id="insertObjectAndGetID" parameterClass="webeditorModel">
+    INSERT INTO webeditor(
+		strSourceFileName,
+		strFileName,
+		intFileSize,
+		intType,
+		intIsDelete)
+	VALUES (
+		#strSourceFileName#,
+		#strFileName#,
+		#intFileSize#,
+		#intType#,
+		0)
+	<selectKey resultClass="int" keyProperty="intID" >
+		SELECT max(intID) AS intID
+		FROM webeditor
+	</selectKey>
+  </insert>
+   <insert id="insertObject" parameterClass="webeditorModel">
+    INSERT INTO webeditor(
+		strSourceFileName,
+		strFileName,
+		intFileSize,
+		intType,
+		intIsDelete)
+	VALUES (
+		#strSourceFileName#,
+		#strFileName#,
+		#intFileSize#,
+		#intType#,
+		0)
+  </insert>
+
+  <update id="updateObject" parameterClass="webeditorModel">
+    UPDATE webeditor
+	SET strSourceFileName=#strSourceFileName#,
+		strFileName=#strFileName#,
+		intFileSize=#intFileSize#,
+	WHERE intID = #intID#
+  </update>
+
+  <delete id="deleteObject" parameterClass="string">
+    DELETE from webeditor
+	WHERE intID IN ( $strIDList$ )
+  </delete>
+</sqlMap>

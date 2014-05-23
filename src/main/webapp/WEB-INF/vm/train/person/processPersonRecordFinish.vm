@@ -1,0 +1,73 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+<script type="text/javascript">
+	function importRecordPic() {
+         window.location = "/hodeframe2012_hnmk/train/person/importRecordPic.action";
+	}
+
+	function ignoreRecordPic() {
+        window.location = "/hodeframe2012_hnmk/train/student/showSearchList.action";
+	}
+</script>
+
+<table width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+
+		<tr>
+			<td><font color="green"><h2>数据处理成功！<h2></font></td>
+		</tr>
+
+	#if($existPicPersons.size() > 0)
+		<tr>
+			<td>
+				<font color="red">以下用户的图片在档案库中已经存在</font>
+			</td>
+		</tr>
+		#foreach($personDetail in $existPicPersons)
+		<tr>
+			<td>用户名：$!personDetail.strPersonName</td>
+			<td>身份证号：$!personDetail.strPersonID</td>
+		</tr>
+		<tr height=300>
+	 	<td width=300>
+			#if($!personDetail.strPic1 != "")
+				<a href="$!personDetail.strPic1" target="_blank"><img src="$!personDetail.strPic1" width=250 border=0 ></a>
+			#else
+				无相片照片
+			#end
+		</td>
+		<td width=300>
+			#if($!personDetail.strPic2 != "")
+				<a href="$!personDetail.strPic2" target="_blank"><img src="$!personDetail.strPic2" width=250 border=0></a>
+			#else
+				无学历照片
+			#end
+		</td>
+	</tr>
+	<tr height=300>
+		<td width=300>
+			#if($!personDetail.strPic3 != "")
+				<a href="$!personDetail.strPic3" target="_blank"><img src="$!personDetail.strPic3" width=250 border=0></a>
+			#else
+				无体检表照片
+			#end
+		</td>
+		<td width=300>
+			#if($!personDetail.strPic4 != "")
+				<a href="$!personDetail.strPic4" target="_blank"><img src="$!personDetail.strPic4" width=250 border=0></a>
+			#else
+				无相关工作经历证明照片
+			#end
+		</td>
+	</tr>
+		#end
+		<tr>
+			<td><input type="button" value="导入档案库中已存在的图片信息" onclick="importRecordPic()"></td>
+			<td><input type="button" value="忽略档案库图片信息" onclick="ignoreRecordPic()"></td>
+		</tr>
+	#end
+</table>
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

@@ -1,0 +1,308 @@
+// �˵�����
+var sMenuHr="<tr><td align=center valign=middle height=2><TABLE border=0 cellpadding=0 cellspacing=0 width=128 height=2><tr><td height=1 class=HrShadow><\/td><\/tr><tr><td height=1 class=HrHighLight><\/td><\/tr><\/TABLE><\/td><\/tr>";
+var sMenu1="<TABLE border=0 cellpadding=0 cellspacing=0 class=Menu width=150><tr><td width=18 valign=bottom align=center style='background:url($action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/contextmenu.gif);background-position:bottom;'><\/td><td width=132 class=RightBg><TABLE border=0 cellpadding=0 cellspacing=0>";
+var sMenu2="<\/TABLE><\/td><\/tr><\/TABLE>";
+// �˵�
+var oPopupMenu = null;
+if (BrowserInfo.IsIE55OrMore){
+	oPopupMenu = window.createPopup();
+}
+
+// ȡ�˵���
+function getMenuRow(s_Disabled, s_Event, s_Image, s_Html) {
+	var s_MenuRow = "";
+	s_MenuRow = "<tr><td align=center valign=middle><TABLE border=0 cellpadding=0 cellspacing=0 width=132><tr "+s_Disabled+"><td valign=middle height=20 class=MouseOut onMouseOver=this.className='MouseOver'; onMouseOut=this.className='MouseOut';";
+	if (s_Disabled==""){
+		s_MenuRow += " onclick=\"parent."+s_Event+";parent.oPopupMenu.hide();\"";
+	}
+	s_MenuRow += ">"
+	if (s_Image !=""){
+		s_MenuRow += "&nbsp;<img border=0 src='$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/iface/"+s_Image+"' width=20 height=20 align=absmiddle "+s_Disabled+">&nbsp;";
+	}else{
+		s_MenuRow += "&nbsp;";
+	}
+	s_MenuRow += s_Html+"<\/td><\/tr><\/TABLE><\/td><\/tr>";
+	return s_MenuRow;
+
+}
+
+// ȡ��׼��format�˵���
+function getFormatMenuRow(menu, html, image){
+	var s_Disabled = "";
+	if (!eWebEditor.document.queryCommandEnabled(menu)){
+		s_Disabled = "disabled";
+	}
+	var s_Event = "format('"+menu+"')";
+	var s_Image = menu+".gif";
+	if (image){
+		s_Image = image;
+	}
+	return getMenuRow(s_Disabled, s_Event, s_Image, html)
+}
+
+// ȡ���˵���
+function getTableMenuRow(what){
+	var s_Menu = "";
+	var s_Disabled = "disabled";
+	switch(what){
+	case "TableInsert":
+		if (!isTableSelected()) s_Disabled="";
+		s_Menu += getMenuRow(s_Disabled, "TableInsert()", "tableinsert.gif", "$action.getText('webeditor.js.menu.insertTable')")
+		break;
+	case "TableProp":
+		if (isTableSelected()||isCursorInTableCell()) s_Disabled="";
+		s_Menu += getMenuRow(s_Disabled, "TableProp()", "tableprop.gif", "$action.getText('webeditor.js.menu.tableProperty')")
+		break;
+	case "TableCell":
+		if (isCursorInTableCell()) s_Disabled="";
+		s_Menu += getMenuRow(s_Disabled, "TableCellProp()", "tablecellprop.gif", "$action.getText('webeditor.js.menu.tablecellprop')")
+		s_Menu += getMenuRow(s_Disabled, "TableCellSplit()", "tablecellsplit.gif", "$action.getText('webeditor.js.menu.tablecellsplit')")
+		s_Menu += sMenuHr;
+		s_Menu += getMenuRow(s_Disabled, "TableRowProp()", "tablerowprop.gif", "$action.getText('webeditor.js.menu.tablerowprop')")
+		s_Menu += getMenuRow(s_Disabled, "TableRowInsertAbove()", "tablerowinsertabove.gif", "$action.getText('webeditor.js.menu.tablerowinsertabove')");
+		s_Menu += getMenuRow(s_Disabled, "TableRowInsertBelow()", "tablerowinsertbelow.gif", "$action.getText('webeditor.js.menu.tablerowinsertbelow')");
+		s_Menu += getMenuRow(s_Disabled, "TableRowMerge()", "tablerowmerge.gif", "$action.getText('webeditor.js.menu.tablerowmerge')");
+		s_Menu += getMenuRow(s_Disabled, "TableRowSplit(2)", "tablerowsplit.gif", "$action.getText('webeditor.js.menu.tablerowsplit')");
+		s_Menu += getMenuRow(s_Disabled, "TableRowDelete()", "tablerowdelete.gif", "$action.getText('webeditor.js.menu.tablerowdelete')");
+		s_Menu += sMenuHr;
+		s_Menu += getMenuRow(s_Disabled, "TableColInsertLeft()", "tablecolinsertleft.gif", "$action.getText('webeditor.js.menu.tablecolinsertleft')");
+		s_Menu += getMenuRow(s_Disabled, "TableColInsertRight()", "tablecolinsertright.gif", "$action.getText('webeditor.js.menu.tablecolinsertright')");
+		s_Menu += getMenuRow(s_Disabled, "TableColMerge()", "tablecolmerge.gif", "$action.getText('webeditor.js.menu.tablecolmerge')");
+		s_Menu += getMenuRow(s_Disabled, "TableColSplit(2)", "tablecolsplit.gif", "$action.getText('webeditor.js.menu.tablecolsplit')");
+		s_Menu += getMenuRow(s_Disabled, "TableColDelete()", "tablecoldelete.gif", "$action.getText('webeditor.js.menu.tablecoldelete')");
+		break;
+	}
+	return s_Menu;
+}
+
+// �Ҽ�˵�
+function showContextMenu(event){
+	return  false;
+/*	if (!bEditMode) return false;
+
+	var width = 150;
+	var height = 0;
+	var lefter = event.clientX;
+	var topper = event.clientY;
+
+	var oPopDocument = oPopupMenu.document;
+	var oPopBody = oPopupMenu.document.body;
+
+	var sMenu="";
+
+	sMenu += getFormatMenuRow("cut", "$action.getText('webeditor.js.rightmenu.cut')");
+	sMenu += getFormatMenuRow("copy", "$action.getText('webeditor.js.rightmenu.copy')");
+	sMenu += getFormatMenuRow("paste", "$action.getText('webeditor.js.rightmenu.paste')");
+	sMenu += getFormatMenuRow("delete", "$action.getText('webeditor.js.rightmenu.delete')");
+	sMenu += getFormatMenuRow("selectall", "$action.getText('webeditor.js.rightmenu.selectall')");
+	sMenu += sMenuHr;
+	height += 102;
+
+	if (isCursorInTableCell()){
+		sMenu += getTableMenuRow("TableProp");
+		sMenu += getTableMenuRow("TableCell");
+		sMenu += sMenuHr;
+		height += 286;
+	}
+
+	if (isControlSelected("TABLE")){
+		sMenu += getTableMenuRow("TableProp");
+		sMenu += sMenuHr;
+		height += 22;
+	}
+
+	if (isControlSelected("IMG")){
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForImg.action', 350, 315, true)", "img.gif", "$action.getText('webeditor.js.rightmenu.picProperty')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "zIndex('forward')", "forward.gif", "$action.getText('webeditor.js.rightmenu.forward')");
+		sMenu += getMenuRow("", "zIndex('backward')", "backward.gif", "$action.getText('webeditor.js.rightmenu.backward')");
+		sMenu += sMenuHr;
+		height += 64;
+	}.
+	sMenu += getMenuRow("", "findReplace()", "findreplace.gif", "$action.getText('webeditor.js.rightmenu.findreplace')");
+	height += 20;
+
+	sMenu = sMenu1 + sMenu + sMenu2;
+
+	oPopDocument.open();
+	oPopDocument.write(config.StyleMenuHeader+sMenu);
+	oPopDocument.close();
+
+	height+=2;
+	if(lefter+width > document.body.clientWidth) lefter=lefter-width;
+	//if(topper+height > document.body.clientHeight) topper=topper-height;
+
+	oPopupMenu.show(lefter, topper, width, height, eWebEditor.document.body);
+	return false;
+*/
+}
+
+// �������˵�
+function showToolMenu(menu){
+	if (!bEditMode) return false;
+	var sMenu = ""
+	var width = 150;
+	var height = 0;
+
+	var lefter = event.clientX;
+	var leftoff = event.offsetX
+	var topper = event.clientY;
+	var topoff = event.offsetY;
+
+	var oPopDocument = oPopupMenu.document;
+	var oPopBody = oPopupMenu.document.body;
+
+	switch(menu){
+	case "font":		// ����˵�
+		sMenu += getFormatMenuRow("bold", "$action.getText('webeditor.js.tools.font.bold')", "bold.gif");
+		sMenu += getFormatMenuRow("italic", "$action.getText('webeditor.js.tools.font.italic')", "italic.gif");
+		sMenu += getFormatMenuRow("underline", "$action.getText('webeditor.js.tools.font.underline')", "underline.gif");
+		sMenu += getFormatMenuRow("strikethrough", "$action.getText('webeditor.js.tools.font.strikethrough')", "strikethrough.gif");
+		sMenu += sMenuHr;
+		sMenu += getFormatMenuRow("superscript", "$action.getText('webeditor.js.tools.font.superscript')", "superscript.gif");
+		sMenu += getFormatMenuRow("subscript", "$action.getText('webeditor.js.tools.font.subscript')", "subscript.gif");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForSelcolor.action?action=forecolor', 280, 250, true)", "forecolor.gif", "$action.getText('webeditor.js.tools.font.forecolor')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForSelcolor.action?action=backcolor', 280, 250, true)", "backcolor.gif", "$action.getText('webeditor.js.tools.font.backcolor')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "insert('big')", "tobig.gif", "$action.getText('webeditor.js.tools.font.tobig')");
+		sMenu += getMenuRow("", "insert('small')", "tosmall.gif", "$action.getText('webeditor.js.tools.font.tosmall')");
+		height = 206;
+		break;
+	case "paragraph":	// ����˵�
+		sMenu += getFormatMenuRow("JustifyLeft", "$action.getText('webeditor.js.tools.paragraph.justifyleft')", "justifyleft.gif");
+		sMenu += getFormatMenuRow("JustifyCenter", "$action.getText('webeditor.js.tools.paragraph.justifycenter')", "justifycenter.gif");
+		sMenu += getFormatMenuRow("JustifyRight", "$action.getText('webeditor.js.tools.paragraph.justifyright')", "justifyright.gif");
+		sMenu += getFormatMenuRow("JustifyFull", "$action.getText('webeditor.js.tools.paragraph.justifyfull')", "justifyfull.gif");
+		sMenu += sMenuHr;
+		sMenu += getFormatMenuRow("insertorderedlist", "$action.getText('webeditor.js.tools.paragraph.insertorderedlist')", "insertorderedlist.gif");
+		sMenu += getFormatMenuRow("insertunorderedlist", "$action.getText('webeditor.js.tools.paragraph.insertunorderedlist')", "insertunorderedlist.gif");
+		sMenu += getFormatMenuRow("indent", "$action.getText('webeditor.js.tools.paragraph.indent')", "indent.gif");
+		sMenu += getFormatMenuRow("outdent", "$action.getText('webeditor.js.tools.paragraph.outdent')", "outdent.gif");
+		sMenu += sMenuHr;
+		sMenu += getFormatMenuRow("insertparagraph", "$action.getText('webeditor.js.tools.paragraph.insertparagraph')", "insertparagraph.gif");
+		sMenu += getMenuRow("", "insert('br')", "br.gif", "$action.getText('webeditor.js.tools.paragraph.br')");
+		height = 204;
+		break;
+	case "edit":		// �༭�˵�
+		var s_Disabled = "";
+		if (history.data.length <= 1 || history.position <= 0) s_Disabled = "disabled";
+		sMenu += getMenuRow(s_Disabled, "goHistory(-1)", "undo.gif", "$action.getText('webeditor.js.tools.edit.undo')")
+		if (history.position >= history.data.length-1 || history.data.length == 0) s_Disabled = "disabled";
+		sMenu += getMenuRow(s_Disabled, "goHistory(1)", "redo.gif", "$action.getText('webeditor.js.tools.edit.redo')")
+		sMenu += sMenuHr;
+		sMenu += getFormatMenuRow("Cut", "$action.getText('webeditor.js.tools.edit.cut')", "cut.gif");
+		sMenu += getFormatMenuRow("Copy", "$action.getText('webeditor.js.tools.edit.copy')", "copy.gif");
+		sMenu += getFormatMenuRow("Paste", "$action.getText('webeditor.js.tools.edit.paste')", "paste.gif");
+		sMenu += getMenuRow("", "PasteText()", "pastetext.gif", "$action.getText('webeditor.js.tools.edit.pastetext')");
+		sMenu += getMenuRow("", "PasteWord()", "pasteword.gif", "$action.getText('webeditor.js.tools.edit.pasteword')");
+		sMenu += sMenuHr;
+		sMenu += getFormatMenuRow("delete", "$action.getText('webeditor.js.tools.edit.delete')", "delete.gif");
+		sMenu += getFormatMenuRow("RemoveFormat", "$action.getText('webeditor.js.tools.edit.removeformat')", "removeformat.gif");
+		sMenu += sMenuHr;
+		sMenu += getFormatMenuRow("SelectAll", "$action.getText('webeditor.js.tools.edit.selectall')", "selectall.gif");
+		sMenu += getFormatMenuRow("Unselect", "$action.getText('webeditor.js.tools.edit.unselect')", "unselect.gif");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "findReplace()", "findreplace.gif", "$action.getText('webeditor.js.tools.edit.findreplace')");
+		height = 248;
+		break;
+	case "object":		// ����Ч��˵�
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForSelcolor.action?action=bgcolor', 280, 250, true)", "bgcolor.gif", "$action.getText('webeditor.js.tools.object.bgcolor')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForBackimage.action', 350, 210, true)", "bgpic.gif", "$action.getText('webeditor.js.tools.object.bgpic')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "absolutePosition()", "abspos.gif", "$action.getText('webeditor.js.tools.object.abspos')");
+		sMenu += getMenuRow("", "zIndex('forward')", "forward.gif", "$action.getText('webeditor.js.tools.object.forward')");
+		sMenu += getMenuRow("", "zIndex('backward')", "backward.gif", "$action.getText('webeditor.js.tools.object.backward')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "showBorders()", "showborders.gif", "$action.getText('webeditor.js.tools.object.showborders')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "insert('quote')", "quote.gif", "$action.getText('webeditor.js.tools.object.quote')");
+		sMenu += getMenuRow("", "insert('code')", "code.gif", "$action.getText('webeditor.js.tools.object.code')");
+		height = 166;
+		break;
+	case "component":	// ����˵�
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForImg.action', 350, 315, true)", "img.gif", "$action.getText('webeditor.js.tools.component.img')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForFlash.action', 350, 200, true)", "flash.gif", "$action.getText('webeditor.js.tools.component.flash')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForMedia.action', 350, 200, true)", "media.gif", "$action.getText('webeditor.js.tools.component.media')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForFile.action', 350, 150, true)", "file.gif", "$action.getText('webeditor.js.tools.component.file')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForFieldset.action', 350, 170, true)", "fieldset.gif", "$action.getText('webeditor.js.tools.component.fieldset')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForIframe.action', 350, 200, true)", "iframe.gif", "$action.getText('webeditor.js.tools.component.iframe')");
+		sMenu += getFormatMenuRow("InsertHorizontalRule", "$action.getText('webeditor.js.tools.component.inserthorizontalrule')", "inserthorizontalrule.gif");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForMarquee.action', 395, 150, true)", "marquee.gif", "$action.getText('webeditor.js.tools.component.marquee')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "createLink()", "createlink.gif", "$action.getText('webeditor.js.tools.component.createlink')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForAnchor.action', 270, 220, true)", "anchor.gif", "$action.getText('webeditor.js.tools.component.anchor')");
+		sMenu += getMenuRow("", "mapEdit()", "map.gif", "$action.getText('webeditor.js.tools.component.map')");
+		sMenu += getFormatMenuRow("UnLink", "$action.getText('webeditor.js.tools.component.unlink')", "unlink.gif");
+		height = 266;
+		break;
+	case "tool":		// ���߲˵�
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForSymbol.action', 350, 220, true)", "symbol.gif", "$action.getText('webeditor.js.tools.tool.symbol')");
+		sMenu += getMenuRow("", "insert('excel')", "excel.gif", "$action.getText('webeditor.js.tools.tool.excel')");
+		sMenu += getMenuRow("", "ShowDialog('$action.getText('config.prjName')/webeditor/webeditorDialogForEmot.action', 300, 180, true)", "emot.gif", "$action.getText('webeditor.js.tools.tool.emot')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "insert('nowdate')", "date.gif", "$action.getText('webeditor.js.tools.tool.date')");
+		sMenu += getMenuRow("", "insert('nowtime')", "time.gif", "$action.getText('webeditor.js.tools.tool.time')");
+		height = 102;
+		break;
+
+	case "file":		// �ļ���ͼ�˵�
+		sMenu += getMenuRow("", "format('Refresh')", "refresh.gif", "$action.getText('webeditor.js.tools.file.refresh')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "setMode('CODE')", "modecodebtn.gif", "$action.getText('webeditor.js.tools.file.modecodebtn')");
+		sMenu += getMenuRow("", "setMode('EDIT')", "modeeditbtn.gif", "$action.getText('webeditor.js.tools.file.modeeditbtn')");
+		sMenu += getMenuRow("", "setMode('TEXT')", "modetextbtn.gif", "$action.getText('webeditor.js.tools.file.modetextbtn')");
+		sMenu += getMenuRow("", "setMode('VIEW')", "modeviewbtn.gif", "$action.getText('webeditor.js.tools.file.modeviewbtn')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "sizeChange(150)", "sizeplus.gif", "$action.getText('webeditor.js.tools.file.sizeplus')");
+		sMenu += getMenuRow("", "sizeChange(-150)", "sizeminus.gif", "$action.getText('webeditor.js.tools.file.sizeminus')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "format('Print')", "print.gif", "$action.getText('webeditor.js.tools.file.print')");
+		sMenu += sMenuHr;
+		sMenu += getMenuRow("", "ShowDialog('dialog/help.htm','400','300')", "help.gif", "$action.getText('webeditor.js.tools.file.help')");
+		height = 228;
+		break;
+	case "table":		// ���˵�
+		sMenu += getTableMenuRow("TableInsert");
+		sMenu += getTableMenuRow("TableProp");
+		sMenu += sMenuHr;
+		sMenu += getTableMenuRow("TableCell");
+		height = 306;
+		break;
+	case "form":		// �?�˵�
+		sMenu += getFormatMenuRow("InsertInputText", "$action.getText('webeditor.js.tools.form.formtext')", "formtext.gif");
+		sMenu += getFormatMenuRow("InsertTextArea", "$action.getText('webeditor.js.tools.form.formtextarea')", "formtextarea.gif");
+		sMenu += getFormatMenuRow("InsertInputRadio", "$action.getText('webeditor.js.tools.form.formradio')", "formradio.gif");
+		sMenu += getFormatMenuRow("InsertInputCheckbox", "$action.getText('webeditor.js.tools.form.formcheckbox')", "formcheckbox.gif");
+		sMenu += getFormatMenuRow("InsertSelectDropdown", "$action.getText('webeditor.js.tools.form.formdropdown')", "formdropdown.gif");
+		sMenu += getFormatMenuRow("InsertButton", "$action.getText('webeditor.js.tools.form.formbutton')", "formbutton.gif");
+		height = 120;
+		break;
+	case "zoom":		// ���Ų˵�
+		for (var i=0; i<aZoomSize.length; i++){
+			if (aZoomSize[i]==nCurrZoomSize){
+				sMenu += getMenuRow("", "doZoom("+aZoomSize[i]+")", "checked.gif", aZoomSize[i]+"%");
+			}else{
+				sMenu += getMenuRow("", "doZoom("+aZoomSize[i]+")", "space.gif", aZoomSize[i]+"%");
+			}
+			height += 20;
+		}
+		break;
+	}
+
+	sMenu = sMenu1 + sMenu + sMenu2;
+
+	oPopDocument.open();
+	oPopDocument.write(config.StyleMenuHeader+sMenu);
+	oPopDocument.close();
+
+	height+=2;
+	if(lefter+width > document.body.clientWidth) lefter=lefter-width;
+	//if(topper+height > document.body.clientHeight) topper=topper-height;
+
+	oPopupMenu.show(lefter - leftoff - 2, topper - topoff + 22, width, height, document.body);
+
+	return false;
+}
+

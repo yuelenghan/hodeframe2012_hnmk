@@ -1,0 +1,56 @@
+<html>
+
+<HEAD>
+<TITLE>$action.getText('global.prj.title')</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/common.css">
+<base target="_self">
+</HEAD>
+#rbac_getSessionUser($user)
+#set($permissionIDs = $user.intPrivilegeIDs)
+<BODY  leftmargin="0" topmargin="0"  bgcolor='#F8fcff'>
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "盖章" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+
+<input type="hidden" id="strOldPwd" value="$!groupInfo.strZipCode">
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+		<TD align="center">
+			盖章密码：<INPUT TYPE="password" NAME="strNewPwd" id="strNewPwd" CLASS="inputText" maxlength="30" size="12"   VALUE=""   >
+		</TD>
+	</tr>
+	<tr>
+	<TD align="center" ><input type="image" src="/hodeframe2012_hnmk/images/operator/opt_confirm.gif"  onclick="checkPwd()" /></TD>
+	</tr>
+</table>
+<script type="text/javascript">
+function checkPwd()
+{
+	if(document.getElementById("strOldPwd").value  == document.getElementById("strNewPwd").value)
+	{
+		parent.window.returnValue= "ok";
+		window.close();
+	}
+	else
+	{
+		alert("密码不正确");
+		return false;
+	}
+}
+</script>

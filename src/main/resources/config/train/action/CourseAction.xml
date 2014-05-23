@@ -1,0 +1,52 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="train.checkm" extends="index" namespace="/train/course">
+		<action name="showList" class="courseAction" method="showList">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/courseForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="deleteCourse" class="courseAction" method="deleteCourse">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/courseForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		   <action name="addCourse" class="courseAction" method="addCourse">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/courseForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="copyCourse" class="courseAction" method="copyCourse">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/courseForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		   <action name="selectUpdate" class="courseAction" method="selectUpdate">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/updateCourseForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+
+		  <action name="update" class="courseAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/courseForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+
+    </package>
+
+</xwork>

@@ -1,0 +1,11 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<br>
+<TABLE  border="0" cellpadding="0" cellspacing="0" width=92% align='center'>
+<TR  class='trBodyContent'>
+	<TD>
+
+	</TD>
+</TR>
+</TABLE>
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

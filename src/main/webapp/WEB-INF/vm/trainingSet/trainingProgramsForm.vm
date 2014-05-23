@@ -1,0 +1,306 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "收费项目" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+<form action="addTrp.action" method="post">
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "yes")
+#set($showWidth = "20%")
+     <TR  class="trEditContent"><TD colspan=4>
+				<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableMainColor' id="table_1">
+					 <TR class="trMainBodyTitle"  id="lawper" >
+						 <td align='center' width='33%'>收费项目</td>
+						 <td align='center' width='33%'>金额(元)</td>
+						 <td align='center' width='33%'>操作</td>
+					 </TR>
+            #set($urls=$session.getAttribute("IsSave"))
+			#set ($trainUtil = $webwork.bean("com.hode.train.util.TraUtil"))
+			#set ($rtnList3 = $trainUtil.getTrainingProgramsListById($user.intGroupID))
+			#foreach($objInfo3 in $rtnList3)
+				#set($intNowCount=$velocityCount)
+					<TR class="trMainBodyContent"  >
+						<TD align='center'>$objInfo3.strItemName</TD>
+						<TD align='center'>$objInfo3.strPrice</TD>
+							<TD align='center'><a href="deleteTrpId.action?objInfo.intID=$objInfo3.intID">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="updatess($objInfo3.intID);">修改</a></TD>
+					 </TR>
+			#end
+		<!--	<TR class="trMainBodyContent"  >
+						<TD align='center'><INPUT TYPE="text" CLASS="inputText" size="5" value="$intNowCount" readonly="true"></TD>
+						<TD align='center'>培训费</TD>
+						<TD align='center'>288</TD>
+						<TD align='center'><a href="#">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">修改</a></TD>
+		    </TR>
+		    
+		    <TR class="trMainBodyContent"  > 
+						<TD align='center'><INPUT TYPE="text" CLASS="inputText" size="5" value="$intNowCount" readonly="true"></TD>
+						<TD align='center'>考试费</TD>
+						<TD align='center'>130</TD>
+						<TD align='center'><a href="#">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">修改</a></TD>
+		    </TR>
+		    -->
+		    <TR class="trMainBodyContent"  >
+		   <!-- <input value="$user.IntUserID">-->
+			<td align='center' colspan="3"><input type="button" value="添加收费项目" onclick="showPopup(300,200);" ></td>
+		    </TR>
+
+				<!--	<TR class="trMainBodyContent"  >
+						<TD colspan="10"  align="left"><input type="button" onClick="addRow()" class=inputButton value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" style="height:20"></TD>
+					</TR>
+					-->
+				</table>
+	</td></tr>
+
+
+<div id="popupcontent" style="width:500px; height:300px">
+     <strong style="width:100%;font-size:16px;text-align:center;height:80px">
+                                     收&nbsp;费&nbsp;信&nbsp;息
+      </strong>
+
+
+	 <strong style="width:100%; text-align:center;height:27px">
+        收费项目：&nbsp;&nbsp;<input type="text" style="width:210px;" id="strItemName" name="objInfo.strItemName" >
+      </strong>
+
+
+          <strong style="width:100%; text-align:center;height:35px">
+        金&nbsp;额&nbsp;(元)：&nbsp;<input type="text" style="width:210px;" id="strPrice" name="objInfo.strPrice" >
+      </strong>
+
+	  <strong style="width:100%; text-align:center;height:80px">
+
+        <input type="button" value=" 保  存 " onClick="addSav();">
+        <input type="button" value=" 取  消 " onClick="hidePopup();">
+
+      </strong>
+</div>
+</form>
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+// form fields description structure
+var a_fields = {
+         'objInfo.strTrainUnitName': {
+                'l': '培训机构名称',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainRange': {
+                'l': '培训机构资质',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainCode': {
+                'l': '资质证书号码',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainStartDate': {
+                'l': '培训开始时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainEndDate': {
+                'l': '培训结束时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        }
+
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+//验证信息
+function checknum()
+{
+	event.srcElement.value=event.srcElement.value.replace(/[^0-9.]/gi,"");
+}
+
+//添加序列号
+function seralNum()
+{
+	var tableObj=document.getElementById("table_1");
+	var tdstart=document.getElementById("lawper");
+	var tdRow=tdstart.rowIndex + 1;
+	var tableRows=tableObj.rows.length;
+	var tdlast=tableRows - 2;
+	var sunnum=0;
+	for( ; tdRow <= tableRows - 2;  tdRow++)
+	{
+		tableObj.rows[tdRow].cells[0].childNodes(0).value=(tdRow);
+	}
+
+}
+
+function addRow()
+{
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//对象表格总行数
+	var tableRows=tableObj.rows.length;
+
+	//增加开始
+	newRow=tableObj.insertRow(tableRows - 1);
+	newRow.className="trMainBodyContent";
+
+	//开始1
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" CLASS="inputText" size="5" readonly="true" align="middle ">';
+	newRow.appendChild(col);
+	//2
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strSubjectNameArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+	//3
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strSubjectTimeArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherNameArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherDegreeArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherProfessionalArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherTitlesArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherCodeArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	//8
+	var col= document.createElement("<TD align='center'>");
+	col.innerHTML="<input type='button' value='删除' onclick='delRow()' class='inputButton'>";
+	newRow.appendChild(col);
+	seralNum();
+}
+
+//删除行
+function delRow()
+{
+
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//当前是第几行
+	var nowRowobj=event.srcElement.parentElement.parentElement;
+	var nowRow=nowRowobj.rowIndex;
+	if(confirm("确定删除此条记录吗？"))
+	{
+		tableObj.deleteRow(nowRow);
+		seralNum();
+	}
+}
+
+</script>
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+<style>
+#popupcontent{   position: absolute;   visibility: hidden;   overflow: hidden;   border:1px solid #CCC;   background-color:#F9F9F9;   border:1px solid #333;   padding:5px;}
+#popupcontent1{   position: absolute;   visibility: hidden;   overflow: hidden;   border:1px solid #CCC;   background-color:#F9F9F9;   border:1px solid #333;   padding:5px;}
+</style>
+<script>
+
+ function updatess(id){
+     window.open('selectUpdate.action?objInfo.intID='+id,'','Width=500px;Height=300px')
+ }
+
+ function addSav(){
+ var strItemName=document.getElementById("strItemName").value;
+ if(null==strItemName||""==strItemName){
+  alert("请输入收费项目名称！");
+  return;
+ }
+ var strPrice=document.getElementById("strPrice").value;
+ if(null==strPrice||""==strPrice){
+ alert("请输入收费金额！")
+ return;
+ }
+ document.forms[0].action="addTrp.action";
+   document.forms[0].submit();
+ }
+
+ function listTrp(){
+   document.forms[0].action="listTrp.action";
+   document.forms[0].submit();
+
+ }
+
+var baseText = null;
+function showPopup(w,h){
+    var popUp = document.getElementById("popupcontent");
+   // var popUps = document.getElementById("popupcontent1");
+    //popUp.style.top = "100px";
+    popUp.style.left = "300px";
+    if (baseText == null) baseText = popUp.innerHTML;
+    popUp.innerHTML = baseText +"<div id=\"statusbar\"></div>";
+    var sbar = document.getElementById("statusbar");
+   // sbar.style.marginTop = (parseInt(h)-60) + "px";
+    popUp.style.visibility = "visible";
+}
+function hidePopup(){
+    var popUp = document.getElementById("popupcontent");
+    popUp.style.visibility = "hidden";
+}
+</script>
+</html>
+

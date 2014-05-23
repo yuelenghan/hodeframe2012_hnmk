@@ -1,0 +1,169 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "参培人员信息" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+<div id="printInfo" style="">
+<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+#set($showWidth = "15%")
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "培训机构" 1 0 "$!objInfo.strTrainUnitName " 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+#hodeSysUI_showMsg("" "培训期次" 1 0 "$!objInfo.strTrainCount " 5)
+#hodeSysUI_showMsg("" "班级" 1 0 "$!objInfo.strTrainCountClass " 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "培训对象" 1 0 "$!objInfo.strTrainObjectDesc" 5)
+	#hodeSysUI_showMsg("" "培训类别" 1 0 "$!objInfo.strTrainType" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "计划人数" 1 0 "$!objInfo.strTrainUserNum 人" 5)
+	#hodeSysUI_showMsg("" "实际人数" 1 0 "$!objInfo.intTotalUserNum 人" 5)
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "备注" 3 0 "$!objInfo.strRemark" 5)
+#hodeSysUI_TrEnd()
+
+
+<table>
+
+
+
+ <table width="" border="1" cellpadding="6" cellspacing="0" bordercolor="#cecece" style="border-collapse:collapse;">
+	<tr>
+
+		<td align='center' width=30>序号</td>
+		<td align='center' width=60>姓名</td>
+		<td align='center' width=40>性别</td>
+		<td align='center' width=100>身份证号码</td>
+
+		<td align='center' width=80>单位及职务</td>
+		<td align='center' width=50>职称</td>
+		<td align='center' width=70>文化程度</td>
+		<td align='center' width=70>单位类型</td>
+		<td align='center' width=100>资格类型</td>
+
+		<td align='center' width=100>身体状况</td>
+		<td align='center' width=70>联系方式</td>
+		<td align='center' width=100>证书编号</td>
+
+		<td align='center' width=70>违纪</td>
+		<td align='center' width=100>限制名单</td>
+		<td align='center' width=100>备注</td>
+	</tr>
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList3 = $trainUtil.getStudentDetailListByMainIDView($objInfo.intID,"",1))
+#foreach($objInfo3 in $rtnList3)
+	#set($intNowCount=$velocityCount)
+		#if($!objInfo3.intIsLeader == 1 || $!objInfo3.intIsLeader == 2)
+			<TR style="FONT-SIZE: 14px;LINE-HEIGHT: 23px;BACKGROUND-COLOR: #F8fcff;color: #ff0000;" >
+		#else
+			#if($intNowCount % 2 == 0)
+				#hodeSysUI_TrBeginMainBody(2)
+			#else
+				#hodeSysUI_TrBeginMainBody(3)
+			#end
+		#end
+			<td>$intNowCount</td>
+			<td align="center"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentName</a></td>
+			<td align="center">$objInfo3.strStudentSex</a></td>
+			<td align="center"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentIDCode</a></td>
+			<td align="center">$objInfo3.strStudentPost</td>
+			<td align="center">$objInfo3.strStudentTitles</td>
+			<td align="center">$objInfo3.strStudentDegree</td>
+			<td align="center">$objInfo3.strStudentUnitType</td>
+
+			<td align="center">$objInfo3.strStudentQualifications</td>
+
+
+			<td align="center">$!objInfo3.strStudentHealth</td>
+			<td align="center">$!objInfo3.strStudentRelation</td>
+			<td align="center">$!objInfo3.strStudentCertCode</td>
+
+
+			<td align="center">#if($!objInfo3.intIsLeader == 1) <font color='red'>违纪</font> #elseif($!objInfo3.intIsLeader == 2) <font color='red'>严重违纪</font> #else &nbsp;&nbsp; #end</td>
+			<td align="center">#if($!objInfo3.intIsBlackUser == 1) <font color='red'>是</font> #else &nbsp;&nbsp; #end</td>
+			<td align="center">$!objInfo3.strStudentRemark</td>
+		</tr>
+
+#end
+
+	</TR>
+	</TABLE><br>
+
+
+
+	<TR  class="trEditContent"  >
+	<TD colspan="2">
+	<TABLE width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_print.gif" style="cursor:hand" onclick="javascript:printInfo()">&nbsp;&nbsp;
+		<img src="/hodeframe2012_hnmk/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+	</TD>
+	</TR>
+	</TABLE>
+	</TD></TR>
+	</form>	</TABLE>
+</div>
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+<script type="text/javascript">
+function printInfo()
+{
+	var intFlag = 3;
+	var openname = window.open("");;
+	var  printInfo= document.getElementById("printInfo");
+//openname.document.write('<style>\n table {	background-color:#000000}\n td { background-color:#FFFFFF}\n A{	COLOR: #000000;	TEXT-DECORATION: none;}\n</style>');
+	openname.document.write( printInfo.innerHTML);
+
+	openname.document.write( '<object id="PrintActiveX"   classid="clsid:3ede745c-4adb-42a6-ab25-5621edbdfd6b"   codebase="$action.getText('config.prjName')/js/QWPrint.cab#version=1,3,8,2" width=0 height=0></object>\n');
+
+	openname.document.write( "<script language=\"JavaScript\" type=\"text/javascript\">\n");
+	openname.document.write( "function printBase()\n");
+	openname.document.write( "{\n");
+	openname.document.write( "PrintActiveX.paddingTop=150;\n");
+	openname.document.write( "PrintActiveX.paddingBottom=0;\n");
+	openname.document.write( "PrintActiveX.paddingLeft=150;\n");
+	openname.document.write( "PrintActiveX.paddingRight=150;\n");
+	openname.document.write( "PrintActiveX.header=\"\";\n");
+	openname.document.write( "PrintActiveX.isHtmlHeadFoot=false;\n");
+	openname.document.write( "PrintActiveX.footer=\"\";\n");
+	openname.document.write( "PrintActiveX.pageName=A4;\n");
+	openname.document.write( "PrintActiveX.orientation=2;\n");
+	openname.document.write( "PrintActiveX.PrintView();\n");
+	openname.document.write( "}\n");
+	openname.document.write( "printBase();\n");
+	openname.document.write( "</sc"+"ript>\n");
+
+}
+</script>
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

@@ -1,0 +1,166 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "证书打印" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >培训期次：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strTrainCount" id="objSearch.strTrainCount" CLASS="inputText" maxlength="20" size="20"   VALUE="$!objSearch.strTrainCount" >
+	</TD>
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($rtnList = $trainUtil.getTrainUnitByGroupID($user.intGroupID))
+	<TD width="120" class="tdEditContentLeft" >培训机构：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		##<INPUT TYPE="text" NAME="objSearch.strTrainUnitName" id="objSearch.strTrainUnitName" CLASS="inputText" maxlength="20" size="20"   VALUE="$!objSearch.strTrainUnitName" >
+		<select NAME="objSearch.strTrainUnitName" id="objSearch.strTrainUnitName">
+			#if($user.intGroupID == 1)
+				<option value="" selected>全部</option>
+			#end
+			#foreach($trainUnit in $rtnList)
+			<option value="$trainUnit.strName" #if($objSearch.strTrainUnitName==$trainUnit.strName) selected #end>$trainUnit.strName</option>
+		#end
+		</select>
+	</TD>
+	<td></td>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showList1.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	#hodeSysUI_TdMainBody("培训单位" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训期次" "center" "" 0)
+	#hodeSysUI_TdMainBody("班级" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训类别" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训对象" "center" "" 0)
+
+
+	#hodeSysUI_TdMainBody("受理编号" "center" "" 0)
+	#hodeSysUI_TdMainBody("受理时间" "center" "" 0)
+	#hodeSysUI_TdMainBody("受理人数" "center" "" 0)
+
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+
+		#hodeSysUI_TdMainBody("<a href='viewCertForm.action?objInfo.intID=$objInfo.intID&objInfo.intIsNew=4'>$!objInfo.strTrainUnitName" "center" "" 0)
+		#hodeSysUI_TdMainBody("<a href='viewCertForm.action?objInfo.intID=$objInfo.intID&objInfo.intIsNew=4'>$!objInfo.strTrainCount" "center" "" 0)
+		#hodeSysUI_TdMainBody("<a href='viewCertForm.action?objInfo.intID=$objInfo.intID&objInfo.intIsNew=4'>$!objInfo.strTrainCountClass" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainType" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainObjectDesc" "center" "" 0)
+
+
+		#hodeSysUI_TdMainBody("$!objInfo.strApplyCode" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strApplyDate" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strApplyNum" "center" "" 0)
+
+
+
+    #hodeSysUI_TrEnd()
+#end
+
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showList4.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "hiddenParams" "<INPUT TYPE='hidden' NAME='objSearch.intSysIsClearSearch' value=1>" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript
+<script type="text/javascript">
+
+function fPopUpCalendarDlg(ctrlobj)
+{
+	showx = event.screenX - event.offsetX - 4 - 210 ; // + deltaX;
+	showy = event.screenY - event.offsetY + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	retval = window.showModalDialog("/hodeframe2012_hnmk/js/calendardlg.htm", "", "dialogWidth:200px; dialogHeight:230px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null ) {
+		ctrlobj.value = retval;
+	}
+}
+
+</script>

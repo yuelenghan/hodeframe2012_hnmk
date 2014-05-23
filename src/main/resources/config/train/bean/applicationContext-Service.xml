@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 教师 -->
+	<bean id="trainTeacherService" class="com.hode.train.service.TrainTeacherService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.checkTeac</value>
+		</property>
+	</bean>
+
+	<bean id="trainTeacherServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainTeacherService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 教材 -->
+	<bean id="trainMaterialService" class="com.hode.train.service.TrainMaterialService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.checkMat</value>
+		</property>
+	</bean>
+
+	<bean id="trainMaterialServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainMaterialService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 课程 -->
+	<bean id="trainCourseService" class="com.hode.train.service.TrainCourseService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.checkm</value>
+		</property>
+	</bean>
+
+	<bean id="trainCourseServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainCourseService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 收费项目 -->
+	<bean id="trainingProgramsService" class="com.hode.train.service.TrainingProgramsService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.checka</value>
+		</property>
+	</bean>
+
+	<bean id="trainingProgramsServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainingProgramsService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 培训依据 -->
+	<bean id="institutionsService" class="com.hode.train.service.InstitutionsService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.checkw</value>
+		</property>
+	</bean>
+
+	<bean id="institutionsServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="institutionsService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainLog -->
+	<bean id="trainLogIbatisService" class="com.hode.train.service.TrainLogService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.log</value>
+		</property>
+	</bean>
+
+	<bean id="trainLogIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainLogIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+
+
+	<!-- TrainApply -->
+	<bean id="trainApplyIbatisService" class="com.hode.train.service.TrainApplyService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.apply</value>
+		</property>
+	</bean>
+
+	<bean id="trainApplyIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainApplyIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+		<!-- TrainApplyDetail -->
+	<bean id="trainApplyDetailIbatisService" class="com.hode.train.service.TrainApplyDetailService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.detail</value>
+		</property>
+	</bean>
+
+	<bean id="trainApplyDetailIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainApplyDetailIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- TrainItem -->
+	<bean id="trainApplyItemIbatisService" class="com.hode.train.service.TrainApplyItemService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.item</value>
+		</property>
+	</bean>
+
+	<bean id="trainApplyItemIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainApplyItemIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainMaterial -->
+	<bean id="trainApplyMaterialIbatisService" class="com.hode.train.service.TrainApplyMaterialService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.material</value>
+		</property>
+	</bean>
+
+	<bean id="trainApplyMaterialIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainApplyMaterialIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainCourse -->
+	<bean id="trainApplyCourseIbatisService" class="com.hode.train.service.TrainApplyCourseService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.course</value>
+		</property>
+	</bean>
+
+	<bean id="trainApplyCourseIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainApplyCourseIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainCheckDetail -->
+	<bean id="trainCheckDetailIbatisService" class="com.hode.train.service.TrainCheckDetailService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.check</value>
+		</property>
+	</bean>
+
+	<bean id="trainCheckDetailIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainCheckDetailIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- TrainTeacher -->
+	<bean id="trainApplyTeacherIbatisService" class="com.hode.train.service.TrainApplyTeacherService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.teacher</value>
+		</property>
+	</bean>
+
+	<bean id="trainApplyTeacherIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainApplyTeacherIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainStudent -->
+	<bean id="trainStudentIbatisService" class="com.hode.train.service.TrainStudentService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.student</value>
+		</property>
+	</bean>
+
+	<bean id="trainStudentIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainStudentIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainCheck -->
+	<bean id="trainCheckIbatisService" class="com.hode.train.service.TrainCheckService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.check</value>
+		</property>
+	</bean>
+
+	<bean id="trainCheckIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainCheckIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+	<!-- TrainScore -->
+	<bean id="trainScoreIbatisService" class="com.hode.train.service.TrainScoreService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.score</value>
+		</property>
+	</bean>
+
+	<bean id="trainScoreIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainScoreIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- TrainUserApply -->
+	<bean id="trainUserApplyIbatisService" class="com.hode.train.service.TrainUserApplyService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.userapply</value>
+		</property>
+	</bean>
+
+	<bean id="trainUserApplyIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainUserApplyIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainUserChange -->
+	<bean id="trainUserChangeIbatisService" class="com.hode.train.service.TrainUserChangeService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.userchange</value>
+		</property>
+	</bean>
+
+	<bean id="trainUserChangeIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainUserChangeIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+
+	<!-- TrainUserBlack -->
+	<bean id="trainUserBlackIbatisService" class="com.hode.train.service.TrainUserBlackService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.userblack</value>
+		</property>
+	</bean>
+
+	<bean id="trainUserBlackIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainUserBlackIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- Cert -->
+	<bean id="trainCertIbatisService" class="com.hode.train.service.TrainCertService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.cert</value>
+		</property>
+	</bean>
+
+	<bean id="trainCertIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainCertIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainUnitBase -->
+	<bean id="trainUnitBaseIbatisService" class="com.hode.train.service.TrainUnitBaseService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.unitbase</value>
+		</property>
+	</bean>
+
+	<bean id="trainUnitBaseIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainUnitBaseIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainExaminee -->
+	<bean id="trainExamineeIbatisService" class="com.hode.train.service.TrainExamineeService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.examinee</value>
+		</property>
+	</bean>
+
+	<bean id="trainExamineeIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainExamineeIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- TrainPapers -->
+	<bean id="trainPapersIbatisService" class="com.hode.train.service.TrainPapersService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.papers</value>
+		</property>
+	</bean>
+
+	<bean id="trainPapersIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainPapersIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- ApplyExaminee -->
+	<bean id="applyExamineeIbatisService" class="com.hode.train.service.ApplyExamineeService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.applyexaminee</value>
+		</property>
+	</bean>
+
+	<bean id="applyExamineeIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="applyExamineeIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- ExamineePapers -->
+	<bean id="examineePapersIbatisService" class="com.hode.train.service.ExamineePapersService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.examineepapers</value>
+		</property>
+	</bean>
+
+	<bean id="examineePapersIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="examineePapersIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- TrainPerson -->
+	<bean id="trainPersonIbatisService" class="com.hode.train.service.TrainPersonService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>train.person</value>
+		</property>
+	</bean>
+
+	<bean id="trainPersonIbatisServiceProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="trainPersonIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

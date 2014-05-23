@@ -1,0 +1,106 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "测试一般工作流" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPageList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	#hodeSysUI_TdMainBody("审核" "center" "40" 0)
+	#hodeSysUI_TdMainBody("查看" "center" "40" 0)
+	#hodeSysUI_TdMainBody("标题" "center" "" 0)
+	#hodeSysUI_TdMainBody("内容" "center" "" 0)
+	#hodeSysUI_TdMainBody("意见" "center" "" 0)
+#hodeSysUI_TrEnd()
+
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+		#hodeSysBean_checkInArr("$user.intUserID" "$objInfo.strWFNToCheckUserID" $rtn)
+		#if($objInfo.intWFNFinishFlag == 1 && $rtn)
+			#hodeSysUI_TdMainOpt("checked" "审核" "checkFlowForm.action" "" $objInfo.intID "")
+
+		#else
+			<td> -- $objInfo.intWFNFinishFlag </td>
+		#end
+
+
+
+		#hodeSysUI_TdMainBody("<a href='../step/viewList.action?intMainID=$objInfo.intWFNMainID&intParentID=$objInfo.intWFNStepID'>查看</a>" "left" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTitle" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strContent" "center" "" 0)
+		#hodeSysBean_nl2br("$!objInfo.strLogInfo" $strLogInfo)
+		#hodeSysUI_TdMainBody("$!strLogInfo" "left" "" 0)
+    #hodeSysUI_TrEnd()
+#end
+##填充表格
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('workflownormal.main.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript

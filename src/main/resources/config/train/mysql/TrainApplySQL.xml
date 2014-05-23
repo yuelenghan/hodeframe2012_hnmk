@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.apply">
+  <typeAlias alias="trainApplyModel" type="com.hode.train.model.TrainApplyModel"/>
+  <typeAlias alias="trainApplyDetailModel" type="com.hode.train.model.TrainApplyDetailModel"/>
+  <typeAlias alias="trainApplyItemModel2" type="com.hode.train.model.TrainApplyItem"/>
+  <typeAlias alias="trainApplyTeacherModel2" type="com.hode.train.model.TrainApplyTeacher"/>
+  <typeAlias alias="trainApplyMaterialModel2" type="com.hode.train.model.TrainApplyMaterial"/>
+  <typeAlias alias="trainTeacherModel" type="com.hode.train.model.TrainTeacher"/>
+  <typeAlias alias="trainApplyCourseModel2" type="com.hode.train.model.TrainApplyCourse"/>
+  <typeAlias alias="trainObject" type="com.hode.train.model.TrainObject"/>
+  <typeAlias alias="trainCourse" type="com.hode.train.model.Traincourse"/>
+
+  <select id="getObjectInfo" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+	SELECT *
+	FROM train_apply
+	WHERE intID = #intID#
+  </select>
+
+  <select id="getDictionaryById" resultClass="string" parameterClass="string">
+	SELECT strValue
+	FROM dictionary
+	WHERE intID = #intID#
+  </select>
+
+  <select id="getIntIDByTrainCount" resultClass="int" parameterClass="string">
+	SELECT intID
+	FROM train_apply
+	WHERE strTrainCount = '$strTrainCount$'
+  </select>
+
+  <select id="getTrainApplyByTrainCount" resultClass="trainApplyModel" parameterClass="string">
+	SELECT *
+	FROM train_apply
+	WHERE strTrainCount = '$strTrainCount$'
+  </select>
+
+  <!-- 通过办班审批、人员信息没有上报、没有进行考核审批的期次(用于确认网上报名信息) -->
+  <select id="getAllTrainCount" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+  		select * from train_apply b
+  		where intCheckFlag=9
+  	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	and not exists
+	(select 'X' from train_check a where a.intCheckFlag=9 and a.intTrainApplyID=b.intID)
+	and not exists
+	(select 'X' from train_student c where c.intStatus = 2 and c.intTrainApplyID=b.intID)
+  </select>
+
+  <select id="getAllTeachers" resultClass="trainTeacherModel" parameterClass="trainTeacherModel">
+  	SELECT *
+	FROM train_teacher
+	WHERE intCreateUser = #intCreateUser# or intGroup = #intGroup#
+  </select>
+
+  <select id="getTrainApplyByCode" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+	SELECT *
+	FROM train_apply
+	WHERE strTrainCount = #strTrainCount#
+	<isNotNull prepend="and" property="strTrainCountClass">
+		strTrainCountClass = #strTrainCountClass#
+	</isNotNull>
+  </select>
+
+  <select id="getPageObjectList" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+	select *
+	from train_apply
+	where 1 = 1
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	<isNotEmpty prepend="AND" property="strCheckFlag">
+		intCheckFlag in ($strCheckFlag$)
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainType">
+		strTrainType = #strTrainType#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainCount">
+		strTrainCount like '%$strTrainCount$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainUnitName">
+		strTrainUnitName like '%$strTrainUnitName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strApplyDate">
+		strApplyDate like '$strApplyDate$%'
+	</isNotEmpty>
+	ORDER BY intID desc
+	LIMIT #intStart#,#intOffset#
+  </select>
+
+  <select id="getRecordCount" resultClass="int" parameterClass="trainApplyModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_apply
+	where 1 = 1
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	<isNotEmpty prepend="AND" property="strCheckFlag">
+		intCheckFlag in ($strCheckFlag$)
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainType">
+		strTrainType = #strTrainType#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainCount">
+		strTrainCount like '%$strTrainCount$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainUnitName">
+		strTrainUnitName like '%$strTrainUnitName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strApplyDate">
+		strApplyDate like '$strApplyDate$%'
+	</isNotEmpty>
+  </select>
+	<select id="checkObjectExists" parameterClass="trainApplyModel" resultClass="int">
+		SELECT count(intID) AS intTotalNumber
+		FROM train_apply
+		WHERE strTrainCount=#strTrainCount#
+			<isGreaterThan prepend="AND" property="intID" compareValue="0">
+				intID!=#intID#
+			</isGreaterThan>
+	</select>
+  <insert id="insertObjectAndGetID" parameterClass="trainApplyModel">
+    INSERT INTO train_apply(
+			strTrainUnitName,
+			strTrainStartDate,
+			strTrainEndDate,
+			strTrainCount,
+			strTrainType,
+			strTrainObject,
+			strTrainRange,
+			strTrainCode,
+			strTrainUserNum,
+			strTrainTime1,
+			strTrainTime2,
+			strDirPath,
+			strAttrContent,
+			intCreateUserID,
+			strCreateUserName,
+			intCreateGroupID,
+			strCreateGroupName,
+			intCreateUnitID,
+			strCreateUnitName,
+			strCreateDate,
+			intCheckFlag,
+			strCheckVal,
+			strApplyDate,
+			strTrainObjectDesc,
+			strIfClass,
+			strTrainCountClass
+		)
+	VALUES (
+		#strTrainUnitName#,
+		#strTrainStartDate#,
+		#strTrainEndDate#,
+		#strTrainCount#,
+		#strTrainType#,
+		#strTrainObject#,
+		#strTrainRange#,
+		#strTrainCode#,
+		#strTrainUserNum#,
+		#strTrainTime1#,
+		#strTrainTime2#,
+		#strDirPath#,
+		#strAttrContent#,
+		#intCreateUserID#,
+		#strCreateUserName#,
+		#intCreateGroupID#,
+		#strCreateGroupName#,
+		#intCreateUnitID#,
+		#strCreateUnitName#,
+		#strCreateDate#,
+		#intCheckFlag#,
+		#strCheckVal#,
+		#strApplyDate#,
+		#strTrainObjectDesc#,
+		#strIfClass#,
+		#strTrainCountClass#
+		)
+		<selectKey resultClass="int" keyProperty="intID" >
+			SELECT max(intID) AS intID
+			FROM train_apply
+		</selectKey>
+  </insert>
+  <update id="updateObject" parameterClass="trainApplyModel">
+    UPDATE train_apply
+	SET
+		strTrainUnitName = #strTrainUnitName#,
+		strTrainStartDate = #strTrainStartDate#,
+		strTrainEndDate = #strTrainEndDate#,
+		strApplyDate = #strApplyDate#,
+		strTrainType = #strTrainType#,
+		strTrainRange = #strTrainRange#,
+		strTrainCode = #strTrainCode#,
+		strTrainUserNum = #strTrainUserNum#,
+		strTrainTime1 = #strTrainTime1#,
+		strTrainTime2 = #strTrainTime2#,
+		strAttrContent = #strAttrContent#,
+		intIsSeal1 = 0 ,
+		strSealVal1 = '',
+		intIsSeal2 = 0 ,
+		strSealVal2 = '',
+		strFinishIdea = '',
+		strTrainObject = #strTrainObject#,
+		strTrainObjectDesc = #strTrainObjectDesc#,
+		strIfClass = #strIfClass#,
+		strTrainCountClass = #strTrainCountClass#
+	WHERE intID = #intID#
+  </update>
+  <delete id="deleteObject" parameterClass="string">
+		DELETE from train_apply
+		WHERE intID IN ( $strIDList$ )
+  </delete>
+
+
+  <update id="checkInfo_0" parameterClass="trainApplyModel">
+    UPDATE train_apply
+	SET
+		intCheckFlag = #intCheckFlag#,
+		strCheckVal = #strCheckVal#,
+		intIsSeal1 = 0 ,
+		strSealVal1 = '' ,
+		intIsSeal2 = 0 ,
+		strSealVal2 = '',
+		strFinishIdea = ''
+	WHERE intID = #intID#
+  </update>
+  <update id="checkInfo_1" parameterClass="trainApplyModel">
+    UPDATE train_apply
+	SET
+		intCheckFlag = #intCheckFlag#,
+		strCheckVal = #strCheckVal#,
+		intIsSeal1 = #intIsSeal1# ,
+		strSealVal1 = #strSealVal1# ,
+		intIsSeal2 = 0 ,
+		strSealVal2 = '' ,
+		strFinishIdea = ''
+	WHERE intID = #intID#
+  </update>
+  <update id="checkInfo_9" parameterClass="trainApplyModel">
+    UPDATE train_apply
+	SET
+		intCheckFlag = #intCheckFlag#,
+		strCheckVal = #strCheckVal#,
+		intIsSeal2 = 1 ,
+		strSealVal2 = #strSealVal2#,
+		strFinishIdea = #strFinishIdea#,
+		strCheckDate= #strCheckDate#
+	WHERE intID = #intID#
+  </update>
+
+<!-- 审核通过、没有导入人员信息(用于基础信息导入) -->
+  <select id="getTrainApplyListByGroupID" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+	select *
+	from train_apply b
+	where intCheckFlag = 9
+	and NOT EXISTS
+         (SELECT 'X' FROM  train_student a
+         WHERE a.intTrainApplyID = b.intID
+         )
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	ORDER BY intID desc
+  </select>
+
+  <!-- 审核通过、已经导入过人员、人员信息已上报、没有进行考核申请(用于考核申请) -->
+  <select id="getTrainApplyListByGroupID2" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+	select *
+	from train_apply b
+	where intCheckFlag = 9
+	and exists(
+		select 'X' from train_student c
+		where c.intTrainApplyID = b.intID
+		and c.intStatus = 2
+	)
+	and not exists
+	(
+		select 'X' from train_check a
+		WHERE a.intTrainApplyID = b.intID
+	)
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	ORDER BY intID desc
+  </select>
+
+  <!-- 审核通过、已经导入过人员、人员信息未上报(用于图片信息导入) -->
+  <select id="getTrainApplyListByGroupID3" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+	select *
+	from train_apply b
+	where intCheckFlag = 9
+	and EXISTS
+         (SELECT 'X' FROM  train_student a
+         WHERE a.intTrainApplyID = b.intID
+          and a.intStatus = 1)
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	ORDER BY intID desc
+  </select>
+
+  <!-- 审核通过、已经导入过人员(用于人员信息校验) -->
+  <select id="getTrainApplyListByGroupID4" resultClass="trainApplyModel" parameterClass="trainApplyModel">
+	select *
+	from train_apply b
+	where intCheckFlag = 9
+	and EXISTS
+         (SELECT 'X' FROM  train_student a
+         WHERE a.intTrainApplyID = b.intID)
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	ORDER BY intID desc
+  </select>
+
+  <select id="getStrAttrContent" resultClass="string" parameterClass="int">
+  	select strAttrContent from train_apply
+  	where intID = $intID$
+  </select>
+
+  <delete id="deleteDetailObject" parameterClass="string">
+		DELETE from train_apply_detail
+		WHERE intTrainApplyID IN ( $strIDList$ )
+  </delete>
+  <select id="getDetailList" resultClass="trainApplyDetailModel" parameterClass="string">
+	select *
+	from train_apply_detail
+	where intTrainApplyID = #intTrainApplyID#
+	ORDER BY intOrderID asc
+  </select>
+  <insert id="insertDetailObject" parameterClass="trainApplyDetailModel">
+    INSERT INTO train_apply_detail(
+		intTrainApplyID,
+		strSubjectName,
+		strSubjectTime,
+		strTeacherName,
+		strTeacherDegree,
+		strTeacherProfessional,
+		strTeacherTitles,
+		strTeacherCode,
+		intOrderID
+		)
+	VALUES (
+		#intTrainApplyID#,
+		#strSubjectName#,
+		#strSubjectTime#,
+		#strTeacherName#,
+		#strTeacherDegree#,
+		#strTeacherProfessional#,
+		#strTeacherTitles#,
+		#strTeacherCode#,
+		#intOrderID#
+	)
+  </insert>
+
+
+  <insert id="insertDetailObject2" parameterClass="trainApplyItemModel2">
+    INSERT INTO train_apply_item(
+		intTrainApplyID,
+		strItemName,
+		strItemPrice
+		)
+	VALUES (
+		#intTrainApplyID#,
+		#strItemName#,
+		#strItemPrice#
+	)
+  </insert>
+
+  <insert id="insertDetailObject3" parameterClass="trainApplyMaterialModel2">
+    INSERT INTO train_apply_material(
+		intTrainApplyID,
+		strMaterialName,
+		strMaterialVersion,
+		strMaterialPublisher,
+		strMaterialPrice
+		)
+	VALUES (
+		#intTrainApplyID#,
+		#strMaterialName#,
+		#strMaterialVersion#,
+		#strMaterialPublisher#,
+		#strMaterialPrice#
+	)
+  </insert>
+
+  <insert id="insertDetailObject4" parameterClass="trainApplyTeacherModel2">
+    INSERT INTO train_apply_teacher(
+		intTrainApplyID,
+		intTeacherID
+		)
+	VALUES (
+		#intTrainApplyID#,
+		#strTeacherID#
+	)
+  </insert>
+
+  <insert id="insertDetailObject5" parameterClass="trainApplyCourseModel2">
+    INSERT INTO train_apply_Course(
+		intTrainApplyID,
+		strCourseName,
+		strCourseTime
+		)
+	VALUES (
+		#intTrainApplyID#,
+		#strCourseName#,
+		#strCourseTime#
+	)
+  </insert>
+
+  <select id="getTrainTeacherListByApplyID" resultClass="trainTeacherModel" parameterClass="trainApplyTeacherModel2">
+  	SELECT *
+	FROM train_teacher
+	WHERE intID in(select intTeacherID from train_apply_teacher where intTrainApplyID = #intTrainApplyID#)
+  </select>
+
+  <select id="getTrainCourseListByApplyID" resultClass="trainApplyCourseModel2" parameterClass="trainApplyCourseModel2">
+  	SELECT *
+	FROM train_apply_course
+	WHERE intTrainApplyID = #intTrainApplyID#
+  </select>
+
+  <delete id="deleteTrainApplyItem" parameterClass="trainApplyItemModel2">
+  	delete from train_apply_item where intTrainApplyID = #intTrainApplyID#
+  </delete>
+
+  <delete id="deleteTrainApplyMaterial" parameterClass="trainApplyMaterialModel2">
+  	delete from train_apply_material where intTrainApplyID = #intTrainApplyID#
+  </delete>
+
+  <delete id="deleteTrainApplyTeacher" parameterClass="trainApplyTeacherModel2">
+  	delete from train_apply_teacher where intTrainApplyID = #intTrainApplyID#
+  </delete>
+
+  <delete id="deleteTrainApplyCourse" parameterClass="trainApplyCourseModel2">
+  	delete from train_apply_course where intTrainApplyID = #intTrainApplyID#
+  </delete>
+
+  <select id="getAllTrainObject" resultClass="trainObject" parameterClass="trainObject">
+  	select intID as strTrainObject,strValue as strTrainObjectDesc from dictionary
+  	where intType=1  and LENGTH(strKey)>0    ORDER BY intID asc
+  </select>
+
+   <select id="getCourseByTrainObject" resultClass="trainCourse" parameterClass="trainCourse">
+  	select * from train_course
+  	where  intCreateGroup = #intCreateGroup#
+  	 and   intDictionary = #intDictionary#
+  </select>
+
+  <select id="getAllTrainCourse" resultClass="trainCourse" parameterClass="trainCourse">
+  	select * from train_course
+  	where  intCreateGroup = #intCreateGroup#
+  </select>
+
+  <select id="getTeacherByCourseID" resultClass="trainTeacherModel" parameterClass="trainCourse">
+  	select * from train_teacher
+  	where intCourseID = #intID#
+  	order by intID desc
+  </select>
+
+  <select id="getTrainCountClassRecordCount" parameterClass="trainApplyModel" resultClass="int">
+  	select count(intID) from train_apply
+  	where strTrainCount = #strTrainCount# and strTrainCountClass = #strTrainCountClass#
+  </select>
+
+  <select id="getTeacherInfo" parameterClass="trainTeacherModel" resultClass="trainTeacherModel">
+  	select * from train_teacher where intID = #intID#
+  </select>
+
+  <select id="getTeacherInfoByID" parameterClass="int" resultClass="trainTeacherModel">
+  	select * from train_teacher where intID = $intID$
+  </select>
+</sqlMap>

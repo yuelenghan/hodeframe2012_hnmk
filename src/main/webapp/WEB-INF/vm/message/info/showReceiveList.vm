@@ -1,0 +1,151 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('message.operation.receiveList')" )
+#end
+$objSearch.strContent
+##检索区
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#set($trHeight="height=35")
+#hodeSysUI_TrBeginMainBody(0)
+	#hodeSysUI_showText("$action.getText('message.form.content')" 1 0 "objSearch.strContent" "$!hiddenParameter.get('objSearch.strContent')" 20 30 "")
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showSentListCookie" )
+#end
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "no" )
+#set( $delBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('message.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'delReceive.action','','$!deleteConfirm')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showReceiveList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+#set($trHeight="height=25")
+	#hodeSysUI_TdCheckBoxMainTitle()
+	#hodeSysUI_TdMainBody("$action.getText('message.operation.revert')" "center" "40" 0)
+	#hodeSysUI_TdMainBody("$action.getText('message.operation.to')" "center" "40" 0)
+	#hodeSysUI_TdMainBody("$action.getText('message.form.content')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('message.form.sender')" "center" "25%" 0)
+	#hodeSysUI_TdMainBody("$action.getText('message.form.sentTime')" "center" "22%" 0)
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+		#set($isNewInfo = " ")
+		#if($objInfo.intStatus == 1 || $objInfo.intStatus == 2 || $objInfo.intStatus == 3 )
+			#set($isNewInfo = "<img src='$action.getText('config.prjName')/images/operator/new.gif'>")
+		#end
+		#hodeSysUI_TdCheckBoxMainBody(0  $objInfo.intID)
+		#if( $!{objInfo.intSenderID} > 0 )
+			##hodeSysUI_TdMainOpt("" "" "replyForm.action?objInfo.strReceiveAccountList=$!{objInfo.strSenderName}" "" $objInfo.intID "")
+			<td><input type="button" CLASS="inputButton" value="$action.getText('message.operation.revert')" onclick="reply('$!{objInfo.strSenderName}')"></td>
+			<td><input type="button" class="inputButton" value="$action.getText('message.operation.to')" onclick="to($!{objInfo.intMessageID});"></td>
+		#else
+			#hodeSysUI_TdMainBody("&nbsp;" "left" "" 20)
+			#hodeSysUI_TdMainBody("&nbsp;" "left" "" 20)
+		#end
+		#hodeSysUI_TdMainBody("$!isNewInfo<a href='./viewFormForReceive.action?objInfo.intID=$!{objInfo.intMessageID}' target='_blank'>$!{objInfo.strContent}</a>&nbsp;#if($!objInfo.strAttrContent != '')<img src='$action.getText('config.prjName')/images/operator/attach.gif'>#end" "left" "" 1)
+
+		#if( $!{objInfo.intSenderID} > 0 )
+			#hodeSysUI_TdMainBody("$!{objInfo.strSenderName}" "center" "" 0)
+		#else
+			#hodeSysUI_TdMainBody("$action.getText('message.form.sender.sysSender')" "left" "" 0)
+		#end
+
+		#hodeSysUI_TdMainBody("$!{objInfo.dtmSentTime}" "center" "" 0)
+
+    #hodeSysUI_TrEnd()
+
+#end
+
+##填充表格
+#hodeSysUI_fillMain(6)
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+##-------------------------------------------------------------
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('message.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'delReceive.action','','$!deleteConfirm')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showReceiveList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+<form action="" name="replyform" id="replyform" method="post">
+	<input type="hidden" name="objInfo.strReceiveAccountList" value="">
+</form>
+
+<form action="" name="toform" id="toform" method="post">
+	<input type="hidden" name="objInfo.intID" id="intID" value="">
+</form>
+<script>
+	function reply(strReceiveAccountList)
+	{
+		document.all['objInfo.strReceiveAccountList'].value = strReceiveAccountList;
+		document.replyform.action = 'replyForm.action';
+		document.replyform.submit();
+	}
+
+	function to(intID)
+	{
+		document.getElementById("intID").value = intID;
+		document.toform.action = "toForm.action";
+		document.toform.submit();
+	}
+</script>
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript

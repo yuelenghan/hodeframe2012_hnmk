@@ -1,0 +1,24 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+
+##-------------------------------------------------------------
+##**********************
+##��Ϣ��ʾ��
+##**********************
+
+##���|�޸�|ɾ����Ϣ��ʾҳHeader
+#bodytag( Component "template=AfterOperationFormComponentHeader.vm" )
+	#param("operationType" "delete")
+	#param("actionName" "showPageList.action")
+	#param("needHiddenParams" "true")
+	#param("afterOperationTitle" "$action.getText('rbac.group.operation.delSuccess')")
+#end
+<SCRIPT LANGUAGE="JavaScript">
+	parent.leftFrame.document.location.reload();
+</SCRIPT>
+##���|�޸�|ɾ����Ϣ��ʾҳFooter
+#include("$action.getText('config.vmPath')/simple/AfterOperationFormFooter.vm")
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

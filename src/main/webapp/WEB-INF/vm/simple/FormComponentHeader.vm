@@ -1,0 +1,54 @@
+## �?ͷ������������FormFooter.vmʹ��
+#set ($actionName = $parameters.get('actionName'))
+
+#set ($needHiddenParams = $parameters.get('needHiddenParams'))
+#if((!$needHiddenParams)||($needHiddenParams==""))
+	#set($needHiddenParams="true")
+#end
+
+#set ($formName = $parameters.get('formName'))
+#if((!$formName)||($formName==""))
+	#set($formName="frmDefault")
+#end
+
+#set ($formid = $parameters.get('formid'))
+
+#set ($methodName = $parameters.get('methodName'))
+#if((!$methodName)||($methodName==""))
+	#set($methodName="POST")
+#end
+
+#set ($onSubmit = $parameters.get('onSubmit'))
+
+#set ($enctype = $parameters.get('enctype'))
+
+##����Ҫ��ʾ�����ر���
+#set ($exceptParam = $parameters.get('exceptParam'))
+
+#set ($hiddenParams = $parameters.get('hiddenParams'))
+
+<FORM METHOD="$!methodName" NAME="$!formName" ACTION="$!actionName"
+#if($formid!="")
+	ID="$!formid"
+#end
+
+#if(($onSubmit)&&($onSubmit!=""))
+	ONSUBMIT="$!onSubmit"
+#end
+
+#if(($enctype)&&($enctype!=""))
+	enctype="$!enctype"
+#end
+	>
+#if($needHiddenParams=="true")
+    #foreach($key in $hiddenParameter.keySet())
+		#if(($exceptParam)&&($exceptParam!=""))
+			#if($exceptParam!=$key)
+				<input type="hidden" name="$key" value="$!hiddenParameter.get($key)">
+			#end
+		#else
+			<input type="hidden" name="$key" value="$!hiddenParameter.get($key)">
+		#end
+	#end
+#end
+$!hiddenParams

@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html"/>
+<title>安全培训办班审批表</title>
+<script language="javascript" src="/hodeframe2012_hnmk/js/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+</head>
+<body>
+<div id="printInfo" style="">
+
+<style>
+body{
+	margin-left: 00px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+td{
+	font-size: 14px;
+	color: #000000;
+	line-height:36px;
+
+}
+.STYLE1 {font-size: 28px; font-weight:bold;}
+.STYLE3 {font-size: 18px;}
+.STYLE4 {text-decoration: underline;font-weight:bold;}
+</style>
+<div style="background-image: url($!objInfo.strSealVal1);background-repeat: no-repeat; background-position:15% 40%">
+<table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center" colspan=2 style="line-height:65px;"><span class="STYLE1">安全培训办班审批表</span></td>
+	</tr>
+	<tr>
+		<td align="left" width=50%><span class="STYLE3">培训机构（公章）</span><div style="position:absolute;margin-top:-60px; margin-left:-50px; z-index:100" id="intIsSeal1"></div></td>
+#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+#set ($rtn1 = $stringUtil.substring("$!objInfo.strApplyDate",0,4))
+#set ($rtn2 = $stringUtil.substring("$!objInfo.strApplyDate",5,7))
+#set ($rtn3 = $stringUtil.substring("$!objInfo.strApplyDate",8,10))
+
+#set ($rtn11 = $stringUtil.substring("$!objInfo.strCheckDate",0,4))
+#set ($rtn12 = $stringUtil.substring("$!objInfo.strCheckDate",5,7))
+#set ($rtn13 = $stringUtil.substring("$!objInfo.strCheckDate",8,10))
+		<td align="right" width=50%><span class="STYLE3">填表日期：$rtn1 年 $rtn2 月 $rtn3 日　</span></td>
+	</tr>
+</table>
+<TABLE width="640" align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" style="border-bottom: 0px;" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" width=20%>培训机构资质</td>
+		<td align="center" width=30%>$!objInfo.strTrainRange</td>
+		<td align="center" width=20%>资质证书号码</td>
+		<td align="center" width=30%>&nbsp$!objInfo.strTrainCode</td>
+	</tr>
+	<tr>
+		<td align="center">培训类别</td>
+		<td align="center">$!objInfo.strTrainType</td>
+		<td align="center">培训班计划人数</td>
+		<td align="center">$!objInfo.strTrainUserNum</td>
+	</tr>
+	<tr>
+		<td align="center">培训时间</td>
+		<td align="center" colspan=3>$!objInfo.strTrainStartDate 到 $!objInfo.strTrainEndDate</td>
+	</tr>
+</table>
+</div>
+<TABLE width="640" align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" rowspan=2 width=30>序<br>号</td>
+		<td align="center" rowspan=2 width=180>课程名称</td>
+		<td align="center" rowspan=2 width=30 style="line-height:20px">学<br>时<br>数</td>
+		<td align="center" colspan=5 >任课教师</td>
+	</tr>
+	<tr>
+		<td align="center" width=60>姓名</td>
+		<td align="center" width=40>学历</td>
+		<td align="center">所学专业</td>
+		<td align="center">职称</td>
+	</tr>
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($rtnList3 = $trainUtil.getTrainDetailApplyListByApplyID($objInfo.intID))
+	#foreach($objInfo3 in $rtnList3)
+		#set($intNowCount=$velocityCount)
+				<tr>
+				<TD align='center'>$intNowCount</TD>
+				<TD align='center'>$objInfo3.strSubjectName</TD>
+				<TD align='center'>$objInfo3.strSubjectTime</TD>
+				<TD align='center'>$objInfo3.strTeacherName</TD>
+				<TD align='center'>$objInfo3.strTeacherDegree</TD>
+				<TD align='center'>$objInfo3.strTeacherProfessional</TD>
+				<TD align='center'>$objInfo3.strTeacherTitles</TD>
+			 </TR>
+	#end
+</table>
+<div style="background-image: url($!objInfo.strSealVal2);background-repeat: no-repeat; background-position:80% 90%" id="intIsSeal2">
+<TABLE width="640" align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" width=20%>培训总学时数</td>
+		<td align="center" width=30%>$!objInfo.strTrainTime1</td>
+		<td align="center" width=30%>培训大纲要求学时数</td>
+		<td align="center" width=20%>$!objInfo.strTrainTime2</td>
+	</tr>
+	<tr>
+		<td align="left" colspan=4>考核单位或考核点意见<br>
+			<table width="94%" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td height="100" align="left" valign="top"><B>　　$!objInfo.strFinishIdea</B></td>
+			  </tr>
+			  <tr>
+				<td align="right">考核单位或考核点（公章）<div style="position:absolute;margin-top:-140px; margin-left:-50px; z-index:100"></div></td>
+			  </tr>
+			  <tr>
+				<td align="right">$rtn11 年 $rtn12 月 $rtn13 日　　</td>
+			  </tr>
+			</table>
+
+		</td>
+	</tr>
+</table>
+</div>
+
+</div>
+<table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+#hodeSysUI_optViewMultiFile("附件" 1 "1" "left" $!fileAttrUpload.listAttachs)
+
+</TABLE>
+
+<br>
+
+#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+#set ($rtnList = $trainUtil.getObjectLogList($objInfo.intID,"train_apply"))
+#if($rtnList.size() > 0 )
+	 <TABLE width="640" align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" border="1" cellspacing="0" cellpadding="0">
+
+		<TR class="trMainBodyTitle"  >
+			<TD ALIGN="center" WIDTH="100">经办人</TD>
+			<TD ALIGN="center" WIDTH="130">经办时间</TD>
+			<TD ALIGN="center" >意见和备注</TD>
+    	</TR>
+	#foreach($objInfo3 in $rtnList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+			<td align="center">$objInfo3.strOptUserName</td>
+			<td align="center">$objInfo3.strOptDate</td>
+			<!-- <td align="center">
+				#if($objInfo3.intCheckFlag == 1)
+					<font color='red'>不同意</font>
+				#elseif($objInfo3.intCheckFlag == 2)
+					同意
+				#else
+					申请提交
+				#end
+			</td> -->
+			<td>$!{objInfo3.strOptContent}</td>
+		</tr>
+
+	#end
+
+	</TR>
+	</TABLE>
+
+
+#end
+	<TABLE width="640" align="center"  border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_print.gif" style="cursor:hand" onclick="javascript:print()">&nbsp;&nbsp;
+		<img src="/hodeframe2012_hnmk/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+	</TD>
+	</TR>
+	</TABLE>
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+<script type="text/javascript">
+function saveNextVal(intCheckFlag)
+{
+	document.getElementById("objInfo.intNextFlag").value = intCheckFlag;
+}
+function checkSubmit()
+{
+	if(document.getElementById("objInfo.strCheckVal").value.length < 2)
+	{
+		alert("请填写“审批意见”");
+		return false;
+	}
+}
+function printInfo()
+{
+	var intFlag = 3;
+	var openname = window.open("");;
+	var  printInfo= document.getElementById("printInfo");
+//openname.document.write('<style>\n table {	background-color:#000000}\n td { background-color:#FFFFFF}\n A{	COLOR: #000000;	TEXT-DECORATION: none;}\n</style>');
+	openname.document.write( printInfo.innerHTML);
+
+	openname.document.write( '<object id="PrintActiveX"   classid="clsid:3ede745c-4adb-42a6-ab25-5621edbdfd6b"   codebase="$action.getText('config.prjName')/js/QWPrint.cab#version=1,3,8,2" width=0 height=0></object>\n');
+
+	openname.document.write( "<script language=\"JavaScript\" type=\"text/javascript\">\n");
+	openname.document.write( "function printBase()\n");
+	openname.document.write( "{\n");
+	openname.document.write( "PrintActiveX.paddingTop=150;\n");
+	openname.document.write( "PrintActiveX.paddingBottom=0;\n");
+	openname.document.write( "PrintActiveX.paddingLeft=150;\n");
+	openname.document.write( "PrintActiveX.paddingRight=150;\n");
+	openname.document.write( "PrintActiveX.header=\"\";\n");
+	openname.document.write( "PrintActiveX.isHtmlHeadFoot=false;\n");
+	openname.document.write( "PrintActiveX.footer=\"\";\n");
+	openname.document.write( "PrintActiveX.pageWidth=2000;\n");
+	openname.document.write( "PrintActiveX.pageHeight=800;\n");
+	openname.document.write( "PrintActiveX.orientation=1;\n");
+	openname.document.write( "PrintActiveX.PrintView();\n");
+	openname.document.write( "}\n");
+	openname.document.write( "printBase();\n");
+	openname.document.write( "</sc"+"ript>\n");
+
+}
+
+function print() {
+	LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+	LODOP.PRINT_INIT("办班申请表打印");
+	LODOP. SET_PRINT_PAGESIZE (1, 0, 0,"A4");
+	LODOP.ADD_PRINT_HTML(0,0,"100%","100%",document.getElementById("printInfo").innerHTML);
+	LODOP.PREVIEW();
+}
+
+function signForm(intType)
+{
+	showx = event.screenX - event.offsetX -120 - 4 - 310 ; // + deltaX;
+	showy = event.screenY - event.offsetY -220 + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	var strIDList=document.getElementById(strIDList);
+	var strName=document.getElementById(strName);
+
+	retval = window.showModalDialog("signForm.action", "", "dialogWidth:235px; dialogHeight:185px; status:no; directories:yes;scrollbars:no;Resizable=no;"  );
+
+
+	if( retval != null )
+	{
+		if(retval == "ok")
+		{
+			if(intType == 1)
+			{
+				document.getElementById("apply0").style.display = "none";
+				document.getElementById("apply1").style.display = "";
+				document.getElementById("objInfo.intIsSeal1").value = 1;
+				#rbac_getSessionUser($user)
+				#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+				document.getElementById("intIsSeal1").innerHTML = "<img src=/hodeframe2012_hnmk/$!groupInfo.strAttrContent width=160 >";
+				document.getElementById("objInfo.strSealVal1").value = "<img src=/hodeframe2012_hnmk/$!groupInfo.strAttrContent width=160 >";
+			}
+			else if(intType == 2)
+			{
+				document.getElementById("apply0").style.display = "none";
+				document.getElementById("apply1").style.display = "";
+				document.getElementById("objInfo.intIsSeal2").value = 1;
+				#rbac_getSessionUser($user)
+				#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+				document.getElementById("intIsSeal2").innerHTML = "<img src=/hodeframe2012_hnmk/$!groupInfo.strAttrContent width=160 >";
+				document.getElementById("objInfo.strSealVal2").value = "<img src=/hodeframe2012_hnmk/$!groupInfo.strAttrContent width=160 >";
+			}
+		}
+		else
+		{
+
+		}
+
+	}
+}
+
+
+
+</script>##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

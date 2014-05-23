@@ -1,0 +1,52 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('global.errors.title')" )
+#end
+
+<TABLE  width=100%  height=100% border="0" cellpadding="0" cellspacing="0">
+<TR><TD>
+	<table width=400 ALIGN='center' VALIGN='middle'  border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+		<td width="9" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_01.gif" width="9" height="8"></td>
+		<td height="8" valign="top" background="$action.getText('config.prjName')/images/operator/border_02.gif"></td>
+		<td width="7" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_03.gif" width="7" height="8"></td>
+	  </tr>
+	  <tr>
+		<td width="9" valign="top" background="$action.getText('config.prjName')/images/operator/border_04.gif"></td>
+		<td valign="top">
+			<TABLE  border="0" cellpadding="0" cellspacing="0">
+			<TR>
+				<TD>
+					<img src="$action.getText('config.prjName')/images/operator/alert-error.gif" border=0>
+				</TD>
+				<TD>
+						<span>
+							<ol>
+								您没有授权，系统不允许您访问
+						</ol>
+						<div align='center'>
+							<a href="javascript:history.go(-1);">$action.getText('global.operation.return')</a>
+						</div>
+					  </span>
+
+				</TD>
+			</TR>
+			</TABLE>
+
+		</td>
+		<td width="7" valign="top" background="$action.getText('config.prjName')/images/operator/border_04.gif"></td>
+	  </tr>
+	  <tr>
+		<td width="9" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_05.gif" width="9" height="8"></td>
+		<td height="8" valign="top" background="$action.getText('config.prjName')/images/operator/border_02.gif"></td>
+		<td width="7" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_06.gif" width="7" height="8"></td>
+	  </tr>
+	</table><BR><BR><BR><BR>
+  </td></tr>
+</table>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

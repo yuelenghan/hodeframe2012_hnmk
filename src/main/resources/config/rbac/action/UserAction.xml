@@ -1,0 +1,226 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+
+    <package name="rbac.user" extends="index" namespace="/rbac/user">
+		<action name="index" class="rbac_userAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/index.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="delForm" class="rbac_userAction" method="showDeleteFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/delForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objInfo.intID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showPageList" class="rbac_userAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showPageList.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objSearch.strName</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="updatePrivilegeTreeForm" class="rbac_userAction" method="updatePrivilegeTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterPrivilegeTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showPrivilegeTreeForm" class="rbac_userAction" method="showPrivilegeTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showPrivilegeTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="updateRoleTreeForm" class="rbac_userAction" method="updateRoleTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterRoleTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showRoleTreeForm" class="rbac_userAction" method="showRoleTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showRoleTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showUserLogList" class="rbac_userAction" method="showUserLogList">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showUserLogList.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objSearch.intID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="selectUser" class="rbac_userAction" method="selectUser">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/selectUser.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="selectUser_1" class="rbac_userAction" method="selectUser_1">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/selectUser_1.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="selectUser_2" class="rbac_userAction" method="selectUser_2">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/selectUser_2.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="showLeftTree" class="rbac_userAction" >
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showLeftTree.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+
+
+
+
+
+		<action name="statisticsOnLineList" class="rbac_userAction" method="statisticsOnLineList">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showStatisticsOnLineList.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="statisticsOnLineUnit" class="rbac_userAction" method="statisticsOnLineUnit">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showStatisticsOnLineUnit.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="moveUserGroupForm" class="rbac_userAction"  method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/moveUserGroupForm.vm</result>
+			<param name="hiddenParameter">objSearch.group.intID,pagination.intCurrPage</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="moveUserGroup" class="rbac_userAction"  method="moveUserGroup">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterMoveUserGroupForm.vm</result>
+			<param name="hiddenParameter">objSearch.group.intID,pagination.intCurrPage</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="editPasswordForm" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/editPasswordForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="editPassword" class="rbac_permissionAction" method="updatePassword">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterEditPassword.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="updatePersonnelUserForm" class="rbac_permissionAction" method="updatePersonnelUserForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/updatePersonnelUserForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="updatePersonnelUser" class="rbac_permissionAction" method="updatePersonnelUser">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterUpdatePersonnelUser.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="updatePersonnelUserOtherForm" class="rbac_permissionAction" method="updatePersonnelUserForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/updatePersonnelUserOtherForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="updatePersonnelUserOther" class="rbac_permissionAction" method="updatePersonnelUserOther">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterUpdatePersonnelUserOther.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="changeUserForm" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/changeUserForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="changeUserInfo" class="rbac_permissionAction" method="changeUserInfo">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterChangeUserInfo.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+
+		<action name="readme" class="rbac_userAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="addForm" class="rbac_userAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/addForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="add" class="rbac_userAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterAdd.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="editForm" class="rbac_userAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/editForm.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objInfo.intID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="edit" class="rbac_userAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterEdit.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID,objInfo.intID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="updateAllowUserForm" class="rbac_userAction" method="updateAllowUserForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/updateAllowUserForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="updateAllowUser" class="rbac_userAction" method="updateAllowUser">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterUpdateAllowUser.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="del" class="rbac_userAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/afterDel.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs">90040000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showFrameUserInfo" class="rbac_userAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/showFrameUserInfo.vm</result>
+			<param name="hiddenParameter">objSearch.intGroupID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+
+
+		<action name="getHardUtil" class="rbac_userAction" method="getHardUtil">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/user/getHardUtil.vm</result>
+		</action>
+
+    </package>
+
+</xwork>

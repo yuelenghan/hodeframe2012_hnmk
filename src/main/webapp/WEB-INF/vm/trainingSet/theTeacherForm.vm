@@ -1,0 +1,295 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-form.js"></SCRIPT>
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "任课教师信息" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+<form action="showList.action" method="post" id="postForm" name="postForm">
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "yes")
+  <tr width="100%">
+	<TD align="left">培训对象：
+	#set ($traUtil = $webwork.bean("com.hode.train.util.TraUtil"))
+    #set ($rtnList3 = $traUtil.getBM(1))
+     <select name="objSearch.strTrainObject" style="width:210px;">
+     <option value="0">==请选择==</option>
+         #foreach($objInfo3 in $rtnList3)
+		 	#set($intNowCount=$velocityCount)
+        	 #if($objInfo3.intID==$resu)
+         		<option value="$objInfo3.intID" selected="selected">$objInfo3.strValue</option>
+         	#else
+        		 <option value="$objInfo3.intID">$objInfo3.strValue</option>
+         	#end
+       	 #end
+     </select>
+	<input type="button" value="  查 询 " onClick="selectList()">
+	</TD>
+	<TD>
+
+	</TD>
+  </tr>
+
+     <TR  class="trEditContent"><TD colspan=2>
+				<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableMainColor' id="table_1">
+					<TR class="trMainBodyTitle"  id="lawper" >
+					 <td align="center" width="10%">姓名</td>
+					 <td align="center" width="10%">学历</td>
+					 <td align="center" width="16%">专业</td>
+					 <td align="center" width="16%">职称</td>
+					 <td align="center" width="16%">证书号码</td>
+					 <td align="center" width="16%">教授课程</td>
+					  <td align="center" width="16%">操作</td>
+					 </TR>
+
+			#foreach($teac in $listTeac)
+					<TR class="trMainBodyContent"  >
+				    <TD align='center'>$teac.strName</TD>
+			        <TD align='center'>$teac.strEducation</TD>
+			        <TD align='center'>$teac.strMajor</TD>
+			        <TD align='center'>$teac.strTitle</TD>
+			        <TD align='center'>$teac.strCertCode</TD>
+			        <TD align='center'>$teac.strCourseName</TD>
+			        <TD align='center'><a href="javascript:void(0)" onclick="deleteTeacher($teac.intID)">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="updatess($teac.intID);">修改</a></TD>
+
+					 </TR>
+			#end
+
+			<TR class="trMainBodyContent">
+			<td align="center" colspan="7">
+				<input type="button" value="添加教师"  onclick="showPopup(300,200);" >
+				<input type="button" value="复制教师"  onclick="showPopup2(300,200);" >
+			</td>
+		    </TR>
+				</table>
+	</td></tr>
+
+	<div id="popupcontent" style="width:500px; height:300px">
+     <strong style="width:100%;font-size:16px;text-align:center;height:60px">
+                                     教&nbsp;师&nbsp;信&nbsp;息
+      </strong>
+
+	 <strong style="width:100%; text-align:center;height:27px">
+	 教师姓名：&nbsp;&nbsp;<input type="text" name="objInfo.strName" id="strName" style="width:210px;" >
+      </strong>
+
+       <strong style="width:100%; text-align:center;height:27px">
+         教师学历：&nbsp;&nbsp;<input type="text" name="objInfo.strEducation" style="width:210px;" >
+      </strong>
+
+          <strong style="width:100%; text-align:center;height:27px">
+         教师专业：&nbsp;&nbsp;<input type="text" name="objInfo.strMajor" style="width:210px;" >
+      </strong>
+
+              <strong style="width:100%; text-align:center;height:27px">
+        教师职称：&nbsp;&nbsp;<input type="text" name="objInfo.strTitle" style="width:210px;" >
+      </strong>
+
+	          <strong style="width:100%; text-align:center;height:27px">
+          证书号码：&nbsp;&nbsp;<input type="text" name="objInfo.strCertCode" style="width:210px;" >
+      </strong>
+
+      <strong style="width:100%; text-align:center;height:27px">
+          培训对象：&nbsp;
+     #set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	 #set ($rtnList = $trainUtil.getAllTrainObject())
+          <select name="objInfo.strTrainObject" style="width:210px;" onchange="changeThisVal(this)">
+          <option value="0">==请选择==</option>
+          #foreach($trainObject in $rtnList)
+          	#<option value="$trainObject.strTrainObject">$trainObject.strTrainObjectDesc</option>
+          #end
+
+          #foreach($trainObject in $rtnList)
+			#set ($rtnList2 = $trainUtil.getCourseByTrainObject($trainObject.strTrainObject, $user.intGroupID))
+			#foreach($trainCourse in $rtnList2)
+				<input type="hidden" name="intCourseID_${trainObject.strTrainObject}" value="$trainCourse.intID">
+				<input type="hidden" name="strCourseName_${trainObject.strTrainObject}" value="$trainCourse.strCourseName">
+			#end
+		#end
+          </select>
+      </strong>
+
+      	<strong style="width:100%; text-align:center;height:27px">
+          教授课程：&nbsp;
+          <select name="objInfo.intCourseID" style="width:210px;" id="select_1">
+          <option value="0">==请选择培训对象==</option>
+          #foreach($trainCourse in $rtnList2)
+          	<option value="$trainCourse.intID">$trainCourse.strCourseName</option>
+          #end
+          </select>
+      </strong>
+
+	  <strong style="width:100%; text-align:center;height:80px">
+
+        <input type="submit" value=" 保  存 " name="submitButton" >
+        <input type="button" value=" 取  消 " onClick="hidePopup();">
+
+      </strong>
+</div>
+
+	<div id="popupcontent2" style="width:500px; height:300px">
+     <strong style="width:100%;font-size:16px;text-align:center;height:60px">
+                                     复&nbsp;制&nbsp;教&nbsp;师
+      </strong>
+
+	 <strong style="width:100%; text-align:center;height:27px">从培训对象：
+     <select name="objInfo.strTrainObjectFrom" id="strTrainObjectFrom" style="width:210px;">
+     <option value="0">==请选择==</option>
+         #foreach($objInfo3 in $rtnList3)
+		 #set($intNowCount=$velocityCount)
+         <option value="$objInfo3.intID">$objInfo3.strValue</option>
+        #end
+     </select>
+	</strong>
+	 <strong style="width:100%; text-align:center;height:27px">
+        复制到培训对象：
+        <select name="objInfo.strTrainObjectTo" id="strTrainObjectTo" style="width:210px;">
+     <option value="0">==请选择==</option>
+         #foreach($objInfo3 in $rtnList3)
+		 #set($intNowCount=$velocityCount)
+         <option value="$objInfo3.intID">$objInfo3.strValue</option>
+        #end
+     </select>
+      </strong>
+
+	  <strong style="width:100%; text-align:center;height:80px">
+
+        <input type="button" value=" 复  制 " onClick="addSav2();">
+        <input type="button" value=" 取  消 " onClick="hidePopup2();">
+
+      </strong>
+</div>
+</form>
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+
+<style>
+#popupcontent{   position: absolute;   visibility: hidden;   overflow: hidden;   border:1px solid #CCC;   background-color:#F9F9F9;   border:1px solid #333;   padding:5px;}
+#popupcontent1{   position: absolute;   visibility: hidden;   overflow: hidden;   border:1px solid #CCC;   background-color:#F9F9F9;   border:1px solid #333;   padding:5px;}
+#popupcontent2{   position: absolute;   visibility: hidden;   overflow: hidden;   border:1px solid #CCC;   background-color:#F9F9F9;   border:1px solid #333;   padding:5px;}
+</style>
+<script>
+$(document).ready(function() {
+    var options = {
+    	url: "addTeac.action",
+        success: function() {
+        	selectList();
+        }
+    };
+
+    $('#postForm').submit(function() {
+        $(this).ajaxSubmit(options);
+
+        return false;
+    });
+});
+
+function doQuery() {
+	document.forms[0].action = "showList.action";
+ 	document.forms[0].submit();
+}
+
+ function updatess(id){
+     window.open('selectupdate.action?objSearch.intID='+id,'','Width=500px;Height=300px')
+ }
+
+ function deleteTeacher(id) {
+ 	if(confirm("确认删除此教师信息？")) {
+ 		document.forms[0].action = "deleteTeac.action?objInfo.intID="+id;
+ 		document.forms[0].submit();
+ 		selectList();
+ 	} else {
+ 		return;
+ 	}
+ }
+
+ function addSav(){
+    var strName=document.getElementById("strName").value;
+    if(null==strName||""==strName){
+    alert("请输入教师姓名！");
+    return;
+    }
+ //    document.forms[0].action="addTeac.action";
+ //   document.forms[0].submit();
+ //	$("#postForm").attr("action", "addTeac.action");
+// 	$("#postForm").submit();
+ }
+
+ function addSav2(){
+   var testa = document.getElementById("strTrainObjectFrom");
+    var s=testa.options[testa.selectedIndex].value;
+    var testa2 = document.getElementById("strTrainObjectTo");
+    var s2=testa2.options[testa2.selectedIndex].value;
+    if(s==0 || s2 ==0){
+    alert("请选择培训对象！");
+    return;
+    }
+   document.forms[0].action="copyTeacher.action";
+   document.forms[0].submit();
+ }
+
+  function selectList(){
+     document.forms[0].action="showList.action";
+    document.forms[0].submit();
+ }
+var baseText = null;
+function showPopup(w,h){
+    var popUp = document.getElementById("popupcontent");
+    popUp.style.left = "300px";
+    popUp.style.visibility = "visible";
+}
+function showPopup2(w,h){
+    var popUp = document.getElementById("popupcontent2");
+    popUp.style.left = "300px";
+    popUp.style.visibility = "visible";
+}
+function hidePopup(){
+    var popUp = document.getElementById("popupcontent");
+    popUp.style.visibility = "hidden";
+}
+function hidePopup2(){
+    var popUp = document.getElementById("popupcontent2");
+    popUp.style.visibility = "hidden";
+}
+
+function changeThisVal(thisControl) {
+	var courseResultLength = document.getElementsByName("strCourseName_"+thisControl.value).length;
+	//var courseSelect = document.getElementById("select_1");
+	var courseSelect = $("#select_1");
+	courseSelect.empty();
+
+	var selectStr = "";
+	for(var i=0; i<courseResultLength; i++) {
+		var courseName = document.getElementsByName("strCourseName_"+thisControl.value)[i].value;
+		var courseID = document.getElementsByName("intCourseID_"+thisControl.value)[i].value;
+
+		selectStr += "<option value='"+courseID+"'>"+courseName+"</option>";
+	}
+	//alert(selectStr);
+	courseSelect.html(selectStr);
+}
+
+</script>
+</html>
+

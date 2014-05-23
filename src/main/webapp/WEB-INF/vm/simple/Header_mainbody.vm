@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<TITLE>$action.getText('global.prj.title')</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<style>
+body
+{
+	background-color: #F8fcff;
+	margin-right:0px;
+}
+</style>
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/common.css">
+</HEAD>
+#rbac_getSessionUser($user)
+#set($permissionIDs = $user.intPrivilegeIDs)
+<BODY  leftmargin="0" topmargin="0" bgcolor='#F8fcff'>
+<TABLE width="100%" align='center'>
+<TR>
+	<TD class="bg_img" id='tr_height' valign="top" height=450>
+<script type="text/javascript">
+
+function stopMouse()
+{
+	//return false;
+}
+document.oncontextmenu=stopMouse;
+
+</script>

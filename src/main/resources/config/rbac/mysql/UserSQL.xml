@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="rbac.user">
+	<typeAlias alias="rbac_userModel" type="com.hode.rbac.model.UserModel"/>
+	<typeAlias alias="rbac_userRoleModel" type="com.hode.rbac.model.UserRoleModel"/>
+	<typeAlias alias="rbac_userPrivilegeModel" type="com.hode.rbac.model.UserPrivilegeModel"/>
+	<typeAlias alias="rbac_userLogModel" type="com.hode.rbac.model.UserLogModel"/>
+
+	<resultMap id="rbac_userRoleResult" class="rbac_userRoleModel">
+		<result property="user.intID" column="intUserID"/>
+		<result property="role.intID" column="intRoleID"/>
+	</resultMap>
+
+	<resultMap id="rbac_userPrivilegeResult" class="rbac_userPrivilegeModel">
+		<result property="user.intID" column="intUserID"/>
+		<result property="privilege.intID" column="intPrivilegeID"/>
+	</resultMap>
+
+	<select id="getPageObjectList" parameterClass="rbac_userModel" resultClass="rbac_userModel">
+		SELECT *
+		FROM rbac_user
+		WHERE intGroupID = #intGroupID# AND intIsDelete != 1
+			<isNotEmpty prepend="AND" property="strName">
+				strName LIKE  CONCAT('%',trim('$strName$'),'%')
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strUserUnitName">
+				strUserUnitName LIKE CONCAT('%',trim('$strUserUnitName$'),'%')
+			</isNotEmpty>
+		ORDER BY intOrderID ASC ,intID DESC
+		LIMIT #intStart#,#intOffset#
+	</select>
+
+	<select id="getRecordCount" parameterClass="rbac_userModel" resultClass="int">
+		SELECT count(intID) AS intTotalNumber
+		FROM rbac_user
+		WHERE intGroupID = #intGroupID# AND intIsDelete != 1
+			<isNotEmpty prepend="AND" property="strName">
+				strName LIKE  CONCAT('%',trim('$strName$'),'%')
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strUserUnitName">
+				strUserUnitName LIKE CONCAT('%',trim('$strUserUnitName$'),'%')
+			</isNotEmpty>
+	</select>
+
+	<select id="checkObjectExists" parameterClass="rbac_userModel" resultClass="int">
+    	SELECT count(intID) AS intTotalNumber
+		FROM rbac_user
+		WHERE strAccount=#strAccount#
+		AND intIsDelete != 1
+			<isGreaterThan prepend="AND" property="intID" compareValue="0">
+				intID!=#intID#
+			</isGreaterThan>
+	</select>
+
+	<insert id="insertObject" parameterClass="rbac_userModel">
+		INSERT INTO rbac_user(
+				strAccount,
+				strPassword,
+				strName,
+				strUserUnitName,
+				intGroupID,
+				intOrderID,
+				intUserType,
+				strAddress,
+				strZipCode,
+				strTel,
+				strMobile,
+				strEmail,
+				intIsCheck,
+				strMachineCode,
+				intPersonID,
+				strPersonName,
+				strOtherSysUser1,
+				strOtherSysPwd1,
+				strOtherSysUser2,
+				strOtherSysPwd2,
+				strOtherSysUser3,
+				strOtherSysPwd3,
+				strOtherSysUser4,
+				strOtherSysPwd4,
+				strOtherSysUser5,
+				strOtherSysPwd5,
+				intParentUserID1,
+				strParentUserName1,
+				intParentUserID2,
+				strParentUserName2,
+				intParentUserID3,
+				strParentUserName3,
+				intParentUserID4,
+				strParentUserName4,
+				intAllowUserID,
+				strAllowUserName,
+				strAllowStartDate,
+				strAllowEndDate
+		)
+		VALUES (
+
+			#strAccount#,
+			#strPassword#,
+			#strName#,
+			#strUserUnitName#,
+			#intGroupID#,
+			#intOrderID#,
+			2,
+			#strAddress#,
+			#strZipCode#,
+			#strTel#,
+			#strMobile#,
+			#strEmail#,
+			#intIsCheck#,
+			#strMachineCode#,
+			#intPersonID#,
+			#strPersonName#,
+			#strOtherSysUser1#,
+			#strOtherSysPwd1#,
+			#strOtherSysUser2#,
+			#strOtherSysPwd2#,
+			#strOtherSysUser3#,
+			#strOtherSysPwd3#,
+			#strOtherSysUser4#,
+			#strOtherSysPwd4#,
+			#strOtherSysUser5#,
+			#strOtherSysPwd5#,
+			#intParentUserID1#,
+			#strParentUserName1#,
+			#intParentUserID2#,
+			#strParentUserName2#,
+			#intParentUserID3#,
+			#strParentUserName3#,
+			#intParentUserID4#,
+			#strParentUserName4#,
+			#intAllowUserID#,
+			#strAllowUserName#,
+			#strAllowStartDate#,
+			#strAllowEndDate#
+			)
+	</insert>
+
+	<update id="updateObject" parameterClass="rbac_userModel">
+		UPDATE rbac_user
+		SET
+			strPassword = #strPassword#,
+			strName = #strName#,
+			strUserUnitName = #strUserUnitName#,
+			intOrderID = #intOrderID#,
+			strAddress = #strAddress#,
+			strZipCode = #strZipCode#,
+			strTel = #strTel#,
+			strMobile = #strMobile#,
+			strEmail = #strEmail#,
+			intIsCheck = #intIsCheck#,
+			strMachineCode = #strMachineCode#,
+			intPersonID = #intPersonID#,
+			strPersonName = #strPersonName#,
+			strOtherSysUser1 = #strOtherSysUser1#,
+			strOtherSysPwd1 = #strOtherSysPwd1#,
+			strOtherSysUser2 = #strOtherSysUser2#,
+			strOtherSysPwd2 = #strOtherSysPwd2#,
+			strOtherSysUser3 = #strOtherSysUser3#,
+			strOtherSysPwd3 = #strOtherSysPwd3#,
+			strOtherSysUser4 = #strOtherSysUser4#,
+			strOtherSysPwd4 = #strOtherSysPwd4#,
+			strOtherSysUser5 = #strOtherSysUser5#,
+			strOtherSysPwd5 = #strOtherSysPwd5#,
+			intParentUserID1 = #intParentUserID1#,
+			strParentUserName1 = #strParentUserName1#,
+			intParentUserID2 = #intParentUserID2#,
+			strParentUserName2 = #strParentUserName2#,
+			intParentUserID3 = #intParentUserID3#,
+			strParentUserName3 = #strParentUserName3#,
+			intParentUserID4 = #intParentUserID4#,
+			strParentUserName4 = #strParentUserName4#,
+			intAllowUserID = #intAllowUserID#,
+			strAllowUserName = #strAllowUserName#,
+			strAllowStartDate = #strAllowStartDate#,
+			strAllowEndDate = #strAllowEndDate#
+		WHERE (intID = #intID# 	OR strAccount = #strAccount#)
+	</update>
+	<update id="deleteObject" parameterClass="string">
+		UPDATE rbac_user
+		SET intIsDelete = 1
+		WHERE intID IN ( $strIDList$ )
+		AND intUserType  != 1
+	</update>
+
+	<insert id="insertUserRole" parameterClass="rbac_userRoleModel">
+		INSERT INTO rbac_user_role(
+			intRoleID,
+			intUserID)
+		VALUES (
+			#role.intID#,
+			#user.intID#)
+	</insert>
+
+	<delete id="deleteUserRoleByUserID" parameterClass="string">
+		DELETE FROM rbac_user_role
+		WHERE intUserID IN ( $strIDList$ )
+	</delete>
+
+	<insert id="insertUserPrivilege" parameterClass="rbac_userPrivilegeModel">
+		INSERT INTO rbac_user_privilege(
+			intUserID,
+			intPrivilegeID)
+		VALUES (
+			#user.intID#,
+			#privilege.intID#)
+	</insert>
+
+	<delete id="deleteUserPrivilegeByUserID" parameterClass="string">
+		DELETE FROM rbac_user_privilege
+		WHERE intUserID IN ( $strIDList$ )
+	</delete>
+
+	<select id="getRoleIDListByUserID" parameterClass="int" resultClass="int">
+		SELECT intRoleID
+		FROM rbac_user_role
+		WHERE intUserID = #intUserID#
+	</select>
+
+	<select id="getRoleListByUserID" parameterClass="int" resultMap="rbac.role.rbac_roleResult">
+		SELECT  b.intID,b.strName,b.intGroupID,b.strDescribe,b.intOrderID
+		FROM rbac_user_role a ,rbac_role b
+		WHERE a.intUserID = #intUserID#
+		AND a.intRoleID = b.intID
+	</select>
+
+	<select id="getRolePrivilegeIDListByUserID" parameterClass="int" resultClass="int">
+		SELECT a.intPrivilegeID
+		FROM rbac_role_privilege a , rbac_user_role b
+		WHERE b.intUserID = #intUserID#
+		AND  b.intRoleID = a.intRoleID
+	</select>
+
+	<select id="getDefinePrivilegeIDListByUserID" parameterClass="int" resultClass="int">
+		SELECT intPrivilegeID
+		FROM rbac_user_privilege
+		WHERE intUserID = #intUserID#
+  	</select>
+
+	<select id="getTotalPrivilegeIDListByUserID" parameterClass="int" resultClass="int">
+		SELECT intPrivilegeID AS intPrivilegeID
+		FROM rbac_user_privilege
+		WHERE intUserID = #uid#
+		UNION
+		SELECT intPrivilegeID AS intPrivilegeID
+		FROM rbac_role_privilege
+		WHERE intRoleID IN
+		(
+			SELECT intRoleID
+			FROM rbac_user_role
+			WHERE intUserID = #uid#
+		)
+		UNION
+		SELECT intID AS intPrivilegeID
+		FROM rbac_privilege
+		WHERE intPrivilegeLevel = 2
+	</select>
+
+
+	<select id="getUserListByCondition" parameterClass="java.util.HashMap"  resultClass="rbac_userModel">
+		SELECT *
+		FROM rbac_user
+		Where intIsDelete = 0
+
+			<dynamic open="AND ( 0=1" close=")">
+				<isNotEmpty prepend="OR" property="strGroupID">
+					intGroupID in ( $strGroupID$ )
+				</isNotEmpty>
+				<isNotEmpty prepend="OR" property="strRoleID">
+					intID in (select intUserID from rbac_user_role where intRoleID in ( $strRoleID$ ) )
+				</isNotEmpty>
+				<isNotEmpty prepend="OR" property="strUserID">
+					intID in ( $strUserID$ )
+				</isNotEmpty>
+				<isNotEmpty prepend="OR" property="strUserAccount">
+					strAccount in ( $strUserAccount$ )
+				</isNotEmpty>
+			</dynamic>
+			<isNotEmpty prepend="and" property="strPrivilegeID">
+				intID in (
+					select intUserID from rbac_user_privilege where intPrivilegeID  in ( $strPrivilegeID$ )
+					UNION
+					select a.intUserID from rbac_user_role a,rbac_role_privilege b where
+						a.intRoleID=b.intRoleID and b.intPrivilegeID  in ( $strPrivilegeID$ )
+					)
+			</isNotEmpty>
+
+  	</select>
+
+	<select id="getObjectInfo" parameterClass="rbac_userModel" resultClass="rbac_userModel">
+		SELECT *
+		FROM rbac_user
+		WHERE (intID = #intID#	OR strAccount = #strAccount#)
+			AND intIsDelete != 1
+			limit 1
+	</select>
+	<select id="getObjectList" resultClass="rbac_userModel" >
+		SELECT *
+		FROM rbac_user
+		WHERE intIsDelete != 1
+		ORDER BY intOrderID ASC,intID DESC
+	</select>
+	<select id="checkUserExists" parameterClass="rbac_userModel" resultClass="int">
+    	SELECT count(intID) AS intTotalNumber
+		FROM rbac_user
+		WHERE strAccount = #strAccount#
+		AND strPassword = #strPassword#
+		AND intIsDelete != 1
+	</select>
+	<update id="updatePersonnelUser" parameterClass="rbac_userModel">
+		UPDATE rbac_user
+		SET strAddress = #strAddress#,
+			strZipCode = #strZipCode#,
+			strTel = #strTel#,
+			strUserUnitName=#strUserUnitName#,
+			strMobile = #strMobile#,
+			strEmail = #strEmail#,
+			strName = #strName#
+		WHERE (intID = #intID#	OR strAccount = #strAccount#)
+	</update>
+	<update id="updatePersonnelUserOther" parameterClass="rbac_userModel">
+		UPDATE rbac_user
+		SET
+			strOtherSysUser1 = #strOtherSysUser1#,
+			strOtherSysPwd1 = #strOtherSysPwd1#,
+			strOtherSysUser2 = #strOtherSysUser2#,
+			strOtherSysPwd2 = #strOtherSysPwd2#,
+			strOtherSysUser3 = #strOtherSysUser3#,
+			strOtherSysPwd3 = #strOtherSysPwd3#,
+			strOtherSysUser4 = #strOtherSysUser4#,
+			strOtherSysPwd4 = #strOtherSysPwd4#,
+			strOtherSysUser5 = #strOtherSysUser5#,
+			strOtherSysPwd5 = #strOtherSysPwd5#
+		WHERE (intID = #intID#	OR strAccount = #strAccount#)
+	</update>
+
+
+	<update id="moveUserGroup" parameterClass="rbac_userModel">
+		UPDATE rbac_user
+		SET intGroupID = #intGroupID#
+		WHERE intID = #intID#
+	</update>
+
+	<update id="updatePassword" parameterClass="rbac_userModel">
+		UPDATE rbac_user
+		SET strPassword = #strPassword#
+		WHERE strAccount = #strAccount#
+		AND intIsDelete != 1
+	</update>
+  	<update id="updateLockLoginInfo" parameterClass="rbac_userModel">
+		UPDATE rbac_user
+		SET intErrorLoginCount=#intErrorLoginCount#
+		<dynamic>
+			<isNotEmpty prepend="," property="strLockTime">
+				strLockTime = #strLockTime#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="strLoginTime">
+				strLastLoginTime = strLoginTime,strLoginTime = #strLoginTime#
+			</isNotEmpty>
+		</dynamic>
+		WHERE strAccount = #strAccount#
+		AND intIsDelete != 1
+	</update>
+
+
+	<!--  log start -->
+	<insert id="insertUserLog" parameterClass="rbac_userLogModel">
+		insert into rbac_user_log(
+			intUserID,
+			strAccount,
+			strName,
+			strCreateDate,
+			strType,
+			strUserIP
+		)
+		values (
+			#intUserID#,
+			#strAccount#,
+			#strName#,
+			#strCreateDate#,
+			#strType#,
+			#strUserIP#
+		)
+	</insert>
+
+	<select id="getUserLogPageObjectList" parameterClass="rbac_userLogModel" resultClass="rbac_userLogModel">
+		SELECT *
+		FROM rbac_user_log
+		WHERE intUserID = #intUserID#
+		ORDER BY intID DESC
+		LIMIT #intStart#,#intOffset#
+	</select>
+
+	<select id="getUserLogRecordCount" parameterClass="rbac_userLogModel" resultClass="int">
+		SELECT count(intID) AS intTotalNumber
+		FROM rbac_user_log
+		WHERE intUserID = #intUserID#
+	</select>
+	<!--  log end -->
+
+	<select id="getAllowUserList" parameterClass="rbac_userModel" resultClass="rbac_userModel">
+		SELECT intID
+		from rbac_user
+		WHERE intAllowUserID = #intAllowUserID#
+		  <![CDATA[ and strAllowStartDate <= #strAllowStartDate#  and  strAllowEndDate >= #strAllowStartDate# ]]>
+	</select>
+
+	<update id="updateAllowUser" parameterClass="rbac_userModel">
+		UPDATE rbac_user
+		SET
+			intAllowUserID = #intAllowUserID#,
+			strAllowUserName = #strAllowUserName#,
+			strAllowStartDate = #strAllowStartDate#,
+			strAllowEndDate = #strAllowEndDate#
+		WHERE intID = #intID#
+		AND intIsDelete != 1
+	</update>
+
+</sqlMap>

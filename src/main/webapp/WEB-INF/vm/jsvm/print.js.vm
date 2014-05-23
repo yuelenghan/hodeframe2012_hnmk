@@ -1,0 +1,184 @@
+
+<SCRIPT LANGUAGE="JavaScript">
+
+	function f_SaveAsExcel( _sHtml , _sFileName ){
+	 var oWin=window.open("","","top=2000,left=2000");
+	 with(oWin) {
+	//  document.write( f_ShortHTML(_sHtml) );
+	 document.write( _sHtml);
+	 document.execCommand('Saveas',false , _sFileName );
+	  close();
+	 }
+	}
+
+	function printInfo(cssName)
+	{
+		var intFlag = 3;
+		var openname = window.open("");;
+		var  printInfo= document.getElementById("printInfo");
+		if(cssName)
+		{
+			openname.document.write('<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/'+cssName+'">');
+		}
+
+		openname.document.write('<style>\n table {	background-color:#000000}\n td { background-color:#FFFFFF}\n A{	COLOR: #000000;	TEXT-DECORATION: none;}\n</style>');
+
+
+		openname.document.write( printInfo.innerHTML);
+
+		openname.document.write( '<object id="factory" style="display:none" viewastext  classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814"   codebase="$action.getText('config.prjName')/js/scriptx/scriptx.cab#Version=6,2,433,14" ></object> ');
+
+		openname.document.write( "<SCRIPT LANGUAGE=\"JavaScript\">");
+
+		openname.document.write( "function printTure(intFlag) //打印函数\n");
+		openname.document.write( "{\n");
+
+
+		openname.document.write( "	factory.printing.header = \"\"				//页眉\n");
+		openname.document.write( "	factory.printing.footer = \"\"				//页脚\n");
+		openname.document.write( "	factory.printing.portrait = true			//true为纵向打印，flase为横向打印\n");
+		openname.document.write( "	factory.printing.leftMargin = 20			//左页边距\n");
+		openname.document.write( "	factory.printing.topMargin = 20			//上页边距\n");
+		openname.document.write( "	factory.printing.rightMargin = 20			//右页边距\n");
+		openname.document.write( "	factory.printing.bottomMargin = 10			//下页边距\n");
+
+		openname.document.write( "	if(intFlag  ==1 )		//打印本页\n");
+		openname.document.write( "	{	\n");
+		openname.document.write( "		factory.printing.Print(false,top.downLoadFrame); //调用控件打印\n");
+		openname.document.write( "	}\n");
+		openname.document.write( "	else if(intFlag  ==2 )		//页面设置\n");
+		openname.document.write( "	{\n");
+		openname.document.write( "		factory.printing.PageSetup();\n");
+		openname.document.write( "	}\n");
+
+		openname.document.write( "	else if(intFlag  ==3 )		//打印预览\n");
+		openname.document.write( "	{\n");
+		openname.document.write( "		factory.printing.Preview();\n");
+		openname.document.write( "	}\n");
+		openname.document.write( "}\n");
+		openname.document.write("printTure("+intFlag+");window.close()</SC"+"RIPT>");
+	}
+
+
+	function printpreInfo(cssName,isNeedTableColor)
+	{
+		var intFlag = 3;
+		var openname = window.open("");;
+		var  printInfo= document.getElementById("printInfo");
+
+		if(cssName)
+		{
+			openname.document.write('<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/'+cssName+'">');
+		}
+		if(isNeedTableColor == 1 || isNeedTableColor == true)
+		{
+			openname.document.write('<style>\n table {	background-color:#000000}\n td { background-color:#FFFFFF}\n A{	COLOR: #000000;	TEXT-DECORATION: none;}\n</style>');
+		}
+
+
+		openname.document.write( printInfo.innerHTML);
+
+		openname.document.write( '<object id="factory" style="display:none" viewastext  classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814"   codebase="$action.getText('config.prjName')/js/scriptx/scriptx.cab#Version=6,2,433,14" ></object> ');
+
+
+		openname.document.write( "<SCRIPT LANGUAGE=\"JavaScript\">");
+
+		openname.document.write( "function printTure(intFlag) //打印函数\n");
+		openname.document.write( "{\n");
+
+
+
+		openname.document.write( "	factory.printing.header = \"\"				//页眉\n");
+		openname.document.write( "	factory.printing.footer = \"\"				//页脚\n");
+		openname.document.write( "	factory.printing.portrait = true			//true为纵向打印，flase为横向打印\n");
+		openname.document.write( "	factory.printing.leftMargin = 20			//左页边距\n");
+		openname.document.write( "	factory.printing.topMargin = 20			//上页边距\n");
+		openname.document.write( "	factory.printing.rightMargin = 20			//右页边距\n");
+		openname.document.write( "	factory.printing.bottomMargin = 10			//下页边距\n");
+
+		openname.document.write( "	if(intFlag  ==1 )		//打印本页\n");
+		openname.document.write( "	{	\n");
+		openname.document.write( "		factory.printing.Print(false,top.downLoadFrame); //调用控件打印\n");
+		openname.document.write( "	}\n");
+		openname.document.write( "	else if(intFlag  ==2 )		//页面设置\n");
+		openname.document.write( "	{\n");
+		openname.document.write( "		factory.printing.PageSetup();\n");
+		openname.document.write( "	}\n");
+
+		openname.document.write( "	else if(intFlag  ==3 )		//打印预览\n");
+		openname.document.write( "	{\n");
+		openname.document.write( "		factory.printing.Preview();\n");
+		openname.document.write( "	}\n");
+		openname.document.write( "}\n");
+		openname.document.write("printTure("+intFlag+");window.close()</SC"+"RIPT>");
+	}
+
+
+	function printInfoHenxiang(cssName,isNeedTableColor)
+	{
+		var openname = window.open("");;
+		var  printInfo= document.getElementById("printInfo");
+
+
+		if(cssName)
+		{
+			openname.document.write('<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/'+cssName+'">');
+		}
+
+		if(isNeedTableColor == 1 || isNeedTableColor == true)
+		{
+			openname.document.write('<style>\n table {	background-color:#000000}\n td { background-color:#FFFFFF}\n </style>');
+		}
+		openname.document.write( printInfo.innerHTML);
+
+
+		openname.document.write( '<object id="factory" style="display:none" viewastext  classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814"   codebase="$action.getText('config.prjName')/js/scriptx/scriptx.cab#Version=6,2,433,14" ></object> ');
+
+
+		openname.document.write( "<SCRIPT LANGUAGE=\"JavaScript\">");
+
+		openname.document.write( "function printTure(intFlag) //打印函数\n");
+		openname.document.write( "{\n");
+
+		openname.document.write( "	factory.printing.header = \"\"				//页眉\n");
+		openname.document.write( "	factory.printing.footer = \"\"				//页脚\n");
+		openname.document.write( "	factory.printing.portrait = false			//true为纵向打印，false为横向打印\n");
+		openname.document.write( "	factory.printing.leftMargin = 20			//左页边距\n");
+		openname.document.write( "	factory.printing.topMargin = 20			//上页边距\n");
+		openname.document.write( "	factory.printing.rightMargin = 20			//右页边距\n");
+		openname.document.write( "	factory.printing.bottomMargin = 10			//下页边距\n");
+
+		openname.document.write( "	if(intFlag  ==1 )		//打印本页\n");
+		openname.document.write( "	{	\n");
+		openname.document.write( "		factory.printing.Print(false,top.downLoadFrame); //调用控件打印\n");
+		openname.document.write( "	}\n");
+		openname.document.write( "	else if(intFlag  ==2 )		//页面设置\n");
+		openname.document.write( "	{\n");
+		openname.document.write( "		factory.printing.PageSetup();\n");
+		openname.document.write( "	}\n");
+
+		openname.document.write( "	else if(intFlag  ==3 )		//打印预览\n");
+		openname.document.write( "	{\n");
+		openname.document.write( "		factory.printing.Preview();\n");
+		openname.document.write( "	}\n");
+		openname.document.write( "}\n");
+		openname.document.write("printTure(3);window.close()</SC"+"RIPT>");
+	}
+
+</SCRIPT>
+
+<object id="factory" style="display:none" viewastext  classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814"   codebase="$action.getText('config.prjName')/js/scriptx/scriptx.cab#Version=6,2,433,14" ></object>
+
+<SCRIPT LANGUAGE="JavaScript">
+/*
+	if(factory && factory.printing)
+	{
+
+	}
+	else
+	{
+		alert("请安装打印浏览器报表控件");
+		document.location.href="$action.getText('config.prjName')/js/scriptx/scriptx.exe"
+	}
+*/
+</SCRIPT>

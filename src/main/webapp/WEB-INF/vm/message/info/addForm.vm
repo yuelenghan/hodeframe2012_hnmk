@@ -1,0 +1,70 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('message.operation.add')" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+
+#hodeSysUI_EditBodyHeader("add.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "yes")
+
+#set($showWidth="100")
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft' width="$showWidth">$!action.getText('message.form.receiveDeptIDList')$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strReceiveDeptNameList" "strReceiveDeptNameList" "" 2 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strReceiveDeptIDList" "")
+
+
+        <img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../../rbac/group/selectGroupUnit1.action?intGroupID=1&intGroupType=0	','objInfo.strReceiveDeptIDList','strReceiveDeptNameList');" valign="bottom"/>
+
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft'>$!action.getText('message.form.receiveUserIDList')$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strReceiveUserNameList" "strReceiveUserNameList" "" 2 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strReceiveUserIDList" "")
+
+
+
+	 <img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../../rbac/user/selectUser.action?intGroupID=1&intGroupType=0	','objInfo.strReceiveUserIDList','strReceiveUserNameList');" valign="bottom"/>
+
+
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+
+<TD class="tdEditContentLeft">$action.getText('global.interpunction.asterisk')$!{action.getText('message.form.strContent')}$!{action.getText('global.interpunction.colon')}</TD>
+	<TD class="tdEditContentRight">
+		<textArea name="objInfo.strContent" CLASS="inputText" msg="$!action.getText('message.form.strContent')" require="true"  cols="65" rows="7" >$!objInfo.strContent</textArea>
+	</TD>
+	##hodeSysUI_showTextArea("$!action.getText('message.form.strContent')" 1 1 "objInfo.strContent" "$!objInfo.strContent" 7 65 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_optMultiFile("$!action.getText('message.form.attContent')" "fileAttrUploadModel" "$strFileList" 1 1 "attr" 0)
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

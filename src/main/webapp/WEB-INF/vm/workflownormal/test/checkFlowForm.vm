@@ -1,0 +1,50 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+#set($intSelectArrange = true )
+##set($strTableWidth = "95%")
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('workflownormal.menu') " )
+	#param( "noSearchArea" "yes" )
+	#param( "strSearchName" "" )
+	#param( "strSearchValue" "" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+			#hodeSysUI_EditBodyHeader("checkFlow.action" "" "post" "yes")
+
+			#hodeSysUI_TrBeginMainBody(4)
+				#hodeSysUI_showText("名称" 1 1 "objInfo.strTitle" "$!objInfo.strTitle" 80 20 "readonly")
+			#hodeSysUI_TrEnd()
+
+			#hodeSysUI_TrBeginMainBody(4)
+				#hodeSysUI_showTextArea("内容"  1 0 "objInfo.strContent" "$!objInfo.strContent" 4 65 "readonly")
+			#hodeSysUI_TrEnd()
+#workflownormal_optAddInfo(1 101 "./showList.action" $objInfo "" 1 0)
+
+
+
+
+
+
+
+
+
+</form></TABLE>
+
+	

@@ -1,0 +1,51 @@
+#set ($title = $parameters.get('title'))
+#if((!$title)||($title==""))
+	#set($title="&nbsp;")
+#end
+
+
+#set ($strTableWidth = $parameters.get('strTableWidth'))
+#if((!$strTableWidth)||($strTableWidth==""))
+	#set($strTableWidth="100%")
+#end
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-left">
+      <tr>
+        <td class="dqwz">$action.getText('global.content.currentPosition')&nbsp;&nbsp;<span class="blackwz2">$!title</span></td>
+      </tr>
+</table>
+ <!--
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table2Style">
+          <tr>
+            <td width="5" background="$action.getText('config.prjName')/images/myjd/main_1_54.gif"><img src="$action.getText('config.prjName')/images/myjd/main_1_53.gif" width="2" height="27"></td>
+            <td width="45%" background="$action.getText('config.prjName')/images/myjd/main_1_54.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="25" align="center"><img src="$action.getText('config.prjName')/images/operator/opt_stat.gif" ></td>
+                <td><span>$action.getText('global.content.currentPosition')</span><span id="mainTitleId" style="">$!title</span></td>
+              </tr>
+            </table></td>
+            <td background="$action.getText('config.prjName')/images/myjd/main_1_58.gif"><img src="$action.getText('config.prjName')/images/myjd/main_1_57.gif" width="38" height="27"></td>
+            <td width="5" align="right" background="$action.getText('config.prjName')/images/myjd/main_1_58.gif"><img src="$action.getText('config.prjName')/images/myjd/main_1_61.gif" width="2" height="27"></td>
+          </tr>
+        </table>
+	<table><tr><td></td></tr></table>
+
+
+ -->
+
+	<!-- 	<table width="100%" style="border:1px #87A8C3 solid" cellpadding="0" cellspacing="0">
+			<tr class='trBannerContent'>
+			  <td width="4" class='trBannerContent'></td>
+			  <td width="26" class='trBannerContent'><img src="$action.getText('config.prjName')/images/operator/opt_stat.gif" ></td>
+			  <td class='trBannerContent'><span>$action.getText('global.content.currentPosition')</span><span id="mainTitleId" style="">$!title</span></td>
+			  <td><img src="$action.getText('config.prjName')/images/operator/opt_search.gif" width="55" height="22" onclick="hiddenSearchArea()" id="hiddenSearchAreaBtn" style="display:none;cursor:hand;">&nbsp;</td>
+			</tr>	
+		</table> -->
+<!-- 		<table width="98%" border="0" cellspacing="0" cellpadding="0" height=5 bgcolor='red'>
+		<TR>
+			<TD></TD>
+		</TR>
+		</TABLE> -->
+
+

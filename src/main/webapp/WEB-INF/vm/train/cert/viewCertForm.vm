@@ -1,0 +1,230 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+<script language="javascript" src="/hodeframe2012_hnmk/js/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "证书打印" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+
+<TABLE BORDER="0" width="1000" cellspacing="0" cellpadding="0" id='table_searchForm'  class='tableSearchColor' >
+<FORM METHOD="POST" NAME="frmSearch" ACTION="">
+
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+
+<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+#set($showWidth = "15%")
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "培训单位" 1 0 "$!objInfo.strTrainUnitName" 5)
+	#hodeSysUI_showMsg("" "培训期次" 1 0 "$!objInfo.strTrainCount" 5)
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "班级" 1 0 "$!objInfo.strTrainCountClass" 5)
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "培训类别" 1 0 "$!objInfo.strTrainType" 5)
+	#hodeSysUI_showMsg("" "培训对象" 1 0 "$!objInfo.strTrainObjectDesc" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "受理编号" 1 0 "$!objInfo.strApplyCode" 5)
+	#hodeSysUI_showMsg("" "受理日期" 1 0 "$!objInfo.strApplyDate" 5)
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "受理人数"3 0 "$!objInfo.strApplyNum" 5)
+#hodeSysUI_TrEnd()
+<table>
+
+
+
+<FORM METHOD="post" NAME="frmOperation" ACTION="optData2.action" ID="frmOperation"	ONSUBMIT="return doData(v.exec())">
+
+ <table width="" border="1" cellpadding="6" cellspacing="0" bordercolor="#cecece" style="border-collapse:collapse;">
+	<tr>
+		<td align='center' width=30>打印预览</td>
+		<td align='center' width=60>姓名</td>
+		<td align='center' width=40>性别</td>
+		<td align='center' width=100>身份证号码</td>
+
+		<td align='center' width=80>单位及职务</td>
+		<td align='center' width=50>职称</td>
+		<td align='center' width=70>文化程度</td>
+		<td align='center' width=50>督导</td>
+
+		<td align='center' width=100>违纪情况</td>
+		<td align='center' width=100>是否补考</td>
+		<td align='center' width=30>成绩</td>
+		#if($objInfo.strTrainType == "培训")
+			<td align='center' width=70>发证情况</td>
+		#end
+		<td align='center' width=70>证书号码</td>
+		<td align='center' width=70>意见</td>
+	</tr>
+
+#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+#foreach($objInfo3 in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#set($intDefaultColor = 0)
+		#if($objInfo3.intIsImport1_1 == 1)###补
+			#set($intCompareVal1 = $stringUtil.getCompareToByFloat("$objInfo3.fltExamScore3_1","60"))
+			#if($intCompareVal1 == 2 ) ##不及格
+				#set($intDefaultColor = 1)
+			#end
+			#if($objInfo3.strExamRule1_1.length() > 0)##违纪
+				#set($intDefaultColor = 2)
+			#end
+		#else
+			#set($intCompareVal2 = $stringUtil.getCompareToByFloat("$objInfo3.fltExamScore1_1","60"))
+			#if($intCompareVal2 == 2)
+				#set($intDefaultColor = 1)
+			#end
+			#if($objInfo3.strExamRule_1.length() > 0)
+				#set($intDefaultColor = 2)
+			#end
+		#end
+		#if($intDefaultColor == 1)
+			<TR style="FONT-SIZE: 14px;LINE-HEIGHT: 23px;BACKGROUND-COLOR: #F8fcff;color: #ff0000;" >
+		#elseif($intDefaultColor == 2)
+			<TR style="FONT-SIZE: 14px;LINE-HEIGHT: 23px;BACKGROUND-COLOR: #F8fcff;color: #3300FF;" >
+		#else
+			#if($intNowCount % 2 == 0)
+				#hodeSysUI_TrBeginMainBody(2)
+			#else
+				#hodeSysUI_TrBeginMainBody(3)
+			#end
+		#end
+			<input type="hidden" name="objInfo.intIDArr" value="$objInfo3.intID_1">
+
+			<td align="center">
+				#if($objInfo3.intCertAllow_1 == 1)
+					<img src="/hodeframe2012_hnmk/images/operator/opt_select.gif" style="cursor:hand" onclick="showCertDetail($objInfo3.intID_1)">
+				#end
+			</td>
+			<td align="center">$objInfo3.strStudentName_1</a></td>
+			<td align="center">$objInfo3.strStudentSex_1</a></td>
+			<td align="center">$objInfo3.strStudentIDCode_1</a></td>
+
+			<td align="center">$objInfo3.strStudentPost_1</td>
+			<td align="center">$objInfo3.strStudentTitles_1</td>
+			<td align="center">$objInfo3.strStudentDegree_1</td>
+
+			<td align="center">#if($objInfo3.intIsLeader_1 == 1) <font color='red'>督导员</font> #else &nbsp;&nbsp; #end</td>
+
+			#if($objInfo3.intIsImport1_1 == 1)
+
+				<td align='center'>$objInfo3.strExamRule1_1</td>
+				<td align='center'>补</td>
+				<td align='center'>$objInfo3.fltExamScore3_1</td>
+			#else
+				<td align='center'>$objInfo3.strExamRule_1</td>
+				<td align='center'>&nbsp;</td>
+				<td align='center'>$objInfo3.fltExamScore1_1</td>
+			#end
+
+			#if($objInfo.strTrainType == "培训")
+				<td align="center">
+				<select name="objInfo.intCertAllowArr" disabled >
+					<option value='0' #if($objInfo3.intCertAllow_1 == 0) selected #end >  </option>
+					<option value='1' #if($objInfo3.intCertAllow_1 == 1) selected #end >允许发证</option>
+					<option value='2' #if($objInfo3.intCertAllow_1 == 2) selected #end>不允许发证</option>
+				</select>
+				</td>
+			#end
+			<td align='center'>$objInfo3.strCertCode_1</td>
+			<td align='center'>$objInfo3.strCertRemark_1</td>
+		</tr>
+#end
+
+	<input type="hidden" name="objInfo.intID" value="$!objInfo.intID">
+
+	</TR>
+	</TABLE><br>
+
+
+
+	<TR  class="trEditContent"  >
+	<TD colspan="2">
+	<TABLE width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_return.gif" style="cursor:hand" onclick="changeURL($!objInfo.intIsNew)"/>&nbsp;&nbsp;
+	</TD>
+	</TR>
+	</TABLE>
+	</TD></TR>
+	</form>	</TABLE>
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+<script type="text/javascript">
+
+function changeURL(intNew)
+{
+	switch(intNew)
+	{
+		case 1:
+			document.location.href="showList1.action";
+			break;
+		case 2:
+			document.location.href="showList2.action";
+			break;
+		case 3:
+			document.location.href="showList3.action";
+			break;
+		case 4:
+			document.location.href="showList4.action";
+			break;
+		case 5:
+			document.location.href="showList4.action";
+			break;
+		case 9:
+			document.location.href="showSearchList.action";
+			break;
+		default:
+			document.location.href="showList1.action";
+			break;
+	}
+}
+
+
+function showCertDetail(intID) {
+     window.open("/hodeframe2012_hnmk/train/cert/viewCertDetailForm.action?studentIntID="+intID);
+	//window.location.href="/hodeframe2012_hnmk/train/cert/viewCertDetailForm.action";
+}
+
+</script>
+

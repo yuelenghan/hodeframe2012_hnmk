@@ -1,0 +1,22 @@
+<html>
+
+<HEAD>
+<TITLE>$action.getText('global.prj.title')</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<link href="$action.getText('config.prjName')/css/common.css" rel="stylesheet" type="text/css"/>
+</HEAD>
+#rbac_getSessionUser($user)
+#set($permissionIDs = $user.intPrivilegeIDs)
+<body leftmargin="0" topmargin="0">
+<TABLE width="181" border="0" cellspacing="0" cellpadding="0" bgcolor='#e2f5ff' >
+<TR>
+	<td width="181" height="500" align="center" valign="top" bgcolor="#e2f5ff" class="bg_img_left" id="tr_height">
+<script type="text/javascript">
+function stopMouse()
+{
+	//return false;
+}
+document.oncontextmenu=stopMouse;
+
+</script>
+	

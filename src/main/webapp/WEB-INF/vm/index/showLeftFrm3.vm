@@ -1,0 +1,82 @@
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+
+
+#hodeSysBean_checkInArr(11010100 $!permissionIDs $allow_11)	##三级培训班查看员
+#hodeSysBean_checkInArr(11010200 $!permissionIDs $allow_12)	##三级培训班填报员
+
+#hodeSysBean_checkInArr(11020100 $!permissionIDs $allow_21)	##省中心查看员
+#hodeSysBean_checkInArr(11020200 $!permissionIDs $allow_22)	##省中心审批员
+
+#hodeSysBean_checkInArr(11030100 $!permissionIDs $allow_31)	##公章管理员
+##set($allow_11 = true)
+##set($allow_12 = true)
+##set($allow_21 = true)
+##set($allow_22 = true)
+
+##-------------------------------------------------------------
+#hodeSysUI_leftFrameHeader("10")
+<table width="181">
+
+	<tr><td width="181" valign="top" class="left">
+			<div class="left_bt">证书审批</div>
+
+				<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td height="15"></td></tr></table>
+
+				<table width="146" border="0" align="center" cellpadding="0" cellspacing="0">
+#if($allow_22 || $user.intUserID == 26)
+						<tr><td height="10" colspan="3"></td></tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_left.gif" width="25" height="34" /></td>
+							<td width="145" background="/hodeframe2012_hnmk/images/hnmk/cdbj1_mid.gif" class="blackwz"><strong>证书审批筛选</strong></td>
+							<td width="9"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_right.gif" width="9" height="34" /></td>
+						</tr>
+
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/cert/showList1.action" target="mainFrame">审批受理</td>
+						</tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/cert/showList2.action" target="mainFrame">证书审核</td>
+						</tr>
+#end
+
+
+						<tr><td height="10" colspan="3"></td></tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_left.gif" width="25" height="34" /></td>
+							<td width="145" background="/hodeframe2012_hnmk/images/hnmk/cdbj1_mid.gif" class="blackwz"><strong>证书生成及导出</strong></td>
+							<td width="9"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_right.gif" width="9" height="34" /></td>
+						</tr>
+#if($allow_22 || $user.intUserID == 26)
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/cert/showList3.action" target="mainFrame">证书生成</td>
+						</tr>
+#end
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/cert/showList4.action" target="mainFrame">证书导出</td>
+						</tr>
+#if($allow_22 || $user.intUserID == 26)
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/cert/showList5.action" target="mainFrame">证书打印</td>
+						</tr>
+#end
+
+						<tr><td height="10" colspan="3"></td></tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_left.gif" width="25" height="34" /></td>
+							<td width="145" background="/hodeframe2012_hnmk/images/hnmk/cdbj1_mid.gif" class="blackwz"><a href="../train/cert/showSearchList.action" target="mainFrame"><strong><span class="blackwz">证书查询</strong></a></td>
+							<td width="9"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_right.gif" width="9" height="34" /></td>
+						</tr>
+				</table>
+
+
+</td></tr></table>
+
+
+
+
+#parse("$action.getText('config.vmPath')/simple/Footer_left.vm")

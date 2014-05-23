@@ -1,0 +1,191 @@
+<HTML>
+<HEAD>
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+
+
+<Script Language=JavaScript>
+var sAction = "INSERT";
+var sTitle = "$action.getText('webeditor.dialog.fieldset.insert')";
+
+var oControl;
+var oSeletion;
+var sRangeType;
+
+var sUrl = "http://";
+var sScrolling = "";
+var sFrameBorder = "0";
+var sMarginHeight = "0";
+var sMarginWidth = "0";
+var sWidth = "500";
+var sHeight = "400";
+
+oSelection = dialogArguments.eWebEditor.document.selection.createRange();
+sRangeType = dialogArguments.eWebEditor.document.selection.type;
+
+if (sRangeType == "Control") {
+	if (oSelection.item(0).tagName == "IFRAME"){
+		sAction = "MODI";
+		sTitle = "$action.getText('webeditor.dialog.fieldset.modify')";
+		oControl = oSelection.item(0);
+		sUrl = oControl.src;
+		sScrolling = oControl.scrolling;
+		sFrameBorder = oControl.frameBorder;
+		sMarginHeight = oControl.marginHeight;
+		sMarginWidth = oControl.marginWidth;
+		sWidth = oControl.width;
+		sHeight = oControl.height;
+	}
+}
+
+
+document.write("<title>$action.getText('webeditor.dialog.iframe.title')-" + sTitle + "</title>");
+
+// ��ʼֵ
+function InitDocument(){
+	SearchSelectValue(d_scrolling, sScrolling.toLowerCase());
+
+	d_url.value = sUrl;
+	d_frameborder.value = sFrameBorder;
+	d_marginheight.value = sMarginHeight;
+	d_marginwidth.value = sMarginWidth;
+	d_width.value = sWidth;
+	d_height.value = sHeight;
+
+}
+
+</Script>
+
+
+
+<title>$action.getText('webeditor.dialog.iframe.title')</title>
+
+<SCRIPT event=onclick for=Ok language=JavaScript>
+	sScrolling = d_scrolling.options[d_scrolling.selectedIndex].value;
+
+	sUrl = d_url.value;
+	if (!IsURL(sUrl)){
+		BaseAlert(d_url, "$action.getText('webeditor.dialog.iframe.errorURL')");
+		return;
+	}
+
+	d_frameborder.value = ToInt(d_frameborder.value);
+	d_marginheight.value = ToInt(d_marginheight.value);
+	d_marginwidth.value = ToInt(d_marginwidth.value);
+	sFrameBorder = d_frameborder.value;
+	sMarginHeight = d_marginheight.value;
+	sMarginWidth = d_marginwidth.value;
+	// ��ȸ߶���Чֵ��
+	var sWidth = "";
+	if (!MoreThanOne(d_width,"$action.getText('webeditor.dialog.iframe.width')")) return;
+	sWidth = d_width.value;
+	var sHeight = "";
+	if (!MoreThanOne(d_height,"$action.getText('webeditor.dialog.iframe.height')")) return;
+	sHeight = d_height.value;
+
+	if (sAction == "MODI") {
+		oControl.src = sUrl;
+		oControl.scrolling = sScrolling;
+		oControl.frameBorder = sFrameBorder;
+		oControl.marginHeight = sMarginHeight;
+		oControl.marginWidth = sMarginWidth;
+		oControl.width = sWidth;
+		oControl.height = sHeight;
+	}else{
+		dialogArguments.insertHTML("<iframe src='"+sUrl+"' scrolling='"+sScrolling+"' frameborder='"+sFrameBorder+"' marginheight='"+sMarginHeight+"' marginwidth='"+sMarginWidth+"' width='"+sWidth+"' height='"+sHeight+"'></iframe>");
+	}
+
+	window.returnValue = null;
+	window.close();
+</SCRIPT>
+
+<SCRIPT LANGUAGE=JAVASCRIPT>
+
+
+// �ж�ֵ�Ƿ����0
+function MoreThanOne(obj, sErr){
+	var b=false;
+	if (obj.value!=""){
+		obj.value=parseFloat(obj.value);
+		if (obj.value!="0"){
+			b=true;
+		}
+	}
+	if (b==false){
+		BaseAlert(obj,sErr);
+		return false;
+	}
+	return true;
+}
+
+</SCRIPT>
+</HEAD>
+
+<body bgcolor=menu onload="InitDocument()">
+
+<table border=0 cellpadding=0 cellspacing=0>
+<tr>
+	<td>
+	<fieldset>
+	<legend>$action.getText('webeditor.dialog.iframe.property')</legend>
+	<table border=0 cellpadding=0 cellspacing=0>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.iframe.urlAddress')</td>
+		<td width=5></td>
+		<td colspan=5><input type=text id=d_url size=38 value="" style="width:243px" class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td noWrap>$action.getText('webeditor.dialog.iframe.scrollbar')</td>
+
+		<td width=5></td>
+		<td><select id=d_scrolling style="width:72px">
+				#webEditor_scrolling()
+			</select></td>
+		<td width=40></td>
+		<td noWrap>$action.getText('webeditor.dialog.iframe.border')</td>
+		<td width=5></td>
+		<td><input id=d_frameborder size=10 maxlength=2 value="" ONKEYPRESS="event.returnValue=IsDigit();" class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.iframe.top')</td>
+		<td width=5></td>
+		<td><input id=d_marginheight size=10 maxlength=2 value="" ONKEYPRESS="event.returnValue=IsDigit();" class='inputText'></td>
+		<td width=40></td>
+		<td>$action.getText('webeditor.dialog.iframe.left')</td>
+		<td width=5></td>
+		<td><input id=d_marginwidth size=10 maxlength=2 value="" ONKEYPRESS="event.returnValue=IsDigit();" class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.iframe.width')</td>
+		<td width=5></td>
+		<td><input id=d_width size=10 maxlength=4 value="" ONKEYPRESS="event.returnValue=IsDigit();" class='inputText'></td>
+		<td width=40></td>
+		<td>$action.getText('webeditor.dialog.iframe.height')</td>
+		<td width=5></td>
+		<td><input id=d_height size=10 maxlength=4 value="" ONKEYPRESS="event.returnValue=IsDigit();" class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	</table>
+	</fieldset>
+	</td>
+</tr>
+<tr><td height=5></td></tr>
+<tr><td align=right><input type=submit value="$action.getText('webeditor.dialog.ok')" id=Ok class='inputButton'>&nbsp;&nbsp;<input type=button value="$action.getText('webeditor.dialog.cancel')" onclick="window.close();" class='inputButton'></td></tr>
+</table>
+
+</BODY>
+</HTML>

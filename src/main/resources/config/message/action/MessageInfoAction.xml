@@ -1,0 +1,147 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="message.info" extends="index" namespace="/message/info">
+
+		<action name="showLeftTree" class="messageInfoAction">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/showLeftTree.vm</result>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="index" class="messageInfoAction">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/index.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="readme" class="messageInfoAction">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="addForm" class="messageInfoAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/addForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="add" class="messageInfoAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/afterAdd.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="del" class="messageInfoAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/afterDel.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showSentList" class="messageInfoAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/showList.vm</result>
+			<param name="hiddenParameter">objSearch.strContent</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showReceiveList" class="messageInfoAction" method="showReceiveList">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/showReceiveList.vm</result>
+			<param name="hiddenParameter">objSearch.strContent</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="replyForm" class="messageInfoAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/replyForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="reply" class="messageInfoAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/afterReply.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="delReceive" class="messageInfoAction" method="delReceive">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/afterReceiveDel.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="refreshMsgFrame"  class="messageInfoAction" method="refreshMsg">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/refreshMsg.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showMsgFrame"  class="messageInfoAction">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/showMsg.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="viewFormForSent" class="messageInfoAction" method="viewData">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/viewFormForSent.vm</result>
+			 <param name="hiddenParameter"></param>
+			 <param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="viewFormForReceive" class="messageInfoAction" method="viewFormForReceive">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/viewFormForReceive.vm</result>
+			 <param name="hiddenParameter"></param>
+			 <param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showCleanFrm" class="messageInfoAction">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/showCleanFrm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="cleanMsg" class="messageInfoAction" method="clean">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/afterClean.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="toForm" class="messageInfoAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/toForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="to" class="messageInfoAction" method="toEmail">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/afterTo.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="showOtherList" class="messageInfoAction" method="showOtherList">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/showOtherList.vm</result>
+			<param name="hiddenParameter">objSearch.strContent</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="delOtherInfo" class="messageInfoAction" method="delOtherInfo">
+			<result name="success" type="velocity">/WEB-INF/vm/message/info/afterOtherDel.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+    </package>
+
+</xwork>

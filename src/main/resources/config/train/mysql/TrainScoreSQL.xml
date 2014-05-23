@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.score">
+  <typeAlias alias="trainScoreModel" type="com.hode.train.model.TrainScoreModel"/>
+  <typeAlias alias="trainScoreDetailModel" type="com.hode.train.model.TrainScoreDetailModel"/>
+
+  <select id="getObjectInfo" resultClass="trainScoreModel" parameterClass="trainScoreModel">
+     SELECT *
+	FROM train_score
+	WHERE intID = #intID#
+  </select>
+  <select id="getPageObjectList" resultClass="trainScoreModel" parameterClass="trainScoreModel">
+	select *
+	from train_score
+	where 1 = 1
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	<isNotEmpty prepend="AND" property="strScoreCount">
+		strScoreCount like '%$strScoreCount$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strCheckFlag">
+		intCheckFlag in ($strCheckFlag$)
+	</isNotEmpty>
+	ORDER BY intID desc
+	LIMIT #intStart#,#intOffset#
+  </select>
+  <select id="getRecordCount" resultClass="int" parameterClass="trainScoreModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_score
+	where 1 = 1
+	<isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+		intCreateGroupID = #intCreateGroupID#
+	</isGreaterThan>
+	<isNotEmpty prepend="AND" property="strScoreCount">
+		strScoreCount like '%$strScoreCount$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strCheckFlag">
+		intCheckFlag in ($strCheckFlag$)
+	</isNotEmpty>
+  </select>
+
+	<select id="checkObjectExists" parameterClass="trainScoreModel" resultClass="int">
+		SELECT count(intID) AS intTotalNumber
+		FROM train_score
+		WHERE strScoreCount=#strScoreCount# and strScoreExam=#strScoreExam#
+			<isGreaterThan prepend="AND" property="intID" compareValue="0">
+				intID!=#intID#
+			</isGreaterThan>
+	</select>
+  <insert id="insertObjectAndGetID" parameterClass="trainScoreModel">
+    INSERT INTO train_score(
+		strScoreCount,
+		strScoreDate,
+		strScoreUseNum,
+		intCreateUserID,
+		strCreateUserName,
+		intCreateGroupID,
+		strCreateGroupName,
+		intCreateUnitID,
+		strCreateUnitName,
+		strCreateDate,
+		intCheckFlag,
+		strCheckVal,
+		strScoreExam,
+		strTrainCountClass
+		)
+	VALUES (
+		#strScoreCount#,
+		#strScoreDate#,
+		#strScoreUseNum#,
+		#intCreateUserID#,
+		#strCreateUserName#,
+		#intCreateGroupID#,
+		#strCreateGroupName#,
+		#intCreateUnitID#,
+		#strCreateUnitName#,
+		#strCreateDate#,
+		#intCheckFlag#,
+		#strCheckVal#,
+		#strScoreExam#,
+		#strTrainCountClass#
+		)
+		<selectKey resultClass="int" keyProperty="intID" >
+			SELECT max(intID) AS intID
+			FROM train_score
+		</selectKey>
+  </insert>
+  <update id="updateObject" parameterClass="trainScoreModel">
+    UPDATE train_score
+	SET
+		  strScoreCount = #strScoreCount#,
+		  strScoreDate = #strScoreDate#,
+		  strScoreUseNum = #strScoreUseNum#
+	WHERE intID = #intID#
+  </update>
+  <delete id="deleteObject" parameterClass="string">
+		DELETE from train_score
+		WHERE intID IN ( $strIDList$ )
+  </delete>
+
+  <update id="updateCount" parameterClass="trainScoreModel">
+    UPDATE train_score
+	SET
+		  intScoreUseNum = #intScoreUseNum#,
+		  intScoreUseNum1 = #intScoreUseNum1#,
+		  strTrainCount = #strTrainCount#
+	WHERE intID = #intID#
+  </update>
+  <update id="updateCert" parameterClass="trainScoreModel">
+    UPDATE train_cert
+	SET intIsNew = 1
+	WHERE strTrainCount = #strTrainCount#
+	<isNotNull prepend="and" property="strTrainCountClass">
+		strTrainCountClass = #strTrainCountClass#
+	</isNotNull>
+  </update>
+  <!-- detail -->
+  <delete id="deleteDetailObject" parameterClass="int">
+		update train_score_detail
+		set intIsImport = 0
+		WHERE intMainID = #intMainID#
+  </delete>
+  <delete id="deleteDetailObject1" parameterClass="int">
+		update train_score_detail
+		set intIsImport1 = 0
+		WHERE intMainID1 = #intMainID1#
+  </delete>
+  <delete id="deleteDetailObject2" parameterClass="int">
+		delete from train_score_detail
+		WHERE ( intMainID = #intMainID# and intIsImport = 0 ) or ( intMainID1 = #intMainID#  and intIsImport1 = 0 )
+  </delete>
+
+  <select id="checkExamObject" resultClass="int" parameterClass="trainScoreDetailModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_score_detail
+	where strStudentIDCode = #strStudentIDCode#
+		and
+		(
+			(
+				strScoreCount = #strScoreCount#
+				and intMainID = #intMainID#
+				and strTrainCount = #strTrainCount#
+			)
+			or
+			(
+				strScoreCount1 = #strScoreCount#
+				and intMainID1 = #intMainID#
+				and strTrainCount1 = #strTrainCount#
+
+			)
+		)
+  </select>
+
+
+
+  <insert id="insertExcelObject" parameterClass="trainScoreDetailModel">
+		<isEqual prepend="" property="intIsTmpExam" compareValue="1">
+			INSERT INTO train_score_detail
+			(
+				strStudentName,
+				strStudentIDCode,
+				intMainID,
+				intIsImport,
+				strTrainCount,
+				strScoreCount,
+				fltExamScore1,
+				fltExamScore2,
+				fltTopScore,
+				strExamRule,
+				strRemark,
+				intIsPass,
+				strScoreExam,
+				strScoreTrainCount
+			)
+			VALUES (
+				#strStudentName#,
+				#strStudentIDCode#,
+				#intMainID#,
+				1,
+				#strTrainCount#,
+				#strScoreCount#,
+				#fltExamScore1#,
+				#fltExamScore2#,
+				#fltTopScore#,
+				#strExamRule#,
+				#strRemark#,
+				0,
+				#strScoreExam#,
+				#strScoreTrainCount#
+			)
+		</isEqual>
+		<isEqual prepend="" property="intIsTmpExam" compareValue="2">
+			INSERT INTO train_score_detail
+			(
+				strStudentName,
+				strStudentIDCode,
+				intMainID1,
+				intIsImport1,
+				strTrainCount1,
+				strScoreCount1,
+				fltExamScore3,
+				fltExamScore4,
+				fltTopScore,
+				strExamRule1,
+				strRemark1,
+				intIsPass1,
+				strScoreExam,
+				strScoreTrainCount
+			)
+			VALUES (
+				#strStudentName#,
+				#strStudentIDCode#,
+				#intMainID#,
+				1,
+				#strTrainCount#,
+				#strScoreCount#,
+				#fltExamScore1#,
+				#fltExamScore2#,
+				#fltTopScore#,
+				#strExamRule#,
+				#strRemark#,
+				0,
+				#strScoreExam#,
+				#strScoreTrainCount#
+			)
+		</isEqual>
+  </insert>
+
+  <update id="updateExcelObject" parameterClass="trainScoreDetailModel">
+		<isEqual prepend="" property="intIsTmpExam" compareValue="1">
+			UPDATE train_score_detail
+			SET fltExamScore1 = #fltExamScore1#,
+				fltExamScore2 = #fltExamScore2#,
+				fltTopScore = #fltTopScore#,
+				strTrainCount = #strTrainCount#,
+				strScoreCount = #strScoreCount#,
+				intIsImport = 1,
+				intIsPass = 0
+			WHERE strStudentIDCode = #strStudentIDCode#
+				intMainID = #intMainID#
+		</isEqual>
+		<isEqual prepend="" property="intIsTmpExam" compareValue="2">
+			UPDATE train_score_detail
+			SET fltExamScore3 = #fltExamScore1#,
+				fltExamScore4 = #fltExamScore2#,
+				fltTopScore = #fltTopScore#,
+				strTrainCount = #strTrainCount#,
+				strScoreCount = #strScoreCount#,
+				intIsImport1 = 1,
+				intIsPass1 = 0
+			WHERE strStudentIDCode = #strStudentIDCode#
+				intMainID1 = #intMainID#
+		</isEqual>
+  </update>
+  <select id="getScoreDetailListByMainID" resultClass="trainScoreDetailModel" parameterClass="trainScoreDetailModel">
+    SELECT *
+	FROM train_score_detail
+		WHERE ( intMainID = #intMainID# and intIsImport > 0 ) or ( intMainID1 = #intMainID#  and intIsImport1 > 0 )
+	order by intID asc
+  </select>
+  <update id="checkInfo_0" parameterClass="trainScoreModel">
+    UPDATE train_score
+	SET
+		intCheckFlag = #intCheckFlag#,
+		strCheckVal = #strCheckVal#
+	WHERE intID = #intID#
+  </update>
+  <update id="checkInfo_1" parameterClass="trainScoreModel">
+    UPDATE train_score
+	SET
+		intCheckFlag = #intCheckFlag#,
+		strCheckVal = #strCheckVal#
+	WHERE intID = #intID#
+  </update>
+  <update id="checkInfo_9" parameterClass="trainScoreModel">
+    UPDATE train_score
+	SET
+		intCheckFlag = #intCheckFlag#,
+		strCheckVal = #strCheckVal#
+	WHERE intID = #intID#
+  </update>
+  <update id="checkInfo_91" parameterClass="trainScoreModel">
+    UPDATE train_score_detail
+	SET intIsPass  = 1
+	WHERE intMainID = #intID#
+  </update>
+  <update id="checkInfo_92" parameterClass="trainScoreModel">
+    UPDATE train_score_detail
+	SET intIsPass1  = 1
+	WHERE intMainID1 = #intID#
+  </update>
+
+
+
+  <select id="getDetailPageObjectList" resultClass="trainScoreDetailModel" parameterClass="trainScoreDetailModel">
+	select *
+	from train_score_detail
+	where ( intIsPass =1 or intIsPass1 = 1 )
+	<isNotNull prepend="and" property="mainIDList">
+		<![CDATA[ intMainID in ]]>
+		<iterate open="(" close=")" conjunction="," property="mainIDList">
+			#mainIDList[]#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="AND" property="strStudentName">
+		strStudentName like '%$strStudentName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strStudentIDCode">
+		strStudentIDCode like '%$strStudentIDCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainCount">
+	(
+		( strTrainCount like '%$strTrainCount$%' and intIsImport = 1 )
+		or
+		( strTrainCount1 like '%$strTrainCount$%' and intIsImport1 = 1 )
+	)
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strScoreCount">
+	(
+		( strScoreCount like '%$strScoreCount$%' and intIsImport = 1 )
+		or
+		( strScoreCount1 like '%$strTrainCount$%' and intIsImport1 = 1 )
+	)
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strScoreExam">
+		( strScoreExam like '%$strScoreExam$%' and (intIsImport = 1 or intIsImport1=1) )
+	</isNotEmpty>
+	ORDER BY intID desc
+	LIMIT #intStart#,#intOffset#
+  </select>
+
+
+
+  <select id="getDetailRecordCount" resultClass="int" parameterClass="trainScoreDetailModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_score_detail
+	where ( intIsPass =1 or intIsPass1 = 1 )
+	<isNotNull prepend="and" property="mainIDList">
+		<![CDATA[ intMainID in ]]>
+		<iterate open="(" close=")" conjunction="," property="mainIDList">
+			#mainIDList[]#
+		</iterate>
+	</isNotNull>
+	<isNotEmpty prepend="AND" property="strStudentName">
+		strStudentName like '%$strStudentName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strStudentIDCode">
+		strStudentIDCode like '%$strStudentIDCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainCount">
+		( strTrainCount like '%$strTrainCount$%' and intIsImport = 1 )
+		or
+		( strTrainCount1 like '%$strTrainCount$%' and intIsImport1 = 1 )
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strScoreCount">
+		( strScoreCount like '%$strScoreCount$%' and intIsImport = 1 )
+		or
+		( strScoreCount1 like '%$strTrainCount$%' and intIsImport1 = 1 )
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strScoreExam">
+		( strScoreExam like '%$strScoreExam$%' and (intIsImport = 1 or intIsImport1=1) )
+	</isNotEmpty>
+	  </select>
+
+	<select id="getMainIDByGroupID" parameterClass="int" resultClass="int">
+		select intID from train_score
+		where intCreateGroupID = $intGroupID$
+	</select>
+
+	<select id="getTrainScoreByTrainCount" parameterClass="trainScoreModel" resultClass="trainScoreModel">
+		select * from train_score where strTrainCount = #strTrainCount#
+		<isNotNull prepend="and" property="strTrainCountClass">
+			strTrainCountClass = #strTrainCountClass#
+		</isNotNull>
+	</select>
+
+	<select id="getTrainScoreByScoreCount" parameterClass="trainScoreModel" resultClass="trainScoreModel">
+		select * from train_score where strScoreCount = #strScoreCount# and strScoreExam = #strScoreExam#
+	</select>
+</sqlMap>

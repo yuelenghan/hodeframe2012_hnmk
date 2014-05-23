@@ -1,0 +1,163 @@
+<HTML>
+<HEAD>
+<TITLE>$action.getText('webeditor.dialog.anchor.title')</TITLE>
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+
+<script language="JavaScript">
+// ��ʼѡ������
+var oRange;
+var sType;
+var oSel;
+
+var sName="";
+
+oRange = dialogArguments.eWebEditor.document.selection.createRange();
+sType = dialogArguments.eWebEditor.document.selection.type;
+if (sType == "Control") {
+	oSel = oRange(0).parentNode;
+}else{
+	oSel = oRange.parentElement();
+}
+
+if (oSel.tagName.toUpperCase() == "A"){
+	if (oSel.href.toUpperCase() == ""){
+		sName = oSel.name;
+		moveRange(oSel);
+	}
+}
+
+
+
+// ��ʼֵ
+function InitDocument(){
+	d_anchor.value = sName;
+	getAnchors();
+}
+
+// ȡ���е�ê
+function getAnchors() {
+	d_allanchor.options.length = 0;
+	var allLinks = dialogArguments.eWebEditor.document.body.getElementsByTagName("A");
+	for (i=0; i < allLinks.length; i++) {
+		if (allLinks[i].href.toUpperCase() == "") {
+			d_allanchor.options[d_allanchor.options.length] = new Option(allLinks[i].name, allLinks[i].name);
+		}
+	}
+}
+
+// ȡָ����Ƶ�ê����
+function getAnchorObj(str) {
+	var allLinks = dialogArguments.eWebEditor.document.body.getElementsByTagName("A");
+	for (i=0; i < allLinks.length; i++) {
+		if (allLinks[i].href.toUpperCase() == "") {
+			if (allLinks[i].name==str){
+				return allLinks[i];
+			}
+		}
+	}
+	return null;
+}
+
+// ȷ��
+function OK(){
+	var sName = BaseTrim(d_anchor.value);
+	if (sName == ""){
+		BaseAlert(d_anchor, "$action.getText('webeditor.dialog.anchor.insertTitle')");
+		return;
+	}
+
+	oRange = dialogArguments.eWebEditor.document.selection.createRange();
+	sType = dialogArguments.eWebEditor.document.selection.type;
+	if (sType == "Control") {
+		oSel = oRange(0).parentNode;
+	}else{
+		oSel = oRange.parentElement();
+	}
+
+	var bModify = false;
+	if (oSel.tagName.toUpperCase() == "A"){
+		if (oSel.href.toUpperCase() == ""){
+			oSel.name = sName;
+			bModify = true;
+		}
+	}
+	if (!bModify){
+		var html="";
+		if (sType == "Control") {
+			oRange(0).outerHTML = "<a id=eWebEditor_TempElement_Anchor name=" + sName + ">" + oRange(0).outerHTML + "</a>";
+		}else{
+			oRange.pasteHTML("<a id=eWebEditor_TempElement_Anchor name=" + sName + ">" + oRange.htmlText + "</a>");
+		}
+
+		var oTempElement = dialogArguments.eWebEditor.document.getElementById("eWebEditor_TempElement_Anchor");
+
+		if (dialogArguments.borderShown != "0") {
+			oTempElement.runtimeStyle.borderBottom = "1px dashed #000000";
+		}
+
+		oTempElement.removeAttribute("id");
+	}
+
+	window.returnValue = null;
+	window.close();
+}
+
+// ת��
+function doMove(){
+	var nIndex = d_allanchor.selectedIndex;
+	if (nIndex<0) {
+		alert("$action.getText('webeditor.dialog.anchor.selectOneTitle')");
+		return;
+	}
+	var sel = getAnchorObj(d_allanchor.options[nIndex].value);
+	if (sel){
+		moveRange(sel);
+	}
+}
+
+// ���
+function doDel(){
+	var nIndex = d_allanchor.selectedIndex;
+	if (nIndex<0) {
+		alert("$action.getText('webeditor.dialog.anchor.selectOneTitle')");
+		return;
+	}
+	var sel = getAnchorObj(d_allanchor.options[nIndex].value);
+	if (sel){
+		sel.outerHTML = sel.innerHTML;
+		d_allanchor.options[nIndex] = null;
+	}
+}
+
+// ѡ��ָ��Ԫ�ص�ѡ��
+function moveRange(sel){
+	var rng = dialogArguments.eWebEditor.document.body.createTextRange();
+	rng.moveToElementText(sel);
+	rng.select();
+}
+</script>
+
+</HEAD>
+<BODY bgcolor="menu" onload="InitDocument()">
+<TABLE CELLSPACING="0" cellpadding="5" border="0" align=center>
+<TR valign="top">
+	<TD align="left" nowrap>
+		$action.getText('webeditor.dialog.anchor.name')<br>
+		<INPUT TYPE=TEXT SIZE=20 id="d_anchor" style="width:150px;" class='inputText'><br>
+		$action.getText('webeditor.dialog.anchor.otherAnchor')<br>
+		<select id="d_allanchor" size=8 style="width:150px;" onchange="d_anchor.value=this.options[this.selectedIndex].value;" class='inputSELECT'></select>
+	</td>
+	<td>
+		<input type=button style="width:80px;margin-top:15px" name="btnOK" onClick="OK()" value="$action.getText('webeditor.dialog.ok')" class='inputButton'><br>
+		<input type=button style="width:80px;margin-top:5px" name="btnCancel" onClick="window.close()" value="$action.getText('webeditor.dialog.cancel')" class='inputButton'><br>
+		<input type=button style="width:80px;margin-top:60px" name="btnMove" onClick="doMove()" value="$action.getText('webeditor.dialog.turn')" class='inputButton'><br>
+		<input type=button style="width:80px;margin-top:5px" name="btnDel" onClick="doDel()" value="$action.getText('webeditor.dialog.clear')" class='inputButton'><br>
+
+	</td>
+</tr>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,28 @@
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/popupMsg.js"></SCRIPT>
+<script language="JavaScript">
+var strMsg=new Array();
+var intTotal=0;
+time=0;
+
+var pop = new popupMessage("pop");
+pop.setPopWidth(200);
+pop.setPopHeight(200);
+pop.setWaitTime(0);
+pop.setStep(4);
+intCount=0;
+function showMsg(intCount)
+{
+	if(intCount < intTotal)
+	{
+		this.focus();
+		intCount++;
+		pop.popmsg("hode",strMsg[intCount],"../images/popo/");
+
+	}
+	window.setTimeout( "showMsg("+intCount+")", 1000 );
+}
+showMsg(intCount);
+
+</script>
+<iframe align="middle" frameborder="0" scrolling="no" width="0" height="0" src="./refreshMsgFrame.action?intIsNeedinitMsg=1"></iframe>

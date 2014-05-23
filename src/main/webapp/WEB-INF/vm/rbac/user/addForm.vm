@@ -1,0 +1,214 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.user.operation.add')" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("add.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "1")
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strAccount')"  1 1 "objInfo.strAccount" "$!objInfo.strAccount"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showPassword("$!action.getText('rbac.user.form.strPassword')"  1 1 "objInfo.strPassword" "$!objInfo.strPassword" "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strName')"  1 1 "objInfo.strName" "$!objInfo.strName"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strTel')"  1 0 "objInfo.strTel" "$!objInfo.strTel"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strUserUnitName')"  1 0 "objInfo.strUserUnitName" "$!objInfo.strUserUnitName"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strMobile')"  1 0 "objInfo.strMobile" "$!objInfo.strMobile"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strAddress')"  1 0 "objInfo.strAddress" "$!objInfo.strAddress"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strZipCode')"  1 0 "objInfo.strZipCode" "$!objInfo.strZipCode"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strEmail')"  1 0 "objInfo.strEmail" "$!objInfo.strEmail"   40 200 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.intOrderID')"  1 0 "objInfo.intOrderID" "$!objInfo.intOrderID"   20 4 "")
+#hodeSysUI_TrEnd()
+
+
+<!-- 
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.user.form.strMachineCode')"  1 0 "objInfo.strMachineCode" "$!objInfo.strMachineCode"   40 100 "")
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft'>所在领导1$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		<INPUT TYPE="hidden" NAME="objInfo.intParentUserID1" id="objInfo.intParentUserID1" CLASS="inputText" value='$!objInfo.intParentUserID1' >
+		<INPUT TYPE="text" NAME="objInfo.strParentUserName1" id="objInfo.strParentUserName1" CLASS="inputText" value='$!objInfo.strParentUserName1' readonly >
+		 <img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../user/selectUser.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intParentUserID1','objInfo.strParentUserName1');" valign="bottom"/>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft'>所在领导2$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		<INPUT TYPE="hidden" NAME="objInfo.intParentUserID2" id="objInfo.intParentUserID2" CLASS="inputText" value='$!objInfo.intParentUserID2' >
+		<INPUT TYPE="text" NAME="objInfo.strParentUserName2" id="objInfo.strParentUserName2" CLASS="inputText" value='$!objInfo.strParentUserName2' readonly >
+		 <img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../user/selectUser.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intParentUserID2','objInfo.strParentUserName2');" valign="bottom"/>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft'>所在领导3$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		<INPUT TYPE="hidden" NAME="objInfo.intParentUserID3" id="objInfo.intParentUserID3" CLASS="inputText" value='$!objInfo.intParentUserID3' >
+		<INPUT TYPE="text" NAME="objInfo.strParentUserName3" id="objInfo.strParentUserName3" CLASS="inputText" value='$!objInfo.strParentUserName3' readonly >
+		 <img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../user/selectUser.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intParentUserID3','objInfo.strParentUserName3');" valign="bottom"/>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft'>所在领导4$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		<INPUT TYPE="hidden" NAME="objInfo.intParentUserID4" id="objInfo.intParentUserID4" CLASS="inputText" value='$!objInfo.intParentUserID4' >
+		<INPUT TYPE="text" NAME="objInfo.strParentUserName4" id="objInfo.strParentUserName4" CLASS="inputText" value='$!objInfo.strParentUserName4' readonly >
+		 <img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../user/selectUser.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intParentUserID4','objInfo.strParentUserName4');" valign="bottom"/>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft'>所在领导5$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		<INPUT TYPE="hidden" NAME="objInfo.intParentUserID5" id="objInfo.intParentUserID5" CLASS="inputText" value='$!objInfo.intParentUserID5' >
+		<INPUT TYPE="text" NAME="objInfo.strParentUserName5" id="objInfo.strParentUserName5" CLASS="inputText" value='$!objInfo.strParentUserName5' readonly >
+		 <img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../user/selectUser.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intParentUserID5','objInfo.strParentUserName5');" valign="bottom"/>
+	</td>
+#hodeSysUI_TrEnd()
+ -->
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intGroupID" "$!objSearch.intGroupID")
+#hodeSysHTMLUI_htmlHidden("objInfo.intIsCheck" "1")
+#hodeSysHTMLUI_htmlHidden("objInfo.intErrorLoginCount" "0")
+#hodeSysHTMLUI_htmlHidden("objInfo.strLoginTime" "")
+#hodeSysHTMLUI_htmlHidden("objInfo.strLastLoginTime" "")
+#hodeSysHTMLUI_htmlHidden("objInfo.strLockTime" "")
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+function reloadUser(actionNameSpace,strIDList,strName)
+{
+//fPopUpSelectGroupUnitDlg
+	showx = event.screenX - event.offsetX -120 - 4 - 310 ; // + deltaX;
+	showy = event.screenY - event.offsetY -220 + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	var strIDList=document.getElementById(strIDList);
+	var strName=document.getElementById(strName);
+	retval = window.showModalDialog(actionNameSpace+"&jsSelectModel.strID="+strIDList.value, "","dialogWidth:465px; dialogHeight:345px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null )
+	{
+		var ss=retval.split("#");
+		if(ss[0]!=null && ss[0].indexOf(',')>-1)
+		{
+			ss[0]=ss[0].substring(1);
+			if(ss[0]!=null && ss[0].lastIndexOf(',')>-1)
+			{
+				ss[0]=ss[0].substring(0,ss[0].length-1);
+			}
+		}
+		if(ss[1]!=null && ss[1].indexOf(',')>-1)
+		{
+			ss[1]=ss[1].substring(1);
+			if(ss[1]!=null && ss[1].lastIndexOf(',')>-1)
+			{
+				ss[1]=ss[1].substring(0,ss[1].length-1);
+			}
+		}
+		strIDList.value=ss[0];
+		strName.value=ss[1];
+/*
+		if(ss[0])
+		{
+			var URL = "../../personnel/baseInfo/showFrameUserInfo.action?objInfo.intID="+ss[0];
+			var xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			xmlhttp.Open("GET",URL, false);
+			try
+			{
+				xmlhttp.Send();
+				var result = xmlhttp.responseText;
+				ss = result.split("*");
+				if(ss.length > 3)
+				{
+					var strAccount = document.getElementById("objInfo.strAccount");
+					var strName = document.getElementById("objInfo.strName");
+					var strEmail = document.getElementById("objInfo.strEmail");
+					var strTel = document.getElementById("objInfo.strTel");
+					if(strAccount)
+					{
+						sssss = ss[4].split("@");
+						strAccount.value = sssss[0];
+					}
+					if(strName)
+						strName.value = ss[2];
+					if(strEmail)
+						strEmail.value = ss[4];
+					if(strTel)
+						strTel.value = ss[3];
+
+//						*681*jt_cwb名*888*512@sumec.com*;
+				}
+			}
+			catch(e) {return(false); }
+			xmlhttp = null;
+		}
+		else
+		{
+			var strAccount = document.getElementById("objInfo.strAccount");
+			var strName = document.getElementById("objInfo.strName");
+			var strEmail = document.getElementById("objInfo.strEmail");
+			var strTel = document.getElementById("objInfo.strTel");
+			if(strAccount)
+				strAccount.value = "";
+			if(strName)
+				strName.value = "";
+			if(strEmail)
+				strEmail.value = "";
+			if(strTel)
+				strTel.value = "";
+
+		}
+*/
+	}
+}
+
+</script>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

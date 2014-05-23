@@ -1,0 +1,76 @@
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+<link href="$action.getText('config.prjName')/css/xgfg.css" rel="stylesheet" type="text/css" />
+#set($path="$action.getText('config.prjName')/images/xgfg")
+
+#hodeSysBean_checkInArr(10040101 $!permissionIDs $allow1_1)
+#hodeSysBean_checkInArr(10040102 $!permissionIDs $allow1_2)
+#hodeSysBean_checkInArr(10040103 $!permissionIDs $allow1_3)
+
+##10040101 发消息 普通权限 
+##10040102 已发送 普通权限 
+##10040103 已接收 普通权限 
+
+
+<table width="206" border="0" cellpadding="0" cellspacing="0" class="">##tableStyle
+      <tr>
+        <td background="$path/oa_main_img_03.gif" width="206" height="40" valign="top" align="left">
+	<div style="margin-left:25px;margin-top:5px;" style="font-size:14px;color:#ffffff;font-weight:bold;">短消息</div>
+	</td>
+      </tr>
+      <tr>
+        <td align="center" background="$path/oa_main_img_31.gif"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+        #if($allow1_1)
+          <tr>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+			<td width="30" align="center"><img src="$path/oa_main_img_28.gif" width="25" height="25"></td>
+			<td align="left">
+				<a href="./addForm.action" target="mainFrame" class="leftMenuL">
+						<span class="textLeftMenu_1">$action.getText('message.operation.add')</span>
+				</a>
+			</td>
+              </tr>
+            </table></td>
+          </tr>
+	#end
+	#if($allow1_2)
+          <tr>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+			<td width="30" align="center"><img src="$path/oa_main_img_28.gif" width="25" height="25"></td>
+			<td align="left">
+				<a href="./showSentList.action" target="mainFrame" class="leftMenuL">
+				<span class="textLeftMenu_1">$action.getText('message.menu.sentList')</span>
+				</a>
+			</td>
+              </tr>
+            </table></td>
+          </tr>
+          #end
+          #if($allow1_3)
+          <tr>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+			<td width="30" align="center"><img src="$path/oa_main_img_28.gif" width="25" height="25"></td>
+			<td align="left">
+				<a href="./showReceiveList.action" target="mainFrame" class="leftMenuL">
+				<span class="textLeftMenu_1">$action.getText('message.menu.receivList')</span>
+				</a>
+			</td>
+              </tr>
+            </table></td>
+          </tr>
+          #end
+        </table></td>
+      </tr>
+      <tr>
+        <td><img src="$path/oa_main_img_32.gif" width="206" height="10"></td>
+      </tr>
+    </table>
+</table>
+#parse("$action.getText('config.vmPath')/simple/Footer_left.vm")
+
+
+
+
+

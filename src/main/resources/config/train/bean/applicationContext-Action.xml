@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean name="trainApplyAction" class="com.hode.train.action.TrainApplyAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainApplyIbatisServiceProxy" />
+		</property>
+	</bean>
+	<bean name="trainStudentAction" class="com.hode.train.action.TrainStudentAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainStudentIbatisServiceProxy" />
+		</property>
+	</bean>
+	<bean name="trainPersonAction" class="com.hode.train.action.TrainPersonAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainPersonIbatisServiceProxy" />
+		</property>
+	</bean>
+	<bean name="trainCheckAction" class="com.hode.train.action.TrainCheckAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainCheckIbatisServiceProxy" />
+		</property>
+	</bean>
+	<bean name="trainScoreAction" class="com.hode.train.action.TrainScoreAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainScoreIbatisServiceProxy" />
+		</property>
+	</bean>
+
+	<bean name="trainUserApplyAction" class="com.hode.train.action.TrainUserApplyAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainUserApplyIbatisServiceProxy" />
+		</property>
+	</bean>
+	<bean name="trainUserChangeAction" class="com.hode.train.action.TrainUserChangeAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainUserChangeIbatisServiceProxy" />
+		</property>
+	</bean>
+
+	<bean name="trainUserBlackAction" class="com.hode.train.action.TrainUserBlackAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainUserBlackIbatisServiceProxy" />
+		</property>
+	</bean>
+
+	<bean name="trainCertAction" class="com.hode.train.action.TrainCertAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainCertIbatisServiceProxy" />
+		</property>
+	</bean>
+
+	<bean name="trainUnitbaseAction" class="com.hode.train.action.TrainUnitBaseAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainUnitBaseIbatisServiceProxy"/>
+		</property>
+	</bean>
+
+	<!-- 培训依据/教学地点 -->
+	<bean name="institutionsAction" class="com.hode.train.action.InstitutionsAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="institutionsServiceProxy" />
+		</property>
+	</bean>
+
+	<!-- 收费项目 -->
+	<bean name="trainingProgramsAction" class="com.hode.train.action.TrainingProgramsAction"
+		singleton="false">
+		<property name="ibatisService">
+			<ref bean="trainingProgramsServiceProxy" />
+		</property>
+	</bean>
+
+	<bean name="courseAction" class="com.hode.train.action.CourseAction"
+		singleton="false">
+	</bean>
+
+	<!-- 教师信息 -->
+	<bean name="teacherAction" class="com.hode.train.action.TeacherAction"
+		singleton="false">
+	</bean>
+</beans>

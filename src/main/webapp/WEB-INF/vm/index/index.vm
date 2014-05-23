@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<TITLE>$action.getText('global.prj.title')</TITLE>
+<META HTTP-EQUIV=Content-Type CONTENT="text/html; charset=UTF-8">
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+if(window.opener)
+{
+   // window.opener.opener=null;
+   // window.opener.close();
+}
+
+function getCookie(cookieName)
+{
+	var cookieValue = '';
+
+	var posName = document.cookie.indexOf(escape(cookieName) + '=');
+
+	if (posName != -1)
+	{
+
+		var posValue = posName + (escape(cookieName) + '=').length;
+
+		var endPos = document.cookie.indexOf(';', posValue);
+
+		if (endPos != -1) cookieValue = unescape(document.cookie.substring(posValue, endPos));
+
+		else cookieValue = unescape(document.cookie.substring(posValue));
+
+	}
+	return (cookieValue);
+}
+
+function setCookie(cookieName, cookieValue)
+{
+	document.cookie =
+	escape(cookieName) + '=' + escape(cookieValue)+'; path=/;';
+}
+
+function showLoadPage(obj)
+{
+	if(obj)
+	{
+		var top = screen.height/2-200;
+		obj.write("<table align='center' height='100%'><tr><td><DIV align='center' valign='middle'><TABLE border=0><TR><TD></TD></TR><TR><TD>loading....</TD></TR></TABLE></DIV></td></tr></table>");
+	}
+}
+
+//-->
+</SCRIPT>
+</head>
+
+		<frameset id="parentFrameSet" name="parentFrameSet" rows="400,50,0" noresize scrolling="auto" border=0 frameborder="0" framespacing="0">
+
+		<frame id="topFrame" name="topFrame" src="mainBodyFrame.action" noresize scrolling="no">
+
+		<frame id="bottomFrame" name="bottomFrame" src="./bottom.action" noresize scrolling="no">
+
+		<frameset id="HiddenFrameSet" name="HiddenFrameSet" rows="0%,0%,0%" noresize scrolling="no" border=0 frameborder="0" framespacing="0">
+
+			<!-- ���أ����� -->
+			<frame id="downLoadFrame" name="downLoadFrame" src="" noresize scrolling="no">
+			<frame id="excelFrame" name="excelFrame" src="" noresize scrolling="no">
+
+			<!-- ����Ϣ -->
+			<frame id="showMsgFrame" name="showMsgFrame" src="" noresize scrolling="yes"> <!-- ../message/info/showMsgFrame.action -->
+		</frameset>
+
+	</frameset>
+<noframes>
+</noframes>
+</html>

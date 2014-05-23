@@ -1,0 +1,106 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="train.apply" extends="index" namespace="/train/apply">
+		<action name="showTeacherInit" class="trainApplyAction" method="showTeacherInit">
+			<result name="success">/WEB-INF/vm/train/apply/showTeacher.jsp</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="readme" class="trainApplyAction">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="addForm" class="trainApplyAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/addForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="add" class="trainApplyAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/afterAdd.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="editForm" class="trainApplyAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/editForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="edit" class="trainApplyAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/afterEdit.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="del" class="trainApplyAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/afterDel.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewForm" class="trainApplyAction" method="viewData">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/viewForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="showCheckList" class="trainApplyAction" method="showCheckList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/showCheckList.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showSearchList" class="trainApplyAction" method="showSearchList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/showSearchList.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount,objSearch.strApplyDate,objSearch.strTrainUnitName</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="checkForm" class="trainApplyAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/checkForm.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="checkInfo" class="trainApplyAction" method="checkInfo">
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/afterCheckInfo.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="signForm" class="trainApplyAction" >
+			<result name="success" type="velocity">/WEB-INF/vm/train/apply/signForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="getCourseAndTeacher" class="trainApplyAction" method="getCourseAndTeacher">
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="getTeacherInfo" class="trainApplyAction" method="getTeacherInfo">
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+    </package>
+
+</xwork>

@@ -1,0 +1,98 @@
+<style type="text/css">
+.line_dashed {
+	dispaly:block;
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #c7d9ef;
+	line-height:4px;
+}
+</style>
+#set ($noSearchArea = $parameters.get('noSearchArea'))
+#if((!$noSearchArea)||($noSearchArea==""))
+	#set($noSearchArea="yes")
+#end
+#set ($isNeedDash = $parameters.get('isNeedDash'))
+#if((!$isNeedDash)||($isNeedDash==""))
+	#set($isNeedDash="no")
+#end
+
+
+#set ($hiddenSearchAreaCookie = $parameters.get('hiddenSearchAreaCookie'))
+#if((!$hiddenSearchAreaCookie)||($hiddenSearchAreaCookie==""))
+	#set($hiddenSearchAreaCookie="hiddenSearchAreaCookie")
+#end
+
+#if($noSearchArea=="no")
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+/**
+ *��������SearchArea
+ */
+function onloadSearchArea()
+{
+	if(hiddenSearchAreaCookieName == "yes")
+	{
+		hiddenSearchAreaBtn.title = "$action.getText('global.operation.searchArea.hidden')";
+		needHiddenSearchAreaFlag = true;
+
+		hiddenSearchAreaBtn.style.display="none";
+		searchAreaId.style.display="";
+	}
+	else if(top.getCookie(hiddenSearchAreaCookieName)=="no")
+	{
+		searchAreaId.style.display="";
+		hiddenSearchAreaBtn.title = "$action.getText('global.operation.searchArea.hidden')";
+		needHiddenSearchAreaFlag = true;
+	}
+	else
+	{
+		searchAreaId.style.display="none";
+		hiddenSearchAreaBtn.title = "$action.getText('global.operation.searchArea.show')";
+		needHiddenSearchAreaFlag = false;
+	}
+}
+/**
+ *����/��ʾSearchArea
+ */
+function hiddenSearchArea()
+{
+	if(needHiddenSearchAreaFlag)
+	{
+		searchAreaId.style.display="none";
+		hiddenSearchAreaBtn.title = "$action.getText('global.operation.searchArea.show')";
+		needHiddenSearchAreaFlag = false;
+		top.setCookie(hiddenSearchAreaCookieName,"yes");
+	}
+	else
+	{
+		searchAreaId.style.display="";
+		hiddenSearchAreaBtn.title = "$action.getText('global.operation.searchArea.hidden')";
+		needHiddenSearchAreaFlag = true;
+		top.setCookie(hiddenSearchAreaCookieName,"no");
+	}
+}
+/*
+var hiddenSearchAreaBtn = document.getElementById("hiddenSearchAreaBtn");
+var searchAreaId = document.getElementById("table_searchForm");
+var noSearchAreaFlag = "$!noSearchArea";
+if(noSearchAreaFlag == "yes")
+{
+	hiddenSearchAreaBtn.style.display="none";
+	searchAreaId.style.display="none";
+}
+else if(hiddenSearchAreaBtn)
+{
+	//���cookie����SearchArea�Ƿ�����
+	hiddenSearchAreaBtn.style.display="";
+	var hiddenSearchAreaCookieName = "$!hiddenSearchAreaCookie";
+	var needHiddenSearchAreaFlag = false;
+	hiddenSearchAreaBtn.title = "$action.getText('global.operation.searchArea.show')";
+	onloadSearchArea();
+}
+*/
+//-->
+</SCRIPT>
+#end
+#if($isNeedDash=="yes")
+	<div class="line_dashed" >&nbsp;</div>
+#end

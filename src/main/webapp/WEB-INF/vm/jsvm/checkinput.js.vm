@@ -1,0 +1,89 @@
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function getHanziNum(str)
+{
+	return str.replace(/[^\x00-\xff]/g,"**").length-str.length;
+}
+function getCheckAssicNum(str)
+{
+	return (str.replace(/[\x00-\xff]/g,"**").length-str.length) % 2;
+}
+
+function checkInputInfo(intType,thisControl,num)
+{
+	var strVal=thisControl.value;
+	thisControl.style.backgroundColor="#FFFFFF";
+	if(intType == 1)	//总数限制，包括汉字和非汉字
+	{
+		var intHanzi=getHanziNum(strVal);
+		var s=(strVal.length-intHanzi + getCheckAssicNum(strVal))/2+intHanzi;
+		if(s > num)
+		{
+			alert("最多输入"+num+"个汉字或"+(num*2)+"个字符;目前输入的汉字总数是"+s);
+			thisControl.style.backgroundColor="#FFFF00";
+			thisControl.focus();
+			return false;
+
+		}
+	}
+	else if(intType == 2) //最大字母、数字限制
+	{
+		if(strVal)
+		{
+			strVal=strVal.replace(/[^\x00-\xff]/g,'');
+			if((strVal.length != thisControl.value.length) || (strVal.length > num))
+			{
+				alert("请输入字母或数字，并且最大长度不超过"+num+"个");
+				thisControl.style.backgroundColor="#FFFF00";
+				thisControl.focus();
+				return false;
+			}
+		}
+	}
+	else if(intType == 3) //最大数字限制
+	{
+		if(strVal)
+		{
+			strVal = strVal.replace(/[^\d]/g,'');
+			if((strVal.length != thisControl.value.length) || (strVal > num))
+			{
+				alert("请输入数字，并且最大值不能够超过"+num);
+				thisControl.style.backgroundColor="#FFFF00";
+				thisControl.focus();
+				return false;
+			}
+		}
+	}
+	else if(intType == 4) //数字长度必须相等限制
+	{
+		strVal = strVal.replace(/[^\d]/g,'');
+		if((strVal.length != thisControl.value.length) || (strVal.length != num))
+		{
+			alert("请输入数字，长度必须为"+num+"");
+			thisControl.style.backgroundColor="#FFFF00";
+			thisControl.focus();
+			return false;
+		}
+	}
+
+}
+function checksubmit(str)
+{
+	strArr = str.split(";");
+	var strArr1=new Array();
+	for(var i=0;i<strArr.length;i++)
+	{
+		if(strArr[i].length >3)
+		{
+			strArr1 = strArr[i].split(",");
+			for(var j=0;j<strArr1.length;j++)
+			{
+				if(checkInputInfo(strArr1[0],document.getElementsByName(strArr1[1])[0],strArr1[2])==false)
+					return false;
+			}
+		}
+	}
+	return true;
+}
+//-->
+</SCRIPT>

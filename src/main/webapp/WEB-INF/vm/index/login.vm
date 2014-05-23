@@ -1,0 +1,156 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>河南煤矿安全培训管理系统</title>
+</head>
+<style>
+body{margin:0; padding:0; font-size:12px; background-color:#FFFFFF; color:#FFFFFF; line-height:24px;}
+#if($intLoginType == 2 )
+	.login{ background:url(../images/hnmk/loginbj2.gif) no-repeat center top #0065bf; color:#000000;}
+#else
+	.login{ background:url(../images/hnmk/loginbj.gif) no-repeat center top #0065bf; color:#000000;}
+#end
+.login_srk{ width:151px; height:23px; line-height:23px; background:url(login_input_bj.gif) repeat-x; border:1px solid #b9b9b9;}
+.yelwz{ color:#ffea00;}
+.whitewz{ color:#ffffff;}
+.blackwz{color:#000000;}
+
+</style>
+<body class="login">
+<SCRIPT LANGUAGE="JavaScript">
+	function stopMouse()
+	{
+		return false;
+	}
+	document.oncontextmenu=stopMouse;
+
+	function setCookie(sName, sValue)
+	{
+		document.cookie = sName + "=" + escape(sValue) + "; ";
+	}
+	function getCookie(sName)
+	{
+		var aCookie = document.cookie.split("; ");
+		for (var i=0; i < aCookie.length; i++)
+		{
+			var aCrumb = aCookie[i].split("=");
+				if (sName == aCrumb[0])
+			return unescape(aCrumb[1]);
+		}
+	}
+	function delCookie(sName)
+	{
+		document.cookie = sName + "=" + escape(sValue) + "; expires=Fri, 31 Dec 1999 23:59:59 GMT;";
+	}
+    var intLineNum=10;
+    if(screen.height<=600)		//高度判断
+    {
+    	intLineNum	=10;
+    }
+    else if(screen.height<=800)
+    {
+    	intLineNum	=15;
+    }
+	else if(screen.height<=1100)
+    {
+    	intLineNum	=20;
+    }
+	else if(screen.height<=1300)
+    {
+    	intLineNum	=25;
+    }
+	else
+    {
+    	intLineNum	=30;
+    }
+	function checkLogin()
+	{
+
+		if(document.frmLogin.strAccount.value=="")
+		{
+			alert("$action.getText('global.login.js.accountWarn')");
+			return false;
+		}
+		else if(document.frmLogin.strPassword.value=="")
+		{
+			alert("$action.getText('global.login.js.passwordWarn')");
+			return false;
+		}
+		else if(document.frmLogin.strRand.value=="")
+		{
+			alert("$action.getText('请输入验证码!')");
+			return false;
+		}
+		document.frmLogin.intLineNum.value=intLineNum;
+		document.frmLogin.submit();
+		return true;
+	}
+
+	function fullOpen()
+	{
+		document.frmLogin.action = "login.action";
+	}
+</SCRIPT>
+
+<table width="719" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="413" height="310">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+<form name="frmLogin" method="post" action="login.action" ONSUBMIT="return checkLogin()" target='_top'>
+<input type='hidden' name='intLineNum' value=''>
+
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="67" height="34" align="right">用户名：</td>
+          <td colspan="2"><label>
+           <input type="text" name="strAccount" class="login_srk" value=""/>
+          </label></td>
+        </tr>
+        <tr>
+          <td height="34" align="right">密&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+          <td colspan="2"> <input type="password" name="strPassword" class="login_srk" value=""/></td>
+        </tr>
+        <tr>
+          <td height="34" align="right">验证码：</td>
+          <td width="90"><input type="text" name="strRand" class="login_srk" value="" style="width:78px;"/></td>
+          <td align="left"><img style="cursor:hand" id="valid" onclick="changPic(this)" src="$action.getText('config.prjName')/images.jsp"  border="0" scrolling="no"  /></td>
+        </tr>
+        <tr>
+          <td height="60" align="center">&nbsp;</td>
+          <td height="60" colspan="2"><input type="image" src="../images/hnmk/ok.gif" width="67" height="26" /> </td>
+        </tr>
+      </table>
+        </form>
+    </td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="30" align="center" valign="bottom" class="whitewz">
+    	<a href = "/hodeframe2012_hnmk/signUp.jsp">网上报名</a>
+    </td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="50" align="center" valign="bottom" class="whitewz">版权所有：河南煤矿安全监察局</td>
+  </tr>
+</table>
+</body>
+
+</html>
+
+
+
+
+<script>
+function changPic(_id){
+	_id.src="$action.getText('config.prjName')/images.jsp"+ "?dd=" + Math.random();
+}
+</script>

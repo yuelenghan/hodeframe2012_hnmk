@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<TITLE>$action.getText('webeditor.dialog.fullscreen.title')</TITLE>
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+</HEAD>
+<BODY scroll="no" onunload="Minimize()">
+<input type="hidden" id="ContentFullScreen" name="ContentFullScreen" value="">
+
+<script language=javascript>
+
+// BEGIN: URLParams holds all URL passed parameters (like ?Param1=Value1&Param2=Value2)
+var URLParams = new Object() ;
+
+var aParams = document.location.search.substr(1).split('&') ;
+for (i=0 ; i < aParams.length ; i++)
+{
+	var aParam = aParams[i].split('=') ;
+	URLParams[aParam[0]] = aParam[1] ;
+}
+// END: URLParams
+
+
+
+ContentFullScreen.value = opener.getHTML();
+if(URLParams['sStyleName']=="mini")
+	document.write('<iframe ID="EditorFullScreen" src="$action.getText('config.prjName')/webeditor/webeditorMini.action?sContentID=ContentFullScreen&sFullScreen=1&sStyleName='+URLParams['style']+'" frameborder="0" scrolling=no width="100%" HEIGHT="100%"></iframe>');
+else if(URLParams['sStyleName']=="standard")
+	document.write('<iframe ID="EditorFullScreen" src="$action.getText('config.prjName')/webeditor/webeditorStandard.action?sContentID=ContentFullScreen&sFullScreen=1&sStyleName='+URLParams['style']+'" frameborder="0" scrolling=no width="100%" HEIGHT="100%"></iframe>');
+
+else if(URLParams['sStyleName']=="easy")
+	document.write('<iframe ID="EditorFullScreen" src="$action.getText('config.prjName')/webeditor/webeditorEasy.action?sContentID=ContentFullScreen&sFullScreen=1&sStyleName='+URLParams['style']+'" frameborder="0" scrolling=no width="100%" HEIGHT="100%"></iframe>');
+else if(URLParams['sStyleName']=="advance")
+	document.write('<iframe ID="EditorFullScreen" src="$action.getText('config.prjName')/webeditor/webeditorAdvance.action?sContentID=ContentFullScreen&sFullScreen=1&sStyleName='+URLParams['style']+'" frameborder="0" scrolling=no width="100%" HEIGHT="100%"></iframe>');
+else
+	alert("$action.getText('webeditor.dialog.fullscreen.styleErrorInfo')");
+
+function Minimize()
+{
+	opener.setHTML(EditorFullScreen.getHTML());
+	self.close();
+}
+
+</script>
+
+</BODY>
+</HTML>

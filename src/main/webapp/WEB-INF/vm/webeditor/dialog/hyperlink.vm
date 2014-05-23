@@ -1,0 +1,189 @@
+<HTML>
+<HEAD>
+
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+
+
+<Script Language=JavaScript>
+var sAction = URLParams['action'];
+var sTitle = "$action.getText('webeditor.dialog.hyperlink.inertInfo')";
+
+var objWindow;
+
+var oRange;
+var sType;
+var oSel;
+
+var sUrl = "http://";
+var sProtocol = "http://";
+var sTarget = "";
+
+switch (sAction){
+case "other":
+	sUrl = dialogArguments.objLink.Href;
+	sTarget = dialogArguments.objLink.Target;
+	sProtocol = getProtocol(sUrl);
+	objWindow = dialogArguments.opener;
+	break;
+default:
+	oRange = dialogArguments.eWebEditor.document.selection.createRange();
+	sType = dialogArguments.eWebEditor.document.selection.type;
+
+	if (sType == "Control") {
+		oSel = oRange(0).parentNode;
+	}else{
+		oSel = oRange.parentElement();
+	}
+
+	if (oSel.tagName.toUpperCase() == "A"){
+		sTarget = oSel.target;
+		sUrl = oSel.getAttribute("href",2);
+		sProtocol = getProtocol(sUrl);
+	}
+	objWindow = dialogArguments;
+	break;
+}
+
+
+
+
+// �ӵ�ַȡЭ��
+function getProtocol(url){
+	var re=/(.+:\/*)(.*)/gi;
+	return url.replace(re,"$1");
+}
+
+// �ı�Э��
+function changeProtocol(index){
+	sProtocol=d_protocol.options[index].value;
+	sUrl = d_url.value;
+	var re = /(.+:\/*)/gi;
+	sUrl = sUrl.replace(re, "");
+	d_url.value = sProtocol + sUrl;
+}
+
+
+// ��ʼֵ
+function InitDocument(){
+	SearchSelectValue(d_protocol, sProtocol.toLowerCase());
+	SearchSelectValue(d_target, sTarget.toLowerCase());
+	getAnchors();
+	d_url.value = sUrl;
+}
+
+// ȡ���е�ê
+function getAnchors() {
+	d_anchor.options.length = 1;
+	var allLinks = objWindow.eWebEditor.document.body.getElementsByTagName("A");
+	for (i=0; i < allLinks.length; i++) {
+		if (allLinks[i].href.toUpperCase() == "") {
+			d_anchor.options[d_anchor.options.length] = new Option(allLinks[i].name,"#"+allLinks[i].name);
+		}
+	}
+}
+
+</Script>
+
+
+
+<title>$action.getText('webeditor.dialog.hyperlink.title')</title>
+
+<SCRIPT event=onclick for=Ok language=JavaScript>
+	sUrl = d_url.value;
+	sProtocol = d_protocol.options[d_protocol.selectedIndex].value;
+	sTarget = d_target.options[d_target.selectedIndex].value;
+
+	if (sUrl != ""){
+		switch (sAction){
+		case "other":
+			var arr = new Array();
+			arr[0] = sUrl;
+			arr[1] = sTarget;
+			window.returnValue = arr;
+			break;
+		default:
+			oRange.execCommand("CreateLink",false,sUrl);
+
+			oRange = dialogArguments.eWebEditor.document.selection.createRange();
+			sType = dialogArguments.eWebEditor.document.selection.type;
+
+			if (sType == "Control") {
+				oSel = oRange(0).parentNode;
+			}else{
+				oSel = oRange.parentElement();
+			}
+
+			if (sTarget != ""){
+				oSel.target = sTarget;
+			}else{
+				oSel.removeAttribute("target");
+			}
+			window.returnValue = null;
+			break;
+		}
+	} else {
+		alert("$action.getText('webeditor.dialog.hyperlink.linkIsEmpty')");
+		d_url.focus();
+		return;
+	}
+	window.close();
+</SCRIPT>
+
+</HEAD>
+
+<body bgcolor=menu onload="InitDocument()">
+
+<table border=0 cellpadding=0 cellspacing=0 align=center>
+<tr>
+	<td>
+	<fieldset>
+	<legend>$action.getText('webeditor.dialog.hyperlink.linkInfo')</legend>
+	<table border=0 cellpadding=0 cellspacing=0>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td noWrap>$action.getText('webeditor.dialog.hyperlink.linktype')</td>
+		<td width=5></td>
+		<td><select id=d_protocol style="width:72px" onchange="changeProtocol(this.selectedIndex)">
+				#webEditor_hyperlink()
+				</select></td>
+		<td width=40></td>
+		<td noWrap>$action.getText('webeditor.dialog.hyperlink.linktarget')</td>
+		<td width=5></td>
+		<td><select id=d_target style="width:72px">
+			#webEditor_linktarget()
+		</select></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr>
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.hyperlink.url')</td>
+		<td width=5></td>
+		<td colspan=5><input type=text id=d_url size=38 value="" style="width:243px" class='inputText'></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	<tr style="display:none">
+		<td width=7></td>
+		<td>$action.getText('webeditor.dialog.hyperlink.anchorURL')</td>
+		<td width=5></td>
+		<td colspan=5><select id=d_anchor onchange="d_url.value=this.options[this.selectedIndex].value">
+			#webEditor_linkanchor()
+			</select></td>
+		<td width=7></td>
+	</tr>
+	<tr><td colspan=9 height=5></td></tr>
+	</table>
+	</fieldset>
+	</td>
+</tr>
+<tr><td height=5></td></tr>
+<tr><td align=right><input type=submit value="$action.getText('webeditor.dialog.ok')" id=Ok class='inputButton'>&nbsp;&nbsp;<input type=button value="$action.getText('webeditor.dialog.cancel')" onclick="window.close();" class='inputButton'></td></tr>
+</table>
+
+</BODY>
+</HTML>

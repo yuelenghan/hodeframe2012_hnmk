@@ -1,0 +1,29 @@
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+##-------------------------------------------------------------
+#hodeSysUI_leftFrameHeader("10")
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="26" background="$action.getText('config.prjName')/images/myjd/main_1_29.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="20" align="center"><img src="$action.getText('config.prjName')/images/myjd/main_1_45.gif" width="12" height="12" /></td>
+            <td align="center" class="textBlue">数据字典</td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">
+<table width="95%" border="0" cellpadding="0" cellspacing="0" class="tableStyle">
+#foreach($objInfo in $objInfoList)
+	<tr>
+		<td width=10></td><td height="24" align="left"><li><a href="./showList.action?objSearch.intType=$objInfo.intType" target="mainFrame" class="leftMenuL">$objInfo.strValue</a></li></td>
+	</tr>
+#end
+
+        </table>
+
+</td>
+      </tr>
+</table>
+
+
+#parse("$action.getText('config.vmPath')/simple/Footer_left.vm")

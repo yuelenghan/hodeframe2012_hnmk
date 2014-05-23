@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.cert">
+  <typeAlias alias="trainCertModel" type="com.hode.train.model.TrainCertModel"/>
+  <typeAlias alias="trainStudentDetailModel" type="com.hode.train.model.TrainStudentDetailModel"/>
+  <typeAlias alias="trainApplyModel" type="com.hode.train.model.TrainApplyModel"/>
+  <typeAlias alias="trainCertLogModel" type="com.hode.train.model.TrainCertLogModel"/>
+  <typeAlias alias="trainStudentDetailScoreVO" type="com.hode.train.model.TrainStudentDetailScoreVO"/>
+
+  <select id="getObjectInfo" resultClass="trainCertModel" parameterClass="trainCertModel">
+	SELECT *
+	FROM train_cert
+	WHERE intID = #intID#
+  </select>
+
+  <select id="getPageObjectList" resultClass="trainCertModel" parameterClass="trainCertModel">
+	select *
+	from train_cert
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strTrainType">
+		strTrainType = #strTrainType#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainCount">
+		strTrainCount like '%$strTrainCount$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainUnitName">
+		strTrainUnitName like '%$strTrainUnitName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strApplyCode">
+		strApplyCode = '$strApplyCode$'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strApplyDate">
+		strApplyDate like '$strApplyDate$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strIsNewVal">
+		intIsNew in ($strIsNewVal$)
+	</isNotEmpty>
+	ORDER BY intID desc
+	LIMIT #intStart#,#intOffset#
+  </select>
+
+  <select id="getRecordCount" resultClass="int" parameterClass="trainCertModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_cert
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strTrainType">
+		strTrainType = #strTrainType#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainCount">
+		strTrainCount like '%$strTrainCount$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainUnitName">
+		strTrainUnitName like '%$strTrainUnitName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strIsNewVal">
+		intIsNew in ($strIsNewVal$)
+	</isNotEmpty>
+  </select>
+
+  <update id="optData1" parameterClass="trainCertModel">
+    UPDATE train_cert
+	SET
+		strApplyCode = #strApplyCode#,
+		strApplyDate = #strApplyDate#,
+		strApplyNum = #strApplyNum#,
+		intIsNew = 2
+	WHERE intID = #intID#
+  </update>
+  <update id="optData" parameterClass="trainCertModel">
+    UPDATE train_cert
+	SET
+		intIsNew = #intIsNew#
+	WHERE intID = #intID#
+  </update>
+
+
+  <select id="getSelectCert" resultClass="trainCertModel" parameterClass="trainCertModel">
+
+	select a.intID as intID_1,a.strTrainCount as strTrainCount_1,a.strStudentUnitType as strStudentUnitType_1,a.strStudentIDCode as strStudentIDCode_1,a.strBirthDay as strBirthDay_1,
+	a.strStudentName as strStudentName_1,a.strStudentSex as strStudentSex_1,a.strStudentQualifications as strStudentQualifications_1,a.strStudentPost as strStudentPost_1,
+	a.strStudentTitles as strStudentTitles_1,a.strStudentDegree as strStudentDegree_1,a.strStudentHealth as strStudentHealth_1,a.strStudentRelation as strStudentRelation_1,
+	a.strStudentCertCode as strStudentCertCode_1,a.intIsLeader as intIsLeader_1,a.intIsBlackUser as intIsBlackUser_1,
+
+
+	a.intCertAllow as intCertAllow_1,a.strCertRemark as strCertRemark_1,a.strCertCode as strCertCode_1,a.intCertYear as intCertYear_1,a.intCertCode as intCertCode_1,a.strCertDate as strCertDate_1,
+	b.fltExamScore1 as fltExamScore1_1,b.fltExamScore2 as fltExamScore2_1,b.strExamRule as strExamRule_1,b.intIsImport as intIsImport_1,
+	b.fltExamScore3 as fltExamScore3_1,b.fltExamScore4 as fltExamScore4_1,b.strExamRule1 as strExamRule1_1,b.intIsImport1 as intIsImport1_1
+	from train_student_detail a,train_score_detail b
+	where ( a.strTrainCount = b.strTrainCount or a.strTrainCount = b.strTrainCount1 )
+	and a.intMainID = (select intID from train_student where intTrainApplyID=#intTrainApplyID#)
+	and a.strStudentIDCode = b.strStudentIDCode
+	and ( b.intIsPass =1 or b.intIsPass1 = 1 )
+	and a.intIsBlackUser=0
+	<isEqual prepend="and" property="intIsNew" compareValue="1">
+		<![CDATA[ (
+			( b.fltExamScore1 >= 60 and b.intIsImport = 1  )
+			or
+			( b.fltExamScore3 >= 60 and b.intIsImport1 = 1   )
+		) ]]>
+	</isEqual>
+	<isEqual prepend="and" property="intIsNew" compareValue="2">
+		<![CDATA[ (
+			( b.fltExamScore1 < 60 and b.intIsImport = 1  )
+			or
+			( b.fltExamScore3 < 60 and b.intIsImport1 = 1   )
+		) ]]>
+	</isEqual>
+	<isNotEmpty prepend="AND" property="strExamRule_1">
+		<![CDATA[ (
+			( b.strExamRule = #strExamRule_1# and b.intIsImport = 1  )
+			or
+			( b.strExamRule1 = #strExamRule_1# and b.intIsImport1 = 1   )
+		) ]]>
+	</isNotEmpty>
+	<isEqual prepend="and" property="intIsLeader_1" compareValue="1">
+		a.intIsLeader = 0
+	</isEqual>
+	<isEqual prepend="and" property="intIsLeader_1" compareValue="2">
+		a.intIsLeader = 1
+	</isEqual>
+	<isEqual prepend="and" property="intIsBlackUser_1" compareValue="1">
+		a.intIsBlackUser = 0
+	</isEqual>
+	<isEqual prepend="and" property="intIsBlackUser_1" compareValue="2">
+		a.intIsBlackUser = 1
+	</isEqual>
+	<isGreaterThan prepend="AND" property="intCertCode_1" compareValue="0">
+		<![CDATA[ a.intCertCode > 0 and a.intCertAllow =1 ]]>
+	</isGreaterThan>
+	<isNotEmpty prepend="AND" property="strStudentDegree_1">
+		a.strStudentDegree like '%$strStudentDegree_1$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainStartDate">
+		<![CDATA[ a.strBirthDay  <= #strTrainStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strTrainEndDate">
+		<![CDATA[ a.strBirthDay  >= #strTrainEndDate# ]]>
+	</isNotEmpty>
+	order by b.fltTopScore desc,b.fltExamScore1 desc,b.fltExamScore3 desc,a.intID asc
+  </select>
+
+  <update id="updateDetail2Info" parameterClass="trainCertModel">
+    UPDATE train_student_detail
+	SET
+
+		$strCondition$
+		intCertAllow = #intCertAllow_1#,
+		strCertRemark = #strCertRemark_1#
+	WHERE intID = #intID#
+  </update>
+
+
+
+  <select id="getMaxCertCode" resultClass="int" parameterClass="int">
+    SELECT max(intCertCode) AS intTotalNumber
+	FROM train_student_detail
+	where intCertYear = #intCertYear#
+  </select>
+
+  <select id="getMaxCertCount" resultClass="int" parameterClass="string">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_student_detail
+	where strStudentIDCode = #strStudentIDCode# and intCertAllow = 1
+  </select>
+  <update id="updateCertCode" parameterClass="trainCertModel">
+    update train_student_detail set
+		intCertYear = #intCertYear_1#,
+		strCertCode = #strCertCode_1#,
+		intCertCode = #intCertCode_1#,
+		strCertDate = #strCertDate_1#
+	where intCertAllow = 1 and intID = #intID#
+  </update>
+
+  <select id="getTrainApplyID" parameterClass="trainCertModel" resultClass="int">
+  	select intTrainApplyID from train_cert
+  	where strTrainCount = #strTrainCount#
+  	<isNotNull prepend="and" property="strTrainCountClass">
+  		strTrainCountClass = #strTrainCountClass#
+  	</isNotNull>
+  </select>
+
+  <select id="getApplyByStudentDetail" parameterClass="trainStudentDetailModel" resultClass="trainApplyModel">
+  	select * from train_apply
+  	where intID=(select intTrainApplyID from train_student where intID = #intMainID#)
+  </select>
+
+  <insert id="insertTrainCertLog" parameterClass="trainCertLogModel">
+  	insert into train_cert_log
+  	values(
+  		null,
+  		#strUserName#,
+  		#strIp#,
+  		#strUri#,
+  		#strDate#,
+  		#intUserID#
+  	)
+  </insert>
+
+  <select id="getStudentDetailScoreByTrainApplyID" parameterClass="int" resultClass="trainStudentDetailScoreVO">
+  	select a.strStudentPost,a.strStudentIDAddr,a.strStudentName,a.strStudentSex,a.intStudentAge,
+			a.strStudentTitles,a.strStudentDegree,a.strCertCode,a.strStudentHealth,a.strStudentFirstDate,
+			a.strStudentViolate,a.strStudentRelation,a.strStudentIDCode,
+			b.fltExamScore1,b.fltExamScore2,b.fltExamScore3,b.fltExamScore4
+	from train_student_detail a, train_score_detail b
+	where upper(a.strStudentIDCode) = upper(b.strStudentIDCode)
+	and a.intMainID = (select intID from train_student where intTrainApplyID = $intTrainApplyID$)
+	and (b.intIsPass = 1 or b.intIsPass1 = 1)
+	and a.strCertCode is not null
+	order by a.intID
+  </select>
+</sqlMap>

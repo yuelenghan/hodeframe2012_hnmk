@@ -1,0 +1,148 @@
+#macro(webEditor_paragraphList)
+	#foreach($i in [1..14])
+		$action.getText("webeditor.paragraph.field$i")
+	#end
+#end
+
+#macro(webEditor_fontnameList)
+	#foreach($i in [1..21])
+		$action.getText("webeditor.fontname.field$i")
+	#end
+#end
+
+#macro(webEditor_fontsizeList)
+	#foreach($i in [1..8])
+		$action.getText("webeditor.fontsize.field$i")
+	#end
+#end
+
+#macro(webEditor_doZoomList)
+	#foreach($i in [1..8])
+		$action.getText("webeditor.doZoom.field$i")
+	#end
+#end
+
+#macro(webEditor_fromsys)
+	#foreach($i in [1..15])
+		$action.getText("webeditor.dialog.backimage.fromsys.field$i")
+	#end
+#end
+
+
+#macro(webEditor_tileType)
+	#foreach($i in [1..5])
+		$action.getText("webeditor.dialog.backimage.tileType.field$i")
+	#end
+#end
+
+
+#macro(webEditor_roll)
+	#foreach($i in [1..3])
+		$action.getText("webeditor.dialog.backimage.roll.field$i")
+	#end
+#end
+
+#macro(webEditor_align)
+	#foreach($i in [1..4])
+		$action.getText("webeditor.dialog.fieldset.align.field$i")
+	#end
+#end
+
+#macro(webEditor_hyperlink)
+	#foreach($i in [1..10])
+		$action.getText("webeditor.dialog.hyperlink.field$i")
+	#end
+#end
+
+#macro(webEditor_linktarget)
+	#foreach($i in [1..5])
+		$action.getText("webeditor.dialog.hyperlink.linktarget.field$i")
+	#end
+#end
+
+#macro(webEditor_linkanchor)
+	#foreach($i in [1..1])
+		$action.getText("webeditor.dialog.hyperlink.anchor.field$i")
+	#end
+#end
+
+#macro(webEditor_scrolling)
+	#foreach($i in [1..1])
+		$action.getText("webeditor.dialog.iframe.scrolling.field$i")
+	#end
+#end
+
+#macro(webEditor_filter)
+	#foreach($i in [1..15])
+		$action.getText("webeditor.dialog.img.filter.field$i")
+	#end
+#end
+
+#macro(webEditor_imgAlign)
+	#foreach($i in [1..10])
+		$action.getText("webeditor.dialog.img.align.field$i")
+	#end
+#end
+
+#macro(webEditor_symbalContent1)
+	#foreach($i in [1..98])
+		$action.getText("webeditor.dialog.symbal.content1.field$i")
+	#end
+#end
+
+#macro(webEditor_symbalContent2)
+	#foreach($i in [1..98])
+		$action.getText("webeditor.dialog.symbal.content2.field$i")
+	#end
+#end
+
+#macro(webEditor_symbalContent3)
+	#foreach($i in [1..98])
+		$action.getText("webeditor.dialog.symbal.content3.field$i")
+	#end
+#end
+
+#macro(webEditor_symbalContent4)
+	#foreach($i in [1..98])
+		$action.getText("webeditor.dialog.symbal.content4.field$i")
+	#end
+#end
+
+#macro(webEditor_symbalContent5)
+	#foreach($i in [1..98])
+		$action.getText("webeditor.dialog.symbal.content5.field$i")
+	#end
+#end
+
+#macro(webEditor_symbalContent6)
+	#foreach($i in [1..98])
+		$action.getText("webeditor.dialog.symbal.content6.field$i")
+	#end
+#end
+
+
+#macro(webEditor_tableAlign)
+	#foreach($i in [1..4])
+		$action.getText("webeditor.dialog.table.align.field$i")
+	#end
+#end
+
+#macro(webEditor_borderStyle)
+	#foreach($i in [1..9])
+		$action.getText("webeditor.dialog.table.borderstyle.field$i")
+	#end
+#end
+
+
+#macro(webEditor_cellAlign)
+	#foreach($i in [1..5])
+		$action.getText("webeditor.dialog.table.cellAlign.field$i")
+	#end
+#end
+
+#macro(webEditor_cellValign)
+	#foreach($i in [1..5])
+		$action.getText("webeditor.dialog.table.cellValign.field$i")
+	#end
+#end
+

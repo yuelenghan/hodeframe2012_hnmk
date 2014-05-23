@@ -1,0 +1,81 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+#set($intSendType = 1)
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "手机短信$action.getText('global.interpunction.right')增加" )
+#end
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "yes")
+#set($showWidth = "160")
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td align="right"  class="tdBodyContent1">发送号码：</td>
+	<td colspan="3">
+	<textarea rows="5" cols="60" name="objInfo.strToMobile"></textarea>
+	<img src="$action.getText('config.prjName')/images/operator/opt_select.gif"  style="cursor:hand"></
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	<td align="right"  class="tdBodyContent1">发送内容：</td>
+	<td colspan="3">
+	<textarea rows="5" cols="60" name="objInfo.strContent"></textarea>
+	</td>
+#hodeSysUI_TrEnd()
+<input type="hidden" name="objInfo.intSendType" value="0" id="sendType">
+<input type="hidden" name="objInfo.strSendDate" value="" id="senddate">
+#set($sendimg = "<input type='image' src=$action.getText('config.prjName')/images/operator/opt_send.gif style='cursor:hand' onclick='send()'>")
+#hodeSysUI_EditBodyFoot([$sendimg ,'save','reset','cancel'] "4")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+
+// form fields description structure
+var a_fields = {
+         'objInfo.strContent': {
+                'l': '$action.getText('发送内容')',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx': 500    // maximum length
+        }
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+function send(){
+	var sendType = document.getElementById("sendType");
+	var sendDate = document.getElementById("senddate");
+	sendType.value="1";
+	sendDate.value="$strRtnVal";
+	//document.forms['frmOperation'].submit();
+}
+</script>
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>

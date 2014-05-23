@@ -1,0 +1,103 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('message.operation.toForm')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("to.action" "" "post" "yes")
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$!objInfo.intID")
+#hodeSysHTMLUI_htmlHidden("objInfo.strAttContent" "$!objInfo.strAttContent")
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td align='right' class="tdEditContentLeft">$!action.getText('message.form.receiveUserIDList')$action.getText('global.interpunction.colon')</td>
+	<td align="left" class="tdEditContentRight">
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strReceiveUserNameList" "strReceiveUserNameList" "" 2 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strReceiveUserIDList" "")
+	 <input type="button" name="btnSelectUnit" class="inputButton" onclick="fPopUpSelectGroupUnitDlg('../../rbac/user/selectUser.action?intGroupID=1&intGroupType=0	','objInfo.strReceiveUserIDList','strReceiveUserNameList');" value=" ... ">
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td align='right' class="tdEditContentLeft">$!action.getText('message.form.receiveDeptIDList')$action.getText('global.interpunction.colon')</td>
+	<td align="left" class="tdEditContentRight">
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strReceiveDeptNameList" "strReceiveDeptNameList" "" 2 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strReceiveDeptIDList" "")
+
+	 <input type="button" name="btnSelectUnit" class="inputButton" onclick="fPopUpSelectGroupUnitDlg('../../rbac/group/selectGroupUnit2.action?intGroupID=0&intGroupType=0	','objInfo.strReceiveDeptIDList','strReceiveDeptNameList');" value=" ... ">
+	</td>
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	##hodeSysUI_showTextArea("$!action.getText('message.form.content')" 1 1 "objInfo.strContent" "$!objInfo.strContent" 7 65 "")
+	<TD class="tdEditContentLeft">$action.getText('global.interpunction.asterisk')$!{action.getText('message.form.strContent')}$!{action.getText('global.interpunction.colon')}</TD>
+	<TD class="tdEditContentRight">
+		<textArea name="objInfo.strContent" CLASS="inputText" msg="$!action.getText('message.form.strContent')" require="true"  cols="65" rows="7" >$!objInfo.strContent</textArea>
+	</TD>
+	<input type='hidden' name='objInfo.strAttrContent' value='$!objInfo.strAttrContent'>
+	<input type='hidden' name='objInfo.intDirPath' value='$!objInfo.intDirPath'>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_optViewMultiFile("$!action.getText('message.form.attContent')" 1 "1" "left" $!fileAttrUpload.listAttachs)
+
+
+
+#set($btnSentDoc = "<INPUT TYPE='button' CLASS='inputButton' value='&nbsp;发&nbsp;&nbsp;&nbsp;&nbsp;送&nbsp;' id='btnSubmit1' name='btnSubmit1' onclick='frmSubmit()'>")
+#hodeSysUI_EditBodyFoot([$btnSentDoc,'reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+<SCRIPT LANGUAGE="JavaScript">
+
+function frmSubmit()
+{
+	if(HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1))
+	{
+		var strReceiveUserNameList = document.getElementById("strReceiveUserNameList");
+		var strReceiveDeptNameList = document.getElementById("strReceiveDeptNameList");
+		if(strReceiveUserNameList.value != "" || strReceiveDeptNameList.value != "")
+		{
+			if(confirm("确定要发送吗？"))
+			{
+				document.frmOperation.submit();
+			}
+			else
+			{
+				document.all.btnReset.disabled = false;
+				document.all.btnCancel.disabled = false;
+				document.all.divDoData.style.display = "none";
+			}
+		}
+		else
+		{
+			alert("短消息发送失败，错误原因如下：\n\n收信人或部门必须选择一个！")
+			document.all.btnReset.disabled = false;
+			document.all.btnCancel.disabled = false;
+			document.all.divDoData.style.display = "none";
+		}
+	}
+}
+</SCRIPT>
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

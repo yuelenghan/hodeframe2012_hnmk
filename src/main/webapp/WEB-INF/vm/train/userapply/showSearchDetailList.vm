@@ -1,0 +1,148 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "人员补证管理" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >姓名：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserName" CLASS="inputText" maxlength="20" size="20"   VALUE="$!trainUserApplyDetailInfo.strUserName" >
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >身份证：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserCode" CLASS="inputText" maxlength="20" size="20"   VALUE="$!trainUserApplyDetailInfo.strUserCode" >
+	</TD>
+
+	<TD width="120" class="tdEditContentLeft" >受理日期：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strSearchStartDate" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!trainUserApplyDetailInfo.strSearchStartDate"  > ~
+		<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strSearchEndDate" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!trainUserApplyDetailInfo.strSearchEndDate"  >
+	</TD>
+	<td></td>
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showSearchDetailList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	#hodeSysUI_TdMainBody("姓名" "center" "" 0)
+	#hodeSysUI_TdMainBody("身份证" "center" "" 0)
+	#hodeSysUI_TdMainBody("补证日期" "center" "" 0)
+	#hodeSysUI_TdMainBody("单位名称" "center" "" 0)
+	#hodeSysUI_TdMainBody("职务" "center" "" 0)
+	#hodeSysUI_TdMainBody("补证理由" "center" "" 0)
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+		#hodeSysUI_TdMainBody("$!objInfo.strUserName" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strUserCode" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strUserDate" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strUserUnitName" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strUserPost" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strApplyReason" "center" "" 0)
+
+    #hodeSysUI_TrEnd()
+#end
+
+
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showSearchDetailList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "hiddenParams" "<INPUT TYPE='hidden' NAME='objSearch.intSysIsClearSearch' value=1>" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript
+<script type="text/javascript">
+
+function fPopUpCalendarDlg(ctrlobj)
+{
+	showx = event.screenX - event.offsetX - 4 - 210 ; // + deltaX;
+	showy = event.screenY - event.offsetY + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	retval = window.showModalDialog("/hodeframe2012_hnmk/js/calendardlg.htm", "", "dialogWidth:200px; dialogHeight:230px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null ) {
+		ctrlobj.value = retval;
+	}
+}
+</script>

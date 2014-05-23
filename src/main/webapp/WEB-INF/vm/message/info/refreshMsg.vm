@@ -1,0 +1,38 @@
+ <meta http-equiv='Refresh' content="30;URL=refreshMsgFrame.action?intIsNeedinitMsg=0">
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<TEXTAREA id="msgStrContent" style="display:none"></TEXTAREA>
+$objInfoList
+#foreach($objInfo in $objInfoList)
+	#if($!{objInfo.intSenderID} > 0)
+		#set($strSenderName = $!{objInfo.strSenderName})
+	#else
+		#set($strSenderName = $action.getText('message.form.sender.sysSender'))
+	#end
+	#set($content = "$strSenderName$action.getText('global.interpunction.colon')<br>($!{objInfo.dtmSentTime})<br>${objInfo.strContent}")
+	#hodeSysBean_htmlSpecChars($content $newContent)
+	##hodeSysBean_nl2br($!content $newContent)
+	<TEXTAREA id="msgStrContent">$newContent&nbsp;</TEXTAREA>
+
+#end
+<script language="JavaScript">
+var htmlStrContent = document.all("msgStrContent");
+#if($objInfoList)
+#set($count=0)
+	#foreach($objInfo in $objInfoList)
+		try
+		{
+			parent.intTotal++;
+			parent.strMsg[parent.intTotal]=htmlStrContent[$velocityCount].value;
+		}
+		catch(e)
+		{
+
+		}
+
+	#end
+#end
+</script>
+##-------------------------------------------------------------
+##ҳ��β
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")

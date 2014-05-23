@@ -1,0 +1,40 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##��ǰ������
+##**********************
+
+##��ʾ��ǰ����������
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.group.operation.del')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##��Ϣ�༭��
+##**********************
+
+#hodeSysUI_EditBodyHeader("del.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showMsg("$action.getText('rbac.user.operation.delmsg2')" 1 "" "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showMsg("$!objInfo.strName" 1 "" "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_EditBodyFoot(['delete','cancel'] "2")
+
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

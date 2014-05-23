@@ -1,0 +1,150 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "考试成绩信息" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+<div id="printInfo" style="">
+<table width="1000" border="1" cellpadding="6" cellspacing="0" bordercolor="#cecece" style="border-collapse:collapse;" >
+#set($showWidth = "15%")
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "考试期次" 1 0 "$!objInfo.strScoreCount " 5)
+	#hodeSysUI_showMsg("" "考试时间" 1 0 "$!objInfo.strScoreDate " 5)
+#hodeSysUI_TrEnd()
+
+
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "考试人数" 1 0 "$!objInfo.strScoreUseNum" 5)
+	#hodeSysUI_showMsg("" "实际导入人数" 1 0 "$!objInfo.intScoreUseNum" 5)
+#hodeSysUI_TrEnd()
+
+</table>
+
+
+
+<table width="1000" border="1" cellpadding="6" cellspacing="0" bordercolor="#cecece" style="border-collapse:collapse;" >
+	<tr>
+		<td align='center' width=30>序号</td>
+		<td align='center' width=60>姓名</td>
+		<td align='center' width=100>身份证号</td>
+
+		<td align='center' width=50>理论成绩</td>
+		<td align='center' width=50>实操成绩</td>
+
+		<td align='center' width=170>考试期次</td>
+		<td align='center' width=70>考试场次</td>
+		<td align='center' width=170>培训期次</td>
+		<td align='center' width=70>补考</td>
+		<td align='center' width=100>违纪情况</td>
+		<td align='center' width=100>备注</td>
+
+	</tr>
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList3 = $trainUtil.getScoreDetailListByMainID($objInfo.intID))
+#foreach($objInfo3 in $rtnList3)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+			<td>$intNowCount</td>
+			<td align="center">$objInfo3.strStudentName</td>
+			<td align="center">$objInfo3.strStudentIDCode</td>
+			#if($objInfo3.intMainID == $objInfo.intID)
+				<td align="center">$objInfo3.fltExamScore1</td>
+				<td align="center">$objInfo3.fltExamScore2</td>
+				<td align="center">$objInfo3.strScoreCount</td>
+				<td align="center">$objInfo3.strScoreExam</td>
+				<td align="center">$objInfo3.strTrainCount</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">$objInfo3.strExamRule</td>
+				<td align="center">$objInfo3.strRemark</td>
+			#elseif($objInfo3.intMainID1 == $objInfo.intID)
+				<td align="center">$objInfo3.fltExamScore3</td>
+				<td align="center">$objInfo3.fltExamScore4</td>
+				<td align="center">$objInfo3.strScoreCount1</td>
+				<td align="center">$objInfo3.strScoreExam</td>
+				<td align="center">$objInfo3.strTrainCount1</td>
+				<td align="center">补</td>
+				<td align="center">$objInfo3.strExamRule1</td>
+				<td align="center">$objInfo3.strRemark1</td>
+
+			#end
+
+		</tr>
+#end
+
+	</TR>
+	</TABLE>
+
+</div>
+	<br><br>
+
+
+
+
+
+	<TABLE width="640" align="center"  border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+	</TD>
+	</TR>
+	</TABLE>
+
+
+<table width="800" border="1" cellpadding="6" cellspacing="0" bordercolor="#cecece" style="border-collapse:collapse;" >
+	<TR class="trMainBodyTitle"  >
+			<TD ALIGN="center" WIDTH="100">经办人</TD>
+			<TD ALIGN="center" WIDTH="130">经办时间</TD>
+			<TD ALIGN="center" >意见</TD>
+    	</TR>
+
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList = $trainUtil.getObjectLogList($objInfo.intID,"train_score"))
+#foreach($objInfo4 in $rtnList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+			<td>$objInfo4.strOptUserName</td>
+			<td>$objInfo4.strOptDate</td>
+
+			<td>$!{objInfo4.strOptContent}</td>
+		</tr>
+
+#end
+
+	</TR>
+	</TABLE>
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

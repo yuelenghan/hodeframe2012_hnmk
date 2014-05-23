@@ -1,0 +1,55 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##-------------------------------------------------------------
+##**********************
+##��ǰ������
+##**********************
+
+##��ʾ��ǰ����������
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('message.operation.revert')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##��Ϣ�༭��
+##**********************
+
+
+
+#hodeSysUI_EditBodyHeader("reply.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td align='right' class="tdEditContentLeft" id='t_objInfo.strReceiveAccountList'>
+	$action.getText('global.interpunction.asterisk')$!action.getText('message.form.receiveUserIDList')$action.getText('global.interpunction.colon')</td>
+	<td align="left" class="tdEditContentRight">
+		##hodeSysHTMLUI_htmlTextArea("objInfo.strReceiveAccountList" "strReceiveAccountList" "$!{objInfo.strReceiveAccountList}" 2 60 "readonly" 0)
+		<textArea name="objInfo.strReceiveAccountList" CLASS="inputText" msg="$!action.getText('message.form.receiveUserIDList')" require="true"  cols="60" rows="2" readonly>$!objInfo.strReceiveAccountList</textArea>
+	</td>
+</tr>
+
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	##hodeSysUI_showTextArea("$!action.getText('message.form.content')" 1 1 "objInfo.strContent" "$!objInfo.strContent" 7 65 "")
+
+	<td align='right' class="tdEditContentLeft" id='t_objInfo.strReceiveAccountList'>
+	$action.getText('global.interpunction.asterisk')$!action.getText('message.form.content')$action.getText('global.interpunction.colon')</td>
+	<td align="left" class="tdEditContentRight">
+		<textArea name="objInfo.strContent" CLASS="inputText" msg="$!action.getText('message.form.content')" require="true"  cols="65" rows="7">$!objInfo.strContent</textArea>
+	</td>
+</tr>
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript��ݺϷ���У��
+##����У��JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##���ع��Ч��JavaScript
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

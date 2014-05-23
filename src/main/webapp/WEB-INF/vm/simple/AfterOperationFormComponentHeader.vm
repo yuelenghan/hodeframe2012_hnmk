@@ -1,0 +1,166 @@
+#set ($afterOperationTitle = $parameters.get('afterOperationTitle'))
+#if((!$afterOperationTitle)||($afterOperationTitle==""))
+	#set($afterOperationTitle=$action.getText('global.content.process'))
+#end
+
+#set ($operationType = $parameters.get('operationType'))
+#if(!$operationType)
+	#set($operationType="edit")
+#end
+
+#set ($tableWidth = $parameters.get('tableWidth'))
+#if(!$tableWidth)
+	#set($tableWidth="75%")
+#end
+
+#set ($addAction = $parameters.get('addAction'))
+#if(!$addAction)
+	#set($addAction="addForm.action")
+#end
+
+#set ($actionName = $parameters.get('actionName'))
+#if((!$actionName) || ($actionName == "" ) || ($actionName.length() < 3  ))
+	#set($actionName="showList.action")
+#end
+#set ($returnLabel = $parameters.get('returnLabel'))
+#if((!$returnLabel)||($returnLabel==""))
+	#set($returnLabel = $action.getText('global.operation.returnList'))
+#end
+
+#set ($stop = $parameters.get('stop'))
+#if((!$stop)||($stop==""))
+	#set($stop = 0)
+#end
+
+#set ($formid = $parameters.get('formid'))
+
+#set ($winClose = $parameters.get('winClose'))
+
+#set ($needHiddenParams = $parameters.get('needHiddenParams'))
+
+#set ($strOtherHiddenInfo = $parameters.get('strOtherHiddenInfo'))
+
+
+##-------------------------------------------------------------
+##���ر?
+#bodytag( Component "template=FormComponentHeader.vm" )
+	#param( "actionName" "$!actionName" )
+	#param( "formName" "frmHidden" )
+	#param( "methodName" "get" )
+	#param( "needHiddenParams" "$!needHiddenParams" )
+#end
+$!strOtherHiddenInfo
+#include("$action.getText('config.vmPath')/simple/FormFooter.vm")
+
+##���ر?
+#if($operationType=="add")
+    #bodytag( Component "template=FormComponentHeader.vm" )
+    	#param( "actionName" "$!addAction" )
+    	#param( "formName" "frmHiddenAdd" )
+    	#param( "methodName" "post" )
+    	#param( "needHiddenParams" "$!needHiddenParams" )
+		#param( "formid" "$!formid" )
+    #end
+	#include("$action.getText('config.vmPath')/simple/FormFooter.vm")
+#end
+
+#if($winClose == "true")
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function winClose()
+{
+	self.opener.location.reload();
+	window.close();
+}
+winClose();
+//-->
+</SCRIPT>
+#end
+<TABLE  width=100%  height=100% border="0" cellpadding="0" cellspacing="0">
+<TR><TD>
+	<table width="400" ALIGN='center' VALIGN='middle'  border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+		<td width="9" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_01.gif" width="9" height="8"></td>
+		<td height="8" valign="top" background="$action.getText('config.prjName')/images/operator/border_02.gif"></td>
+		<td width="7" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_03.gif" width="7" height="8"></td>
+	  </tr>
+	  <tr>
+		<td width="9" valign="top" background="$action.getText('config.prjName')/images/operator/border_04.gif"></td>
+		<td valign="top">
+
+
+
+			<TABLE  border="0" cellpadding="0" cellspacing="0">
+			<TR>
+				<TD width=150>
+					<img src="$action.getText('config.prjName')/images/operator/alert-ok.gif" border=0>
+				</TD><TD>
+					<span>
+						<ol>
+						</ol>
+						<div align='center'>
+
+#if($operationType=="edit")
+	#if($stop != 1)
+		<SCRIPT LANGUAGE="JavaScript">
+		setTimeout("document.frmHidden.submit()",$action.getText('config.afterEditTime'));
+		</SCRIPT>
+	#end
+		$afterOperationTitle
+		<br>
+		<input type="button" class='button' name="btnReturn" value="$!returnLabel"
+		#if(($actionName)&&($actionName!=""))
+			onclick="document.frmHidden.submit()"
+		#else
+			onclick="history.back()"
+		#end
+		>
+
+
+#elseif($operationType=="add")
+	$afterOperationTitle
+	<br>
+	<input type="button" class='button'  name="btnReturn"  value="$!returnLabel"
+	#if(($actionName)&&($actionName!=""))
+		onclick="document.frmHidden.submit()"
+	#else
+		onclick="history.back()"
+	#end
+	>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" class='button'  name="btnGoOn"  value="$action.getText('global.operation.goOnAdd')" onclick="document.frmHiddenAdd.submit()">
+#elseif($operationType=="delete")
+	#if($stop != 1)
+		<SCRIPT LANGUAGE="JavaScript">
+		<!--
+		setTimeout("document.frmHidden.submit()",$action.getText('config.afterEditTime'));
+		//-->
+		</SCRIPT>
+	#end
+	$afterOperationTitle
+	<br>
+	<input type="button" class='button' name="btnReturn"  value="$!returnLabel"
+	#if(($actionName)&&($actionName!=""))
+		onclick="document.frmHidden.submit()"
+	#else
+		onclick="history.back()"
+	#end
+	>
+#end
+					</div>
+				</span>
+			</TD>
+			</TR>
+			</TABLE>
+
+
+		</td>
+		<td width="7" valign="top" background="$action.getText('config.prjName')/images/operator/border_04.gif"></td>
+	  </tr>
+	  <tr>
+		<td width="9" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_05.gif" width="9" height="8"></td>
+		<td height="8" valign="top" background="$action.getText('config.prjName')/images/operator/border_02.gif"></td>
+		<td width="7" height="8" valign="top"><img src="$action.getText('config.prjName')/images/operator/border_06.gif" width="7" height="8"></td>
+	  </tr>
+	</table>
+  </td></tr>
+</table>

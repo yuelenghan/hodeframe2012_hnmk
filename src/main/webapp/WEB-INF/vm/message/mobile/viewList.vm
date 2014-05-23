@@ -1,0 +1,106 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "手机短信$action.getText('global.interpunction.right')已发送短信" )
+#end
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<td  valign="middle" align="right" >$action.getText('发送号码')&nbsp;：
+	</td>
+	<td>
+	<input type="text" name="objSearch.strToMobile" class="inputText" value="$!objSearch.strToMobile"/>&nbsp;&nbsp;
+	</td>
+	<td   valign="middle" align="right">$action.getText('发送内容')&nbsp;：
+	</td>
+	<td >
+		<input type="text" name="objSearch.strContent" class="inputText" value="$!objSearch.strContent"/>&nbsp;&nbsp;
+	</td>
+	#hodeSysUI_optImg("search" 1 "center")
+#hodeSysUI_TrEnd()
+#hodeSysUI_MainBodyFoot(1)
+#*
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" ) 
+	#param( "hiddenSearchAreaCookie" "buildTax_showListCookie" )
+#end
+*#
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	#hodeSysUI_TdMainBody("$action.getText('内容')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('写信人')" "center" "70" 0)
+	#hodeSysUI_TdMainBody("$action.getText('写信时间')" "center" "60" 0)
+	#hodeSysUI_TdMainBody("$action.getText('发送时间')" "center" "60" 0)
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+		#hodeSysUI_TdMainBody("<a href='./viewForm.action?objInfo.intID=$!objInfo.intID'  class='linkBody'>$!objInfo.strContent</a>" "center" "" 0)
+
+		#hodeSysUI_TdMainBody("$!objInfo.strCreateUserName" "center" "" 0)
+
+		#hodeSysUI_TdMainBody("$!objInfo.strCreateDate" "center" "" 0)
+
+		#hodeSysUI_TdMainBody("$!objInfo.strSendDate" "center" "" 0)
+
+
+    #hodeSysUI_TrEnd()
+#end
+
+##填充表格
+#hodeSysUI_fillMain(4)
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+#set($deleteConfirm="确定删除所选数据吗？")
+##########分页
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "returnBtnOnClick" "$returnBtnOnClick" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','$!deleteConfirm' ) ")
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "viewList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript

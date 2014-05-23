@@ -1,0 +1,72 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="train.userchange" extends="index" namespace="/train/userchange">
+
+
+		<action name="addForm" class="trainUserChangeAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/addForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="add" class="trainUserChangeAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/afterAdd.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="editForm" class="trainUserChangeAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/editForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="edit" class="trainUserChangeAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/afterEdit.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="del" class="trainUserChangeAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/afterDel.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewForm" class="trainUserChangeAction" method="viewData">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/viewForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="showList" class="trainUserChangeAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/showPageList.vm</result>
+			<param name="hiddenParameter">objSearch.strCode,objSearch.strSearchStartDate,objSearch.strSearchEndDate</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showSearchList" class="trainUserChangeAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/showSearchList.vm</result>
+			<param name="hiddenParameter">objSearch.strCode,objSearch.strSearchStartDate,objSearch.strSearchEndDate</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showSearchDetailList" class="trainUserChangeAction" method="showSearchDetailList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/userchange/showSearchDetailList.vm</result>
+			<param name="hiddenParameter">trainUserChangeDetailInfo.strUserName,trainUserChangeDetailInfo.strUserCode,trainUserChangeDetailInfo.strSearchStartDate,trainUserChangeDetailInfo.strSearchEndDate</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+    </package>
+
+</xwork>

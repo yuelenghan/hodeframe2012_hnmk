@@ -1,0 +1,195 @@
+#set ($jsfile = $parameters.get('jsfile'))
+#if(!$jsfile)
+	#set($jsfile="dtree.js")
+#end
+
+#set ($jsName = $parameters.get('jsName'))
+#if(!$jsName)
+	#set($jsName="jsName")
+#end
+
+
+#set ($rootID = $parameters.get('rootID'))
+#if((!$rootID)||($rootID<0))
+	#set($rootID = 0)
+#end
+
+#set ($rootName = $parameters.get('rootName'))
+
+#set ($strAfterInfo = $parameters.get('strAfterInfo'))
+#set ($strAfterName = $parameters.get('strAfterName'))
+
+#if($jsfile != "")
+	<script src="$action.getText('config.prjName')/js/$jsfile"></script>
+#end
+
+#set ($jsTree = $parameters.get('jsTree'))
+#if(!$jsTree)
+	#set($jsTree = $jsTree)
+#end
+
+#set ($checkTree = $parameters.get('checkTree'))
+#if(!$checkTree)
+	#set($checkTree = $checkTree)
+#end
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td>
+
+		<div class="dtree">
+        	<script type="text/javascript">
+        		<!--
+        var strArrayID = new Array();
+        		$jsName = new dTree('$jsName');
+
+        		${jsName}.add($rootID,-1,'$!rootName&nbsp;<input type=checkbox name=chk onclick=changeAllSelect() value=$node.intID>','$!rootUrl','$!rootTitle','$!rootTarget','$!rootIcon','$!rootIconOpen','$!rootOpen');
+
+#foreach($node in $jsTree)
+	#if($strAfterInfo != "")
+		#hodeSysBean_checkInArr($node.intID $checkTree $rtn)
+		#if($intLastID == $node.intID)
+		#else
+			#set($intLastID = $!node.intID)
+			strArrayID[$node.intID] = new Array();
+		#end
+		#if($node.intDictType == 2 || $node.intDictType == 1)
+			strArrayID[$node.intFatherID] += ","+$node.intID;
+			#if($rtn == true)
+				#set($strAfterVal="&nbsp;<input type=$strAfterInfo name=$!strAfterName id=show_${node.intID} src=0 class=$strAfterInfo checked value=$node.intID>")
+			#else
+				#set($strAfterVal="&nbsp;<input type=$strAfterInfo name=$!strAfterName onclick=changeSelect(this) src=0  id=show_${node.intID} class=$strAfterInfo value=$node.intID>")
+			#end
+		#else
+			strArrayID[$node.intFatherID] += ","+$node.intID;
+			#set($strAfterVal="&nbsp;<input type=$strAfterInfo name=$!strAfterName onclick=changeSelect(this) src=0 id=show_${node.intID} class=$strAfterInfo value=$node.intID>")
+		#end
+	#end
+	${jsName}.add($node.intID,$node.intFatherID,'<span onclick=onClickSelect(this) value=${node.intID}>$!node.strName</span>$!{strAfterVal}','','','','','');
+#end
+	document.write($jsName);
+		//-->
+        	</script>
+		</div>
+
+	</td>
+</tr>
+</table>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+isBreak  = 0;
+function onClickSelect(thisControl)
+{
+	var tmp = document.getElementById("show_"+thisControl.value);
+	if(tmp)
+	{
+		if(tmp.checked == false)
+		{
+			tmp.checked = true;
+		}
+		else
+		{
+			tmp.checked = false;
+		}
+	}
+}
+function changeSelect(thisControl)
+{
+
+	if(isBreak == 0)
+		onloadInfo();
+	var changeVal = false;
+	if(thisControl.checked == true)
+	{
+		changeVal = true;
+	}
+	var s = strArrayID[thisControl.value];
+	if(s && s!="")
+	{
+
+		var sArr = s.split(",");
+		for(var i=0;i<sArr.length;i++)
+		{
+			var tmp = document.getElementById("show_"+sArr[i]);
+			var intID = sArr[i];
+
+			var sChild = strArrayID[intID];
+			if(sChild && sChild != "")	//�жϸ�id�Ƿ������ѡ��
+			{
+				document.getElementById("show_"+intID).checked = changeVal;		//ѡ��
+
+				var sChildArr = sChild.split(",");
+				for(var j = 0; j < sChildArr.length; j++)	//ѡ����ѡ��
+				{
+					var tmp1 = document.getElementById("show_"+sChildArr[j]);
+					if(tmp1)
+					{
+						var intID1 = sChildArr[j];
+						if(intID1 == 1 || intID == 181)
+						{
+							tmp1.checked = changeVal;
+							var tmpID1 = document.getElementById("show_"+intID1);
+							changeSelect(tmpID1);
+						}
+						else
+						{
+							tmp1.checked = changeVal;
+						}
+					}
+				}
+			}
+			else
+			{
+				if(tmp)
+				{
+					//alert(strArrayID[].length+";;;"+strArrayID[sArr[i]]);
+					//if((unitFatherIDArr[intID] == 1 ) || ( unitFatherIDArr[intID] >= 181 && unitFatherIDArr[intID] <= 187) )
+					//if(unitFatherIDArr[intID])
+					if((intID == 1 || intID == 181 ))
+					{
+						//add sub
+						tmp.checked = changeVal;
+						var tmpID = document.getElementById("show_"+intID);
+						changeSelect(tmpID);
+					}
+					else
+						tmp.checked = changeVal;
+				}
+			}
+		}
+	}
+}
+
+function changeAllSelect()
+{
+	var arrChk = document.all.tags("input");
+	var lengthArrChk = arrChk.length;
+	var flag = arrChk[0].checked;
+	for(var i = 1; i < lengthArrChk; i ++)
+	{
+		arrChk[i].checked = flag;
+	}
+}
+
+function onloadInfo()
+{
+	var intID = 0;
+	for(var i=0;i<unitFatherIDArr.length;i++)
+	{
+		var tmp = document.getElementById("show_"+i);
+		if(tmp)
+		{
+			if(unitFatherIDArr[i])
+			{
+				tmp.name = ""
+			}
+			else
+			{
+
+			}
+		}
+	}
+	isBreak = 1;
+}
+//-->
+</SCRIPT>

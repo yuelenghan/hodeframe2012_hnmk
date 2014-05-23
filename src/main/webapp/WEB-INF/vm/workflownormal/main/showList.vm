@@ -1,0 +1,113 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('workflownormal.main.operation.list')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPageList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	<td colspan="3" align="center">$action.getText('global.operation')</td>
+	#hodeSysUI_TdMainBody("$action.getText('workflownormal.main.form.strName')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('workflownormal.main.form.strFlowCode')" "center" "15%" 0)
+	#hodeSysUI_TdMainBody("$action.getText('workflownormal.main.form.intIsUse')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('workflownormal.main.form.intDealWithDay')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('workflownormal.main.form.intOrderID')" "center" "" 0)
+#hodeSysUI_TrEnd()
+
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+
+
+
+		#hodeSysUI_TdMainOpt("edit" "$action.getText('workflownormal.main.operation.edit')" "editForm.action" "" $objInfo.intID "")
+		#hodeSysUI_TdMainOpt("delete" "$action.getText('workflownormal.main.operation.del')" "del.action" "$action.getText('workflownormal.main.operation.delmsg2')" $objInfo.intID "")
+		#hodeSysUI_TdMainLinkOpt("checked" "设置" "" "../step/editList.action?intMainID=$objInfo.intID" )
+
+		#hodeSysUI_TdMainBody("$!objInfo.strName" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strFlowCode" "center" "" 0)
+		#set($thisName = "workflownormal.main.form.intIsUse$!{objInfo.intIsUse}")
+		#hodeSysUI_TdMainBody("$action.getText($thisName)" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.intDealWithDay" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.intOrderID" "center" "" 0)
+
+    #hodeSysUI_TrEnd()
+#end
+
+
+##填充表格
+#hodeSysUI_fillMain(8)
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('workflownormal.main.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript

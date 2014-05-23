@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.check">
+  <typeAlias alias="trainCheckDetailModel" type="com.hode.train.model.TrainCheckDetailModel"/>
+
+  <select id="getTrainCheckCourseList" resultClass="trainCheckDetailModel" parameterClass="trainCheckDetailModel">
+  	SELECT *
+	FROM train_check_detail
+	WHERE intTrainCheckID = #intTrainCheckID#
+  </select>
+
+</sqlMap>

@@ -1,0 +1,45 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+     <package name="train.checka" extends="index" namespace="/train/trpro">
+		<action name="listTrp" class="trainingProgramsAction" method="listTrp">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/trainingProgramsForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="addTrp" class="trainingProgramsAction" method="addTrp">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/trainingProgramsForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		   <action name="deleteTrpId" class="trainingProgramsAction" method="deleteTrpId">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/trainingProgramsForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		   <action name="selectUpdate" class="trainingProgramsAction" method="selectUpdate">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/updaeTrainingProgramsForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+		  <action name="updatePro" class="trainingProgramsAction" method="updatePro">
+			<result name="success" type="velocity">/WEB-INF/vm/trainingSet/trainingProgramsForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		  </action>
+
+
+
+    </package>
+
+</xwork>

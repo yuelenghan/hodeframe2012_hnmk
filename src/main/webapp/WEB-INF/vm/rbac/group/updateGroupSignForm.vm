@@ -1,0 +1,64 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "公章设置" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+#rbac_getGroupModelById($user.intGroupID $objInfo)
+#hodeSysUI_EditBodyHeader("updateGroupSign.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "1")
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strName')"  1 1 "objInfo.strName" "$!objInfo.strName"   20 20 "readonly" )
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("培训机构资质"  1 0 "objInfo.strTel" "$!objInfo.strTel"   40 200 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("资质证书号码"  1 0 "objInfo.strFax" "$!objInfo.strFax"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+		#hodeSysUI_showPassword("安全培训章密码"  1 0 "objInfo.strMobile" "$!objInfo.strMobile"  "")
+#hodeSysUI_TrEnd()
+<TR class="trEditContent"  height='30'>
+	<TD class="tdEditContentLeft">安全培训专用章</TD>
+	<TD class="tdEditContentRight" >
+		<img  style="#if($!objInfo.strAttrContent == '' || !$!objInfo.strAttrContent) display:none #end" height="160" width="160"  id="img" name="img" src="$action.getText('config.prjName')/$!{objInfo.strAttrContent}"/>
+	</TD>
+</TR>
+
+#hodeSysUI_TrBeginMainBody(4)
+		#hodeSysUI_showPassword("考核培训章密码"  1 0 "objInfo.strZipCode" "$!objInfo.strZipCode"  "")
+#hodeSysUI_TrEnd()
+<TR class="trEditContent"  height='30'>
+	<TD class="tdEditContentLeft">考核培训专用章</TD>
+	<TD class="tdEditContentRight" >
+		<img  style="#if($!objInfo.strEmail == '' || !$!objInfo.strEmail) display:none #end" height="160" width="160"  id="img" name="img" src="$action.getText('config.prjName')/$!{objInfo.strEmail}"/>
+	</TD>
+</TR>
+
+
+#hodeSysHTMLUI_htmlHidden("objSearch.intFatherID" "$!objInfo.intFatherID")
+
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

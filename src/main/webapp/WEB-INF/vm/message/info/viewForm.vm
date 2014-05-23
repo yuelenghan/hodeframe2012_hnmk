@@ -1,0 +1,64 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('message.operation.view')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+
+#hodeSysUI_EditBodyHeader("edit.action" "HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "$!action.getText('message.form.title')" 1 0 "$!objInfo.strTitle")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+
+	#hodeSysUI_showMsg("" "$!action.getText('message.form.strUnitID')" 1 0 $!{action.getText("message.config.strUnitID${objInfo.intUnitType}")})
+#hodeSysUI_TrEnd()
+<TR id="showDefineUnit" style="#if($objInfo.intUnitType != 2)  display:none #end">
+		#rbac_getGroupNameByIds("$objInfo.strUnitID" $strGroupName)
+		#hodeSysUI_showMsg("t_objInfo.intLevel" "$!action.getText('message.config.strUnitID2')" 1 0 "$!strGroupName")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#bulletin_getLevel($!objInfo.intLevel $temp)
+	#hodeSysUI_showMsg("t_objInfo.intLevel" "$!action.getText('message.form.level')" 1 0 "$temp")
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "$!action.getText('message.form.startTime')"  1 0"$!objInfo.dtmStartDateTime")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "$!action.getText('message.form.endTime')"  1 0"$!objInfo.dtmEndDateTime")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showEditor("$!action.getText('message.form.content')</TD>
+	<TD class='tdSearchContentRight'>objInfo.strContent" "$!objInfo.strContent" "view" 625 350)
+#hodeSysUI_TrEnd()
+
+#hodeSysHTMLUI_htmlHidden("objInfo.strUnitID" "$objInfo.strUnitID")
+#hodeSysUI_EditBodyFoot(['close'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

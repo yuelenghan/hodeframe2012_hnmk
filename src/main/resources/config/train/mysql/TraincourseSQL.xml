@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.checkm">
+  <typeAlias alias="traincourse" type="com.hode.train.model.Traincourse"/>
+  <typeAlias alias="dictionaryModel" type="com.hode.dictionary.model.DictionaryModel"/>
+  <typeAlias alias="trainExamineeModel" type="com.hode.train.model.TrainExamineeModel"/>
+  <typeAlias alias="trainPapersModel" type="com.hode.train.model.TrainPapersModel"/>
+  <typeAlias alias="teacUtil" type="com.hode.train.util.TeacUtil"/>
+
+
+
+
+  <update id="updateTrainExa" parameterClass="trainExamineeModel">
+    UPDATE train_examinee
+	SET
+		strEducation = #strEducation#,
+		strJob = #strJob#,
+		strExamineeUnit = #strExamineeUnit#
+	WHERE intID = #intID#
+  </update>
+
+
+ <select id="trainPapList" resultClass="trainPapersModel" parameterClass="teacUtil">
+	select *
+	from train_papers where 1=1
+	and	intID in(select intPapersID from examinee_papers where intExamineeID in(select intID from train_examinee where strIdentity=#cardIdString#))
+ </select>
+
+
+
+
+  <select id="trainPap" resultClass="trainPapersModel" parameterClass="string">
+	select *
+	from train_papers
+	where strPapersID=#strPapersID#
+  </select>
+
+  <select id="trainExa" resultClass="trainExamineeModel" parameterClass="string">
+	select *
+	from train_examinee
+	where strIdentity=#strIdentity#
+  </select>
+
+
+   <select id="getObjectList" resultClass="traincourse" parameterClass="traincourse">
+	select *
+	from train_course
+	where intCreateGroup=#intCreateGroup#
+	<isNotEqual prepend="AND" property="intDictionary" compareValue="0">
+	intDictionary = #intDictionary#
+	</isNotEqual>
+	ORDER BY intID desc
+  </select>
+
+  <update id="updateCourse" parameterClass="traincourse">
+    UPDATE train_course
+	SET
+		strCourseName = #strCourseName#,
+		intCourseNum = #intCourseNum#,
+		intDictionary = #intDictionary#
+	WHERE intID = #intID#
+  </update>
+
+   <select id="traincourse" resultClass="traincourse" parameterClass="int">
+	select *
+	from train_course
+	where intID=#intID#
+  </select>
+
+  <select id="getObjectAllList" resultClass="dictionaryModel" parameterClass="string">
+	select *
+	from dictionary where intType=#intType#  and LENGTH(strKey)>0
+	ORDER BY intID asc
+  </select>
+
+
+  <select id="getListTest" resultClass="dictionaryModel">
+	select *
+	from dictionary ORDER BY intID asc
+  </select>
+
+
+  <delete id="deleteCourse" parameterClass="traincourse">
+		delete from train_course
+		WHERE intID = #intID#
+  </delete>
+
+  <insert id="insertObject" parameterClass="traincourse">
+    INSERT INTO train_course(
+			strCourseName,
+			intCourseNum,
+			intCreateUser,
+			intCreateGroup,
+			intDictionary
+		)
+	VALUES (
+		#strCourseName#,
+		#intCourseNum#,
+		#intCreateUser#,
+		#intCreateGroup#,
+		#intDictionary#
+		)
+  </insert>
+
+  <select id="getCourseNameByID" parameterClass="int" resultClass="string">
+  	select strCourseName from train_course
+  	where intID='$intID$'
+  </select>
+
+  <select id="getCourseFrom" parameterClass="traincourse" resultClass="traincourse">
+  	select * from train_course
+  	where intDictionary = #intDictionary#
+  	and intCreateGroup = #intCreateGroup#
+  </select>
+
+  <select id="getCourseByNameAndTrainObject" parameterClass="traincourse" resultClass="traincourse">
+  	select * from train_course
+  	where strCourseName = #strCourseName#
+  	and intDictionary = #intDictionary#
+  	and intCreateGroup = #intCreateGroup#
+  </select>
+</sqlMap>

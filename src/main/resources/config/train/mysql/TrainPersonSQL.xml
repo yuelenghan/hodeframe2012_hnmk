@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.person">
+  <typeAlias alias="trainPersonModel" type="com.hode.train.model.TrainPersonModel"/>
+  <typeAlias alias="trainStudentModel" type="com.hode.train.model.TrainStudentModel"/>
+  <typeAlias alias="trainStudentDetailModel" type="com.hode.train.model.TrainStudentDetailModel"/>
+  <typeAlias alias="trainScoreDetailModel" type="com.hode.train.model.TrainScoreDetailModel"/>
+  <typeAlias alias="trainUserApplyDetailModel" type="com.hode.train.model.TrainUserApplyDetailModel"/>
+  <typeAlias alias="trainUserChangeDetailModel" type="com.hode.train.model.TrainUserChangeDetailModel"/>
+
+  <select id="getPerson" resultClass="trainPersonModel" parameterClass="trainPersonModel">
+  	select a.*,b.strName as strGroupName from train_person a ,rbac_group b
+  	where a.intGroupID = b.intID
+  	<isGreaterThan prepend="and" compareValue="0" property="intGroupID">
+  		intGroupID = #intGroupID#
+  	</isGreaterThan>
+  	<isNotNull property="strEdu">
+  		<isNotEqual prepend="and" property="strEdu" compareValue="">
+  			strEdu = #strEdu#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strSex">
+  		<isNotEqual prepend="and" property="strSex" compareValue="">
+  			strSex = #strSex#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strPost">
+  		<isNotEqual prepend="and" property="strPost" compareValue="">
+  			strPost = #strPost#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strPersonName">
+  		<isNotEqual prepend="and" property="strPersonName" compareValue="">
+  			strPersonName = #strPersonName#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strPersonID">
+  		<isNotEqual prepend="and" property="strPersonID" compareValue="">
+  			strPersonID = #strPersonID#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isGreaterThan compareValue="0" prepend="and" property="intStartAge">
+  		<![CDATA[ intAge >= #intStartAge# ]]>
+  	</isGreaterThan>
+  	<isGreaterThan compareValue="0" prepend="and" property="intEndAge">
+  		<![CDATA[ intAge <= #intEndAge# ]]>
+  	</isGreaterThan>
+  	order by intID
+  	LIMIT #intStart#,#intOffset#
+  </select>
+
+  <select id="personCount" resultClass="int" parameterClass="trainPersonModel">
+  	select count(intID) from train_person
+  	where 1=1
+  	<isGreaterThan prepend="and" compareValue="0" property="intGroupID">
+  		intGroupID = #intGroupID#
+  	</isGreaterThan>
+  	<isNotNull property="strEdu">
+  		<isNotEqual prepend="and" property="strEdu" compareValue="">
+  			strEdu = #strEdu#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strSex">
+  		<isNotEqual prepend="and" property="strSex" compareValue="">
+  			strSex = #strSex#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strPost">
+  		<isNotEqual prepend="and" property="strPost" compareValue="">
+  			strPost = #strPost#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strPersonName">
+  		<isNotEqual prepend="and" property="strPersonName" compareValue="">
+  			strPersonName = #strPersonName#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isNotNull property="strPersonID">
+  		<isNotEqual prepend="and" property="strPersonID" compareValue="">
+  			strPersonID = #strPersonID#
+  		</isNotEqual>
+  	</isNotNull>
+  	<isGreaterThan compareValue="0" prepend="and" property="intStartAge">
+  		<![CDATA[ intAge >= #intStartAge# ]]>
+  	</isGreaterThan>
+  	<isGreaterThan compareValue="0" prepend="and" property="intEndAge">
+  		<![CDATA[ intAge <= #intEndAge# ]]>
+  	</isGreaterThan>
+  </select>
+
+  <select id="getStudentDetailByIDCode" parameterClass="trainPersonModel" resultClass="trainStudentDetailModel">
+  	select a.*, b.strTrainCountClass from train_student_detail a,train_student b
+  	where strStudentIDCode = #strPersonID# and a.intMainID = b.intID
+  	order by a.intID desc
+  </select>
+
+  <select id="getScoreDetailByIDCode" parameterClass="trainPersonModel" resultClass="trainScoreDetailModel">
+  	select a.*, b.strTrainCountClass from train_score_detail a,train_score b
+  	where strStudentIDCode = #strPersonID# and (a.intMainID = b.intID or a.intMainID1 = b.intID)
+  	order by a.intID desc
+  </select>
+
+  <select id="getPersonByIDCode" parameterClass="trainPersonModel" resultClass="trainPersonModel">
+  	select * from train_person where strPersonID = #strPersonID#
+  </select>
+
+  <select id="getUserApplyDetailByIDCode" parameterClass="trainPersonModel" resultClass="trainUserApplyDetailModel">
+  	select * from train_userapply_detail where strUserCode = #strPersonID#
+  	order by intID desc
+  </select>
+
+  <select id="getUserChangeDetailByIDCode" parameterClass="trainPersonModel" resultClass="trainUserChangeDetailModel">
+  	select * from train_userchange_detail where strUserCode = #strPersonID#
+  	order by intID desc
+  </select>
+
+  <select id="getPersonRecordByStudent" parameterClass="trainStudentDetailModel" resultClass="trainPersonModel">
+  	select * from train_person
+  	where strPersonID = #strStudentIDCode#
+  </select>
+
+  <insert id="insertStudentDetail" parameterClass="trainStudentDetailModel">
+  	INSERT INTO train_student_detail
+	(
+		intMainID,
+		strTrainCount,
+		intTrainYear,
+		strStudentUnitType,
+		strStudentIDCode,
+		strBirthDay,
+		strStudentName,
+		strStudentSex,
+		strStudentQualifications,
+		strStudentPost,
+		strStudentTitles,
+		strStudentDegree,
+		strStudentFirstDate,
+		strStudentHealth,
+		strStudentRelation,
+		strStudentCertCode,
+		strStudentIDAddr,
+		intStudentAge,
+		strStudentViolate,
+		strStudentPic1,
+		strStudentPic2,
+		strStudentPic3,
+		strStudentPic4,
+		intIsSignUp,
+		strTrainType,
+		strTrainUnitName,
+		intIndex
+		)
+	VALUES (
+		#intMainID#,
+		#strTrainCount#,
+		#intTrainYear#,
+		#strStudentUnitType#,
+		#strStudentIDCode#,
+		#strBirthDay#,
+		#strStudentName#,
+		#strStudentSex#,
+		#strStudentQualifications#,
+		#strStudentPost#,
+		#strStudentTitles#,
+		#strStudentDegree#,
+		#strStudentFirstDate#,
+		#strStudentHealth#,
+		#strStudentRelation#,
+		#strStudentCertCode#,
+		#strStudentIDAddr#,
+		#intStudentAge#,
+		#strStudentViolate#,
+		#strStudentPic1#,
+		#strStudentPic2#,
+		#strStudentPic3#,
+		#strStudentPic4#,
+		#intIsSignUp#,
+		#strTrainType#,
+		#strTrainUnitName#,
+		#intIndex#
+		)
+  </insert>
+
+  <update id="updatePersonRecord" parameterClass="trainPersonModel">
+  	update train_person
+  	set
+  	strPersonName = #strPersonName#,
+  	strSex = #strSex#,
+  	strEdu = #strEdu#,
+  	strWorkUnit = #strWorkUnit#,
+  	strPost = #strPost#,
+  	intAge = #intAge#
+	where intID = #intID#
+  </update>
+
+  <update id="updatePersonRecordAndPicStatus" parameterClass="trainPersonModel">
+  	update train_person
+  	set
+  	strPersonName = #strPersonName#,
+  	strSex = #strSex#,
+  	strEdu = #strEdu#,
+  	strWorkUnit = #strWorkUnit#,
+  	strPost = #strPost#,
+  	intAge = #intAge#,
+  	intPic1 = #intPic1#,
+  	intPic2 = #intPic2#,
+  	intPic3 = #intPic3#,
+  	intPic4 = #intPic4#
+	where intID = #intID#
+  </update>
+
+  <select id="getStudentByPersonRecord" parameterClass="trainPersonModel" resultClass="trainStudentDetailModel">
+  	select * from train_student_detail
+  	where strStudentIDCode = #strPersonID#
+  		and intMainID = #intMainID#
+  	order by intID desc
+  	limit 1
+  </select>
+
+  <update id="updateStudentDetailPicStatus" parameterClass="trainStudentDetailModel">
+  	update train_student_detail
+  	set
+  	strStudentPic1 = #strStudentPic1#,
+  	strStudentPic2 = #strStudentPic2#,
+  	strStudentPic3 = #strStudentPic3#,
+  	strStudentPic4 = #strStudentPic4#
+  	where intID = #intID#
+  </update>
+
+  <update id="updatePersonRecordPicStatus" parameterClass="trainPersonModel">
+  	update train_person
+  	set
+  	intPic1 = #intPic1#,
+  	intPic2 = #intPic2#,
+  	intPic3 = #intPic3#,
+  	intPic4 = #intPic4#
+  	where intID = #intID#
+  </update>
+
+  <select id="getGroupIDByName" parameterClass="string" resultClass="int">
+  	select intID from rbac_group where strName = '$trainUnitName$'
+  </select>
+
+  <select id="getStudentDetail" parameterClass="trainStudentModel" resultClass="trainStudentDetailModel">
+  	select * from train_student_detail where intMainID = #intID#
+  	order by intID
+  </select>
+
+  <insert id="insertPersonRecord" parameterClass="trainPersonModel">
+  	insert into train_person(
+  		strPersonName,
+  		strPersonID,
+  		strSex,
+  		intGroupID,
+  		strEdu,
+  		strWorkUnit,
+  		strPost,
+  		intAge,
+  		intPic1,
+  		intPic2,
+  		intPic3,
+  		intPic4
+  	)
+  	values(
+  		#strPersonName#,
+  		#strPersonID#,
+  		#strSex#,
+  		#intGroupID#,
+  		#strEdu#,
+  		#strWorkUnit#,
+  		#strPost#,
+  		#intAge#,
+  		#intPic1#,
+  		#intPic2#,
+  		#intPic3#,
+  		#intPic4#
+  	)
+  </insert>
+
+  <select id="getStudentModel" parameterClass="trainStudentModel" resultClass="trainStudentModel">
+  	select * from train_student where intID = #intID#
+  </select>
+
+  <update id="updatePersonPicRecord" parameterClass="trainPersonModel">
+  	update train_person set
+  		intPic1=#intPic1#,
+  		intPic2=#intPic2#,
+  		intPic3=#intPic3#,
+  		intPic4=#intPic4#
+  	where intID = #intID#
+  </update>
+</sqlMap>

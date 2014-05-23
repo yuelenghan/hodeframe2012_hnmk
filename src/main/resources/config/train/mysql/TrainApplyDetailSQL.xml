@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.detail">
+  <typeAlias alias="trainApplyDetailModel" type="com.hode.train.model.TrainApplyDetailModel"/>
+
+  <select id="getTrainApplyCourseList" resultClass="trainApplyDetailModel" parameterClass="trainApplyDetailModel">
+  	SELECT *
+	FROM train_apply_detail
+	WHERE intTrainApplyID = #intTrainApplyID#
+	order by intID
+  </select>
+
+</sqlMap>

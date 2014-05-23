@@ -1,0 +1,14 @@
+##短消息列表
+#macro(message_getNewReceiveList $intUserID $intOffset $blUseImg $length)
+	#set($messageUtil = $webwork.bean("com.hode.message.action.MessageInfoUtil"))
+	#set($objInfoList = $messageUtil.getNewMessageInfo($intUserID,$intOffset))
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		 #foreach($objInfo in $objInfoList)
+			<tr>
+			   #hodeSysBean_subStr($!{objInfo.messageModel.strContent} $length $rtn)
+				<td width="10" align="left"><img src="$action.getText('config.prjName')/images/xwfgj/fgtu026.gif" width="5" height="9">&nbsp;</td>
+				<td align="left" valign="middle"><a href="../../message/viewFormForReceive.action?objInfo.intID=$!{objInfo.intMessageID}" target="_blank" title="$!{objInfo.messageModel.strContent}"><span class="f1css">$!rtn</span></a></td>
+			</tr>
+		#end
+	</table>
+#end

@@ -1,0 +1,1151 @@
+####################�����������Table
+#macro(hodeSysUI_TableBeginSearch $actionName $formName $isShow)
+	#if($formName == "")
+		#set($formName = "frmMainList")
+	#end
+	#if((!$strTableWidth)||($strTableWidth==""))
+		#set($strTableWidth = "100%")
+	#end
+	<TABLE BORDER="0" $!strTableWidth cellspacing="0" cellpadding="0" id='table_$formName'  class='tableSearchColor' #if($isShow == 1 ) style="display:none"#end>
+	#bodytag( Component "template=Tpl_FormHeaderCom.vm" )
+		#param( "formName" "frmSearch" )
+		#param( "needHiddenParams" "false" )
+		#param( "actionName" $!actionName)
+	#end
+#end
+
+
+####################Table ��ʼ
+#macro(hodeSysUI_TableBegin $intIsPos)
+	#if($intIsPos ==  0)	##�����������ɫ
+		<TABLE BORDER="0" CELLSPACING="0"  CELLPADDING="0" align="center" width="100%" class='tableSearchColor' >
+	#elseif($intIsPos ==  2 )	##����������
+		<TABLE BORDER="0" CELLSPACING="0"  CELLPADDING="0" align="center" width="100%" class='tableMainColor' >
+	#elseif($intIsPos ==  4)	##������ά������(��ӡ��޸�)
+		<TABLE BORDER="0" cellspacing="1" cellpadding="1" align="center"  width="100%" class='tableEditColor' >
+	#elseif($intIsPos ==  5)	##������鿴
+		<TABLE BORDER="0" cellspacing="1" cellpadding="1" align="center" width="100%" class='tableViewColor' >
+	#elseif($intIsPos ==  6)	##����ʽ
+		<TABLE BORDER="0" cellspacing="1" cellpadding="1" align="center" width="100%"  >
+	#else
+		<TABLE BORDER="0" cellspacing="1" cellpadding="1" align="center" width="100%"  >
+	#end
+#end
+
+
+
+####################table�����־
+#macro(hodeSysUI_TableEnd)
+	</table>
+#end
+
+
+####################�����б����ͷ 
+#macro(hodeSysUI_MainBodyHeader $isNeedForm $formName $methodType)
+
+	#if((!$strTableWidth)||($strTableWidth==""))
+		#set($strTableWidth = "100%")
+	#end
+
+	#if(($isNeedForm =="yes") || ($isNeedForm ==1))
+		#if($methodType == "" || $methodType == 0)
+			#set($methodType = "post")
+		#end
+		#if($formName == "")
+			#set($formName = "frmMainList")
+		#end
+		<TABLE width="$strTableWidth" border="0" cellspacing="1" align="center" cellpadding="0" id="table_$formName"  class='tableMainColor'>
+		#bodytag( Component "template=Tpl_FormHeaderCom.vm" )
+			#param( "actionName" "" )
+			#param( "formName" $formName )
+			#param( "methodName" $methodType )
+			#param( "needHiddenParams" "true" )
+		#end
+		#hodeSysHTMLUI_htmlHidden("objInfo.intID" "")
+	#else
+		<TABLE width="$strTableWidth" border="0" cellspacing="1" align="center" cellpadding="0" id="table_$formName"  class='tableMainColor'>
+	#end
+#end
+
+
+####################�����б����β
+#macro(hodeSysUI_MainBodyFoot $isNeedForm)
+	#if(($isNeedForm =="yes") || ($isNeedForm ==1))
+		#parse("$action.getText('config.vmPath')/simple/Tpl_FormFooter.vm")
+	#end
+	</table>
+#end
+
+
+####################list�б�����������Ϣ
+#macro(hodeSysUI_TrBeginMainBody $intIsPos)
+	#if($intIsPos ==  0)	##������tr
+		<TR class="trSearchContent" $!trHeight >
+	#elseif($intIsPos ==  1)	##���������
+		<TR class="trMainBodyTitle" $!trHeight >
+	#elseif($intIsPos ==  2)	##����������0
+		<TR class="trMainBodyContent" $!trHeight >
+	#elseif($intIsPos ==  3)	##����������2
+		<TR class="trMainBodyContent2" $!trHeight >
+	#elseif($intIsPos ==  4)	##��ӡ��޸�
+		<TR  class="trEditContent" $!trHeight >
+	#elseif($intIsPos ==  5)	##�鿴����
+		<TR class="trViewContent" $!trHeight >
+	#elseif($intIsPos ==  6)	##����ʽ����
+		<TR $!trHeight >
+	#else
+		<TR >
+	#end
+#end
+####################list�б�ļ���Table��TR
+#macro(hodeSysUI_TrBegin)
+	<TR>
+#end
+####################TD�����־
+#macro(hodeSysUI_TdEnd)
+	</TD>
+#end
+####################TR�����־
+#macro(hodeSysUI_TrEnd)
+	</TR>
+#end
+
+####################TD��ʼ��־
+#macro(hodeSysUI_TdStart $colspan $rowspan)
+	<TD #if($colspan!="")colspan="$colspan"#end #if($rowspan!="")rowspan="$rowspan"#end>
+#end
+
+####################TD�����־
+#macro(hodeSysUI_TdEnd)
+	</TD>
+#end
+
+####################list�б�����������ϢTD
+####################ָ��title�������б���
+#macro(hodeSysUI_TdMainBody $content $align $width $size)
+	#if($size>0)
+		<TD #if($align!="")ALIGN="$align"#end #if($width!="") WIDTH="$!width"#end title="$!content">#if($width!="") <div style='width: $!{width}px; overflow: hidden;text-overflow:ellipsis'><nobr>#end $!content #if($width!="") </nobr></div>#end</TD>
+	#else
+		<TD #if($align!="")ALIGN="$align"#end #if($width!="") WIDTH="$!width"#end>$!content</TD>
+    #end
+#end
+
+####################list�б�����������Ϣ���ڵı����ȫѡ
+#macro(hodeSysUI_TdCheckBoxMainTitle)
+	<TD width="30" align="center"><INPUT TYPE="checkbox" CLASS="inputCheckbox" TITLE="$action.getText('global.operation.selectTitle')" onclick =  "selectAll(document.frmMainList.elements['objInfo.intIDList'],this)" align="center"></TD>
+#end
+
+####################list�б�����������Ϣ
+#macro(hodeSysUI_TdCheckBoxMainBody $isDisabled $objIntID)
+	<TD width='30'  align="center"><INPUT TYPE="checkbox"  CLASS="inputCheckbox" name="objInfo.intIDList" VALUE="$objIntID" #if($isDisabled ==  1) disabled	#end></TD>
+#end
+
+
+####################list�б�����������Ϣ�Ĳ�����ť
+#macro(hodeSysUI_TdMainOpt $optType $title $actionName $msg $intID $target)
+	#if($actionName=="")
+		#set($actionName = "editForm.action")
+	#end
+	<TD ALIGN="center" width='30'>
+		#if($optType == "edit" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_edit.gif" "editDoc(document.frmMainList,'$!actionName','$!intID','$!msg','','','$!target')" $!title 1)
+		#elseif($optType == "delete" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_del.gif" "deleteDoc(document.frmMainList,'$!actionName','$!intID','$!msg','','','$!target')" $!title 1)
+		#elseif($optType == "checked" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_checked.gif" "deleteDoc(document.frmMainList,'$!actionName','$!intID','$!msg','','','$!target')" $!title 1)
+		#elseif($optType == "submit" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_submit.jpg" "deleteDoc(document.frmMainList,'$!actionName','$!intID','$!msg','','','$!target')" $!title 1)
+		#elseif($optType == "uncheck" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_nocheck.gif" "deleteDoc(document.frmMainList,'$!actionName','$!intID','$!msg','','','$!target')" $!title 1)
+		#elseif($optType == "view" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_view.gif" "deleteDoc(document.frmMainList,'$!actionName','$!intID','$!msg','','','$!target')" $!title 1)
+		#elseif($!target && $!target != "")
+			<input type='button' CLASS="inputButton" value='$optType' onclick="editDoc(document.frmMainList,'$!actionName','$!intID','$!msg','','','$!target')">
+		#else
+			<input type='button' CLASS="inputButton" value='$optType' onclick="document.location.href='$!actionName'">
+		#end
+	</TD>
+#end
+
+####################list�б�����������Ϣ�Ĳ�����ť ��href ���ӷ�ʽ
+#macro(hodeSysUI_TdMainLinkOpt $optType $title $confirmInfo $actionName )
+	#if($actionName=="")
+		#set($actionName = "editForm.action")
+	#end
+	<TD ALIGN="center" width='30'>
+		#if($optType == "edit" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_edit.gif" "document.location.href='$!actionName'" $!title 1)
+		#elseif($optType == "view" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_view.gif" "document.location.href='$!actionName'" $!title 1)
+		#elseif($optType == "print" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_print2.gif" "document.location.href='$!actionName'" $!title 1)
+		#elseif($optType == "delete" )
+			#if($!confirmInfo)
+				#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_del.gif" "if(confirm('$!confirmInfo')){ document.location.href='$!actionName'}" $!title 1)
+			#else
+				#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_del.gif" "document.location.href='$!actionName'" $!title 1)
+			#end
+		#elseif($optType == "checked" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_checked.gif" "document.location.href='$!actionName'" $!title 1)
+		#elseif($optType == "download" )
+			#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_download.gif" "document.location.href='$!actionName'" $!title 1)
+		#else
+			#if($!confirmInfo && $!confirmInfo != "")
+				#hodeSysHTMLUI_htmlImgBtn1("$optType" "if(confirm('$!confirmInfo')){ document.location.href='$!actionName'}" $!title 1)
+			#else
+				#hodeSysHTMLUI_htmlImgBtn1("$optType" "document.location.href='$!actionName'" $!title 1)
+			#end
+		#end
+	</TD>
+#end
+
+####################list�б�����������Ϣ��������
+#macro(hodeSysUI_fillMain $col)
+	#if($user.intLineNum > $intNowCount)
+		#set( $row = $user.intLineNum - $intNowCount )
+		#foreach($i in [1..$row])
+			#set($intNowCount=$velocityCount)
+				#if($intNowCount % 2 == 0)
+					#hodeSysUI_TrBeginMainBody(3)
+				#else
+					#hodeSysUI_TrBeginMainBody(2)
+				#end
+				#foreach($i in [1..$col])
+					<TD>&nbsp;</TD>
+				#end
+			</TR>
+		#end
+	#end
+#end
+
+####################���ܵ��ϲ���
+#macro(hodeSysUI_leftFrameHeader $title $tblHeight)
+	#set($tblWidth="100%")
+	#if((!$tblHeight)||($tblHeight==""))
+		#set($tblHeight="200")
+	#end
+	<SCRIPT LANGUAGE="JavaScript">
+	function clearCountInfo()
+	{
+		var showCountInfo = document.getElementById("showCountInfo");
+		if(showCountInfo)
+		{
+			showCountInfo.innerHTML ="";
+		}
+	}
+	</SCRIPT>
+	<TABLE width="$!tblWidth" border="0" cellspacing="1" cellpadding="0" align="center">
+		<TR>
+			<TD height="12">
+				<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+					#if(($title)&&($title!=""))
+						<TR>
+							<TD width="10" class="white">&nbsp;&nbsp;</TD>
+							<TD colspan="2" class="white" height="22" id="leftTitleId">$!title</TD>
+						</TR>
+					#end
+					<TR valign="top">
+						<TD width="5" height="$tblHeight">&nbsp;</TD>
+						<TD  height="$tblHeight" class="white">
+							<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+#end
+
+
+
+####################���ܵ��²���
+#macro(hodeSysUI_leftTblFooter $tblHeight)
+	#if((!$tblHeight)||($tblHeight==""))
+		#set($tblHeight="200")
+	#end
+							</TABLE>
+						</TD>
+						<TD width="5" class="white" height="$!tblHeight">&nbsp;</TD>
+					</TR>
+				</TABLE>
+			</TD>
+		</TR>
+	</TABLE>
+#end
+
+####################��ӡ��޸Ľ����Formͷ
+#macro(hodeSysUI_EditBodyHeader $actionName $onSubmit $methodType $isNeedMultipart)
+	#if($methodType == "")
+		#set($methodType = "post")
+	#end
+	#if((!$strTableWidth)||($strTableWidth==""))
+		#set($strTableWidth = "100%")
+	#end
+	<TABLE width="$strTableWidth" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+		#bodytag( Component "template=Tpl_FormHeaderCom.vm" )
+    		#param( "formName" "frmOperation")
+    		#param( "needHiddenParams" "true" )
+    		#param( "actionName" "$!actionName")
+    		#param( "onSubmit" "$!onSubmit" )
+    		#param( "formid" "frmOperation" )
+			#param( "methodName" $methodType )
+			#if(($isNeedMultipart =="yes") || ($isNeedMultipart ==1) || ($isNeedMultipart =="1"))
+	    		#param( "enctype" "multipart/form-data" )
+			#end
+        #end
+#end
+
+####################��ӡ��޸Ľ����Formβ
+#macro(hodeSysUI_EditBodyFoot $optArr $colspan)
+	#if((!$strTableWidth)||($strTableWidth==""))
+		#set($strTableWidth = "100%")
+	#end
+
+	#hodeSysUI_TrBeginMainBody(4)
+	<TD #if($colspan!="")colspan="$colspan"#end>
+	#if($optArr.size()>=1)
+		<TABLE width="$strTableWidth" align="center" border="0" cellspacing="0" cellpadding="0">
+			<TR>
+				<TD height="30" class="white10p"  align="center">
+					#foreach($i in [1..$optArr.size()])
+						#set($thisID = $i - 1 )
+						#if($optArr.get($thisID)  == "save" )
+							<!-- <INPUT TYPE="submit"  CLASS="inputButton" value="$action.getText('global.operation.save')" id="btnSubmit" name="btnSubmit">&nbsp;&nbsp; -->
+							<input type="image"  src="$action.getText('config.prjName')/images/operator/opt_save.gif" />&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "save1" )
+							<!-- <INPUT TYPE="submit"  CLASS="inputButton" value="$action.getText('global.operation.save1')" id="btnSubmit" name="btnSubmit">&nbsp;&nbsp; -->
+							<input type="image"  src="$action.getText('config.prjName')/images/operator/opt_save.gif" />&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "next" )
+							<!-- <INPUT TYPE="submit"  CLASS="inputButton" value="$action.getText('global.operation.next')" id="btnSubmit" name="btnSubmit">&nbsp;&nbsp; -->
+							<input type="image"  src="$action.getText('config.prjName')/images/operator/opt_confirm.gif" />&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "reset" )
+							<!-- <INPUT TYPE="reset"  CLASS="inputButton" value="$action.getText('global.operation.reset')" id="btnReset" name="btnReset">&nbsp;&nbsp; -->
+							<input type="image" src="$action.getText('config.prjName')/images/operator/opt_reset1.gif" onClick="this.form.reset(); return false;" />&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "delete" )
+							<!-- <INPUT TYPE="submit"  CLASS="inputButton" value="$action.getText('global.operation.del')" id="btnSubmit" name="btnSubmit">&nbsp;&nbsp; -->
+							<input type="image" src="$action.getText('config.prjName')/images/operator/opt_delete.gif" />&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "close" )
+							<!-- <INPUT type="button"  CLASS="inputButton" value="$action.getText('global.operation.close')" id="btnClose" name="btnClose" onclick="window.close()">&nbsp;&nbsp; -->
+							<img src="$action.getText('config.prjName')/images/operator/opt_close.gif" style="cursor:hand" onclick="window.close()"/>&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "cancel" )
+							<!-- <INPUT TYPE="button"  CLASS="inputButton" id="btnCancel" name="btnCancel" id="btnCancel" value="$action.getText('global.operation.return')" onclick="history.back()">&nbsp;&nbsp; -->
+							<img src="$action.getText('config.prjName')/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "selectall" )
+							<!-- <INPUT TYPE="button"  CLASS="inputButton" value="$action.getText('global.operation.selectTitle')" id="btnSubmit" name="btnSubmit" onclick="selectAll2($checkBoxName)">&nbsp;&nbsp; -->
+
+							<img src="$action.getText('config.prjName')/images/operator/selectall.gif" style="cursor:hand" onclick="selectAll2($checkBoxName)"/>&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "query" )
+							<!-- <INPUT TYPE="submit"  CLASS="inputButton" value="$action.getText('global.operation.query')" id="btnSubmit" name="btnSubmit" >&nbsp;&nbsp; -->
+							<input type="image" src="$action.getText('config.prjName')/images/operator/opt_query.gif" />&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "print" )
+							<!-- <input type=button value="$!action.getText('global.operation.print')" CLASS="inputButton" onclick="javascript:printInfo();">	&nbsp;&nbsp; -->
+							<img src="$action.getText('config.prjName')/images/operator/opt_print.gif" style="cursor:hand" onclick="history.back()" onclick="javascript:printInfo();"/>&nbsp;&nbsp;
+						#elseif($optArr.get($thisID)  == "send" )
+							<!-- <input type=button value="$!action.getText('global.operation.print')" CLASS="inputButton" onclick="javascript:printInfo();">	&nbsp;&nbsp; -->
+							<input type="image"  src="$action.getText('config.prjName')/images/operator/opt_send.gif" />&nbsp;&nbsp;
+						#else
+							$optArr.get($thisID)
+						#end
+					#end
+				</TD>
+			</TR>
+		</TABLE>
+	#end
+	</TD></TR>
+	#parse("$action.getText('config.vmPath')/simple/Tpl_FormFooter.vm")
+	</TABLE>
+#end
+
+####################��ʾText�ı�������Ҫ���ڲ�ѯ
+#macro(hodeSysUI_optImg $optType $colspan $align )
+	<TD #if($align!="")ALIGN="$align"#end #if($colspan!="" ) colspan="$!colspan" #end class='tdSearchContentRight'>
+		#if($optType == "search")
+			#hodeSysHTMLUI_htmlImgBtn("" "$action.getText('config.prjName')/images/operator/opt_query.gif")
+		#else
+			&nbsp;
+		#end
+	</TD>
+#end
+
+
+####################��ʾText�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showSearchText $label $colspan $necessary $name $value $size $maxlength $readonly )
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+
+
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" class="tdSearchContentLeft" id="t_$name">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdSearchContentRight">
+		#hodeSysHTMLUI_htmlText("$name" "$value" "$maxlength" "$size" "$readonly" )
+	</TD>
+#end
+
+
+#macro(hodeSysUI_showText $label $colspan $necessary $name $value $size $maxlength $readonly )
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+
+
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" class="tdEditContentLeft" id="t_$name">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="$name" id="$name" CLASS="inputText" maxlength="$maxlength" size="$size" $readonly  VALUE="$value"  msg="$!label" #if($necessary=="yes" || $necessary=="1" || $necessary==1) require="true" #end >
+	</TD>
+#end
+
+
+
+####################��ʾcheckbox�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showCheckbox $label $colspan $necessary $name $value $checkVal $isDisabled )
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" class="tdEditContentLeft" id="t_$name">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdEditContentRight">
+		#hodeSysHTMLUI_htmlCheckbox("$name" "$value" "$checkVal" "" $isDisabled "" "")
+	</TD>
+#end
+####################��ʾText�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showDate $label $colspan $necessary $name $value $isNeedLongTime)
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" class="tdEditContentLeft" id="t_$name">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdEditContentRight">
+		#if($isNeedLongTime == 0)
+			<INPUT TYPE="text" NAME="$!name" id="$!name" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!value" msg="$!label" #if($necessary=="yes" || $necessary=="1" || $necessary==1) require="true" #end  >
+		#else
+			<INPUT TYPE="text" NAME="$!name" id="$!name" CLASS="inputText" onclick="fPopUpCalendarTimeDlg(this);" readonly size=12 VALUE="$!value" msg="$!label" #if($necessary=="yes" || $necessary=="1" || $necessary==1) require="true" #end  >
+		#end
+
+	</TD>
+#end
+
+####################��ʾTextArea�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showTextArea $label $colspan $necessary $name $value $rows $cols $readonly)
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" class="tdEditContentLeft" id="t_$name">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdEditContentRight">
+		<TEXTAREA NAME="$name"  ROWS="$rows" COLS="$cols" CLASS="inputArea" $readonly id="$name" msg="$!label" #if($necessary=="yes" || $necessary=="1" || $necessary==1) require="true" #end  >$value</TEXTAREA>
+	</TD>
+#end
+
+
+
+####################��ʾFile�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showFile $label $colspan $necessary $name $value)
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" id="t_$name" class="tdEditContentLeft">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdEditContentRight">
+		#hodeSysHTMLUI_htmlFile("$name" "$value")
+	</TD>
+#end
+
+####################��ʾFile�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showMediaFile $label $colspan $necessary $name $value)
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+
+
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" id="t_$name" class="tdEditContentLeft">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdEditContentRight">
+		#hodeSysHTMLUI_htmlMediaFile("$name" "$value")
+	</TD>
+#end
+####################��ʾPassword�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showPassword $label $colspan $necessary $name $value $readonly)
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	<TD width="$showWidth" id="t_$name" class="tdEditContentLeft">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+	<TD colspan=$colspan class="tdEditContentRight">
+		<INPUT TYPE="password" NAME="$name" id="$name" size=20 maxlength=20 VALUE="$value" CLASS="inputText" msg="$!label" #if($necessary=="yes" || $necessary=="1" || $necessary==1) require="true" #end  >
+	</TD>
+#end
+
+
+####################��ʾWebEditor�ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showEditor $label $colspan $necessary $name $value $style $width $height)
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "120")
+	#end
+	#if($style=="view")
+		<TD width="$showWidth" id="t_$name" class="tdViewContentLeft">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+		<TD colspan=$colspan class="tdViewContentRight">
+	#else
+		<TD width="$showWidth" id="t_$name" class="tdEditContentLeft">#if($necessary=="yes" || $necessary=="1" || $necessary==1)${asterisk}#end${label}${colon}</TD>
+		<TD colspan=$colspan class="tdEditContentRight">
+	#end
+		#hodeSysHTMLUI_htmlTextArea( "$name" "$name" "$!value" "0" "0" "" 1)
+
+		#if($style=="advance")
+			<IFRAME ID="eWebEditor1" src="$action.getText('config.prjName')/webeditor/webeditorAdvance.action?sContentID=$name" frameborder="0" scrolling="no" width="$width" height="$height"></IFRAME>
+		#elseif($style=="standard")
+			<IFRAME ID="eWebEditor1" src="$action.getText('config.prjName')/webeditor/webeditorStandard.action?sContentID=$name" frameborder="0" scrolling="no" width="$width" height="$height"></IFRAME>
+		#elseif($style=="mini")
+			<IFRAME ID="eWebEditor1" src="$action.getText('config.prjName')/webeditor/webeditorMini.action?sContentID=$name" frameborder="0" scrolling="no" width="$width" height="$height"></IFRAME>
+		#elseif($style=="view")
+			<IFRAME ID="eWebEditor1" src="$action.getText('config.prjName')/webeditor/webeditorView.action?sContentID=$name" frameborder="0" scrolling="auto" width="$width" height="$height"></IFRAME>
+		#else
+			<IFRAME ID="eWebEditor1" src="$action.getText('config.prjName')/fckeditor/editor/fckeditor.html?InstanceName=$name&Toolbar=Default" frameborder="0" scrolling="no" width="100%" height="350"></IFRAME>
+		#end
+	</TD>
+#end
+
+
+####################��ʾ�����ı�������Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showMsg $idName $label $colspan $necessary $value $intIsPos)
+	#set($asterisk = $action.getText('global.interpunction.asterisk'))
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "200")
+	#end
+
+	#if($intIsPos ==  0)	##������tr
+		<TD class='tdSearchContentLeft' width="$showWidth" id="$idName">#if($necessary=="yes" || $necessary=="1" || $necessary==1)$!{asterisk}#end$!{label}${colon}</TD>
+		<TD class='tdSearchContentRight' $!rightWidth  colspan=$colspan>$!value</TD>
+	#elseif($intIsPos ==  1)	##���������
+		<TD width="$showWidth" id="$idName">#if($necessary=="yes" || $necessary=="1" || $necessary==1)$!{asterisk}#end$!{label}${colon}</TD>
+		<TD colspan=$colspan $!rightWidth >$!value</TD>
+	#elseif($intIsPos ==  2)	##����������
+		<TD width="$showWidth" id="$idName">#if($necessary=="yes" || $necessary=="1" || $necessary==1)$!{asterisk}#end$!{label}${colon}</TD>
+		<TD colspan=$colspan $!rightWidth >$!value</TD>
+	#elseif($intIsPos ==  4)	##��ӡ��޸�
+		<TD class='tdEditContentLeft' width="$showWidth" id="$idName">#if($necessary=="yes" || $necessary=="1" || $necessary==1)$!{asterisk}#end$!{label}${colon}</TD>
+		<TD class='tdEditContentRight' $!rightWidth  colspan=$colspan>$!value</TD>
+	#elseif($intIsPos ==  5)	##�鿴����
+		<TD class='tdViewContentLeft' width="$showWidth" id="$idName">#if($necessary=="yes" || $necessary=="1" || $necessary==1)$!{asterisk}#end$!{label}${colon}</TD>
+		<TD class='tdViewContentRight'  $!rightWidth  colspan=$colspan>$!value</TD>
+	#elseif($intIsPos ==  6)	##����ʽ����
+		<TD width="$showWidth" id="$idName">#if($necessary=="yes" || $necessary=="1" || $necessary==1)$!{asterisk}#end$!{label}${colon}</TD>
+		<TD colspan=$colspan $!rightWidth >$!value</TD>
+	#else
+		<TD width="$showWidth" id="$idName">#if($necessary=="yes" || $necessary=="1" || $necessary==1)$!{asterisk}#end$!{label}${colon}</TD>
+		<TD colspan=$colspan $!rightWidth >$!value</TD>
+	#end
+#end
+
+
+
+
+################��ҳ����������Ӻ�ɾ��
+#macro(hodeSysUI_showPage $actionName $formName $addBtn $addBtnTitle $delBtn $deleteConfirm $needPagination )
+	##���ܲ��������ҳ��
+	#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+		#param( "addBtn" "$!addBtn" )
+		#param( "addBtnTitle" "$!addBtnTitle" )
+		#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+		#param( "delBtn" "$!delBtn" )
+		#param( "returnBtn" "no" )
+		#param( "prtBtn" "no" )
+		#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+		#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','$!deleteConfirm')" )
+		#param( "formName" $formName )
+		#param( "actionName" $actionName )
+		#param( "needHiddenParams" "true" )
+		#param( "needPagination" $needPagination)
+	#end
+#end
+
+
+#macro(hodeSysUI_optMultiFile $strName $fileModelName $strFileList $colspan $necessary $tableName $isNeedRemart)
+<!--	
+$!file
+0	: ·��
+1��  �ļ���
+2��  ��ע
+3��  ��������
+4��  ������ʽ
+ tempNameTitle = "|" + saveFilePath + "/" + fileName+ "*" + fileUploadModel.getFilesFileName()[i] +"*" + fileUploadModel.getStrRemark()[i]+"*" + fileUploadModel.getStrFileName()[i]+"*" + fileUploadModel.getstrEditFileType()[i];
+ -->
+	#if((!$strFileSize)||($strFileSize==""))
+		#set($strFileSize = "60")
+	#end
+
+	#if($!showWidth == "" || $!showWidth == 0  || !$!showWidth )
+		#set($showWidth = "200")
+	#end
+
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#hodeSysUI_TrBeginMainBody(4)
+			<td height="24" class='tdEditContentLeft' rowspan="1" width="$showWidth" >$!strName#if($necessary=="yes" || $necessary=="1" || $necessary==1)${colon}#end</td>
+			<td class='tdEditContentRight' colspan="$colspan" >
+			<table width=100%><tr><td height="1"></td></tr></table>
+			&nbsp;&nbsp;&nbsp;&nbsp;<img src="$action.getText('config.prjName')/images/operator/fileadd.gif"  id="addtr" name="addtr" onclick="addnewtr_${tableName}($!tableName) "  style="cursor:hand" class="inputTDContent">$!action.getText('global.extraFileSize')<BR>
+			<TABLE id='$tableName' width=100% >
+			<TR>
+				<TD>
+							#set($intThisCount = 0)
+							#foreach($file in $strFileList)
+				<!--
+			$!file
+			0	: ·��
+			1��  �ļ���
+			2��  ��ע
+			3��  ��������
+			4��  ������ʽ
+			 tempNameTitle = "|" + saveFilePath + "/" + fileName+ "*" + fileUploadModel.getFilesFileName()[i] +"*" + fileUploadModel.getStrRemark()[i]+"*" + fileUploadModel.getStrFileName()[i]+"*" + fileUploadModel.getstrEditFileType()[i];
+			 -->
+								#if($!file.dataFile_0.length() > 1)
+									#if($intThisCount > 0 )
+										<table width=100%><tr><td height="1" bgcolor="C6AEAE" ></td></tr></table>
+									#end
+									#set($intThisCount = $intThisCount + 1 )
+									<input type='hidden' name="${fileModelName}.strDelFiles" id='${fileModelName}.strDelFiles_$!{intThisCount}' value=''>
+
+									<table width="98%" border="0" cellspacing="0" cellpadding="0">
+									  <tr>
+										#if(($isNeedRemart == 1 ) || ($isNeedRemart == "yes" ))
+											<td width="20"  rowspan="3">&nbsp;</td>
+										#else
+											<td width="20"  rowspan="2">&nbsp;</td>
+										#end
+
+										<td width="71" height="24">$action.getText('global.operation.fileupload.strAttName')$action.getText('global.interpunction.colon')</td>
+										<td><INPUT class=inputText size=$!strFileSize name="${fileModelName}.strEditFileName" value="$!file.dataFile_3"></td>
+									  </tr>
+									#if(($isNeedRemart == 1 ) || ($isNeedRemart == "yes" ))
+									  <tr>
+										<td height="24">$action.getText('global.operation.fileupload.strRemark')$action.getText('global.interpunction.colon')</td>
+										<td ><INPUT class=inputText size=$!strFileSize name="${fileModelName}.strEditRemark" height="40" value="$!file.dataFile_2"></td>
+									  </tr>
+									#end
+									  <tr>
+										<td height="24">$action.getText('global.operation.fileupload.strDownLoad')$action.getText('global.interpunction.colon')</td>
+										<td>
+											<TABLE  border="0" cellspacing="0" cellpadding="0">
+											<TR>
+												<td><input type='hidden' name="${fileModelName}.strEditFiles" value='$!file.dataFile_0'>
+												<a href='javascript:downloadFile("$file.dataFile_0","$file.dataFile_1")'>$!file.dataFile_1</a>&nbsp;</td>
+												<td>&nbsp;&nbsp;<img src="$action.getText('config.prjName')/images/operator/filedelete1.gif"  onclick='delecFile(this,"$file.dataFile_0",$intThisCount)' style='cursor:hand' ></td>
+											</TR>
+											</TABLE>
+										  </td>
+									  </tr>
+									</table>
+
+								#end
+							#end
+
+
+				</TD>
+			</TR>
+			</TABLE>
+			</td>
+			<iframe id="downLoadFrame_$!{fileModelName}" src="" width="0" height="0"></iframe>
+
+			<SCRIPT LANGUAGE="JavaScript">
+				var intCount = $intThisCount;
+				function addnewtr_${tableName}(tablen)
+				{
+					intCount++;
+
+					var strJSHTML="";
+					strJSHTML+='<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+					strJSHTML+='  <tr>';
+					strJSHTML+='	<td colspan=5><table width=100%><tr><td height="1" bgcolor="C6AEAE" ></td></tr></table></td>';
+					strJSHTML+='  </tr>';
+
+					strJSHTML+='  <tr>';
+					#if(($isNeedRemart == 1 ) || ($isNeedRemart == "yes" ))
+						strJSHTML+='	<td width=1%  rowspan="3">&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+					#else
+						strJSHTML+='	<td width=1%  rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+					#end
+					strJSHTML+='	<td width="71" height="24">$action.getText('global.operation.fileupload.strAttName')$action.getText('global.interpunction.colon')</td>';
+					strJSHTML+='	<td ><INPUT class=inputText size=$!strFileSize name="${fileModelName}.strAddFileName" ></td>';
+					strJSHTML+='  </tr>';
+					#if(($isNeedRemart == 1 ) || ($isNeedRemart == "yes" ))
+						strJSHTML+='  <tr>';
+						strJSHTML+='	<td height="24">$action.getText('global.operation.fileupload.strRemark')$action.getText('global.interpunction.colon')</td>';
+						strJSHTML+='	<td ><INPUT class=inputText size=$!strFileSize name="${fileModelName}.strAddRemark" height="40" ></td>';
+						strJSHTML+='  </tr>';
+					#end
+					strJSHTML+='  <tr>';
+					strJSHTML+='	<td height="24">$action.getText('global.operation.fileupload.strUpload')$action.getText('global.interpunction.colon')</td>';
+					strJSHTML+='	<td >';
+					strJSHTML+='		<TABLE border="0" cellspacing="0" cellpadding="0">';
+					strJSHTML+='		<TR>';
+					strJSHTML+='			<td><INPUT type="file" class=inputFile size=$!strFileSize name="${fileModelName}.strAddFiles" ></td>';
+					strJSHTML+='			<td>&nbsp;&nbsp;<img src="$action.getText('config.prjName')/images/operator/filedelete.gif"  onclick =delecFile(this,"",0) style="cursor:hand" ></td>';
+					strJSHTML+='		</TR>';
+					strJSHTML+='		</TABLE>';
+					strJSHTML+='	</td>';
+					strJSHTML+='  </tr>';
+					strJSHTML+='</table>';
+
+					var row = tablen.insertRow(tablen.rows.length);
+
+					var col = document.createElement("<TD >");
+					row.appendChild(col);
+					col.innerHTML=strJSHTML;
+
+				}
+
+					//ɾ���
+				function delecFile(obj,thisDelURL,intTmpCount)
+				{
+					if(confirm('$action.getText("global.js.select.delete1")'))
+					{
+						if(intTmpCount > 0)
+						{
+							var tmpID = document.getElementById("${fileModelName}.strDelFiles_"+intTmpCount);
+							if(tmpID)
+							{
+								tmpID.value = thisDelURL;
+							}
+						}
+						var row = obj.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+						row.removeNode(true)
+					}
+				}
+
+				function downloadFile(strFileName,strFileTitle)
+				{
+					var tempTitle = encodeURI(strFileTitle);
+					document.all["downLoadFrame_$!{fileModelName}"].src="$action.getText('config.prjName')/servlet/fileDownload?strFileName="+strFileName+"&strFileTitle="+tempTitle;
+				}
+			</SCRIPT>
+
+	</tr>
+#end
+
+#macro(hodeSysUI_optSingleFile $strName $fileModelName $strAttrContent $strAttrSourceName $colspan $necessary $isShowDelete)
+	#set($colon = $action.getText('global.interpunction.colon'))
+	#hodeSysUI_TrBeginMainBody(4)
+
+		<td height="35" rowspan="1" class="tdEditContentLeft" align='right'>$!strName#if($necessary=="yes" || $necessary=="1" || $necessary==1)${colon}#end</td>
+		<td colspan="$colspan" class="tdEditContentRight">
+			#if(!$!strAttrContent || $!strAttrContent == "")
+			#else
+				#set($strFileAttr = [".zip",".acb",".asf",".asp",".asx",".bmp",".chm",".doc",".exe",".fla",".gif",".hlp",".htm",".html",".jpg",".js",".mid",".mov",".mp3",".none",".oqy",".other",".pcd",".pcx",".pdd",".pdf",".php",".png",".pps",".ppt",".prf",".psd",".psp",".reg",".rev",".rm",".sdb",".sgi",".spc",".sst",".sta",".ste",".swf",".tif",".tpl",".txt",".wmv",".xls",".xml",".xsl"])
+				#set($intLength = $strFileAttr.size() - 1)
+				#set($fileName = "$action.getText('config.prjName')/images/file/icon.other.gif")
+				#hodeSysBean_getFileExt($!strAttrContent $rtnFile)
+				#foreach($tmp in [1..$intLength])
+					#if($strFileAttr.get($tmp) == $rtnFile )
+						#set($fileName = "$action.getText('config.prjName')/images/file/icon${rtnFile}.gif")
+					#end
+				#end
+				#if($!isShowDelete == "1" || $!isShowDelete == 1 ||  $!isShowDelete == "yes")
+					<a href='javascript:downloadFile("$!strAttrContent","$!strAttrSourceName"")'><img src="$fileName" border=0>&nbsp;$!strAttrSourceName</a>&nbsp;<input type='checkbox' name='delFiles' value='1'>&nbsp;$action.getText('global.operation.delete') &nbsp;&nbsp;<BR>
+				#else
+					<a href='javascript:downloadFile("$!strAttrContent","$!strAttrSourceName")'><img src="$fileName" border=0>&nbsp;$!strAttrSourceName</a>&nbsp;<BR>
+				#end
+
+			#end
+			<INPUT type="file" class=inputFile size=50 name="${fileModelName}.strAddFiles" >
+		</td>
+	</tr>
+
+	<iframe id="downLoadFrame_$!{fileModelName}" src="" width="0" height="0"></iframe>
+	<SCRIPT LANGUAGE="JavaScript">
+		function downloadFile(strFileName,strFileTitle)
+		{
+			var tempTitle = encodeURI(strFileTitle);
+			document.all["downLoadFrame_$!{fileModelName}"].src="$action.getText('config.prjName')/servlet/fileDownload?strFileName="+strFileName+"&strFileTitle="+tempTitle;
+		}
+	</SCRIPT>
+#end
+
+#macro(hodeSysUI_optViewSingleFile $label $colspan $necessary $align $strFileList)
+	#if($strFileList.size() != 0)
+		#set($colon = $action.getText('global.interpunction.colon'))
+		#hodeSysUI_TrBeginMainBody(4)
+		<TD  align="right">$label#if($necessary=="yes" || $necessary=="1" || $necessary==1)${colon}#end</TD>
+		<TD align="left" colspan=$colspan>#hodeSysUI_optViewSingleFile1($strFileList)</TD>
+		</tr>
+	#end
+#end
+
+
+#macro(hodeSysUI_optViewSingleFile1 $strFileList)
+	#set($strFileAttr = [".zip",".acb",".asf",".asp",".asx",".bmp",".chm",".doc",".exe",".fla",".gif",".hlp",".htm",".html",".jpg",".js",".mid",".mov",".mp3",".none",".oqy",".other",".pcd",".pcx",".pdd",".pdf",".php",".png",".pps",".ppt",".prf",".psd",".psp",".reg",".rev",".rm",".sdb",".sgi",".spc",".sst",".sta",".ste",".swf",".tif",".tpl",".txt",".wmv",".xls",".xml",".xsl"])
+	#set($intLength = $strFileAttr.size() - 1)
+
+	#if($!strFileList.size()>0)
+		#foreach($file in $strFileList)
+			#if($file.dataFile_0 !="" )
+				#set($fileName = "$action.getText('config.prjName')/images/file/icon.other.gif")
+				#hodeSysBean_getFileExt($file.dataFile_0 $rtnFile)
+
+				#foreach($tmp in [1..$intLength])
+					#if($strFileAttr.get($tmp) == $rtnFile )
+						#set($fileName = "$action.getText('config.prjName')/images/file/icon${rtnFile}.gif")
+					#end
+				#end
+				<a href='javascript:downloadFile("$file.dataFile_0","$file.dataFile_1")'><img src="$!fileName" border=0>&nbsp;$!file.dataFile_1</a>&nbsp; <BR>
+			#end
+
+		#end
+	#end
+	<iframe id="downLoadFrame_$!{fileModelName}" src="" width="0" height="0"></iframe>
+	<SCRIPT LANGUAGE="JavaScript">
+		function downloadFile(strFileName,strFileTitle)
+		{
+			var tempTitle = encodeURI(strFileTitle);
+			document.all["downLoadFrame_$!{fileModelName}"].src="$action.getText('config.prjName')/servlet/fileDownload?strFileName="+strFileName+"&strFileTitle="+tempTitle;
+		}
+	</SCRIPT>
+#end
+
+
+#macro(hodeSysUI_optViewMultiFile $label $colspan $necessary $align $strFileList)
+	#if($strFileList.size() != 0)
+		#set($colon = $action.getText('global.interpunction.colon'))
+		#hodeSysUI_TrBeginMainBody(4)
+		<TD  align="right" class='tdViewContentLeft' width="$showWidth">$label#if($necessary=="yes" || $necessary=="1" || $necessary==1)${colon}#end</TD>
+		<TD align="left" $!trHeight valign='top' colspan=$colspan>#hodeSysUI_optViewMultiFile1($strFileList)</TD>
+		</tr>
+	#end
+#end
+
+
+#macro(hodeSysUI_optViewMultiFile1 $strFileList)
+	#set($strFileAttr = [".zip",".acb",".asf",".asp",".asx",".bmp",".chm",".doc",".exe",".fla",".gif",".hlp",".htm",".html",".jpg",".js",".mid",".mov",".mp3",".none",".oqy",".other",".pcd",".pcx",".pdd",".pdf",".php",".png",".pps",".ppt",".prf",".psd",".psp",".reg",".rev",".rm",".sdb",".sgi",".spc",".sst",".sta",".ste",".swf",".tif",".tpl",".txt",".wmv",".xls",".xml",".xsl"])
+	#set($intLength = $strFileAttr.size() - 1)
+
+
+	#if((!$strTableWidth)||($strTableWidth==""))
+		#set($strTableWidth = "100%")
+	#end
+
+	#if($!strFileList.size()>0)
+		#foreach($file in $strFileList)
+			#if($file.dataFile_0 !="" )
+				#set($fileName = "$action.getText('config.prjName')/images/file/icon.other.gif")
+				#hodeSysBean_getFileExt($file.dataFile_0 $rtnFile)
+
+				#foreach($tmp in [1..$intLength])
+					#if($strFileAttr.get($tmp) == $rtnFile )
+						#set($fileName = "$action.getText('config.prjName')/images/file/icon${rtnFile}.gif")
+					#end
+				#end
+				<a href='javascript:downloadFile("$file.dataFile_0","$file.dataFile_1")'><img src="$fileName" border=0>&nbsp;$!file.dataFile_1</a>&nbsp; <BR>
+			#end
+
+		#end
+	#end
+	<iframe id="downLoadFrame_$!{fileModelName}" src="" width="0" height="0"></iframe>
+	<SCRIPT LANGUAGE="JavaScript">
+		function downloadFile(strFileName,strFileTitle)
+		{
+			//var tempTitle = encodeURI(strFileTitle);
+			document.all["downLoadFrame_$!{fileModelName}"].src="$action.getText('config.prjName')/servlet/fileDownload?strFileName="+strFileName+"&strFileTitle="+strFileTitle;
+		}
+	</SCRIPT>
+#end
+
+#macro(hodeSysUI_optMediaFileExplorer $strName $strFileList $colspan $width $height)
+	#hodeSysUI_TrBeginMainBody(3)
+		<td align="right">$strName $action.getText('global.interpunction.colon')</td>
+		<td #if($colspan!="")colspan="$colspan"#end>
+			#if($strFileList)
+				#set($mediaPlay = ".asf .wma .wmv .avi .wav .mpeg .mp3 .midi .aiff .au .mpg")
+				#set($realPlay = ".rm .rmvb")
+				#set($file = $strFileList.get(0))
+				#set($extNameIndex = $file.fileTitle.lastIndexOf("."))
+				#set($extName = $file.fileTitle.substring($extNameIndex).toLowerCase())
+
+				#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+				#set ($rtn = $stringUtil.in_array($extName,$mediaPlay.split(" ")))
+				#if($rtn == true)
+					<object id="MPlayer1"
+					#if($width > 0)
+						width="$width"
+					#end
+					#if($height>0)
+						height="$height"
+					#end
+					type="application/x-oleobject" CLASSID="CLSID:22D6F312-B0F6-11D0-94AB-0080C74C7E95" CODEBASE="nsmp2inf.cab#Version=5,1,52,701" STANDBY="Loading Media Player components..." VIEWASTEXT>
+					<PARAM NAME="FileName" value="$action.getText('config.prjWebURL')/$file.fileName" ref>
+					<PARAM NAME="ShowControls" VALUE="true">
+					<PARAM NAME="AutoStart" VALUE="true">
+					<PARAM NAME="Enabled" VALUE="true">
+					<PARAM NAME="EnableContextMenu" VALUE="1">
+					<PARAM NAME="ClickToPlay" VALUE="false">
+					<PARAM NAME="stretchToFit" VALUE="1">
+					<PARAM NAME="ShowStatusBar" VALUE="True">
+					<PARAM NAME="ShowGotoBar" VALUE="0">
+					<PARAM NAME="ShowPositionControls" VALUE="0">
+					<PARAM NAME="ShowTracker" VALUE="1">
+					<PARAM NAME="AllowChangeDisplaySize" VALUE="true">
+					<PARAM NAME="Volume" VALUE="0">
+					<PARAM NAME="SendOpenStateChangeEvents" VALUE="True">
+					<PARAM NAME="SendPlayStateChangeEvents" VALUE="True">
+					<PARAM NAME="AnimationAtStart" VALUE="false">
+					<PARAM NAME="Balance" VALUE="0">
+					<PARAM NAME="BaseURL" VALUE="">
+					<PARAM NAME="CaptioningID" VALUE="">
+					<PARAM NAME="CurrentMarker" VALUE="0">
+					<PARAM NAME="DefaultFrame" VALUE="">
+					<PARAM NAME="DisplayMode" VALUE="1">
+					<PARAM NAME="DisplaySize" VALUE="4">
+					<PARAM NAME="SendMouseClickEvents" VALUE="1">
+					<PARAM NAME="EnableFullScreenControls" VALUE="1">
+					<PARAM NAME="EnablePositionControls" VALUE="">
+					<PARAM NAME="InvokeURLs" VALUE="-1">
+					<PARAM NAME="PreviewMode" VALUE="0">
+					<PARAM NAME="fullScreen" VALUE="true">
+					<PARAM NAME="Rate" VALUE="1">
+					<PARAM NAME="SAMILang" VALUE="">
+					<PARAM NAME="SAMIStyle" VALUE="">
+					<PARAM NAME="SAMIFileName" VALUE="">
+					<PARAM NAME="ShowDisplay" VALUE="0">
+					<PARAM NAME="TransparentAtStart" VALUE="1">
+					<PARAM NAME="VideoBorderWidth" VALUE="0">
+					<PARAM NAME="VideoBorderColor" VALUE="0">
+					<PARAM NAME="VideoBorder3D" VALUE="0">
+					<PARAM NAME="WindowlessVideo" VALUE="0">
+					<embed src="$action.getText('config.prjWebURL')/$file.fileName" type="application/x-oleobject"
+					#if($width > 0)
+						width="$width"
+					#end
+					#if($height>0)
+						height="$height"
+					#end
+					loop="true" autostart="true" controls="true">
+					</embed></object>
+				#end
+				#set ($rtn2 = $stringUtil.in_array($extName,$realPlay.split(" ")))
+				#if($rtn2 == true)
+					 <object id="player" name="player" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"
+					#if($width > 0)
+						width="$width"
+					#end
+					#if($height>0)
+						height="$height"
+					#end
+					>
+					<param name=_ExtentX value=9869>
+					<param name=_ExtentY value=7726>
+					<param name=AUTOSTART value=-1>
+					<param name=SHUFFLE value=0>
+					<param name=PREFETCH value=0>
+					<param name=NOLABELS value=0>
+					<param name=SRC VALUE="$action.getText('config.prjWebURL')/$file.fileName">
+					<param name=CONTROLS value=ImageWindow>
+					<param name=CONSOLE value=Clip1>
+					<param name=LOOP value=0>
+					<param name=NUMLOOP value=0>
+					<param name=CENTER value=0>
+					<param name=MAINTAINASPECT value=0>
+					<param name=BACKGROUNDCOLOR value=#000000>
+					</object><BR>
+					<object ID="RP2"
+					#if($width > 0)
+						width="$width"
+					#end
+					height="58"
+					CLASSID="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA">
+					<param name="_ExtentX" value="9869">
+					<param name="_ExtentY" value="1535">
+					<param name="AUTOSTART" value="-1">
+					<param name="SHUFFLE" value="0">
+					<param name="PREFETCH" value="0">
+					<param name="NOLABELS" value="0">
+					<param name="CONTROLS" value="ControlPanel,StatusBar">
+					<param name="CONSOLE" value="Clip1">
+					<param name="LOOP" value="0">
+					<param name="NUMLOOP" value="0">
+					<param name="CENTER" value="0">
+					<param name="MAINTAINASPECT" value="0">
+					<param name="BACKGROUNDCOLOR" value="#000000">
+					<embed type="audio/x-pn-realaudio-plugin" CONSOLE="Clip1" CONTROLS="ControlPanel,StatusBar" AUTOSTART="true">
+					</object>
+				#end
+
+
+			#end
+		</td>
+	</tr>
+#end
+
+####################��ʾͼƬ����Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showPic  $strFileList  $width $height $breakNum)
+	#foreach($file in $strFileList)
+		<a id="picLink" target="_blank" href="$action.getText('config.prjWebURL')/$file.fileName">
+			<img src="$action.getText('config.prjWebURL')/$file.fileName" border=0  alt="$!{file.fileTitle}"
+			#if($width > 0)
+				width="$width"
+			#end
+			#if($height>0)
+				height="$height"
+			#end
+		></a>
+		#if(($velocityCount % $breakNum == 0) && ($velocityCount != $fileUpload.listAttachs.size()))
+			<br>
+		#end
+	#end
+#end
+
+
+
+#macro(hodeSysUI_showPagePic $id $strFileList $width $height )
+	<SCRIPT LANGUAGE="JavaScript">
+	var arr_$id = new Array();
+	#set($intPicCount  = 0 )
+		#foreach($file in $strFileList)
+			#set($intPicCount  = $intPicCount + 1 )
+			arr_$id[$intPicCount] = "<a  target='_blank' href='$action.getText('config.prjName')/$file.dataFile_0'><img src='$action.getText('config.prjName')/$file.dataFile_0' id='showThisImg_${id}_${intPicCount}' border=0 ";
+				#if($width > 0)
+					arr_$id[$intPicCount] += "width='$width' ";
+				#end
+				#if($height>0)
+					arr_$id[$intPicCount] += "height='$height' ";
+				#end
+			arr_$id[$intPicCount] += "></a>";
+		#end
+	function changeURL_${id}(i)
+	{
+		var showPicContent= document.getElementById("$id");
+		var strHTML="";
+		if(arr_${id}.length > 0 )
+		{
+			strHTML = arr_$id[i]+"<BR>";
+			for(var j=1;j<arr_${id}.length;j++)
+			{
+				if(j == i)
+					strHTML+="<a style='cursor:hand;' onclick='changeURL_${id}("+j+")'><font color='red'>"+(j)+"</font>&nbsp;&nbsp;&nbsp;</a>";
+				else
+					strHTML+="<a style='cursor:hand;' onclick='changeURL_${id}("+j+")'>"+(j)+"&nbsp;&nbsp;&nbsp;</a>";
+			}
+		}
+		else
+		{
+			strHTML ="<img src='$action.getText('config.prjName')/images/xwfgj/nopic.jpg'";
+			#if($width > 0)
+				strHTML += "width='$width' ";
+			#end
+			#if($height>0)
+				strHTML += "height='$height' ";
+			#end
+			strHTML += " >";
+		}
+		showPicContent.innerHTML = strHTML;
+		changeImgSize_${id}(i,$width,$height);
+	}
+
+	function changeImgSize_${id}(i,thisWidth,thisHeight)
+	{
+
+		if(thisWidth > 0 && thisHeight > 0 )
+		{
+			var showThisImg = document.getElementById("showThisImg_${id}_"+i);
+			if((showThisImg.width > 0 ) && (showThisImg.height > 0))
+			{
+				if(showThisImg.width > showThisImg.height )
+				{
+					showThisImg.height= thisWidth * showThisImg.height / showThisImg.width;
+					showThisImg.width=thisWidth;
+				}
+				else
+				{
+					showThisImg.width= thisHeight * showThisImg.width / showThisImg.height;
+					showThisImg.height=thisHeight;
+				}
+			}
+		}
+
+	}
+	changeURL_${id}(1);
+	</SCRIPT>
+#end
+
+
+####################Table ��ʼ
+#macro(hodeSysUI_NotFoundListInfo $breakNum)
+	<TABLE BORDER="0" CELLSPACING="0"  CELLPADDING="0" align="center"  class='tableMainColor' >
+	<TABLE width=100%>
+	<TR>
+		<TD valign='middle' align='center'>
+		#if($breakNum > 0)
+			#foreach($i in [1..$breakNum])
+				<BR>
+			#end
+		#end
+		<IMG SRC="$action.getText('config.prjName')/images/operator/notfound.jpg"></TD>
+	</TR>
+	</TABLE>
+#end
+
+
+
+####################Table ��ʼ
+#macro(hodeSysUI_NotPermitInfo $breakNum)
+	<TABLE BORDER="0" CELLSPACING="0"  CELLPADDING="0" align="center"  class='tableMainColor' style="border:none; ">
+	<TABLE width=100% style="border:none; ">
+	<TR>
+		<TD valign='middle' align='center' style="border:none; ">
+		#if($breakNum > 0)
+			#foreach($i in [1..$breakNum])
+				<BR>
+			#end
+		#end
+		<IMG SRC="$action.getText('config.prjName')/images/operator/notpermit.jpg"></TD>
+	</TR>
+	</TABLE>
+#end
+
+
+##��ȡ���
+#macro(hodeSysUI_getNearYear $strName $intSelectID )
+	#if($intSelectID == 0)
+		#hodeSysBean_getIntYearMonth("yyyy" $intSelectID)
+	#end
+	<select name='$strName'>
+	<option value=''>$action.getText('global.operation.pleaseSelect')</option>
+	#foreach($i in [2010..2015])
+		<option value="$i" #if($intSelectID==$i) selected #end>&nbsp;$i $action.getText("global.operation.strYear")</option>
+	#end
+	</select>
+#end
+##��ȡ�·�
+#macro(hodeSysUI_getMonth $strName $intSelectID )
+	#if($intSelectID == 0)
+		#hodeSysBean_getIntYearMonth("MM" $intSelectID)
+	#end
+	<select name='$strName'>
+	<option value=''>$action.getText('global.operation.pleaseSelect')</option>
+	#foreach($j in [1..12])
+		<option value="$j" #if($intSelectID==$j) selected #end>&nbsp;$j $action.getText("global.operation.strMonth")</option>
+	#end
+	</select>
+#end
+
+####################��ʾͼƬ����Ҫ������Ӻ��޸Ľ���
+#macro(hodeSysUI_showPic  $strFileList  $width $height $breakNum)
+	#foreach($file in $strFileList)
+		<a id="picLink" target="_blank" href="$action.getText('config.prjWebURL')/$file.fileName">
+			<img src="$action.getText('config.prjWebURL')/$file.fileName" border=0  alt="$!{file.fileTitle}"
+			#if($width > 0)
+				width="$width"
+			#end
+			#if($height>0)
+				height="$height"
+			#end
+		></a>
+		#if(($velocityCount % $breakNum == 0) && ($velocityCount != $fileUpload.listAttachs.size()))
+			<br>
+		#end
+	#end
+#end

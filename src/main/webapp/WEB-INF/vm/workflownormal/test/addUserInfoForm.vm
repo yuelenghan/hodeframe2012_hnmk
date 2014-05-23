@@ -1,0 +1,45 @@
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+#set($showWidth="15%")
+#hodeSysUI_EditBodyHeader("addUserInfo.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+<input type='hidden' name='objInfo.intID' value='$!objInfo.intID'><br>
+<input type='hidden' name='objInfo.intWFOptFlagType' id='objInfo.intWFNOptFlagType' value='1'><br>
+<input type='hidden' name='objInfo.intWFNStepID' id='objInfo.intWFNStepID' value='$!objInfo.intWFNStepID'><br>
+<input type='hidden' name='objSearch.strReturnURL' value='$!strReturnURL'><br>
+
+<input type='hidden' name='objInfo.intWFNMainID' id='objInfo.intWFNMainID' value='$!objInfo.intWFNMainID'><br>
+
+<input type='hidden' name='intTmpOptFlagType' value='$!intTmpOptFlagType'><br>
+
+<input type='hidden' name='objInfo.intWFNGoStepID' value='$!objInfo.intWFNGoStepID'><br>
+<input type='hidden' name='objInfo.intWFNOptNextFlag' value='$!objInfo.intWFNOptNextFlag'><br>
+#if($!objInfo.intWFNOptNextFlag == 4)
+	#set($selectOnlyInfo = "isSelectOne=1")
+#end
+
+<input type='hidden' name='objInfo.intAddCheckType' value='$!objInfo.intAddCheckType'><br>
+<input type='hidden' name='objInfo.strAddCheckUserName' value='$!objInfo.strAddCheckUserName'><br>
+<input type='hidden' name='objInfo.strAddCheckUserID' value='$!objInfo.strAddCheckUserID'><br>
+<input type='hidden' name='objInfo.strWFNOptContent' value='$!objInfo.strWFNOptContent'><br>
+
+<input type='hidden' name='objInfo.strWFNAllDealDate' id='objInfo.strWFNAllDealDate' value='$!objInfo.strWFNAllDealDate'>
+<input type='hidden' name='objInfo.strWFNDealDate' id='objInfo.strWFNDealDate' value='$!objInfo.strWFNDealDate'>
+
+#hodeSysUI_TrBeginMainBody(4)
+	<TD width="$showWidth" class="tdEditContentLeft">审核人选择：</TD>
+	<TD class="tdEditContentRight">
+		<input type='hidden' name='objInfo.strNextCheckUserID' id='objInfo.strNextCheckUserID' value='0' CLASS="inputText" require="true" msg="标题">
+		<TEXTAREA NAME="objInfo.strNextCheckUserName"  ROWS="2" COLS="60" CLASS="inputArea" readonly id="objInfo.strNextCheckUserName" ></TEXTAREA>
+
+		<img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../../rbac/user/selectUser.action?intGroupID=1&intGroupType=0&intUserLevel=11&$!{selectOnlyInfo}','objInfo.strNextCheckUserID','objInfo.strNextCheckUserName');" valign="bottom"/>
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_EditBodyFoot(['save'] "2")
+
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+
+#parse("$action.getText('config.vmPath')/simple/Footer_mainbody.vm")

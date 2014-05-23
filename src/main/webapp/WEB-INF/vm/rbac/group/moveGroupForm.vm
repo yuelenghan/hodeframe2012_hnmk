@@ -1,0 +1,64 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.group.operation.move')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("moveGroup.action" "" "post" "")
+
+<input type="hidden" name="objInfo.intID" value="$!objInfo.intID">
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strName')"  1 1 "objInfo.strName" "$!objInfo.strName" 20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td align="right">$action.getText('rbac.form.moveto') ：</td>
+	<td><input type="hidden" name="objInfo.intFatherID" value=""><textarea class="inputArea" readonly name="strFatherName" cols="60" rows="4"></textarea>&nbsp;&nbsp;<input type="button" class="inputButton" name="btn" value="选择" onclick="fPopUpSelectGroupUnitDlg('../group/selectGroupUnit2.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intFatherID','strFatherName');"></td>
+#hodeSysUI_TrEnd()
+
+#set($addBtn = "<img src='$action.getText('config.prjName')/images/operator/opt_save.gif' onclick='frmSubmit();' style='cursor:hand'>&nbsp;&nbsp;")
+#hodeSysUI_EditBodyFoot([$addBtn,'reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+##parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+	function frmSubmit()
+	{
+		if(document.all['objInfo.intFatherID'].value == "")
+		{
+			alert("请选择要移动到的部门");
+		}
+		else
+		{
+			if(confirm("确定要移动到的部门吗？"))
+			{
+				document.frmOperation.submit();
+			}
+		}
+
+	}
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

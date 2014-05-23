@@ -1,0 +1,47 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##��ǰ������
+##**********************
+
+##��ʾ��ǰ����������
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.role.operation.edit')" )
+#end
+
+
+
+
+##-------------------------------------------------------------
+##**********************
+##��Ϣ�༭��
+##**********************
+
+#hodeSysUI_EditBodyHeader("edit.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.role.form.strName')"  1 1 "objInfo.strName" "$!objInfo.strName"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.role.form.intOrderID')"  1 1 "objInfo.intOrderID" "$!objInfo.intOrderID"   20 4 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showTextArea("$!action.getText('rbac.role.form.strDescribe')"  1 0 "objInfo.strDescribe" "$!objInfo.strDescribe" 4 65 "")
+#hodeSysUI_TrEnd()
+
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intGroupID" "$!objSearch.intGroupID")
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+
+
+##JavaScript��ݺϷ���У��
+##����У��JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

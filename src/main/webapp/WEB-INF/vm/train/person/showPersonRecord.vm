@@ -1,0 +1,215 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "人员档案查询" )
+#end
+
+
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >培训机构：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList = $trainUtil.getTrainUnitByGroupID($user.intGroupID))
+		<select name="objSearch.intGroupID">
+			#if($user.intGroupID == 1)
+				<option value="" selected>全部</option>
+			#end
+			#foreach($trainUnit in $rtnList)
+				<option value="$trainUnit.intID" #if($trainUnit.intID == $objSearch.intGroupID) selected #end>$trainUnit.strName</option>
+			#end
+		</select>
+	</TD>
+</tr>
+
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >年龄：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.intStartAge" CLASS="inputText" maxlength="3" size="3"   VALUE="#if($!objSearch.intStartAge > 0) $!objSearch.intStartAge #else 18 #end" >
+		~
+		<INPUT TYPE="text" NAME="objSearch.intEndAge" CLASS="inputText" maxlength="3" size="3"   VALUE="#if($!objSearch.intEndAge > 0) $!objSearch.intEndAge #else 60 #end" >
+	</TD>
+
+	<TD width="120" class="tdEditContentLeft" >职务：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strPost" CLASS="inputText" maxlength="10" size="10"   VALUE="$!objSearch.strPost" >
+	</TD>
+
+	<TD width="120" class="tdEditContentLeft" >性别：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<select name="objSearch.strSex">
+			<option value="" selected>全部</option>
+			<option value="男" #if("男" == $objSearch.strSex) selected #end >男</option>
+			<option value="女" #if("女" == $objSearch.strSex) selected #end >女</option>
+		</select>
+	</TD>
+
+
+</tr>
+#hodeSysUI_TrBeginMainBody(0)
+
+	<TD width="120" class="tdEditContentLeft" >文化程度：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<select name="objSearch.strEdu">
+			<option value="" selected>全部</option>
+			<option value="初中" #if("初中" == $objSearch.strEdu) selected #end >初中</option>
+			<option value="中专" #if("中专" == $objSearch.strEdu) selected #end >中专</option>
+			<option value="高中" #if("高中" == $objSearch.strEdu) selected #end >高中</option>
+			<option value="大专" #if("大专" == $objSearch.strEdu) selected #end >大专</option>
+			<option value="本科" #if("本科" == $objSearch.strEdu) selected #end >本科</option>
+			<option value="硕士" #if("硕士" == $objSearch.strEdu) selected #end >硕士</option>
+			<option value="博士" #if("博士" == $objSearch.strEdu) selected #end >博士</option>
+		</select>
+	</TD>
+
+	<TD width="120" class="tdEditContentLeft" >姓名：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strPersonName" CLASS="inputText" maxlength="10" size="10"   VALUE="$!objSearch.strPersonName" >
+	</TD>
+
+	<TD width="120" class="tdEditContentLeft" >身份证号：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strPersonID" CLASS="inputText" maxlength="20" size="20"   VALUE="$!objSearch.strPersonID" >
+	</TD>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPersonRecord.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+
+	#hodeSysUI_TdMainBody("姓名" "center" "" 0)
+	#hodeSysUI_TdMainBody("身份证号" "center" "" 0)
+	#hodeSysUI_TdMainBody("性别" "center" "" 0)
+	#hodeSysUI_TdMainBody("年龄" "center" "" 0)
+	#hodeSysUI_TdMainBody("籍贯" "center" "" 0)
+	#hodeSysUI_TdMainBody("所属培训机构" "center" "" 0)
+	#hodeSysUI_TdMainBody("学历" "center" "" 0)
+	#hodeSysUI_TdMainBody("工作单位" "center" "" 0)
+	#hodeSysUI_TdMainBody("职务" "center" "" 0)
+	#hodeSysUI_TdMainBody("毕业院校" "center" "" 0)
+	#hodeSysUI_TdMainBody("专业" "center" "" 0)
+	#hodeSysUI_TdMainBody("政治面貌" "center" "" 0)
+	#hodeSysUI_TdMainBody("参加工作时间" "center" "" 0)
+
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($personInfo in $personList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+		#hodeSysUI_TdMainBody("<a href='showDetailRecord.action?objInfo.strPersonID=$!personInfo.strPersonID'>$!personInfo.strPersonName</a>" "center" "" 0)
+		#hodeSysUI_TdMainBody("<a href='showDetailRecord.action?objInfo.strPersonID=$!personInfo.strPersonID'>$!personInfo.strPersonID</a>" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strSex" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.intAge" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strHomeTown" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strGroupName" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strEdu" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strWorkUnit" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strPost" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strSchool" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strSpecialty" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strPolitical" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!personInfo.strJobDate" "center" "" 0)
+
+    #hodeSysUI_TrEnd()
+#end
+
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPersonRecord.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript
+
+<script type="text/javascript">
+
+function fPopUpCalendarDlg(ctrlobj)
+{
+	showx = event.screenX - event.offsetX - 4 - 210 ; // + deltaX;
+	showy = event.screenY - event.offsetY + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	retval = window.showModalDialog("/hodeframe2012_hnmk/js/calendardlg.htm", "", "dialogWidth:200px; dialogHeight:230px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null ) {
+		ctrlobj.value = retval;
+	}
+}
+</script>

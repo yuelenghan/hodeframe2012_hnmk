@@ -1,0 +1,118 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##���ò���
+##-------------------------------------------------------------
+##**********************
+##��ǰ������
+##**********************
+##��ʾ��ǰ����������
+#dictionary_getDictionaryFirstInfo($!objSearch.intType  $objDictionaryInfo)
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('dictionary.operation.list')$action.getText('global.interpunction.right')$!objDictionaryInfo.strValue" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##�����б���
+##**********************
+#if($objSearch.intType > 0)
+	#set( $addBtn = "yes" )
+#else
+	#set( $addBtn = "no" )
+#end
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('dictionary.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##�����б����ͷ
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+
+
+##������
+#hodeSysUI_TrBeginMainBody(1)
+	#if($objSearch.intType > 0)
+		#hodeSysUI_TdMainBody("$action.getText('global.operation.edit')" "center" "40" 0)
+		#hodeSysUI_TdMainBody("$action.getText('global.operation.delete')" "center" "40" 0)
+	#end
+	#hodeSysUI_TdMainBody("$action.getText('dictionary.form.strValue')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('dictionary.form.strKey')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('dictionary.form.intOrderID')" "center" "40" 0)
+	#hodeSysUI_TdMainBody("$action.getText('dictionary.form.strMemo')" "center" "" 0)
+#hodeSysUI_TrEnd()
+
+##�б���ʾ������Ϣ
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+	#if($objSearch.intType>0)
+		#set($editTitle = $stack.findValue("getText('dictionary.operation.updateTitle', {'$!objInfo.strValue'})"))
+		#hodeSysUI_TdMainOpt("edit" "$editTitle" "editForm.action" "" $objInfo.intID "")
+
+		#set($delTitle = $stack.findValue("getText('dictionary.operation.delTitle', {'$!objInfo.strValue'})"))
+		#set($delAlert = $stack.findValue("getText('dictionary.operation.delmsg', {'$!objInfo.strValue'})"))
+		#hodeSysUI_TdMainOpt("delete" "$delTitle" "delForm.action" "$delAlert" $objInfo.intID "")
+	#end
+
+	#hodeSysUI_TdMainBody("$!objInfo.strValue" "center" "" 0)
+	#hodeSysUI_TdMainBody("$!objInfo.strKey" "center" "" 0)
+
+	#hodeSysUI_TdMainBody("$!objInfo.intOrderID" "center" "" 0)
+	#hodeSysUI_TdMainBody("$!objInfo.strMemo" "center" ""  40)
+    #hodeSysUI_TrEnd()
+#end
+
+##�����
+
+##�����б����β
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+##���ܲ��������ҳ��
+
+	#set( $addBtn = "no" )
+	#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('dictionary.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##########��ҳ��
+##hodeSysUI_showPage("showList.action" "frmPaginationDown1" $!addBtn "$action.getText('dictionary.operation.add')" "no" "" 1)
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##����JavaScript

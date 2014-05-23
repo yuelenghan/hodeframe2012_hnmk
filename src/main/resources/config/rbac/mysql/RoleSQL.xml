@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="rbac.role">
+	<typeAlias alias="rbac_roleModel" type="com.hode.rbac.model.RoleModel"/>
+	<typeAlias alias="rbac_rolePrivilegeModel" type="com.hode.rbac.model.RolePrivilegeModel"/>
+
+	<resultMap id="rbac_roleResult" class="rbac_roleModel">
+		<result property="intID" column="intID"/>
+		<result property="strName" column="strName"/>
+		<result property="intOrderID" column="intOrderID"/>
+		<result property="intGroupID" column="intGroupID"/>
+		<result property="strDescribe" column="strDescribe"/>
+	</resultMap>
+	<resultMap id="rbac_roleResult1" class="rbac_roleModel">
+		<result property="intID" column="intID"/>
+		<result property="strName" column="strName"/>
+		<result property="intOrderID" column="intOrderID"/>
+		<result property="intGroupID" column="intGroupID"/>
+		<result property="strDescribe" column="strDescribe"/>
+	</resultMap>
+
+	<cacheModel id="rbac_roleCache"
+		type="MEMORY"
+		readOnly="false"
+		serialize="true">
+		<flushInterval hours="120"/>
+		<flushOnExecute statement="rbac.role.insertObject"/>
+		<flushOnExecute statement="rbac.role.updateObject"/>
+		<flushOnExecute statement="rbac.role.deleteObject"/>
+		<property name="size" value="2000" />
+		<property name="reference-type" value="SOFT" />
+	</cacheModel>
+
+	<select id="getObjectInfo" parameterClass="rbac_roleModel" resultMap="rbac_roleResult">
+		SELECT *
+		FROM rbac_role
+		WHERE intID = #intID#
+	</select>
+
+	<select id="getObjectList" resultMap="rbac_roleResult" cacheModel="rbac_roleCache">
+		SELECT *
+		FROM rbac_role
+		ORDER BY intOrderID ASC ,intID DESC
+	</select>
+
+	<select id="getRoleListByCondition" parameterClass="java.util.HashMap" resultMap="rbac_roleResult1">
+		SELECT *
+		FROM rbac_role
+		Where
+		( 0 = 1
+			<dynamic >
+				<isNotEmpty prepend="OR" property="strGroupID">
+					intGroupID in ( $strGroupID$ )
+				</isNotEmpty>
+				<isNotEmpty prepend="OR" property="strRoleID">
+					intID in ( $strRoleID$ )
+				</isNotEmpty>
+			)
+				<isNotEmpty prepend="and" property="strPrivilegeID">
+					intID in ( select intRoleID from rbac_role_privilege where intPrivilegeID  in ( $strPrivilegeID$ ) )
+				</isNotEmpty>
+			</dynamic>
+  	</select>
+
+	<select id="getPageObjectList" parameterClass="rbac_roleModel" resultMap="rbac_roleResult">
+		SELECT *
+		FROM rbac_role
+		WHERE intGroupID = #intGroupID#
+		ORDER BY intOrderID ASC ,intID DESC
+		LIMIT #intStart#,#intOffset#
+	</select>
+
+	<select id="getRecordCount" parameterClass="rbac_roleModel" resultClass="int">
+		SELECT count(intID) AS intTotalNumber
+		FROM rbac_role
+		WHERE intGroupID = #intGroupID#
+	</select>
+
+	<select id="checkObjectExists" parameterClass="rbac_roleModel" resultClass="int">
+    	SELECT count(intID) AS intTotalNumber
+		FROM rbac_role
+		WHERE strName=#strName#
+		<dynamic >
+			<isGreaterThan prepend="AND" property="intID" compareValue="0">
+				intID!=#intID#
+			</isGreaterThan>
+		</dynamic>
+	</select>
+
+	<insert id="insertObject" parameterClass="rbac_roleModel">
+		INSERT INTO rbac_role(
+			strName,
+			intOrderID,
+			intGroupID,
+			strDescribe)
+		VALUES (
+			#strName#,
+			#intOrderID#,
+			#intGroupID#,
+			#strDescribe#)
+	</insert>
+
+	<update id="updateObject" parameterClass="rbac_roleModel">
+		UPDATE rbac_role
+		SET strName = #strName#,
+			intOrderID = #intOrderID#,
+			strDescribe = #strDescribe#
+		WHERE intID = #intID#
+	</update>
+
+	<delete id="deleteObject" parameterClass="string">
+		DELETE FROM rbac_role
+		WHERE intID IN ( $strIDList$ )
+	</delete>
+
+	<select id="getPrivilegeByRoleID" parameterClass="int" resultMap="rbac.privilege.rbac_privilegeResult">
+		SELECT  b.intID,b.intFatherID,b.strName,b.intLevel,b.intPrivilegeType,b.intPrivilegeLevel,b.strDescribe,b.intOrderID
+		FROM rbac_role_privilege a,rbac_privilege b
+		WHERE intRoleID = #intRoleID#
+		AND a.intPrivilegeID = b.intID
+	</select>
+
+	<select id="getPrivilegeByRoleIDs" parameterClass="string" resultMap="rbac.privilege.rbac_privilegeResult">
+		SELECT DISTINCT b.intID,b.intFatherID,b.strName,b.intLevel,b.intPrivilegeType,b.intPrivilegeLevel,b.strDescribe,b.intOrderID
+		FROM rbac_role_privilege a,rbac_privilege b
+		WHERE intRoleID IN ($rids$)
+		AND a.intPrivilegeID = b.intID
+	</select>
+
+	<insert id="insertRolePrivilege" parameterClass="rbac_rolePrivilegeModel">
+		INSERT INTO rbac_role_privilege(
+			intRoleID,
+			intPrivilegeID)
+		VALUES (
+			#role.intID#,
+			#privilege.intID#)
+	</insert>
+
+	<delete id="deleteRolePrivilegeByRoleID" parameterClass="string">
+		DELETE FROM rbac_role_privilege
+		WHERE intRoleID IN ( $strIDList$ )
+	</delete>
+
+	<delete id="deleteUserRoleByRoleID" parameterClass="string">
+		DELETE FROM rbac_user_role
+		WHERE intRoleID IN ( $strIDList$ )
+	</delete>
+
+
+</sqlMap>

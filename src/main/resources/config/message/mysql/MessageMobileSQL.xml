@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="message.mobile">
+	<typeAlias alias="MessageMobileModel" type="com.hode.message.model.MessageMobileModel"/>
+	<insert id="insertObject" parameterClass="MessageMobileModel">
+		INSERT INTO message_mobile
+         (
+			intCreateUserID,
+			strCreateUserName,
+			strToMobile ,
+			strContent,
+			strCreateDate,
+			intSendType ,
+			strSendDate,
+			intInfoType,
+			intInfoID
+		)
+		VALUES (
+			#intCreateUserID#,
+			#strCreateUserName#,
+			#strToMobile#,
+			#strContent#,
+			#strCreateDate#,
+			#intSendType#,
+			#strSendDate#,
+			#intInfoType#,
+			#intInfoID#
+		)
+	</insert>
+
+	<select id="getObjectList" parameterClass="MessageMobileModel" resultClass="MessageMobileModel">
+		SELECT *
+		FROM  message_mobile
+		WHERE  intIsDelete = 0
+		ORDER BY intID DESC
+	</select>
+	<select id="getObjectInfo" resultClass="MessageMobileModel" parameterClass="MessageMobileModel">
+		SELECT *
+		FROM message_mobile
+		WHERE  intID=#intID#
+	</select>
+	<update id="updateObject" parameterClass="MessageMobileModel">
+		UPDATE message_mobile
+
+		SET
+			strToMobile = #strToMobile#,
+			strContent = #strContent#
+		WHERE  intID=#intID#
+	</update>
+
+	<delete id="deleteObject" parameterClass="string">
+		update message_mobile
+
+			set intIsDelete = 1
+		WHERE intID IN ( $strIDList$ )
+	</delete>
+	<select id="getPageObjectList" resultClass="MessageMobileModel" parameterClass="MessageMobileModel">
+		SELECT *
+		from message_mobile
+		WHERE  intIsDelete = 0
+			<isNotEmpty prepend="AND" property="strContent">
+				strContent LIKE '%$strContent$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strToMobile">
+				strToMobile LIKE '%$strToMobile$%'
+			</isNotEmpty>
+			and intSendType=#intSendType#
+		ORDER BY intID DESC
+		LIMIT #intStart#,#intOffset#
+	</select>
+	<select id="getRecordCount" resultClass="int" parameterClass="MessageMobileModel">
+		SELECT count(intID) AS intTotalNumber
+		from message_mobile
+		WHERE intIsDelete = 0
+			<isNotEmpty prepend="AND" property="strContent">
+				strContent LIKE '%$strContent$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strToMobile">
+				strToMobile LIKE '%$strToMobile$%'
+			</isNotEmpty>
+			and intSendType=#intSendType#
+	</select>
+</sqlMap>

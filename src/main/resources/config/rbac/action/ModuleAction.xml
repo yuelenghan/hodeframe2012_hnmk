@@ -1,0 +1,82 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+
+    <package name="rbac.module" extends="index" namespace="/rbac/module">
+		<action name="index" class="rbac_moduleAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/index.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="readme" class="rbac_moduleAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showLeftTree" class="rbac_moduleAction" method="showList">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/showLeftTree.vm</result>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="addForm" class="rbac_moduleAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/addForm.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID</param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="add" class="rbac_moduleAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/afterAdd.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID</param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="editForm" class="rbac_moduleAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/editForm.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID,objInfo.intID</param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="edit" class="rbac_moduleAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/afterEdit.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID,objInfo.intID</param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="del" class="rbac_moduleAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/afterDel.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID</param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="showPageList" class="rbac_moduleAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/showPageList.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID</param>
+			<param name="permissionIDs">90050000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+
+		<action name="updateRoleTreeForm" class="rbac_moduleAction" method="updateRoleTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/afterRoleTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showRoleTreeForm" class="rbac_moduleAction" method="showRoleTreeForm">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/module/showRoleTreeForm.vm</result>
+			<param name="hiddenParameter">objSearch.intFatherID</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+    </package>
+
+</xwork>

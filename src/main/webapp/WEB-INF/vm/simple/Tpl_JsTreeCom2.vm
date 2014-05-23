@@ -1,0 +1,99 @@
+#set ($jsfile = $parameters.get('jsfile'))
+#if(!$jsfile)
+	#set($jsfile="dtree.js")
+#end
+
+#set ($jsName = $parameters.get('jsName'))
+#if(!$jsName)
+	#set($jsName="jsName")
+#end
+
+
+#set ($rootID = $parameters.get('rootID'))
+#if((!$rootID)||($rootID<0))
+	#set($rootID = 0)
+#end
+
+#set ($rootName = $parameters.get('rootName'))
+
+#set ($strAfterInfo = $parameters.get('strAfterInfo'))
+#set ($strAfterName = $parameters.get('strAfterName'))
+
+#if($jsfile != "")
+	<script src="$action.getText('config.prjName')/js/$jsfile"></script>
+#end
+
+#set ($jsTree = $parameters.get('jsTree'))
+#if(!$jsTree)
+	#set($jsTree = $jsTree)
+#end
+
+#set ($checkTree = $parameters.get('checkTree'))
+#if(!$checkTree)
+	#set($checkTree = $checkTree)
+#end
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td>
+
+		<div class="dtree">
+        	<script type="text/javascript">
+        		<!--
+        		$jsName = new dTree('$jsName');
+
+        		${jsName}.add($rootID,-1,'$!rootName','$!rootUrl','$!rootTitle','$!rootTarget','$!rootIcon','$!rootIconOpen','$!rootOpen');
+
+#foreach($node in $jsTree)
+	#if($strAfterInfo != "")
+		#hodeSysBean_checkInArr($node.intID $checkTree $rtn)
+		#if($intLastID == $node.intID)
+		#else
+			#set($intLastID = $!node.intID)
+		#end
+		#if($node.intDictType == 2 || $node.intDictType == 1)
+			#if($rtn == true)
+				#set($strAfterVal="&nbsp;<input type=$strAfterInfo name=$!strAfterName id=show_${node.intID} src=0 class=$strAfterInfo checked value=$node.intID>")
+			#else
+				#set($strAfterVal="&nbsp;<input type=$strAfterInfo name=$!strAfterName  src=0  id=show_${node.intID} class=$strAfterInfo value=$node.intID>")
+			#end
+		#else
+			#set($strAfterVal="&nbsp;<input type=$strAfterInfo name=$!strAfterName class=$strAfterInfo value=$node.intID>")
+		#end
+	#end
+	${jsName}.add($node.intID,$node.intFatherID,'<span value=${node.intID}>$!node.strName</span>$!{strAfterVal}','','','','','');
+#end
+	document.write($jsName);
+		//-->
+        	</script>
+		</div>
+
+	</td>
+</tr>
+</table>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+isBreak  = 0;
+
+function onloadInfo()
+{
+	var intID = 0;
+	for(var i=0;i<unitFatherIDArr.length;i++)
+	{
+		var tmp = document.getElementById("show_"+i);
+		if(tmp)
+		{
+			if(unitFatherIDArr[i])
+			{
+				tmp.name = ""
+			}
+			else
+			{
+
+			}
+		}
+	}
+	isBreak = 1;
+}
+//-->
+</SCRIPT>

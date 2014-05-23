@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html"/>
+<title>全省煤矿安全培训情况统计表</title>
+<script language="javascript" src="/hodeframe2012_hnmk/js/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+</head>
+<body>
+
+<TABLE BORDER="0" width="640" cellspacing="0" cellpadding="0" id='table_searchForm'  align="center" class='tableSearchColor' >
+<FORM METHOD="POST" NAME="frmSearch" ACTION="">
+#hodeSysUI_TrBeginMainBody(0)
+
+
+	<TD width="120" class="tdEditContentLeft" >时间范围：</TD>
+	<TD colspan=1 class="tdEditContentLeft">
+		<INPUT TYPE="text" NAME="objSearch.strTrainStartDate" CLASS="inputText" maxlength="10" size="10" onclick="fPopUpCalendarDlg(this);"  VALUE="$!objSearch.strTrainStartDate" readonly>
+		~
+		<INPUT TYPE="text" NAME="objSearch.strTrainEndDate" CLASS="inputText" maxlength="10" size="10" onclick="fPopUpCalendarDlg(this);"  VALUE="$!objSearch.strTrainEndDate" readonly>
+	</TD>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	<td class="tdSearchContentRight" >
+		级别：
+	</td>
+	<td>
+		<select name="strTel">
+			<option value="all" #if($!strTel=="all" || $!strTel=="") selected #end>全部</option>
+			<option value="一级" #if($!strTel=="一级") selected #end>一级</option>
+			<option value="二级" #if($!strTel=="二级") selected #end>二级</option>
+			<option value="三级" #if($!strTel=="三级") selected #end>三级</option>
+		</select>
+	</td>
+	<TD ALIGN="left"  class='tdSearchContentRight'>
+		<INPUT TYPE="image" NAME="" SRC="/hodeframe2012_hnmk/images/operator/opt_query.gif">&nbsp;&nbsp;
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+<div id="printInfo" style="">
+
+<style>
+body{
+	margin-left: 00px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+td{
+	font-size: 14px;
+	color: #000000;
+	line-height:36px;
+
+}
+.STYLE1 {font-size: 28px; font-weight:bold;}
+.STYLE3 {font-size: 18px;}
+.STYLE4 {text-decoration: underline;font-weight:bold;}
+</style>
+
+<table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center" colspan=2 style="line-height:65px;"><span class="STYLE1">全省煤矿安全培训情况统计表</span></td>
+	</tr>
+	<tr>
+		<td align="left" width=50%><span class="STYLE3">&nbsp;</td>
+		<td align="right" width=50%><span class="STYLE3">时间：$!objSearch.strTrainStartDate 到 $!objSearch.strTrainEndDate </span></td>
+	</tr>
+</table>
+<TABLE  align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" rowspan=2 width=30>序号</td>
+		<td align="center" rowspan=2 width=60>级别</td>
+		<td align="center" rowspan=2 width=200>单位名称</td>
+
+		<td align="center" colspan=2 >小计</td>
+		<td align="center" colspan=3 >安管人员</td>
+		<td align="center" colspan=3 >班组长</td>
+	</tr>
+	<tr>
+		<td align="center" width=60>期次</td>
+		<td align="center" width=60>培训人数</td>
+
+		<td align="center" width=60>期次</td>
+		<td align="center" width=60>培训人数</td>
+		<td align="center" width=60>发证人数</td>
+
+		<td align="center" width=60>期次</td>
+		<td align="center" width=60>培训人数</td>
+		<td align="center" width=60>合格人数</td>
+	</tr>
+
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($rtnList1 = $trainUtil.searchStaticReport3("$!objSearch.strTrainStartDate",$!objSearch.strTrainEndDate, $!strTel))
+	#foreach($objInfo1 in $rtnList1)
+		#set($intNowCount=$velocityCount)
+		<tr>
+			<TD align='center'>$intNowCount</TD>
+			<TD align='center'>$objInfo1.get("1")</TD>
+			<TD align='center'>$objInfo1.get("2")</TD>
+			<TD align='center'>$objInfo1.get("11")</TD>
+			<TD align='center'>$objInfo1.get("12")</TD>
+
+			<TD align='center'>$objInfo1.get("21")</TD>
+			<TD align='center'>$objInfo1.get("22")</TD>
+			<TD align='center'>$objInfo1.get("23")</TD>
+			<TD align='center'>$objInfo1.get("24")</TD>
+			<TD align='center'>$objInfo1.get("25")</TD>
+			<TD align='center'>$objInfo1.get("26")</TD>
+			#set($strVal1="$strVal1,$objInfo1.get('11')")
+			#set($strVal2="$strVal2,$objInfo1.get('12')")
+			#set($strVal3="$strVal3,$objInfo1.get('21')")
+			#set($strVal4="$strVal4,$objInfo1.get('22')")
+			#set($strVal5="$strVal5,$objInfo1.get('23')")
+			#set($strVal6="$strVal6,$objInfo1.get('24')")
+			#set($strVal7="$strVal7,$objInfo1.get('25')")
+			#set($strVal8="$strVal8,$objInfo1.get('26')")
+		</TR>
+	#end
+
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	<tr>
+			<TD align='center' colspan=3>合计</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal1","","","0")</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal2","","","0")</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal3","","","0")</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal4","","","0")</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal5","","","0")</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal6","","","0")</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal7","","","0")</TD>
+			<TD align='center'>$stringUtil.getDoubleSumByString("$strVal8","","","0")</TD>
+		</TR>
+</table>
+</div>
+<TABLE width="640" align="center"  border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_print.gif" style="cursor:hand" onclick="javascript:print()">&nbsp;&nbsp;
+	</TD>
+	</TR>
+</TABLE>
+
+<script type="text/javascript">
+
+function fPopUpCalendarDlg(ctrlobj)
+{
+	showx = event.screenX - event.offsetX - 4 - 210 ; // + deltaX;
+	showy = event.screenY - event.offsetY + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	retval = window.showModalDialog("/hodeframe2012_hnmk/js/calendardlg.htm", "", "dialogWidth:200px; dialogHeight:230px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null ) {
+		ctrlobj.value = retval;
+	}
+}
+
+function print() {
+	LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+	LODOP.PRINT_INIT("安全培训统计表打印");
+	LODOP.SET_PRINT_PAGESIZE (2, 0, 0,"A4");
+	LODOP.ADD_PRINT_HTML(0,0,"100%","100%",document.getElementById("printInfo").innerHTML);
+	LODOP.PREVIEW();
+}
+</script>

@@ -1,0 +1,89 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##����JavaScript
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/nodetree.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/select.js"></SCRIPT>
+
+<SCRIPT LANGUAGE="JavaScript">
+var unitListArr = new Array();
+#set($i = 0)
+#foreach($objInfo in $jsSelectModel.objList)
+	#rbac_getAllGroupIdsByFatherId($objInfo.intID 0 $strGroupID)
+	unitListArr[$i] = Array("$objInfo.intID","$objInfo.intFatherID","$objInfo.strName","$!strGroupID");
+	#set($i = $i + 1)
+#end
+function changeGroupUnitID(optionControl)
+{
+	changeInfo(optionControl.value,unitListArr);
+}
+</SCRIPT>
+
+<TABLE width='100%' align=center border='0' cellspacing='1' borderColor=#000000  borderColorDark=#ffffff cellpadding='0' >
+	<tr>
+		<td align="left" colspan=3>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan=3 align='center'>
+			<select onchange="changeGroupUnitID(this.options[this.selectedIndex])">
+				<SCRIPT LANGUAGE="JavaScript">
+					showTreeMainInfo(unitListArr,"select",true);
+				</SCRIPT>
+			</select>
+		</td>
+	</tr>
+<form name='frmSelect'>
+	<tr>
+		<td align=center><b>$action.getText("rbac.componen.operation.selectRole")</b></td>
+		<td align=center> </td>
+		<td align=center><b>$action.getText("rbac.componen.operation.selectedRole")</b></td>
+	</tr>
+	<tr>
+		<td align=center>
+			<select id=source name=source size="12" style=" width: 200" multiple ondblclick="move_select(this.form.source,this.form.target)"></select>
+		</td>
+		<td align=center valign='middle'>
+		<br>
+			<INPUT TYPE="button"  Class="button" value=" >> " class="inputButton" ONClick="moveAll_select(this.form.source,this.form.target)" NAME="B2"><BR><BR>
+			<INPUT TYPE="button"  Class="button" value="  >  " class="inputButton" ONClick="move_select(this.form.source,this.form.target)" NAME="B2"><BR><BR>
+			<INPUT TYPE="button"  Class="button" value="  <  " class="inputButton"  ONClick="move_select(this.form.target,this.form.source)" NAME="B1"><BR><BR>
+			<INPUT TYPE="button"  Class="button" value=" << " class="inputButton" ONClick="moveAll_select(this.form.target,this.form.source)" NAME="B1"><BR><BR>
+		</td>
+		<td align=center>
+			<select id=target name=target size=12 style=" width: 200" multiple ondblclick="move_select(this.form.target,this.form.source)"></select>
+		</td>
+
+	</tr>
+	<tr>
+		<td align=center colspan=5>
+			<img src="$action.getText('config.prjName')/images/operator/opt_confirm.gif" style="cursor:hand" onclick='selectSubmit(this.form.target)' />
+
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="$action.getText('config.prjName')/images/operator/opt_close.gif" style="cursor:hand" onclick="window.close()" />
+
+		</td>
+	</tr>
+</form>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+var userListArr = new Array();
+#set($i = 0)
+#foreach($objInfo in $jsSelectModel.objList1)
+	userListArr[$i] = Array("$objInfo.intID","$objInfo.intGroupID","$objInfo.strName");
+	#set($i = $i + 1)
+#end
+
+function changeInfo(intID)
+{
+	var node =  getNodeInfoById(intID,unitListArr);
+	initSource1(userListArr,node[3].split(","),document.frmSelect.source,document.frmSelect.target);
+}
+initTarget(userListArr,"$!{jsSelectModel.strID}",document.frmSelect.target);
+initSource1(userListArr,unitListArr[0][3].split(","),document.frmSelect.source,document.frmSelect.target);
+</SCRIPT>
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

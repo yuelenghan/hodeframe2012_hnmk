@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.checkTeac">
+  <typeAlias alias="trainTeacher" type="com.hode.train.model.TrainTeacher"/>
+  <typeAlias alias="TrainDictionaryTeacherModel" type="com.hode.train.model.TrainDictionaryTeacherModel"/>
+  <typeAlias alias="teacUtil" type="com.hode.train.util.TeacUtil"/>
+
+  <select id="getObjectTeacInfo" resultClass="trainTeacher" parameterClass="teacUtil">
+	SELECT *
+	FROM train_teacher
+	where intGroup=#intGroup#
+  </select>
+
+   <select id="getObjectDicTea" resultClass="TrainDictionaryTeacherModel" parameterClass="teacUtil">
+	  SELECT *
+	  FROM train_dictionaryteacher
+	  where intCreateGroup=#intGroup# and intDictionary = #intDictionary#
+
+   </select>
+
+   <delete id="deleteTeacDic" parameterClass="teacUtil">
+		delete from train_dictionaryteacher
+		WHERE intCreateGroup = #intGroup# and intDictionary = #intDictionary#
+   </delete>
+
+   <insert id="addSavTec" parameterClass="TrainDictionaryTeacherModel">
+    INSERT INTO train_dictionaryteacher(
+			intDictionary,
+			intTeacher,
+			intCreateUser,
+			intCreateGroup
+		)
+	VALUES (
+		#intDictionary#,
+		#intTeacher#,
+		#intCreateUser#,
+		#intCreateGroup#
+		)
+  </insert>
+
+
+  <update id="updateTeac" parameterClass="trainTeacher">
+    UPDATE train_teacher
+	SET
+		strName = #strName#,
+		strMajor = #strMajor#,
+		strCertCode = #strCertCode#,
+		strTitle = #strTitle#,
+		strEducation = #strEducation#,
+		intCourseID = #intCourseID#
+	WHERE intID = #intID#
+  </update>
+
+  <select id="selectTeacherId" resultClass="trainTeacher" parameterClass="int">
+	  select *
+	  from train_teacher
+	  where intID=#intID#
+  </select>
+
+
+  <select id="getObjectInfo" resultClass="trainTeacher" parameterClass="trainTeacher">
+	SELECT *
+	FROM train_teacher
+	where intGroup=#intGroup#
+	<isNotNull prepend="and" property="courseIDList">
+		<![CDATA[ intCourseID in ]]>
+		<iterate open="(" close=")" conjunction="," property="courseIDList">
+			#courseIDList[]#
+		</iterate>
+	</isNotNull>
+
+	ORDER BY intID desc
+  </select>
+
+   <delete id="deleteTeac" parameterClass="trainTeacher">
+		delete from train_teacher
+		WHERE intID = #intID#
+   </delete>
+
+   <insert id="addTeac" parameterClass="trainTeacher">
+    INSERT INTO train_teacher(
+			strName,
+			strEducation,
+			strMajor,
+			strCertificate,
+			strTitle,
+			intGroup,
+			intCreateUser,
+			strCertCode,
+			intCourseID
+		)
+	VALUES (
+		#strName#,
+		#strEducation#,
+		#strMajor#,
+		#strCertificate#,
+		#strTitle#,
+		#intGroup#,
+		#intCreateUser#,
+		#strCertCode#,
+		#intCourseID#
+		)
+  </insert>
+
+</sqlMap>

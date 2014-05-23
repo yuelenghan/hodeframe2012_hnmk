@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="128" maxSessions="64"
+		maxTransactions="16" useStatementNamespaces="true" />
+
+	<transactionManager type="JDBC">
+		<dataSource type="DBCP">
+			<property name="JDBC.Driver" value="${mysql.driverClassName}" />
+			<property name="JDBC.ConnectionURL" value="${mysql.url}" />
+			<property name="JDBC.Username" value="${mysql.username}" />
+			<property name="JDBC.Password" value="${mysql.password}" />
+			<property name="Pool.MaximumActiveConnections" value="10" />
+			<property name="Pool.MaximumIdleConnections" value="5" />
+			<property name="Pool.MaximumWait" value="60000" />
+			<property name="Pool.ValidationQuery" value="select 1" />
+			<property name="Pool.LogAbandoned" value="false" />
+			<property name="Pool.RemoveAbandoned" value="false" />
+			<property name="Pool.RemoveAbandonedTimeout" value="50000" />
+		</dataSource>
+	</transactionManager>
+
+	<!-- rbac -->
+	<sqlMap resource="config/rbac/mysql/GroupSQL.xml" />
+	<sqlMap resource="config/rbac/mysql/PrivilegeSQL.xml" />
+	<sqlMap resource="config/rbac/mysql/RoleSQL.xml" />
+	<sqlMap resource="config/rbac/mysql/UserSQL.xml" />
+
+	<!-- dictionary -->
+	<sqlMap resource="config/dictionary/mysql/DictionarySQL.xml" />
+
+	<!-- webeditor -->
+	<sqlMap resource="config/webeditor/mysql/WebeditorSQL.xml" />
+
+
+	<!-- message -->
+	<sqlMap resource="config/message/mysql/MessageInfoSQL.xml" />
+	<sqlMap resource="config/message/mysql/MessageMobileSQL.xml" />
+
+
+	<!-- train -->
+	<sqlMap resource="config/train/mysql/TrainLogSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainApplySQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainApplyDetailSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainStudentSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainCheckSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainUserApplySQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainUserChangeSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainScoreSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainUserBlackSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainCertSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainApplyItemSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainApplyMaterialSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainApplyTeacherSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainApplyCourseSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainCheckDetailSQL.xml" />
+	<sqlMap resource="config/train/mysql/TrainPersonSQL.xml" />
+
+	<!-- 培训依据 -->
+	<sqlMap resource="config/train/mysql/InstitutionsActionSQL.xml" />
+	<!-- 收费项目 -->
+	<sqlMap resource="config/train/mysql/TrainingProgramsSQL.xml" />
+	<!-- 课程 -->
+	<sqlMap resource="config/train/mysql/TraincourseSQL.xml" />
+	<!-- 教材 -->
+	<sqlMap resource="config/train/mysql/TrainMaterialSQL.xml" />
+	<!-- 教师 -->
+	<sqlMap resource="config/train/mysql/TrainTeacherSQL.xml" />
+</sqlMapConfig>

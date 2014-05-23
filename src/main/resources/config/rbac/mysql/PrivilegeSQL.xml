@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="rbac.privilege">
+	<typeAlias alias="rbac_privilegeModel" type="com.hode.rbac.model.PrivilegeModel"/>
+
+	<resultMap id="rbac_privilegeResult" class="rbac_privilegeModel">
+		<result property="intID" column="intID"/>
+		<result property="intFatherID" column="intFatherID"/>
+		<result property="strName" column="strName"/>
+		<result property="strDescribe" column="strDescribe"/>
+		<result property="intOrderID" column="intOrderID"/>
+		<result property="intLevel" column="intLevel"/>
+		<result property="intPrivilegeType" column="intPrivilegeType"/>
+		<result property="intPrivilegeLevel" column="intPrivilegeLevel"/>
+	</resultMap>
+
+	<cacheModel id="rbac_privilegeCache"
+		type="MEMORY"
+		readOnly="false"
+		serialize="true">
+		<flushInterval hours="120"/>
+		<flushOnExecute statement="rbac.privilege.insertObject"/>
+		<flushOnExecute statement="rbac.privilege.updateObject"/>
+		<flushOnExecute statement="rbac.privilege.deleteObject"/>
+		<flushOnExecute statement="rbac.privilege.deletePrivilege"/>
+		<property name="size" value="2000" />
+		<property name="reference-type" value="SOFT" />
+	</cacheModel>
+
+	<select id="getObjectInfo" parameterClass="rbac_privilegeModel" resultMap="rbac_privilegeResult">
+		SELECT intID,intFatherID,strName,intLevel,intPrivilegeType,intPrivilegeLevel,strDescribe,intOrderID
+		FROM rbac_privilege
+		WHERE intID = #intID#
+	</select>
+
+	<select id="getTotalPrivilegeIDList" resultClass="int">
+		SELECT intID
+		FROM rbac_privilege
+	</select>
+
+	<select id="getAllPrivilegeIDList"  resultClass="int">
+		SELECT intID
+		FROM rbac_privilege
+	</select>
+
+	<select id="getObjectList" resultMap="rbac_privilegeResult" cacheModel="rbac_privilegeCache">
+		SELECT intID,intFatherID,strName,intLevel,intPrivilegeType,intPrivilegeLevel,strDescribe,intOrderID
+		FROM rbac_privilege
+		ORDER BY intID ASC
+	</select>
+
+
+	<select id="getPageObjectList" resultMap="rbac_privilegeResult" parameterClass="rbac_privilegeModel">
+		SELECT intID,intFatherID,strName,intLevel,intPrivilegeType,intPrivilegeLevel,strDescribe,intOrderID
+		FROM rbac_privilege
+		WHERE intFatherID = #intFatherID#
+		ORDER by intOrderID ASC ,intID DESC
+
+	</select>
+
+	<select id="getRecordCount" resultClass="int" parameterClass="rbac_privilegeModel">
+		SELECT count(intID) AS intTotalNumber
+		FROM rbac_group
+		WHERE intFatherID = #intFatherID#
+	</select>
+
+
+	<select id="checkObjectExists" parameterClass="rbac_privilegeModel" resultClass="int">
+    	SELECT count(intID) AS intTotalNumber
+		FROM rbac_privilege
+		WHERE intID=#intID#
+	</select>
+
+	<insert id="insertObject" parameterClass="rbac_privilegeModel">
+		INSERT INTO rbac_privilege(
+			intID,
+			intFatherID,
+			strName,
+			strDescribe,
+			intOrderID,
+			intLevel,
+			intPrivilegeType,
+			intPrivilegeLevel)
+		VALUES (
+			#intID#,
+			#intFatherID#,
+			#strName#,
+			#strDescribe#,
+			#intOrderID#,
+			#intLevel#,
+			#intPrivilegeType#,
+			#intPrivilegeLevel#)
+	</insert>
+
+	<update id="updateObject" parameterClass="rbac_privilegeModel">
+		UPDATE rbac_privilege
+		SET strName = #strName#,
+			strDescribe = #strDescribe#,
+			intOrderID = #intOrderID#,
+			intPrivilegeType = #intPrivilegeType#,
+			intPrivilegeLevel = #intPrivilegeLevel#
+		WHERE intID = #intID#
+	</update>
+
+	<delete id="deleteObject" parameterClass="string">
+		DELETE FROM rbac_privilege
+		WHERE intID IN ( $strIDList$ )
+	</delete>
+
+	<update id="deletePrivilege" parameterClass="string">
+		DELETE FROM rbac_privilege
+		WHERE intID IN ($strIDs$)
+	</update>
+
+	<delete id="deleteUserPrivilegeByPids" parameterClass="string">
+		DELETE FROM rbac_user_privilege
+		WHERE intPrivilegeID IN ($pids$)
+	</delete>
+
+	<delete id="deleteRolePrivilegeByPids" parameterClass="string">
+		DELETE FROM rbac_role_privilege
+		WHERE intPrivilegeID IN ($pids$)
+	</delete>
+
+</sqlMap>

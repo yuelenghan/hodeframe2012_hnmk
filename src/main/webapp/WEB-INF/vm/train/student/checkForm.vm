@@ -1,0 +1,139 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "参培人员信息" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+
+<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+#set($showWidth = "15%")
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "培训机构" 1 0 "$!objInfo.strTrainUnitName " 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+#hodeSysUI_showMsg("" "培训期次" 1 0 "$!objInfo.strTrainCount " 5)
+#hodeSysUI_showMsg("" "班级" 1 0 "$!objInfo.strTrainCountClass " 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "培训对象" 1 0 "$!objInfo.strTrainObjectDesc" 5)
+	#hodeSysUI_showMsg("" "培训类别" 1 0 "$!objInfo.strTrainType" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "计划人数" 1 0 "$!objInfo.strTrainUserNum 人" 5)
+	#hodeSysUI_showMsg("" "实际人数" 1 0 "$!objInfo.intTotalUserNum 人" 5)
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "备注" 3 0 "$!objInfo.strRemark" 5)
+#hodeSysUI_TrEnd()
+<table>
+
+
+<FORM METHOD="post" NAME="frmOperation" ACTION="updateDetailInfo.action" ID="frmOperation"	ONSUBMIT="return doData(v.exec())">
+
+ <table width="" border="1" cellpadding="6" cellspacing="0" bordercolor="#cecece" style="border-collapse:collapse;">
+	<tr>
+		<td align='center' width=30>序号</td>
+		<td align='center' width=60>姓名</td>
+		<td align='center' width=40>性别</td>
+		<td align='center' width=100>身份证号码</td>
+
+		<td align='center' width=80>单位及职务</td>
+		<td align='center' width=50>职称</td>
+		<td align='center' width=70>文化程度</td>
+		<td align='center' width=70>单位类型</td>
+		<td align='center' width=100>资格类型</td>
+
+		<td align='center' width=100>身体状况</td>
+		<td align='center' width=70>联系方式</td>
+		<td align='center' width=100>证书编号</td>
+
+		<td align='center' width=70>违纪</td>
+		<td align='center' width=100>备注</td>
+	</tr>
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList3 = $trainUtil.getStudentDetailListByMainID($objInfo.intID,""))
+#foreach($objInfo3 in $rtnList3)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+			<td>$intNowCount</td>
+			<td align="center"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentName</a></td>
+			<td align="center"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentSex</a></td>
+			<td align="center"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentIDCode</a></td>
+			<td align="center">$objInfo3.strStudentPost</td>
+			<td align="center">$objInfo3.strStudentTitles</td>
+			<td align="center">$objInfo3.strStudentDegree</td>
+			<td align="center">$objInfo3.strStudentUnitType</td>
+
+			<td align="center">$objInfo3.strStudentQualifications</td>
+
+			<td align="center">$objInfo3.strStudentHealth</td>
+			<td align="center">$objInfo3.strStudentRelation</td>
+			<td align="center">$objInfo3.strStudentCertCode</td>
+
+			<td align="center">
+				<input type="hidden" name="trainStudentDetailInfo.intIDArr" value="$objInfo3.intID">
+				<select name="trainStudentDetailInfo.intIDLeaderArr" >
+					<option value='0'></option>
+					<option value='1' #if($objInfo3.intIsLeader == 1) selected #end >一般违纪</option>
+					<option value='2' #if($objInfo3.intIsLeader == 2) selected #end >严重违纪</option>
+				</select>
+			</td>
+				<!-- <input type="checkbox" name="trainStudentDetailInfo.intIDLeaderArr_$!{objInfo3.intID}" value=1 #if($objInfo3.intIsLeader == 1) checked #end>督导 -->
+			<td align="center"><TEXTAREA NAME="trainStudentDetailInfo.strStudentRemarkArr"  ROWS="2" COLS="15" CLASS="inputArea"  id="trainStudentDetailInfo.strStudentRemark" msg="备注"   >$objInfo3.strStudentRemark</TEXTAREA></td>
+
+		</tr>
+#end
+
+	<input type="hidden" name="trainStudentDetailInfo.intMainID" value="$!objInfo.intID">
+
+	</TR>
+	</TABLE><br>
+
+
+
+	<TR  class="trEditContent"  >
+	<TD colspan="2">
+	<TABLE width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<input type="image" src="/hodeframe2012_hnmk/images/operator/opt_confirm.gif" onclick="saveNextVal(3)" />&nbsp;&nbsp;
+		<img src="/hodeframe2012_hnmk/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+	</TD>
+	</TR>
+	</TABLE>
+	</TD></TR>
+	</form>	</TABLE>
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

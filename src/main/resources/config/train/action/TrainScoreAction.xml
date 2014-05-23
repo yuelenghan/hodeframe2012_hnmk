@@ -1,0 +1,101 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="train.score" extends="index" namespace="/train/score">
+
+
+		<action name="readme" class="trainScoreAction">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<!--start import data -->
+		<action name="addImportForm" class="trainScoreAction">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/addImportForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="editImportForm" class="trainScoreAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/addImportForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="addImportPreFix" class="trainScoreAction" method="addImportPreFix">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/addImportPreFix.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="addImportFinish" class="trainScoreAction" method="addImportFinish">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/addImportFinish.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+		</action>
+		<!--end import data -->
+
+
+		<action name="del" class="trainScoreAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/afterDel.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="showCheckList" class="trainScoreAction" method="showCheckList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/showCheckList.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="checkForm" class="trainScoreAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/checkForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="checkInfo" class="trainScoreAction" method="checkInfo">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/afterCheckInfo.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewForm" class="trainScoreAction" method="viewData">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/viewForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showSearchList" class="trainScoreAction" method="showSearchList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/showSearchList.vm</result>
+			<param name="hiddenParameter">trainScoreDetailInfo.strTrainCount,trainScoreDetailInfo.strStudentName,trainScoreDetailInfo.strStudentIDCode,trainScoreDetailInfo.strScoreCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showDetailSearchList1" class="trainScoreAction" method="showDetailSearchList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/showDetailSearchList1.vm</result>
+			<param name="hiddenParameter">trainScoreDetailInfo.strTrainCount,trainScoreDetailInfo.strStudentName,trainScoreDetailInfo.strStudentIDCode,trainScoreDetailInfo.strScoreCount,trainScoreDetailInfo.strScoreExam</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showDetailSearchList2" class="trainScoreAction" method="showDetailSearchList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/showDetailSearchList2.vm</result>
+			<param name="hiddenParameter">trainScoreDetailInfo.strTrainCount,trainScoreDetailInfo.strStudentName,trainScoreDetailInfo.strStudentIDCode,trainScoreDetailInfo.strScoreCount,trainScoreDetailInfo.strScoreExam</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showDetailSearchList3" class="trainScoreAction" method="showDetailSearchList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/score/showDetailSearchList3.vm</result>
+			<param name="hiddenParameter">trainScoreDetailInfo.strTrainCount,trainScoreDetailInfo.strStudentName,trainScoreDetailInfo.strStudentIDCode,trainScoreDetailInfo.strScoreCount,trainScoreDetailInfo.strScoreExam</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+    </package>
+
+</xwork>

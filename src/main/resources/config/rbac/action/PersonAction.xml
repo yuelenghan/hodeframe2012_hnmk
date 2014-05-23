@@ -1,0 +1,23 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+
+    <package name="rbac.person" extends="index" namespace="/rbac/person">
+		<action name="index" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/person/index.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="readme" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/person/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showLeftTree" class="rbac_permissionAction">
+			<result name="success" type="velocity">/WEB-INF/vm/rbac/person/showLeftTree.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+    </package>
+</xwork>

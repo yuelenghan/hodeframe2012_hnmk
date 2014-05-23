@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+<TITLE>$action.getText('webeditor.upload.title')</TITLE>
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+</head>
+<body bgcolor=menu leftmargin="0" topmargin="0">
+
+<form action="$action.getText('config.prjName')/webeditor/imgUpload.action" method="post" name="myform" enctype="multipart/form-data">
+<input type=file name=uploadfile size=1 style="width:100%" class='inputFile'>
+</form>
+
+<input type="hidden" id="objFileUrl" value='$!fileUrl'>
+<input type="hidden" id="fileUploadError" value='$!fileUploadError'>
+
+<script language=javascript>
+
+var sAllowExt = "GIF|JPG|JPEG|BMP|PNG";
+// ����ϴ��?
+function CheckUploadForm()
+{
+	if (!IsExt(document.myform.uploadfile.value,sAllowExt))
+	{
+		parent.UploadError("${action.getText('webeditor.upload.alertInfo1')}("+sAllowExt+")");
+		return false;
+	}
+	return checkName(document.myform.uploadfile.value);
+}
+function checkName(strFilename)
+{
+	var name=strFilename.substr(strFilename.lastIndexOf("\\")+1);
+    for( i = 0; i < name.length; i ++)
+	{
+        if(  name.charCodeAt(i) > 127 )
+		{
+			alert("$action.getText('webeditor.upload.alertInfo2')");
+			return false;
+		}
+    }
+	return true;
+}
+
+parent.RadioClick("file");
+if(fileUploadError.value=="error")
+{
+	parent.divProcessing.style.display="none";
+	parent.UploadError("$action.getText('webeditor.upload.alertInfo3')");
+	parent.AbleItems();
+	parent.RadioClick("file");
+}
+
+if(objFileUrl.value!="")
+{
+	parent.divProcessing.style.display="none";
+	parent.AbleItems();
+	parent.RadioClick("url");
+	parent.d_fromurl.value=objFileUrl.value;
+}
+
+</script>
+
+</body>
+</html>

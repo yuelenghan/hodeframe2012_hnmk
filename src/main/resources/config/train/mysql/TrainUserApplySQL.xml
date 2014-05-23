@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.userapply">
+  <typeAlias alias="trainUserApplyModel" type="com.hode.train.model.TrainUserApplyModel"/>
+  <typeAlias alias="trainUserApplyDetailModel" type="com.hode.train.model.TrainUserApplyDetailModel"/>
+
+  <select id="getObjectInfo" resultClass="trainUserApplyModel" parameterClass="trainUserApplyModel">
+	SELECT *
+	FROM train_userapply
+	WHERE intID = #intID#
+  </select>
+
+  <select id="getPageObjectList" resultClass="trainUserApplyModel" parameterClass="trainUserApplyModel">
+	select *
+	from train_userapply
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strCode">
+		strCode like '%$strCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchStartDate">
+		<![CDATA[  strApplyDate >= #strSearchStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchEndDate">
+		<![CDATA[  strApplyDate <= #strSearchEndDate# ]]>
+	</isNotEmpty>
+	ORDER BY intID desc
+	LIMIT #intStart#,#intOffset#
+  </select>
+
+  <select id="getTrainUserApplyByCode" resultClass="trainUserApplyModel" parameterClass="trainUserApplyModel">
+	SELECT *
+	FROM train_userapply
+	WHERE strCode = #strCode#
+  </select>
+
+   <select id="getTrainUserApplyDetailByIntMainID" resultClass="trainUserApplyDetailModel" parameterClass="trainUserApplyDetailModel">
+	SELECT *
+	FROM train_userapply_detail
+	WHERE intMainID = #intMainID#
+  </select>
+
+  <select id="getAllList" resultClass="trainUserApplyModel" parameterClass="trainUserApplyModel">
+	select *
+	from train_userapply
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strSearchStartDate">
+		<![CDATA[  strApplyDate >= #strSearchStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchEndDate">
+		<![CDATA[  strApplyDate <= #strSearchEndDate# ]]>
+	</isNotEmpty>
+	ORDER BY intID asc
+  </select>
+
+  <select id="getRecordCount" resultClass="int" parameterClass="trainUserApplyModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_userapply
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strCode">
+		strCode like '%$strCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchStartDate">
+		<![CDATA[  strApplyDate >= #strSearchStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchEndDate">
+		<![CDATA[  strApplyDate <= #strSearchEndDate# ]]>
+	</isNotEmpty>
+  </select>
+
+  <insert id="insertObjectAndGetID" parameterClass="trainUserApplyModel">
+    INSERT INTO train_userapply(
+		strCode,
+		intYear,
+		strApplyDate,
+		intApplyNum,
+		intCreateUserID,
+		strCreateUserName,
+		intCreateGroupID,
+		strCreateGroupName,
+		intCreateUnitID,
+		strCreateUnitName,
+		strCreateDate
+		)
+	VALUES (
+		#strCode#,
+		#intYear#,
+		#strApplyDate#,
+		#intApplyNum#,
+		#intCreateUserID#,
+		#strCreateUserName#,
+		#intCreateGroupID#,
+		#strCreateGroupName#,
+		#intCreateUnitID#,
+		#strCreateUnitName#,
+		#strCreateDate#
+		)
+		<selectKey resultClass="int" keyProperty="intID" >
+			SELECT max(intID) AS intID
+			FROM train_userapply
+		</selectKey>
+  </insert>
+  <update id="updateObject" parameterClass="trainUserApplyModel">
+    UPDATE train_userapply
+	SET
+		strCode = #strCode#,
+		intYear = #intYear#,
+		strApplyDate = #strApplyDate#,
+		intApplyNum = #intApplyNum#
+	WHERE intID = #intID#
+  </update>
+  <delete id="deleteObject" parameterClass="string">
+		DELETE from train_userapply
+		WHERE intID IN ( $strIDList$ )
+  </delete>
+  <delete id="deleteDetailObject" parameterClass="string">
+		DELETE from train_userapply_detail
+		WHERE intMainID IN ( $strIDList$ )
+  </delete>
+
+  <select id="getDetailList" resultClass="trainUserApplyDetailModel" parameterClass="trainUserApplyDetailModel">
+	select *
+	from train_userapply_detail
+	where intMainID = #intMainID#
+	ORDER BY intID asc
+  </select>
+  <insert id="insertDetailObject" parameterClass="trainUserApplyDetailModel">
+    INSERT INTO train_userapply_detail(
+		intMainID,
+		strCertCode,
+		strUserCode,
+		strUserName,
+		strUserDate,
+		strUserUnitName,
+		strUserPost,
+		strApplyReason
+		)
+	VALUES (
+		#intMainID#,
+		#strCertCode#,
+		#strUserCode#,
+		#strUserName#,
+		#strUserDate#,
+		#strUserUnitName#,
+		#strUserPost#,
+		#strApplyReason#
+	)
+  </insert>
+
+  <select id="getDetailPageObjectList" resultClass="trainUserApplyDetailModel" parameterClass="trainUserApplyDetailModel">
+	select *
+	from train_userapply_detail
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strUserName">
+		strUserName like '%$strUserName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strUserCode">
+		strUserCode like '%$strUserCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchStartDate">
+		<![CDATA[  strUserDate >= #strSearchStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchEndDate">
+		<![CDATA[  strUserDate <= #strSearchEndDate# ]]>
+	</isNotEmpty>
+	ORDER BY intID desc
+	LIMIT #intStart#,#intOffset#
+  </select>
+
+  <select id="getDetailRecordCount" resultClass="int" parameterClass="trainUserApplyDetailModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM train_userapply_detail
+	where 1 = 1
+	<isNotEmpty prepend="AND" property="strUserName">
+		strUserName like '%$strUserName$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strUserCode">
+		strUserCode like '%$strUserCode$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchStartDate">
+		<![CDATA[  strUserDate >= #strSearchStartDate# ]]>
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="strSearchEndDate">
+		<![CDATA[  strUserDate <= #strSearchEndDate# ]]>
+	</isNotEmpty>
+  </select>
+
+
+
+</sqlMap>

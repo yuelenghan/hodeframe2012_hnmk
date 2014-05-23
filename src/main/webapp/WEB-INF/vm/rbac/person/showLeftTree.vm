@@ -1,0 +1,30 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+
+##-------------------------------------------------------------
+#hodeSysUI_leftFrameHeader("" "10")
+
+#set( $preimg = "$action.getText('config.prjName')/images/index/shirong_tubiao1.gif" )
+#set( $preSpace = "&nbsp;&nbsp;&nbsp;&nbsp;" )
+
+
+#bodytag( Component "template=Tpl_LeftTblTrCom.vm" )
+	#param( "preimg" "$preimg" )
+	#param( "preSpace" "$preSpace" )
+	#param( "url" "../user/editPasswordForm.action" )
+	#param( "content" "$action.getText('rbac.user.operation.editUserInfo')")
+#end
+<!-- 
+#bodytag( Component "template=Tpl_LeftTblTrCom.vm" )
+	#param( "preimg" "$preimg" )
+	#param( "preSpace" "$preSpace" )
+	#param( "url" "../../officediction/showListPrivate.action" )
+	#param( "content" "$action.getText('officediction.menu.private')")
+#end
+
+ -->
+#hodeSysUI_leftTblFooter("200")
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

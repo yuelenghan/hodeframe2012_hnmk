@@ -1,0 +1,229 @@
+####################��������Ԫת�� HTML ��ʽ��
+#macro(hodeSysBean_htmlSpecChars $str $rtn)
+	#if($str)
+    	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+    	#set ($rtn = $stringUtil.htmlSpecChars($str))
+	#else
+		#set ($rtn = '')
+	#end
+#end
+
+####################��������Ԫת�� <br>��
+#macro(hodeSysBean_nl2br $str $rtn)
+	#if($str)
+		#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+		#set ($rtn = $stringUtil.nl2br($str))
+	#else
+		#set ($rtn = '')
+	#end
+#end
+
+####################strCheck �Ƿ��� strSource �ַ��� <br>��
+#macro(hodeSysBean_checkIndexOfStr $strSource $strCheck $rtn)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtn = $stringUtil.checkIndexOfStr($strSource,$strCheck))
+#end
+####################strCheck �Ƿ��� strSource �ַ��� <br>��
+#macro(hodeSysBean_getStrAryByString $strSource $rtnArr)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtnArr = $stringUtil.getStrAryByString($strSource))
+#end
+
+####################strCheck �Ƿ��� strSource �ַ��� <br>��
+#macro(hodeSysBean_getStrAryByString1 $strSource $strsplit $rtnArr)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtnArr = $stringUtil.getStrAryByString($strSource,$strsplit))
+#end
+####################ȡ�����ִ���
+#macro (hodeSysBean_subStr $str $start $length $isNeedMore $rtn)
+	#if($str.length() > $length)
+		#set($length = $start + $length )
+		#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+		#set ($rtn = "$stringUtil.substring($str,$start,$length)")
+		#if($isNeedMore == 1 || $isNeedMore == "yes")
+			#set ($rtn = "$rtn...")
+		#end
+	#else
+		#set($rtn = $!str)
+	#end
+#end
+
+####################���ִ�ת��Ϊ����,���ת��ʧ��,�ͷ���0
+#macro (hodeSysBean_toInt  $str $rtn)
+	#set ($intRtn = 0 )
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtn = $stringUtil.ObjectToInt($str))
+#end
+
+
+####################���ִ�ת��ΪС��,���ת��ʧ��,�ͷ���0
+#macro (hodeSysBean_toFloat  $str $rtn)
+	#set ($intRtn = 0 )
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtn = $stringUtil.ObjectToFloat($str))
+#end
+
+####################����ַ����,����list�ļ��б�
+#macro (hodeSysBean_getFileList $str $rtn)
+	#if($!str)
+		#set ($fileUtil = $webwork.bean("com.hode.framework.commons.file.FileUtil"))
+		#set ($rtn = $fileUtil.getListByAttContent($str))
+	#else
+		#set ($rtn = "")
+	#end
+#end
+
+####################����ַ����,����list�ļ��б�
+#macro (hodeSysBean_getFileExt $str $rtn)
+	#if($!str)
+		#set ($fileUtil = $webwork.bean("com.hode.framework.commons.file.FileUtil"))
+		#set ($rtn = $fileUtil.getFileExt($str))
+	#else
+		#set ($rtn = "")
+	#end
+#end
+
+####################����ַ����,����list�ļ��б�
+#macro (hodeSysBean_checkInArr $val $arr $rtn)
+	#if($val && $arr )
+		#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+		#set ($rtn = $stringUtil.in_array($val,$arr))
+	#else
+		#set ($rtn = false)
+	#end
+#end
+
+
+####################����ַ����,����list�ļ��б�
+#macro (hodeSysBean_getIntAryByString $str $rtn)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtn = $stringUtil.getIntAryByString($str))
+#end
+
+
+
+####################�ж�һ��ֵ�Ƿ�����һ���ַ���
+#macro (hodeSysBean_checkInStr $val $string $rtn)
+	#if($!val && $!string)
+		#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+		#set ($rtn = $stringUtil.in_index_of_str($val,$string))
+	#else
+		#set ($rtn = false)
+	#end
+#end
+
+####################�Ƚ�2���ַ�
+#macro(hodeSysBean_getCompareTo $strSource $strCompare $rtn)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtn = $stringUtil.getCompareToStr($strSource,$strCompare))
+#end
+
+####################�Ƚ�2������
+#macro(hodeSysBean_getCompareToByFloat $strSource $strCompare $rtn)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtn = $stringUtil.getCompareToByFloat($strSource,$strCompare))
+#end
+####################���ڸ�ʽ��
+#macro(hodeSysBean_getFormatDate $strDate $strFormat $strRtnFormat $strRtnVal)
+	#set ($dateUtil = $webwork.bean("com.hode.framework.commons.util.DateUtil"))
+	#set ($tmpDate = $dateUtil.getDateByStringAndFormat($strDate,$strFormat))
+	#set($strRtnVal = "" )
+	#if( $tmpDate)
+		#set ($strRtnVal = $dateUtil.getFormatDate($tmpDate,$strRtnFormat))
+	#end
+#end
+####################���ڸ�ʽ��
+#macro(hodeSysBean_getNowDateByFormat $strFormat $strRtnVal)
+	#set ($dateUtil = $webwork.bean("com.hode.framework.commons.util.DateUtil"))
+	#set ($strRtnVal = $dateUtil.getNowDateByFormat($strFormat))
+#end
+
+#macro(hodeSysBean_replaceNbsp2 $strOldContent $strRtnVal)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($strRtnVal = $stringUtil.replaceNbsp2($strOldContent))
+#end
+####################�ж��ַ��Ƿ�������
+##$isFirstCompare ��ʾ�Ƿ�ӵ�һ����ʼ
+#macro(hodeSysBean_like_array $val $arr $isFirstCompare $rtn)
+	#if($val && $arr )
+		#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+		#set ($rtn = $stringUtil.like_array($val,$arr,$isFirstCompare))
+	#else
+		#set ($rtn = false)
+	#end
+#end
+####################�ж��ַ��Ƿ�������
+##��ȡ��ǰ�������
+#macro(hodeSysBean_getIntYearMonth $strFormat $rtnValue)
+	#set ($dateUtil = $webwork.bean("com.hode.framework.commons.util.DateUtil"))
+	#set ($rtnValue = $dateUtil.getIntYearMonth($strFormat))
+#end
+
+##�����ַ�ת��Ϊ&nbsp;&nbsp;
+#macro(hodeSysBean_replaceNbsp2 $strOldContent $strRtnVal)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($strRtnVal = $stringUtil.replaceNbsp2($strOldContent))
+#end
+####################���Ҹ�ʽ��
+#macro(hodeSysBean_getformatMoney $strMoney $strRtnVal)
+	#set ($dataFormatUtil = $webwork.bean("com.hode.framework.commons.util.DataFormatUtil"))
+	#set ($strRtnVal = $dataFormatUtil.formatMoney($strMoney))
+#end
+
+####################���Ҹ�ʽ��,��������
+#macro(hodeSysBean_getformatMoney_1 $strMoney $strRtnVal)
+	#set ($dataFormatUtil = $webwork.bean("com.hode.framework.commons.util.DataFormatUtil"))
+	#set ($strRtnVal = $dataFormatUtil.formatMoney_1($strMoney))
+#end
+####################���Ҹ�ʽ�������������ĺ���
+#macro(hodeSysBean_getconvertMoney $strMoney $strRtnVal)
+	#set ($chineseUtil = $webwork.bean("com.hode.framework.commons.util.ChineseConvertUtil"))
+	#set ($strRtnVal = $chineseUtil.convertMoney($strMoney))
+#end
+
+##�õ���ʽ�������ֵ
+#macro(hodeSysBean_getStringByInt $intNumber1 $intNumber2 $intNumberLength $transAfterNum)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($transAfterNum = $stringUtil.getStringByInt($intNumber1,$intNumber2 , $intNumberLength))
+#end
+
+##���غ�׺��
+#macro(hodeSysBean_getStrAfterFile $fileName $rtnFile)
+	#set ($fileUtil = $webwork.bean("com.hode.framework.commons.file.FileUtil"))
+	#set ($rtnFile = $fileUtil.strAfterFile($fileName))
+#end
+
+##����ͼƬ·�� 
+#macro(hodeSysBean_getStrWebFile $fileName $rtnFile)
+	#set ($fileUtil = $webwork.bean("com.hode.framework.commons.file.FileUtil"))
+	#set ($rtnFile = $fileUtil.getStrWebFile($fileName))
+#end
+
+########��ʽ���ַ�
+#macro(hodeSysBean_getDoubleDivByString $str1 $str2 $isPercent $strBeforeInfo $strAfterInfo $strRtnFormat $rtnValue)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtnValue = $stringUtil.getDoubleDivByString($str1,$str2 , $isPercent,$strBeforeInfo,$strAfterInfo ,$strRtnFormat))
+#end
+
+
+########���ַ���ӣ��õ������
+#macro(hodeSysBean_getDoubleSumByString $str1 $strBeforeInfo $strAfterInfo $strRtnFormat $rtnValue)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtnValue = $stringUtil.getDoubleSumByString($str1,$strBeforeInfo,$strAfterInfo ,$strRtnFormat))
+#end
+
+
+########���ַ�������õ������
+#macro(hodeSysBean_getDoubleSubByString $str1 $str2 $strBeforeInfo $strAfterInfo $strRtnFormat $rtnValue)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+	#set ($rtnValue = $stringUtil.getDoubleSubByString($str1,$str2,$strBeforeInfo,$strAfterInfo ,$strRtnFormat))
+#end
+
+
+
+########���ַ�������õ������
+#macro(hodeSysBean_convertMonth $i $strRtn)
+	#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.ChineseConvertUtil"))
+	#set ($strRtn = $stringUtil.convertMonth($i))
+#end
+

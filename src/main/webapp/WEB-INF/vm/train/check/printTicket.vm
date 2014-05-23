@@ -1,0 +1,478 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+<script language="javascript" src="/hodeframe2012_hnmk/js/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "打印准考证" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >培训期次：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strTrainCount" id="objSearch.strTrainCount" CLASS="inputText" maxlength="20" size="20"   VALUE="$!objSearch.strTrainCount" >
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >培训类别：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<select name="objSearch.strTrainType">
+			<option value="" selected >全部</option>
+			<option value="培训" #if("培训" == $objSearch.strTrainType) selected #end >培训</option>
+			<option value="再培训" #if("再培训" == $objSearch.strTrainType) selected #end >再培训</option>
+		</select>
+	</TD>
+
+	<td></td>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "printTicket.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	#hodeSysUI_TdMainBody("打印" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训机构名称" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训期次" "center" "" 0)
+	#hodeSysUI_TdMainBody("班级" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训类别" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训对象" "center" "" 0)
+	#hodeSysUI_TdMainBody("计划人数" "center" "70" 0)
+	#hodeSysUI_TdMainBody("拟考试时间" "center" "90" 0)
+	#hodeSysUI_TdMainBody("批准时间" "center" "70" 0)
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+		<td width="60" align='center'><img src="/hodeframe2012_hnmk/images/operator/opt_print.gif" style="cursor:hand" onclick="javascript:doPrint($!objInfo.intID)"></td>
+
+		<td align='center'>&nbsp;<a href="viewForm.action?objInfo.intID=$objInfo.intID">$!objInfo.strTrainUnitName</a></td>
+
+		<td align='center'>&nbsp;<a href="viewForm.action?objInfo.intID=$objInfo.intID">$!objInfo.strTrainCount</a></td>
+		<td align='center'>&nbsp;<a href="viewForm.action?objInfo.intID=$objInfo.intID">$!objInfo.strTrainCountClass</a></td>
+
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainType" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainObjectDesc" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainUserNum" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainStartDate" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainEndDate" "center" "" 0)
+
+		<input type="hidden" id="${objInfo.intID}_ID" value="${objInfo.intID}">
+		<input type="hidden" id="${objInfo.intID}_trainCount" value="${objInfo.strTrainCount}">
+		<input type="hidden" id="${objInfo.intID}_trainCountClass" value="$!{objInfo.strTrainCountClass}">
+		<input type="hidden" id="${objInfo.intID}_trainObjectDesc" value="${objInfo.strTrainObjectDesc}">
+		<input type="hidden" id="${objInfo.intID}_trainStartDate" value="${objInfo.strTrainStartDate}">
+    #hodeSysUI_TrEnd()
+#end
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "printTicket.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "hiddenParams" "<INPUT TYPE='hidden' NAME='objSearch.intSysIsClearSearch' value=1>" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript
+<div id="baseInfo" style="display:none">
+	<span id="ID" style="display:none"></span>
+	培训期次：<span id="trainCount"></span>&nbsp&nbsp&nbsp&nbsp
+	班级：<span id="trainCountClass"></span>&nbsp&nbsp&nbsp&nbsp
+	考试时间：<span id="trainStartDate"><INPUT TYPE="text" id="changeTrainStartDate" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7  ></span>
+				<select id="startHour">
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+				</select>：
+				<select id="startMinute">
+					<option value="00">00</option>
+					<option value="30">30</option>
+				</select>
+				至
+				<select id="endHour">
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+				</select>：
+				<select id="endMinute">
+					<option value="00">00</option>
+					<option value="30">30</option>
+				</select>
+				&nbsp&nbsp&nbsp&nbsp
+	一个考场<input id="num" type="text" size="1">人
+	<input type="button" value="确定" id="doSure" onclick="print()">
+</div>
+<div id="printInfo" style="display:block">
+	<table border="1" style="width: 90mm;display: inline;" cellpadding="6" cellspacing="0" bordercolor="#cecece">
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-left: none;border-top: none;" align="center">河南煤矿安全监察局</td>
+			<td style="width: 30mm;border-right: none;border-top: none;" rowspan="5" align="center">
+				<span id="pic1"><img style="width: 30mm; height: 40mm;" id="studentPic_1" src=""><span>
+			</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="center">准 考 证</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">准考证号:<span id="ticketId_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">姓  名:<span id="studentName_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" >身份证:<span id="studentId_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训单位:<span id="studentPost_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训对象:<span id="trainObjectDesc_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考试时间:<span id="checkTime_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考场:<span id="room_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">座号:<span id="seat_1"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-left: none;" colspan="2">
+				考生须知:1、应考人员应提前10分钟带准考证及身份证入场，对号入座后将准考证及身份证放在桌子右上角，以备查对。
+				2、应考人员迟到30分钟不得入场，开考后30分钟内不能交卷出场。
+			</td>
+		</tr>
+	</table>
+	&nbsp
+	<table border="1" style="width: 90mm;display: inline;" cellpadding="6" cellspacing="0" bordercolor="#cecece">
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-left: none;border-top: none;" align="center">河南煤矿安全监察局</td>
+			<td style="width: 30mm;border-right: none;border-top: none;" rowspan="5" align="center">
+				<span id="pic2"><img style="width: 30mm; height: 40mm;" id="studentPic_2" src=""><span>
+			</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="center">准 考 证</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">准考证号:<span id="ticketId_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">姓  名:<span id="studentName_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" >身份证:<span id="studentId_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训单位:<span id="studentPost_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训对象:<span id="trainObjectDesc_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考试时间:<span id="checkTime_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考场:<span id="room_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">座号:<span id="seat_2"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-left: none;" colspan="2">
+				考生须知:1、应考人员应提前10分钟带准考证及身份证入场，对号入座后将准考证及身份证放在桌子右上角，以备查对。
+				2、应考人员迟到30分钟不得入场，开考后30分钟内不能交卷出场。
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" style="width: 90mm;display: inline;" cellpadding="6" cellspacing="0" bordercolor="#cecece">
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-left: none;border-top: none;" align="center">河南煤矿安全监察局</td>
+			<td style="width: 30mm;border-right: none;border-top: none;" rowspan="5" align="center">
+				<span id="pic3"><img style="width: 30mm; height: 40mm;" id="studentPic_3" src=""></span>
+			</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="center">准 考 证</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">准考证号:<span id="ticketId_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">姓  名:<span id="studentName_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" >身份证:<span id="studentId_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训单位:<span id="studentPost_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训对象:<span id="trainObjectDesc_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考试时间:<span id="checkTime_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考场:<span id="room_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">座号:<span id="seat_3"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-left: none;" colspan="2">
+				考生须知:1、应考人员应提前10分钟带准考证及身份证入场，对号入座后将准考证及身份证放在桌子右上角，以备查对。
+				2、应考人员迟到30分钟不得入场，开考后30分钟内不能交卷出场。
+			</td>
+		</tr>
+	</table>
+	&nbsp
+	<table border="1" style="width: 90mm;display: inline;" cellpadding="6" cellspacing="0" bordercolor="#cecece">
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-left: none;border-top: none;" align="center">河南煤矿安全监察局</td>
+			<td style="width: 30mm;border-right: none;border-top: none;" rowspan="5" align="center">
+				<span id="pic4"><img style="width: 30mm; height: 40mm;" id="studentPic_4"></span>
+			</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm; font-weight: bolder; font-size: 20px;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="center">准 考 证</td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">准考证号:<span id="ticketId_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" align="left">姓  名:<span id="studentName_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 60mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" >身份证:<span id="studentId_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训单位:<span id="studentPost_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">培训对象:<span id="trainObjectDesc_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考试时间:<span id="checkTime_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">考场:<span id="room_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-top: none;border-left: none;" colspan="2">座号:<span id="seat_4"></span></td>
+		</tr>
+		<tr style="height: 7mm;">
+			<td style="width: 90mm;border-bottom: none;border-right: none;border-left: none;" colspan="2">
+				考生须知:1、应考人员应提前10分钟带准考证及身份证入场，对号入座后将准考证及身份证放在桌子右上角，以备查对。
+				2、应考人员迟到30分钟不得入场，开考后30分钟内不能交卷出场。
+			</td>
+		</tr>
+	</table>
+</div>
+
+<script type="text/javascript">
+function print() {
+	var trainCount = $("#trainCount").html();
+	var trainCountClass = $("#trainCountClass").html();
+	var num = $("#num").val();
+	var parternNum = /^\d{1,3}$/;
+	if(!parternNum.test(num) || num == 0) {
+		alert("请输入正确的考场人数！");
+		return;
+	}
+	$("#doSure").attr("disabled", "disabled");
+
+	jQuery.ajax({
+            url : "/hodeframe2012_hnmk/servlet/getPrintTicketInfo",
+            dataType : "json",
+            type : "POST",
+            data : "trainCount=" + trainCount + "&trainCountClass="+ trainCountClass +"&num=" + num,
+            success : function(data, textStatus, jqXHR) {
+            			var list = data.returnList;
+            			var onePage = 4; //一页打印4张准考证
+            			var pageNum = parseInt(list.length/onePage) + 1; //一共打印几页
+            			for(var i=0; i<list.length; i++) {
+            				var index = (i % onePage) + 1;
+
+            				$("#ticketId"+"_"+index).html(i+1);
+            				$("#studentName"+"_"+index).html(list[i].studentName);
+            				$("#studentId"+"_"+index).html(list[i].studentIDCard);
+            				$("#studentPost"+"_"+index).html(list[i].studentPost);
+            				$("#room"+"_"+index).html(list[i].room);
+            				$("#seat"+"_"+index).html(list[i].seat);
+            				$("#trainObjectDesc"+"_"+index).html(list[i].trainObjectDesc);
+            				var ms = new Date().getTime();
+            				if(list[i].ifPic == "1") {
+            					$("#studentPic"+"_"+index).attr("src", list[i].studentPic1+"?temp="+ms);
+            				}else {
+            					$("#studentPic"+"_"+index).attr("src", "");
+            				}
+
+            				//var trainStartDate = $("#trainStartDate").html();
+            				var trainStartDate = $("#changeTrainStartDate").val();
+            				//alert(trainStartDate);
+            				var startHour = $("#startHour").val();
+            				var startMinute = $("#startMinute").val();
+            				var endHour = $("#endHour").val();
+            				var endMinute = $("#endMinute").val();
+
+            				var checkTime = trainStartDate + "  " + startHour + ":" + startMinute + "至" + endHour + "：" + endMinute;
+            				$("#checkTime"+"_"+index).html(checkTime);
+
+            				var culPage = parseInt(i/onePage) + 1; //当前属于第几页
+            				if(culPage < pageNum) {
+            					//不是最后一页的情况下，满onePage个打印一次
+            					if((i+1)%onePage == 0) {
+            						//调用打印
+            						LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+									LODOP.PRINT_INIT("准考证打印");
+									LODOP.SET_PRINT_PAGESIZE (1, 0, 0,"A4");
+									LODOP.ADD_PRINT_HTML(0,0,"100%","100%",$("#printInfo").html());
+								//	LODOP.ADD_PRINT_IMAGE("5.5mm","61mm","30mm","40mm",$("#pic1").html());
+								//	LODOP.ADD_PRINT_IMAGE("5.5mm","154.5mm","30mm","40mm",$("#pic2").html());
+								//	LODOP.ADD_PRINT_IMAGE("121mm","61mm","30mm","40mm",$("#pic3").html());
+								//	LODOP.ADD_PRINT_IMAGE("121mm","154.5mm","30mm","40mm",$("#pic4").html());
+								//	LODOP.SET_PRINT_STYLEA(-1,"Stretch",1);
+									//LODOP.SET_PRINT_STYLEA(0,"Stretch",1);
+									LODOP.PREVIEW();
+								//	LODOP.PRINT_SETUP();
+
+									//清空
+									for(var j=1; j<5; j++) {
+										$("#ticketId"+"_"+j).html("");
+            							$("#studentName"+"_"+j).html("");
+            							$("#studentId"+"_"+j).html("");
+            							$("#studentPost"+"_"+j).html("");
+            							$("#room"+"_"+j).html("");
+            							$("#seat"+"_"+j).html("");
+            							$("#trainObjectDesc"+"_"+j).html("");
+            							$("#studentPic"+"_"+j).attr("src", "");
+            							$("#checkTime"+"_"+j).html("");
+									}
+            					}
+            				} else {
+            					//是最后一页的情况下，循环到最后一个打印
+            					if(i == list.length - 1) {
+            						//调用打印
+            						LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+									LODOP.PRINT_INIT("准考证打印");
+									LODOP.SET_PRINT_PAGESIZE (1, 0, 0,"A4");
+									LODOP.ADD_PRINT_HTML(0,0,"100%","100%",$("#printInfo").html());
+									LODOP.PREVIEW();
+								//	LODOP.PRINT_SETUP();
+            					}
+            				}
+            			}
+
+            			$("#doSure").removeAttr("disabled");
+                      }
+     });
+
+}
+
+function doPrint(intID) {
+	$("#baseInfo").attr("style", "display:block");
+	$("#trainCount").html($("#"+intID+"_trainCount").val());
+	$("#trainCountClass").html($("#"+intID+"_trainCountClass").val());
+	var trainStartDate = $("#"+intID+"_trainStartDate").val();
+	//alert(trainStartDate);
+	$("#changeTrainStartDate").attr("value", trainStartDate);
+	$("#ID").html($("#"+intID+"_ID").val());
+}
+</script>
+

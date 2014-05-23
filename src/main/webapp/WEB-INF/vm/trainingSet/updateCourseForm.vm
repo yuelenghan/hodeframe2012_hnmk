@@ -1,0 +1,256 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+#hodeSysBean_checkInArr(11010100 $!permissionIDs $allow_11)	##三级培训机构工作人员
+#hodeSysBean_checkInArr(11010200 $!permissionIDs $allow_12)	##三级培训机构领导
+
+#hodeSysBean_checkInArr(11020100 $!permissionIDs $allow_21)	##省局培训中心工作人员
+#hodeSysBean_checkInArr(11020200 $!permissionIDs $allow_22)	##省局培训中心领导
+#hodeSysBean_checkInArr(11020300 $!permissionIDs $allow_23)	##培训中心下属教学点工作人员
+#hodeSysBean_checkInArr(11020400 $!permissionIDs $allow_24)	##省局人事培训处领导
+
+
+##显示当前操作及检索
+
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+ <form action="showList.action" method="post">
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "yes")
+#set($showWidth = "20%")
+
+	<div id="popupcontent" style="align:center">
+     <strong style="width:100%;font-size:16px;text-align:center;height:60px">
+                                     课&nbsp;程&nbsp;信&nbsp;息
+      </strong>
+
+    <strong style="width:100%; text-align:center;height:27px">培训对象：
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TraUtil"))
+     #if($allow_11)
+      #set ($rtnList3 = $trainUtil.getBM(1))
+      #else
+      #set ($rtnList3 = $trainUtil.getBM(2))
+      #end
+    #set($resutest=$resu)
+    #set($resusa=$resus)
+    #set($traco=$traincourses)
+     <select name="objInfo.intDictionary" style="width:210px;">
+     <option value="0">==请选择==</option>
+         #foreach($objInfo3 in $rtnList3)
+		 #set($intNowCount=$velocityCount)
+		 #if($objInfo3.intID==$resusa)
+         <option value="$objInfo3.intID" selected="selected">$objInfo3.strValue</option>
+         #else
+         <option value="$objInfo3.intID">$objInfo3.strValue</option>
+         #end
+        #end
+     </select>
+    ## #if($intSelectType == 51 )
+		##	#dictionary_getSelectKeyAndVal("objInfo.strTrainObject" 2 "$objInfo.strTrainObject" "" 0 0)
+	##	#else
+		##	#dictionary_getSelectKeyAndVal("objInfo.strTrainObject" 1 "$objInfo.strTrainObject" "" 0 0)
+	##	#end
+		</strong>
+		<input type="hidden" name="objInfo.intID" value="$traco.intID">
+	 <strong style="width:100%; text-align:center;height:27px">
+
+        培训课程：&nbsp;&nbsp;<input type="text" name="objInfo.strCourseName" value="$traco.strCourseName" style="width:210px;" >
+      </strong>
+
+       <strong style="width:100%; text-align:center;height:35px">
+        课&nbsp;&nbsp;时&nbsp;&nbsp;数：&nbsp;<input type="text" value="$traco.intCourseNum" name="objInfo.intCourseNum" style="width:210px;" >
+      </strong>
+
+	  <strong style="width:100%; text-align:center;height:80px">
+
+        <input type="button" value=" 保  存 " onClick="updatess();">
+        <input type="button" value=" 取  消 " onClick="hidePopup();">
+
+      </strong>
+</div>
+</form>
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+// form fields description structure
+var a_fields = {
+         'objInfo.strTrainUnitName': {
+                'l': '培训机构名称',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainRange': {
+                'l': '培训机构资质',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainCode': {
+                'l': '资质证书号码',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainStartDate': {
+                'l': '培训开始时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainEndDate': {
+                'l': '培训结束时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        }
+
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+//验证信息
+function checknum()
+{
+	event.srcElement.value=event.srcElement.value.replace(/[^0-9.]/gi,"");
+}
+
+//添加序列号
+function seralNum()
+{
+	var tableObj=document.getElementById("table_1");
+	var tdstart=document.getElementById("lawper");
+	var tdRow=tdstart.rowIndex + 1;
+	var tableRows=tableObj.rows.length;
+	var tdlast=tableRows - 2;
+	var sunnum=0;
+	for( ; tdRow <= tableRows - 2;  tdRow++)
+	{
+		tableObj.rows[tdRow].cells[0].childNodes(0).value=(tdRow);
+	}
+
+}
+
+function addRow()
+{
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//对象表格总行数
+	var tableRows=tableObj.rows.length;
+
+	//增加开始
+	newRow=tableObj.insertRow(tableRows - 1);
+	newRow.className="trMainBodyContent";
+
+	//开始1
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" CLASS="inputText" size="5" readonly="true" align="middle ">';
+	newRow.appendChild(col);
+	//2
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strSubjectNameArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+	//3
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strSubjectTimeArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherNameArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherDegreeArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherProfessionalArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherTitlesArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+
+
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainApplyDetailInfo.strTeacherCodeArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	//8
+	var col= document.createElement("<TD align='center'>");
+	col.innerHTML="<input type='button' value='删除' onclick='delRow()' class='inputButton'>";
+	newRow.appendChild(col);
+	seralNum();
+}
+
+//删除行
+function delRow()
+{
+
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//当前是第几行
+	var nowRowobj=event.srcElement.parentElement.parentElement;
+	var nowRow=nowRowobj.rowIndex;
+	if(confirm("确定删除此条记录吗？"))
+	{
+		tableObj.deleteRow(nowRow);
+		seralNum();
+	}
+}
+
+</script>
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+<script>
+ function hidePopup(){
+  window.close();
+ }
+ function updatess(){
+   window.close();
+   document.forms[0].action="update.action";
+   document.forms[0].submit();
+   window.opener.selectList();
+ }
+</script>
+</html>
+

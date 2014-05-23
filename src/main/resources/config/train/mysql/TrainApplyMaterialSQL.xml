@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.material">
+  <typeAlias alias="trainApplyMaterialModel" type="com.hode.train.model.TrainMaterial"/>
+  <typeAlias alias="trainApplyMaterial" type="com.hode.train.model.TrainApplyMaterial"/>
+
+  <select id="getObjectList" resultClass="trainApplyMaterialModel" parameterClass="trainApplyMaterialModel">
+	SELECT *
+	FROM train_material
+	WHERE (intCreateUser = #intCreateUser# or intCreateGroup = #intCreateGroup#) and intDictionary = #intDictionary#
+  </select>
+  <select id="getTrainApplyMaterialList" resultClass="trainApplyMaterial" parameterClass="trainApplyMaterial">
+  	SELECT *
+	FROM train_apply_material
+	WHERE intTrainApplyID = #intTrainApplyID#
+  </select>
+
+</sqlMap>

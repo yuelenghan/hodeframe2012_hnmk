@@ -1,0 +1,15 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+
+<table width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+
+		<tr>
+			<td><font color="green"><h2>图片处理成功！<h2></font></td>
+		</tr>
+
+</table>
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

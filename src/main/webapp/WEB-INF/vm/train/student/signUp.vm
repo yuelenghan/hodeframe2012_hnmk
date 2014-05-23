@@ -1,0 +1,195 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<style type="text/css">
+	tr{
+		height: 30px;
+	}
+	font{
+		color: #000000;
+		font-size: 14px;
+		font-weight: bold;
+	}
+</style>
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "网上报名" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+	<table>
+		<tr>
+			<td align="right">
+				<font>培训机构：</font>
+			</td>
+			<td>
+				#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+				#set ($rtnList = $trainUtil.getAllTrainUnit())
+				<select name="trainUnit">
+					#foreach($objInfo in $rtnList)
+						<option value="$objInfo.strName">$objInfo.strName</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>单位及部门：</font>
+			</td>
+			<td>
+				<input type="text" name="studentPost">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>职务：</font>
+			</td>
+			<td>
+				<input type="text" name="studentTitle">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>姓名：</font>
+			</td>
+			<td>
+				<input type="text" name="studentName">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>性别：</font>
+			</td>
+			<td>
+				<input type="radio" value="男" name="studentSex" checked="checked">男
+				<input type="radio" value="女" name="studentSex">女
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>年龄：</font>
+			</td>
+			<td>
+				<input type="text" name="studentAge">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>身份证号：</font>
+			</td>
+			<td>
+				<input type="text" name="studentIDCode">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>身份证地址：</font>
+			</td>
+			<td>
+				<input type="text" name="studentIDAddr">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>文化程度：</font>
+			</td>
+			<td>
+				<select name="studentDegree">
+					<option value="初中">初中</option>
+					<option value="中专">中专</option>
+					<option value="高中">高中</option>
+					<option value="大专">大专</option>
+					<option value="本科">本科</option>
+					<option value="硕士">硕士</option>
+					<option value="博士">博士</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>单位类型：</font>
+				</td>
+			<td>
+				<input type="text" name="studentUnitType">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>联系电话：</font>
+			</td>
+			<td>
+				<input type="text" name="studentRelation">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>证书编号（仅再培训填写）：</font>
+			</td>
+			<td>
+				<input type="text" name="certCode">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>初次领证时间（仅再培训填写）：</font>
+			</td>
+			<td>
+				<INPUT TYPE="text" NAME="certDate" onclick="fPopUpCalendarDlg(this);"  >
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<font>违章作业情况（仅再培训填写）：</font>
+			</td>
+			<td>
+				<input type="text" name="studentViolate">
+			</td>
+		</tr>
+		<tr>
+          <td align="right">
+          	<font>验证码：</font>
+          </td>
+          <td width="90"><input type="text" name="strRand" class="login_srk" value="" style="width:78px;"/></td>
+          <td align="left"><img style="cursor:hand" id="valid" onclick="changPic(this)" src="$action.getText('config.prjName')/images.jsp"  border="0" scrolling="no"/></td>
+        </tr>
+
+        <tr>
+        	<td align="right">
+        		<img src="/hodeframe2012_hnmk/images/operator/opt_confirm.gif" style="cursor:hand" onclick="signUp()"/>&nbsp;&nbsp;
+        	</td>
+        	<td>
+        		<img src="/hodeframe2012_hnmk/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+        	</td>
+        </tr>
+	</table>
+
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+
+<script>
+function changPic(_id){
+	_id.src="$action.getText('config.prjName')/images.jsp"+ "?dd=" + Math.random();
+}
+
+function signUp() {
+	window.location.href="$action.getText('config.prjName')/train/student/signUp.action";
+}
+</script>
+</html>
+

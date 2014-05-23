@@ -1,0 +1,157 @@
+#macro (rbac_getSessionUser $user)
+	#set($user = $req.session.getAttribute("user"))
+#end
+
+##��������
+#macro (rbac_getGroupType $name $intVal $readonly)
+    <select name="$name" $readonly class="inputSelect">
+	#foreach($i in [1..2])
+		<option value="$i" #if($i == $intVal) selected #end >$!{action.getText("rbac.group.form.intGroupType$i")}</option>
+	#end
+    </select>
+#end
+
+##��������
+#macro (rbac_getGroupTypeName  $intVal)
+$!{action.getText("rbac.group.form.intGroupType${intVal}")}
+#end
+
+##��������
+#macro (rbac_getGroupFlag $name $intVal $readonly)
+    <select name="$name" $readonly class="inputSelect">
+	#foreach($i in [1..2])
+		<option value="$i" #if($i == $intVal) selected #end >$!{action.getText("rbac.group.form.intGroupFlag$i")}</option>
+	#end
+    </select>
+#end
+
+##��������
+#macro (rbac_getGroupFlagName  $intVal)
+$!{action.getText("rbac.group.form.intGroupType${intVal}")}
+#end
+
+
+
+
+##��� ���ŵ�id ��ȡ������Ϣ
+#macro (rbac_getGroupModelById  $intID $groupInfo)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($groupInfo = $RbacUtil.getGroupModelById($intID))
+#end
+
+##��� ���ŵ�id��ʹ�ö������������� ��ȡ�������
+#macro (rbac_getGroupNameByIds  $intGroupIDs $strGroupName)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($strGroupName = $RbacUtil.getGroupNameByIds($intGroupIDs))
+#end
+
+
+##��� ���ŵ�id���Ӳ���id ��ʹ�ö�������������
+#macro (rbac_getAllGroupIdsByFatherId  $intGroupID $intType $strGroupIDs)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($strGroupIDs = $RbacUtil.getAllGroupIdsByFatherId($intGroupID,$intType))
+#end
+
+
+##��� ���ŵ�id�������Ӳ���
+#macro (rbac_getAllGroupListByFatherId  $intGroupID $intType $strGroupList)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($strGroupList = $RbacUtil.getAllGroupListByFatherId($intGroupID,$intType))
+#end
+
+##��� ���ŵ�id�����и�id���ã�����������
+#macro (rbac_getAllFatherIdsById  $intGroupID $intType $strIntFatherIds)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($strIntFatherIds = $RbacUtil.getAllFatherIdsById($intGroupID,$intType))
+#end
+
+
+##��� ���ŵ�id�����ж���
+#macro (rbac_getChildGroupListByFatherId  $intGroupID $intType $strGroupList)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($strGroupList = $RbacUtil.getChildGroupListByFatherId($intGroupID,$intType))
+#end
+
+##��� Ȩ�޵�id ��ȡȨ����Ϣ
+#macro (rbac_getPrivailegeModelById  $intID $privailegeInfo)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($privailegeInfo = $RbacUtil.getPrivailegeModelById($intID))
+#end
+
+##Ȩ������
+#macro (rbac_getPrivilegeType $name $intVal $readonly)
+    <select name="$name" $readonly class="inputSelect">
+	#foreach($i in [1..2])
+		<option value="$i" #if($i == $intVal) selected #end >$!{action.getText("rbac.privilege.form.privilegeType.content$i")}</option>
+	#end
+    </select>
+#end
+#macro (rbac_getPrivilegeTypeName  $intVal)
+$!{action.getText("rbac.privilege.form.privilegeType.content${intVal}")}
+#end
+
+##Ȩ�޼���
+#macro (rbac_getPrivilegeLevel $name $intVal $readonly)
+    <select name="$name" $readonly class="inputSelect">
+	#foreach($i in [1..4])
+		<option value="$i" #if($i == $intVal) selected #end >$!{action.getText("rbac.privilege.form.privilegeLevel.content$i")}</option>
+	#end
+    </select>
+#end
+#macro (rbac_getPrivilegeLevelName  $intVal $rtn)
+	#set($rtn = $!{action.getText("rbac.privilege.form.privilegeLevel.content${intVal}")})
+#end
+
+
+
+##��� ��Աid ���� �ʺ�  ��ȡ��Ա��ϸ��Ϣ
+#macro (rbac_getUserModelByInfo  $intID $strAccount $userInfo)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($userInfo = $RbacUtil.getUserModelObjectInfo($intID,$strAccount))
+#end
+
+##��� ��Աid  ��ȡ�ʺż�����
+#macro (rbac_getUserAccountAndNameByID  $intID  $rtn)
+	#rbac_getUserModelByInfo($intID "" $userInfo)
+	#set($rtn =  "${userInfo.strAccount}(${userInfo.strName})")
+#end
+
+##��� ����id ��ȡ��λ����
+#macro (rbac_getUnitModelByGroupID  $intGroupID  $unitModel)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($intUnitID = $RbacUtil.getIntUnitIDByGroupID($intGroupID))
+	#set ($unitModel = $RbacUtil.getGroupModelById($intUnitID))
+#end
+
+
+
+##��� ģ���id ��ȡģ����Ϣ
+#macro (rbac_getModuleModelById  $intID $moduleInfo)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($moduleInfo = $RbacUtil.getModuleModelById($intID))
+#end
+
+##��� ģ���id ��ȡģ����Ϣ
+#macro (rbac_getuserModelByModuleCode  $strModuleCode $userList)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($userList = $RbacUtil.getuserModelByModuleCode($strModuleCode))
+#end
+
+##��֤Ȩ�޺��Ƿ���ָ��������
+#macro (rbac_compilePrivilege  $privilege $privileges $complieLength $allow)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($allow = $RbacUtil.compilePrivilege($privilege,$privileges,$complieLength))
+#end
+
+##��ȡ�����Ӳ���
+#macro(rbac_getAllObjectList $objList)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($objList = $RbacUtil.getAllObjectList())
+#end
+
+
+##��ݸ�ID��ȡ�Ӳ���LIST
+#macro(rbac_getChildListByFaterID $intFaterID $objList)
+	#set ($RbacUtil = $webwork.bean("com.hode.rbac.action.RbacUtil"))
+	#set ($objList = $RbacUtil.getChildObjectListByFather($intFaterID))
+#end

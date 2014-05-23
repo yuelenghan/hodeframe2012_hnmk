@@ -1,0 +1,185 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+
+	#param( "title" "流程查看" )
+	#param( "noSearchArea" "yes" )
+	#param( "strSearchName" "" )
+	#param( "strSearchValue" "" )
+#end
+
+
+<TABLE width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD height="30" class="white10p"  align="center">
+<img src="$action.getText('config.prjName')/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+</TD>
+</TR>
+</TABLE>
+
+#if($intMainID > 0)
+
+
+<TABLE width='100%'>
+<TR>
+	<TD width='50%' valign='top'>
+
+
+						#set ($workFlowUtil = $webwork.bean("com.hode.workflownormal.action.WFNormalUtil"))
+						#set ($logList = $workFlowUtil.getCheckListLog($!objInfo.intID,"$objInfo.strFlowType"))
+
+						<TABLE align='center'><TR><TD>
+								#set($intCount = 0 )
+								#foreach($objInfo in $logList)
+									#if($intCount > 0 )
+										<table border=0  width=280>
+										<TR>
+											<TD align='center' valign='top' colspan=2>
+												<img src="$action.getText('config.prjName')/images/workflownormal/drawpic.gif" border=0>
+											</TD>
+										</TR>
+										</table>
+									#end
+
+									#set($blflag = $workFlowUtil.isExtrDate("$!objInfo.strDealAcceptDate",$!objInfo.intDealWithDay,"$!objInfo.strOptDate"))
+									#if($!objInfo.strOptDate == "" || $!objInfo.strOptDate == " " )
+										<table border=1 bordercolor=#000000 width=280>
+										#set($thisVal = "<font size=4 color='red' >待审核</font>")
+									#elseif($blflag == true)
+										<table border=1 bordercolor=#000000 width=280 bgcolor=#eb7ed7 >
+										#set($thisVal = "<font size=4 color='#FFFF00' >超时</font>")
+									#else
+										<table border=1 bordercolor=#000000 width=280 bgcolor=#8EDF9A>
+										#set($thisVal = "正常")
+									#end
+										<tr>
+										<td  width=90 align='center'><font color='' >$!objInfo.strFlowStepName </font><BR>$thisVal</TD>
+										<td>
+											提交时间：$!objInfo.strDealAcceptDate <br>
+											处理天数：#if($!objInfo.intDealWithDay == 0 ) 不限 #else $!objInfo.intDealWithDay  #end <br>
+											处理时间：$!objInfo.strOptDate <br>
+											办理部门：$!objInfo.strOptGroupName <br>
+											办理人员：$!objInfo.strOptUserName <br>
+											处理意见：$!objInfo.strOptContent
+										</TD>
+									</TR>
+									</table>
+
+									#set($intCount = $intCount + 1 )
+								#end
+						</TD></TR></TABLE>
+						<br><br>
+
+	</TD>
+	<TD width='50%' valign='top' align='left'>
+
+				#if($intParentID > 0 )
+					#set ($workFlowUtil = $webwork.bean("com.hode.workflownormal.action.WFNormalUtil"))
+					#set($wnfLogInfo = $workFlowUtil.getCheckNearInfo($intInfoID,"$strFlowType"))
+				#end
+				<TABLE   border=0>
+				<TR>
+					<TD align='center'><div style='position: relative;color:#000000;width:120px;font-size:9pt;vertical-align:top'><!-- $action.getText('workflownormal.step.strStepStartName') --><img src="$action.getText('config.prjName')/images/workflownormal/begin.gif">
+					<br>
+							#if( $intFinishFlag == 5 &&  $intParentID == 0)
+								<br><font color='#FF0000'>撰写 </font>
+							#else
+								<br><font color='#2F0BFB'>撰写</font>
+							#end
+
+					</div></TD>
+				</TR>
+				<TR>
+					<TD align='center' valign='top'>
+						<img src="$action.getText('config.prjName')/images/workflownormal/drawpic.gif" border=0>
+					</TD>
+				</TR>
+				#foreach($objInfo in $objInfoList)
+					<TR>
+						<TD align='center'>
+
+							<div style='position: relative;color:#000000;width:120px;font-size:9pt;vertical-align:top'>
+							#if($!objInfo.intTmpIsBreak == 1)
+								<img src="$action.getText('config.prjName')/images/workflownormal/step.gif">
+							#else
+								<img src="$action.getText('config.prjName')/images/workflownormal/step.gif">
+							#end
+							#if($intParentID == $objInfo.intID)
+								<br><font color='#FF0000'>$!objInfo.strName </font>
+								<div style="position:absolute;margin-top:-40px; margin-left:10px; z-index:100">
+								<table border=1 bordercolor=#000000 width=220>
+									<tr>
+									<td>
+										$!wnfLogInfo.strOptUserName  $!wnfLogInfo.strOptDate 处理，已传送给下一关处理者 <BR> <font color='#CC0000'>$!strToCheckUserName </font>
+									</TD>
+								</TR>
+								</table>
+								</div>
+							#else
+								<br><font color='#2F0BFB'>$!objInfo.strName </font>
+							#end
+
+
+
+							</div>
+
+
+						</TD>
+					</TR>
+					<TR>
+						<TD align='center' valign='top'>
+							<img src="$action.getText('config.prjName')/images/workflownormal/drawpic.gif" border=0>
+						</TD>
+					</TR>
+				#end
+				<TR>
+					<TD align='center'><div style='position: relative;color:#000000;width:120px;font-size:9pt;vertical-align:top'><!-- $action.getText('workflownormal.step.strStepEndName') --><img src="$action.getText('config.prjName')/images/workflownormal/end.gif">
+							#if( $intFinishFlag == 2 || $intFinishFlag == 3 )
+								<br><font color='#FF0000'>结束 </font>
+							#else
+								<br><font color='#2F0BFB'>结束</font>
+							#end
+					</div></TD>
+				</TR>
+				<tr>
+					<td height="20"></td>
+				</tr>
+				</TABLE>
+			#else
+				<TABLE BORDER="0" CELLSPACING="0"  CELLPADDING="0" align="center"  class='tableColor' style="border:none; ">
+				<TABLE width=100% style="border:none; ">
+				<TR>
+					<TD valign='middle' align='center' style="border:none; ">
+						#foreach($i in [1..5])
+							<BR>
+						#end
+					<IMG SRC="$action.getText('config.prjName')/images/workflownormal/notfound.jpg"  ALT=""></TD>
+				</TR>
+				</TABLE>
+			#end
+	</TD>
+</TR>
+</TABLE>
+
+
+
+<TABLE width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD height="30" class="white10p"  align="center">
+<img src="$action.getText('config.prjName')/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+</TD>
+</TR>
+</TABLE>
+
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+

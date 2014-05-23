@@ -1,0 +1,49 @@
+##获取收费项目列表
+#macro (applyItem_getItemList $intCreateUser $intCreateGroup $applyItemList)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($applyItemList = $trainUtil.trainItems($intCreateUser,$intCreateGroup))
+#end
+
+##获取教材列表
+#macro (applyMaterial_getMaterialList $intCreateUser $intCreateGroup $strDictionary $applyMaterialList)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($applyMaterialList = $trainUtil.trainMaterials($intCreateUser,$intCreateGroup,$strDictionary))
+#end
+
+#macro (applyMaterial_getMaterialList_forEdit $intTrainApplyID $trainApplyMaterialList)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($trainApplyMaterialList = $trainUtil.trainApplyMaterials($intTrainApplyID))
+#end
+
+
+##获取老师列表
+#macro (applyTeacher_getTeacherList $intCreateUser $intCreateGroup $applyTeacherList)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($applyTeacherList = $trainUtil.trainTeachers($intCreateUser,$intCreateGroup))
+#end
+##获取教师-培训项目列表
+#macro (applyTeacher_getTeacherList2 $intCreateUser $intCreateGroup $intDictionary $applyTeacherList2)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($applyTeacherList2 = $trainUtil.trainTeachers2($intCreateUser,$intCreateGroup,$intDictionary))
+#end
+##获取办班申请-教师列表
+#macro(applyTeacher_getTrainApplyTeacherList $intTrainApplyID $applyTeacherList3)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($applyTeacherList3 = $trainUtil.trainApplyTeacherList($intTrainApplyID))
+#end
+
+##获取办班申请-课程列表
+#macro(applyCourse_getTrainApplyCourseList $intCreateUser $intCreateGroup $strDictionary $applyCourseList)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($applyCourseList = $trainUtil.trainCourses($intCreateUser,$intCreateGroup,$strDictionary))
+#end
+#macro (applyCourse_getTrainApplyCourseList_forEdit $intTrainApplyID $trainApplyCourseList)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($trainApplyCourseList = $trainUtil.trainApplyCourses($intTrainApplyID))
+#end
+
+##考核申请--课程列表
+#macro (checkCourse_getTrainCheckCourseList_forEdit $intTrainCheckID $trainCheckCourseList)
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($trainCheckCourseList = $trainUtil.trainCheckCourses($intTrainCheckID))
+#end

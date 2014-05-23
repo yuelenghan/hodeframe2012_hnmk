@@ -1,0 +1,21 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##��Ϣ��ʾ��
+##**********************
+
+##���|�޸�|ɾ����Ϣ��ʾҳHeader
+#bodytag( Component "template=AfterOperationFormComponentHeader.vm" )
+	#param("operationType" "edit")
+	#param("actionName" "showPageList.action")
+	#param("needHiddenParams" "true")
+	#param("afterOperationTitle" "$action.getText('rbac.role.operation.setSuccess')")
+#end
+##���|�޸�|ɾ����Ϣ��ʾҳFooter
+#include("$action.getText('config.vmPath')/simple/AfterOperationFormFooter.vm")
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

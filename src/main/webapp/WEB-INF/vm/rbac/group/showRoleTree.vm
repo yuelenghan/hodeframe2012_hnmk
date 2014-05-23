@@ -1,0 +1,51 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+##���ò���
+##-------------------------------------------------------------
+##**********************
+##�����б���
+##**********************
+#rbac_getGroupModelById($user.intGroupID $groupObj)
+##-------------------------------------------------------------
+#hodeSysUI_leftFrameHeader("10")
+
+<table width="181">
+
+	<tr><td width="181" valign="top" class="left">
+			<div class="left_bt">ְλ����</div>
+
+				<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td height="15"></td></tr></table>
+
+				<table width="146" border="0" align="center" cellpadding="0" cellspacing="0">
+
+						<tr><td height="10" colspan="3"></td></tr>
+						<tr><td align='top'>
+	#set( $rootID  = $user.intGroupID )
+    #set($rootName = "$groupObj.strName")
+    #set($rootUrl = "../role/showPageList.action?objSearch.intGroupID=$rootID")
+    #set($rootTitle = "")
+    #set($rootTarget = "mainFrame")
+
+	#bodytag( Component "template=Tpl_JsTreeCom.vm" )
+        #param( "jsTree" $objInfoList )
+		#param( "jsName" "jsName1" )
+		#param( "rootID" "$!rootID" )
+        #param( "rootName" "$!rootName" )
+        #param( "rootUrl" "$!rootUrl" )
+		#param( "rootTitle" "$!rootTitle" )
+		#param( "rootTarget" "$!rootTarget" )
+		#param( "rootIcon" "" )
+		#param( "rootIconOpen" "" )
+		#param( "rootOpen" "" )
+        #param( "nodeUrl" "../role/showPageList.action?objSearch.intGroupID" )
+		#param( "parameterStrName" "" )
+        #param( "nodeTarget" "mainFrame" )
+        #param( "tableWidth" "80%" )
+		#param( "keyInfo" "objInfo.intID" )
+ 		#param( "actionURL" "")
+ 		#param( "strFormName" "strFormName1")
+    #end
+     </td>
+      </tr>
+</table>
+#parse("$action.getText('config.vmPath')/simple/Footer_left.vm")

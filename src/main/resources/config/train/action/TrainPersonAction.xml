@@ -1,0 +1,51 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="train.person" extends="index" namespace="/train/person">
+		<action name="savePersonPic" class="trainPersonAction" method="savePersonPic"/>
+
+		<action name="showPersonRecord" class="trainPersonAction" method="showPersonRecord">
+			<result name="success" type="velocity">/WEB-INF/vm/train/person/showPersonRecord.vm</result>
+			<param name="hiddenParameter">objSearch.strEdu,objSearch.intGroupID,objSearch.strPost,objSearch.strPersonName,objSearch.strPersonID,objSearch.intStartAge,objSearch.intEndAge</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showDetailRecord" class="trainPersonAction" method="showDetailRecord">
+			<result name="success" type="velocity">/WEB-INF/vm/train/person/showDetailRecord.vm</result>
+			<param name="hiddenParameter"/>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="usePersonRecord" class="trainPersonAction" method="usePersonRecord">
+			<result name="success" type="velocity">/WEB-INF/vm/train/person/processPersonRecordFinish.vm</result>
+			<param name="hiddenParameter"/>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="useNewAndUpdate" class="trainPersonAction" method="useNewAndUpdate">
+			<result name="success" type="velocity">/WEB-INF/vm/train/person/processPersonRecordFinish.vm</result>
+			<param name="hiddenParameter"/>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="importRecordPic" class="trainPersonAction" method="importRecordPic">
+			<result name="success" type="velocity">/WEB-INF/vm/train/person/processPersonRecordPicFinish.vm</result>
+			<param name="hiddenParameter"/>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="ignoreRecordPic" class="trainPersonAction" method="ignoreRecordPic">
+			<result name="success" type="velocity">/WEB-INF/vm/train/person/processPersonRecordPicFinish.vm</result>
+			<param name="hiddenParameter"/>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+    </package>
+
+</xwork>

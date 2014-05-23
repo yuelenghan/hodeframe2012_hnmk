@@ -1,0 +1,29 @@
+<body topmargin="0" leftmargin="0" bottommargin="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td  height="64" align="left" valign="middle" background="$action.getText('config.prjName')/images/menu/shirong_oa_query.jpg">&nbsp;</td>
+    <td width=300 align='right' valign="bottom" background="$action.getText('config.prjName')/images/menu/shirong_oa_query1.jpg"><font color="#FFFFFF"><a style="cursor:hand;" onclick="document.location.href='$action.getText('config.prjName')/index/mainBodyFrame.action'">$action.getText('global.operation.changeFirstPage')</a> | <a style="cursor:hand;" onclick="if (confirm('$action.getText('global.operation.confirmExit')')==true) {top.location.href='$action.getText('config.prjName')/index/loginout.action'}">$action.getText('global.index.exit')</a></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td  height="36"><img src="$action.getText('config.prjName')/images/menu/shirong_oa_query_04.gif" width="258" height="36"></td>
+    <td width="100%" height="36" background="$action.getText('config.prjName')/images/menu/shirong_oa_query_05.gif"><span id='showDate'>
+	<script>
+		showDate.innerHTML=new Date().toLocaleString().substr(0,10)+' 星期'+'日一二三四五六'.charAt(new Date().getDay())
+	</script>
+	</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前部门: $user.strGroupName&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	当前用户: $user.strName</td>
+    <td width="10%" height="36"><img src="$action.getText('config.prjName')/images/menu/shirong_oa_query_07.gif" width="30" height="36"></td>
+  </tr>
+</table>
+<script type="text/javascript">
+
+function stopMouse()
+{
+	return false;
+}
+document.oncontextmenu=stopMouse;
+
+</script>

@@ -1,0 +1,276 @@
+
+##�ļ��ϴ�����
+
+#set ($formName = $parameters.get('formName'))
+#if((!$formName)||($formName==""))
+	#set($formName="frmOperation")
+#end
+
+#set ($filesName = $parameters.get('filesName'))
+#if((!$filesName)||($filesName==""))
+	#set($filesName="fileUploadModel.files")
+#end
+
+#set ($idfilespanId = $parameters.get('idfilespanId'))
+#if((!$idfilespanId)||($idfilespanId==""))
+	#set($idfilespanId="")
+#end
+
+#set ($formid = $parameters.get('formid'))
+
+<script language=javascript>
+<!--
+	var ExistAttaInfo = new Array();	//����ĸ���������
+	var attaIdx = 0;					//�ܹ������Ķ��٣���ʼ��Ϊ0
+	var IsIE;
+// -->
+</script>
+
+<script language="javascript">
+<!--
+
+//��js�ļ�����compose.htmͬʱ���Ͷ��������js����֧�� IE �� NNx ϵ�С�
+//���еĺ��������� IE �� NNx ϵ�У�ֱ�ӵ��þͿ���
+//���������������ж���������ͣ�Ȼ�����ݲ�ͬ��bowser��������Ԫ��
+//��Ҫ�����Ƕ�̬���� ���ֱ?Ԫ�� �� ɾ��?Ԫ��
+
+//    function list
+//    -------------------------------------------------------------------------------------------------------------------
+//    IsIEBrowser()  ����ֵ: true(IE) false(NNx)
+//    exist(fileId)  �ж�fileId�Ƿ��Ѿ�����
+//    addInputFile(spanId,fileId)  ����ΪspanId ��Ԫ�������������Ϊindex��input file
+//    addbr(spanId,brId)  ����ΪspanId ��Ԫ����������idΪbrId�Ļ��з�
+//    adddel(spanId,index) ����ΪspanId ��Ԫ�������������Ϊindex��"ɾ��"��ť�������ɾ����Ӧ��input file �� br
+//    addhidden(spanId,hiddenId,value)  ����ΪspanId ��Ԫ����������idΪhiddenId��ֵΪvalue��input type=hidden
+//    -------------------------------------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------------------
+function IsIEBrowser() {
+	if (navigator.userAgent.indexOf("MSIE") != -1) {
+		return true;
+		} else {
+		return false;
+		}
+}
+
+// ���Ӹ������� ()�����ӵ� idfilespan,����Ϊ attaIdx ��
+function add$idfilespanId() {
+
+	addfile$idfilespanId("idfilespan$idfilespanId",attaIdx);
+	attaIdx++;
+	return false;
+}
+
+//----------------------------------------fileexist()----------------------------------------------------------
+function exist(fileId) {
+      var file = document.getElementById(fileId);
+	  var result = false;
+	  if ( file !=null ) {
+			if ( file.value != null && file.value != "") {
+				result = existFile( file);
+			}//if
+	  }
+	  if( result)
+	  {
+		alert("$action.getText('global.js.select.info1')");
+		//--attaIdx;
+		//document.getElementById( "idAttachOper"+ attaIdx).click();
+	  }
+}//end of function
+
+function getfilename( attaName ) {
+	var s = attaName.lastIndexOf( '\\' );
+	return attaName.substr(s+1, attaName.length - s -1);
+}
+
+function existFile( file)
+{
+	var form = document.$formName;
+	for ( var i= 0 ; i < form.elements.length ; i ++ ) {
+		//2005-02-01�޸�Ϊ�ж�id�Ƿ����
+		if ( form.elements[i].type == "file" && form.elements[i].id != file.id ) {
+			if ( file.value == form.elements[i].value ) {
+				return true;
+			}
+		}
+	}//for
+	for (var i=0; i<ExistAttaInfo.length; i++) {
+		var theName = ExistAttaInfo[i];
+		if ( theName != null && theName != "" && theName == getfilename(file.name) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+//----------------------------------------addfile(spanId,index)----------------------------------------------
+function addfile$idfilespanId(spanId,index)
+{
+       var strIndex = "" + index;
+	   var fileId = "attachfile"+ strIndex;
+	   var brId = "idAttachBr" + strIndex;
+	   addInputFile$idfilespanId(spanId,fileId);
+
+	   adddel(spanId,index);
+
+	   addbr(spanId,brId);
+	   //document.getElementById( "attachfile"+ strIndex).click();
+	   return;
+}
+//-------------------------------------------sub function----------------------------------------------------
+function addInputFile$idfilespanId(spanId,fileId)
+{
+	  var span = document.getElementById(spanId);
+	  if ( span !=null ) {
+	                if ( !IsIE ) {
+						var fileObj = document.createElement("input");
+						if ( fileObj != null ) {
+							fileObj.type="file";
+							fileObj.name = "${filesName}";	  //2005-02-01�޸�Ϊ�̶�ֵ
+							fileObj.id = fileId;
+							fileObj.size="50";
+							var clickEvent = "exist('" + fileId + "')";
+							fileObj.setAttribute("onclick",clickEvent,0);
+							span.appendChild(fileObj);
+						}//if fileObj
+					}// !IsIE
+
+					//2005-02-01�޸�Ϊ�̶�ֵ
+					if ( IsIE ) {
+						var fileTag = "<input CLASS='inputFile' type='file' id ='" + fileId + "' name='" + "${filesName}" + "' size=50 onchange=exist('" + fileId + "')>";
+						var fileObj = document.createElement(fileTag);
+						span.appendChild(fileObj);
+					}//IsIE if
+
+	  }//if span
+}
+
+function addbr(spanId,brId)
+{
+	  var span = document.getElementById(spanId);
+	  if ( span !=null ) {
+			var brObj = document.createElement("br");
+			if ( brObj !=null ) {
+				brObj.name ="files";	  //2005-02-01�޸�Ϊ�̶�ֵ
+				brObj.id = brId;
+				span.appendChild(brObj);
+            }//if
+     }//if
+	 return;
+}
+
+function adddel(spanId,index)
+{
+      var strIndex = "" + index;
+	  var delId = "idAttachOper" + strIndex;
+	  var span = document.getElementById(spanId);
+	  if ( span != null ) {
+			var oTextNode = document.createElement("<span style='width:0px'></span>");
+			//oTextNode.style.width="5px";
+			span.appendChild(oTextNode);
+		    if ( IsIE ) {
+	        var tag = "<input  class='inputButton' type='button' id='" + delId + "' onclick=delfile('" + spanId + "',"+strIndex+")></input>";
+			var delObj = document.createElement(tag);
+			if ( delObj != null ) {
+				span.appendChild(delObj);
+			}//if
+
+			}// Is IE
+
+	        if ( !IsIE ) {
+				var delObj = document.createElement("input");
+				if ( delObj != null ) {
+					delObj.name = delId;
+					delObj.id = delId;
+					delObj.type = "button";
+					var clickEvent = "return delfile('" + spanId + "',"+strIndex+");";
+					delObj.setAttribute("onclick",clickEvent);
+					span.appendChild(delObj);
+				}//if
+			}// !IsIE if
+			if( delObj != null) delObj.value = "$action.getText('global.operation.delete')";
+		}//main if
+		return;
+}
+
+//---------------------------------------------delete input file-----------------------------------------------
+function delfile(spanId,index)
+{
+	   var strIndex = "" + index;
+	   var fileId = "attachfile"+ strIndex;
+	   var brId = "idAttachBr" + strIndex;
+	   var delId = "idAttachOper" + strIndex;
+	   //first,get the element
+       var span = document.getElementById(spanId);
+	   //alert(  "del span: " + span  );
+	   if ( span == null ) return false;
+
+	   var fileObj = document.getElementById(fileId);
+	   if ( fileObj == null ) return false;
+
+	   var brObj = document.getElementById(brId);
+	   if ( brObj ==null ) return false;
+
+	   var delObj = document.getElementById(delId );
+
+	   if ( delObj == null ) return false;
+
+       //second,create the replace element
+	   var temp= document.createElement("<span>");
+	   //third,replace it
+	    span.replaceChild(temp,fileObj);
+		span.replaceChild(temp,brObj);
+		span.replaceChild(temp,delObj);
+
+		return false;
+}
+
+function addhidden_ie(spanId,hiddenId,value)
+{
+         var span = document.getElementById(spanId);
+	     if ( span == null ) return;
+	     if ( IsIE ) {
+	    var tag = "<input type=hidden name='" + hiddenId + "' value='" + value + "'>";
+		var delObj = document.createElement(tag);
+		if ( delObj != null ) {
+				span.appendChild(delObj);
+	    }//if
+		return;
+	 }
+}
+
+//-------------------------------------add hidden function-----------------------------------------------
+function addhidden(spanId,hiddenId,value)
+{
+      if ( !IsIE ) {
+		  var span = document.getElementById(spanId);
+		  if ( span == null ) return;
+
+		  var hiddenObj = document.createElement("input");
+		  if ( hiddenObj == null ) return;
+		  hiddenObj.type="hidden";
+		  hiddenObj.name = hiddenId;
+		  hiddenObj.id = hiddenId;
+		  hiddenObj.value = value;
+		  span.appendChild(hiddenObj);
+	  }
+      else {
+		  addhidden_ie(spanId,hiddenId,value);
+	  }
+	  return ;
+}
+
+
+//------------------------------------------------------------------------------------------------
+
+function resetForm(){
+	if (navigator.userAgent.indexOf("MSIE") != -1) {
+		IsIE = true;
+		} else {
+		IsIE = false;
+	}
+}
+resetForm();
+
+// -->
+</script>

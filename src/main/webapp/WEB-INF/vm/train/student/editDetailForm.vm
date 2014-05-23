@@ -1,0 +1,135 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "学员信息管理" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#hodeSysUI_EditBodyHeader("editDetail.action" "return doData(v.exec())" "post" "yes")
+#set($showWidth = "20%")
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("姓名" 1 1 "trainStudentDetailInfo.strStudentName" "$!trainStudentDetailInfo.strStudentName" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("身份证号码" 1 1 "trainStudentDetailInfo.strStudentIDCode" "$!trainStudentDetailInfo.strStudentIDCode" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	<td class="tdEditContentLeft">性别：</td>
+	<td>
+	<input type="radio" value="男" name="trainStudentDetailInfo.strStudentSex" #if($!trainStudentDetailInfo.strStudentSex=="男" || $!trainStudentDetailInfo.strStudentSex=="") checked="checked" #end>男
+	<input type="radio" value="女" name="trainStudentDetailInfo.strStudentSex" #if($!trainStudentDetailInfo.strStudentSex=="女") checked="checked" #end>女
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("单位及部门" 1 0 "trainStudentDetailInfo.strStudentPost" "$!trainStudentDetailInfo.strStudentPost" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("职务" 1 0 "trainStudentDetailInfo.strStudentTitles" "$!trainStudentDetailInfo.strStudentTitles" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	##hodeSysUI_showText("文化程度" 1 0 "trainStudentDetailInfo.strStudentDegree" "$!trainStudentDetailInfo.strStudentDegree" 20 20 "")
+	<td class="tdEditContentLeft">文化程度：</td>
+	<td>
+	<select name="trainStudentDetailInfo.strStudentDegree">
+		<option #if($!trainStudentDetailInfo.strStudentDegree=="初中") selected #end value="初中">初中</option>
+		<option #if($!trainStudentDetailInfo.strStudentDegree=="中专") selected #end  value="中专">中专</option>
+		<option #if($!trainStudentDetailInfo.strStudentDegree=="高中") selected #end value="高中">高中</option>
+		<option #if($!trainStudentDetailInfo.strStudentDegree=="大专") selected #end  value="大专">大专</option>
+		<option #if($!trainStudentDetailInfo.strStudentDegree=="本科") selected #end value="本科">本科</option>
+		<option #if($!trainStudentDetailInfo.strStudentDegree=="硕士") selected #end  value="硕士">硕士</option>
+		<option #if($!trainStudentDetailInfo.strStudentDegree=="博士") selected #end  value="博士">博士</option>
+	</select>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("单位类型" 1 0 "trainStudentDetailInfo.strStudentUnitType" "$!trainStudentDetailInfo.strStudentUnitType" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("资格类型" 1 0 "trainStudentDetailInfo.strStudentQualifications" "$!trainStudentDetailInfo.strStudentQualifications" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("身体状况" 1 0 "trainStudentDetailInfo.strStudentHealth" "$!trainStudentDetailInfo.strStudentHealth" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("联系方式" 1 0 "trainStudentDetailInfo.strStudentRelation" "$!trainStudentDetailInfo.strStudentRelation" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("证书编号" 1 0 "trainStudentDetailInfo.strStudentCertCode" "$!trainStudentDetailInfo.strStudentCertCode" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+		#hodeSysUI_showTextArea("备注"  1 0 "trainStudentDetailInfo.strStudentRemark" "$!trainStudentDetailInfo.strStudentRemark" 4 65 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">违纪：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<input type="radio" name="trainStudentDetailInfo.intIsLeader" value=0 checked>无&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="trainStudentDetailInfo.intIsLeader" value=1 #if($trainStudentDetailInfo.intIsLeader == 1 ) checked #end >违纪处理
+
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">限制名单：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<input type="radio" name="trainStudentDetailInfo.intIsBlackUser" value=0 checked>否&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="trainStudentDetailInfo.intIsBlackUser" value=1 #if($trainStudentDetailInfo.intIsBlackUser == 1 ) checked #end >是
+
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysHTMLUI_htmlHidden("trainStudentDetailInfo.intID" "$!trainStudentDetailInfo.intID")
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+// form fields description structure
+var a_fields = {
+         'trainStudentDetailInfo.strStudentName': {
+                'l': '姓名',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'trainStudentDetailInfo.strStudentIDCode': {
+                'l': '身份证',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        }
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

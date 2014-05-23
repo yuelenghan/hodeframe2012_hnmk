@@ -1,0 +1,81 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="dictionary" extends="index" namespace="/dictionary">
+		<action name="index" class="dictionaryAction">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/index.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showLeftTree" class="dictionaryAction" method="showLeftTree">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/showLeftTree.vm</result>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="readme" class="dictionaryAction">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showList" class="dictionaryAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/showList.vm</result>
+			<param name="hiddenParameter">objSearch.intType</param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="addForm" class="dictionaryAction" method="showAddFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/addForm.vm</result>
+			<param name="hiddenParameter">objSearch.intType</param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="add" class="dictionaryAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/afterAdd.vm</result>
+			<param name="hiddenParameter">objSearch.intType</param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="editForm" class="dictionaryAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/editForm.vm</result>
+			<param name="hiddenParameter">objInfo.intID,objSearch.intType</param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="edit" class="dictionaryAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/afterEdit.vm</result>
+			<param name="hiddenParameter">objSearch.intType</param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="delForm" class="dictionaryAction" method="showDeleteFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/delForm.vm</result>
+			<param name="hiddenParameter">objInfo.intID,objSearch.intType</param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="del" class="dictionaryAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/afterDel.vm</result>
+			<param name="hiddenParameter">objSearch.intType</param>
+			<param name="permissionIDs">90110000</param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<!--
+		<action name="selectLeader1" class="dictionaryAction" method="selectLeader1">
+			<result name="success" type="velocity">/WEB-INF/vm/dictionary/selectLeader1.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+			-->
+    </package>
+
+</xwork>

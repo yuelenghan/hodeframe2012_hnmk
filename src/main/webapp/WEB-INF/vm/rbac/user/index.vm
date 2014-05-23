@@ -1,0 +1,3 @@
+#bodytag( Component "template=Tpl_subIndex.vm" )
+	#param( "intPermissionID" 90040000 )
+#end

@@ -1,0 +1,175 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "考试成绩导入" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("addImportPreFix.action" "return doData(v.exec())" "post" "yes")
+
+##hodeSysUI_TrBeginMainBody(3)
+	##hodeSysUI_showText("考试期次" 1 0 "objInfo.strScoreCount" "" 20 20 "")
+##hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class="tdEditContentLeft">成绩类型</td>
+	<td>
+		<input type="radio" name="objInfo.intScoreType" value="0" checked>正考
+		<input type="radio" name="objInfo.intScoreType" value="1" >补考
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">培训期次和班级：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList = $trainUtil.getTrainCheckListByGroupID($user.intGroupID, $user.intUserID))
+		<select name="objInfo.strScoreTrainCount" id="strScoreTrainCount">
+			<option value="">请选择</option>
+			#foreach($objInfo3 in $rtnList)
+				<option value="$objInfo3.strTrainCount,$!objInfo3.strTrainCountClass" #if($!objInfo.intID == $objInfo3.intID ) selected #end >$objInfo3.strTrainCount&nbsp&nbsp$!objInfo3.strTrainCountClass</option>
+			#end
+		</select>
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	##hodeSysUI_showText("考试场次" 1 0 "objInfo.strScoreExam" "" 20 20 "")
+	<TD class="tdEditContentLeft">考试场次：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		第<select name="objInfo.strScoreExam">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>场
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">考试时间：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objInfo.strScoreDate" id="objInfo.strScoreDate" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!objInfo.strScoreDate"  >
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("考试人数" 1 0 "objInfo.strScoreUseNum" "$!objInfo.strScoreUseNum" 1 3 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">格式：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<a href='javascript:downloadFile3("information/example/score.xls","成绩导入模板.xls")'>成绩导入模板</a>
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_optSingleFile("文件" "fileAttrUploadModel" "" "" 1 1 0)
+
+
+<input type="hidden" name="objInfo.intID" value="$!objInfo.intID">
+#hodeSysUI_TrBeginMainBody(3)
+	<td colspan="2" align="center">
+		<input type="button" value="下一步" class="inputButton" onclick="return(checkForm())">
+	</td>
+#hodeSysUI_TrEnd()
+
+
+<iframe id="downLoadFrame3A" name="downLoadFrame3A" src="" width="0" height="0"></iframe>
+<SCRIPT LANGUAGE="JavaScript">
+	function downloadFile3(strFileName,strFileTitle)
+	{
+		//var tempTitle = encodeURI(strFileTitle);
+
+		document.getElementById('downLoadFrame3A').src="$action.getText('config.prjName')/servlet/fileDownload?strFileName="+strFileName+"&strFileTitle="+strFileTitle;
+	}
+</SCRIPT>
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+function checkForm(){
+
+		//var strScoreCount=document.all("objInfo.strScoreCount").value;
+		//if(strScoreCount==""){
+		//	alert("请填写考试期次!");
+		//	return false;
+		//}
+
+		var strScoreExam=document.all("objInfo.strScoreExam").value;
+		if(strScoreExam==""){
+			alert("请填写考试场次!");
+			return false;
+		}
+
+
+		var file=document.all("fileAttrUploadModel.strAddFiles").value;
+		if(file==""){
+			alert("请选择上传文件!");
+			return false;
+		}
+		if(file!=""){
+			var str= file.substr(file.length-3).toUpperCase();
+			if(str=="XLS"){
+				frmOperation.submit();
+			}
+			else{
+				alert("请输入正确的ZIP文件!");
+				return false;
+			}
+		}
+
+}
+
+function getScoreTrainCount(scoreType) {
+	var selectStr = "<option value=''>请选择</option>";
+	var list;
+	if(scoreType == 0) {
+		list = $("[name = 'scoreTrainCount1']");
+	} else if(scoreType == 1) {
+		list = $("[name = 'scoreTrainCount2']");
+	}
+	if(list.length > 0) {
+		for(var i=0; i<list.length; i++) {
+			var itemStr = list[i].value;
+			var items = itemStr.split(",");
+			var intID = items[0];
+			var strTrainCount = items[1];
+			var strTrainCountClass;
+			if(items.length>2) {
+				strTrainCountClass = items[2];
+			}
+			//alert("intID：" + intID + "strTrainCount："+strTrainCount + "strTrainCountClass：" + strTrainCountClass);
+			selectStr += "<option value='"+ strTrainCount +","+strTrainCountClass+"'>"+strTrainCount+"&nbsp&nbsp"+strTrainCountClass+"</option>";
+		}
+	}
+	$("#strScoreTrainCount").empty();
+	//$("#strScoreTrainCount").attr("name", "objInfo.strScoreTrainCount");
+	//$("#strScoreTrainCount").attr("id", "strScoreTrainCount");
+	$("#strScoreTrainCount").html(selectStr);
+}
+
+//-->
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

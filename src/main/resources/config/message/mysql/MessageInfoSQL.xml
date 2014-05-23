@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="message">
+	<typeAlias alias="messageInfoModel" type="com.hode.message.model.MessageInfoModel"/>
+	<typeAlias alias="messageTransferModel" type="com.hode.message.model.MessageTransferModel"/>
+	<typeAlias alias="messageOtherModel" type="com.hode.message.model.MessageOtherModel"/>
+
+	<select id="getObjectInfo" resultClass="messageInfoModel" parameterClass="messageInfoModel">
+		SELECT *
+		FROM message_info
+		WHERE intIsDelete = 0 and intID=#intID#
+	</select>
+	<select id="getPageObjectList" resultClass="messageInfoModel" parameterClass="messageInfoModel">
+		SELECT *
+		from message_info
+		WHERE intSenderID=#intSenderID#
+			AND intIsDelete = 0
+			<isNotEmpty prepend="AND" property="strContent">
+				strContent LIKE '%$strContent$%'
+			</isNotEmpty>
+		ORDER BY intID DESC
+		LIMIT #intStart#,#intOffset#
+	</select>
+	<select id="getRecordCount" resultClass="int" parameterClass="messageInfoModel">
+		SELECT count(intID) AS intTotalNumber
+		from message_info
+		WHERE intSenderID=#intSenderID#
+			AND intIsDelete = 0
+			<isNotEmpty prepend="AND" property="strContent">
+				strContent LIKE '%$strContent$%'
+			</isNotEmpty>
+	</select>
+	<insert id="insertObjectAndGetID" parameterClass="messageInfoModel">
+		INSERT INTO message_info(
+			intSenderID,
+			strSenderName,
+			strReceiveUserNameList,
+			strReceiveDeptNameList,
+			strReceiveRoleNameList,
+			strReceiveAccountList,
+			strReceiveUserIDList,
+			strReceiveDeptIDList,
+			strReceiveRoleIDList,
+			strContent,
+			strAttrContent,
+			strDirPath,
+			dtmSentTime,
+			intIsDelete
+				)
+		VALUES (
+			#intSenderID#,
+			#strSenderName#,
+			#strReceiveUserNameList#,
+			#strReceiveDeptNameList#,
+			#strReceiveRoleNameList#,
+			#strReceiveAccountList#,
+			#strReceiveUserIDList#,
+			#strReceiveDeptIDList#,
+			#strReceiveRoleIDList#,
+			#strContent#,
+			#strAttrContent#,
+			#strDirPath#,
+			#dtmSentTime#,
+			0)
+		<selectKey resultClass="int" keyProperty="intID" >
+			SELECT max(intID) AS intID
+			FROM message_info
+		</selectKey>
+	</insert>
+	<delete id="deleteObject" parameterClass="string">
+		update  message_info  set intIsDelete=1
+		WHERE intID IN ( $strIDs$ )
+	</delete>
+	<update id="updateMsgStatus_pop" parameterClass="messageTransferModel">
+		update  message_transfer
+		set intStatus = #intStatus#
+		WHERE intID IN ( $strIDs$ )
+	</update>
+	<update id="readStatusByInfoID" parameterClass="messageTransferModel">
+		update  message_transfer
+		set intStatus = 4
+		where intMessageID=#intMessageID# and intGetterID=#intGetterID#
+	</update>
+	<insert id="insertTransferObject" parameterClass="messageTransferModel">
+		 INSERT INTO message_transfer(
+			intMessageID,
+			intGetterID,
+			intStatus,
+			intIsDelete)
+		VALUES (
+			#intMessageID#,
+			#intGetterID#,
+			#intStatus#,
+			0)
+	</insert>
+	<insert id="insertAllTransferObject" parameterClass="string">
+		 INSERT INTO message_transfer(
+			intMessageID,
+			intGetterID,
+			intStatus,
+			intIsDelete)
+		VALUES $str$
+	</insert>
+	<select id="showReceiveListObjectList_pop" resultClass="messageTransferModel" parameterClass="messageTransferModel">
+	   SELECT a.intID as intID,
+			b.strAttrContent as strAttrContent,
+			a.intStatus as intStatus,
+			a.intGetterID as intGetterID,
+			b.intID as intMessageID,
+			b.intSenderID as intSenderID,
+			b.strSenderName as strSenderName,
+			b.strContent as strContent,
+			b.dtmSentTime as dtmSentTime
+	   FROM message_transfer a , message_info b
+	   WHERE  a.intGetterID = #intGetterID#
+	   AND a.intMessageID  = b.intID
+		and	a.intStatus in (1,2)
+		ORDER BY a.intID DESC
+	</select>
+	<select id="showReceiveListPageObjectList" resultClass="messageTransferModel" parameterClass="messageInfoModel">
+	   SELECT	a.intID as intID,
+				a.intStatus as intStatus,
+				b.strAttrContent as strAttrContent,
+				a.intGetterID as intGetterID,
+				b.intID as intMessageID,
+				b.intSenderID as intSenderID,
+				b.strSenderName as strSenderName,
+				b.strContent as strContent,
+				b.dtmSentTime as dtmSentTime
+		   FROM message_transfer a , message_info b
+		   WHERE  a.intGetterID = #intGetterID#
+		   AND a.intMessageID  = b.intID
+				<isNotEmpty prepend="AND" property="strContent">
+					b.strContent LIKE '%$strContent$%'
+				</isNotEmpty>
+			ORDER BY a.intID DESC
+
+		LIMIT #intStart#,#intOffset#
+	</select>
+	<select id="showReceiveListRecordCount" resultClass="int" parameterClass="messageInfoModel">
+	   SELECT count(a.intID) AS intTotalNumber
+	   FROM message_transfer a , message_info b
+	   WHERE  a.intGetterID = #intGetterID#
+	   AND a.intMessageID  = b.intID
+			<isNotEmpty prepend="AND" property="strContent">
+				b.strContent LIKE '%$strContent$%'
+			</isNotEmpty>
+	</select>
+
+
+
+	<select id="getNewMessageList" resultClass="messageInfoModel" parameterClass="messageInfoModel">
+		SELECT	a.intID as intID,
+				a.intStatus as intStatus,
+				b.strAttrContent as strAttrContent,
+				a.intGetterID as intGetterID,
+				b.intID as intMessageID,
+				b.intSenderID as intSenderID,
+				b.strSenderName as strSenderName,
+				b.strContent as strContent,
+				b.dtmSentTime as dtmSentTime
+	   FROM message_transfer a , message_info b
+	   WHERE  a.intGetterID = #intGetterID#
+	   AND a.intMessageID  = b.intID
+	   and a.intStatus in (1,2,3)
+	   ORDER BY a.intID DESC
+	</select>
+
+	<delete id="deleteTransferObject" parameterClass="string">
+		DELETE FROM message_transfer WHERE intID IN ( $strIDs$ )
+	</delete>
+
+	<delete id="cleanMessageTransfer">
+		DELETE FROM message_transfer WHERE intMessageID  not IN (select intID from message_info)
+	</delete>
+	<delete id="cleanMainMessage" parameterClass="string">
+		DELETE FROM message_info WHERE intIsDelete = 1
+			<isNotEmpty prepend="or" property="dtmSentTime">
+				<![CDATA[ dtmSentTime <= #dtmSentTime#	]]>
+			</isNotEmpty>
+	</delete>
+	<delete id="cleanOtherMessage" parameterClass="string">
+		DELETE FROM message_other  where  intIsDelete = 1
+			<isNotEmpty prepend="or" property="dtmSentTime">
+				<![CDATA[ dtmSentTime <= #dtmSentTime#	]]>
+			</isNotEmpty>
+	</delete>
+
+	<insert id="insertOtherObject" parameterClass="messageOtherModel">
+		INSERT INTO message_other(
+			intInfoID,
+			intStatus,
+			intGetterID,
+			strGetterName,
+			strContent,
+			intSourceType,
+			dtmSentTime,
+			intIsDelete,
+			strPopDate
+				)
+		VALUES (
+			#intInfoID#,
+			#intStatus#,
+			#intGetterID#,
+			#strGetterName#,
+			#strContent#,
+			#intSourceType#,
+			#dtmSentTime#,
+			#intIsDelete#,
+			#strPopDate#
+			)
+	</insert>
+	<insert id="insertAllOtherObject" parameterClass="string">
+		 INSERT INTO message_other(
+			intInfoID,
+			intStatus,
+			intGetterID,
+			strGetterName,
+			strContent,
+			intSourceType,
+			dtmSentTime,
+			intIsDelete,
+			strPopDate)
+		 VALUES $str$
+	</insert>
+	<select id="getAction_MsgOtherObjectList" resultClass="messageOtherModel" parameterClass="messageOtherModel">
+	   SELECT intID,intInfoID,intStatus,intGetterID,strGetterName,strContent,intSourceType,dtmSentTime,intIsDelete
+	   FROM message_other
+	   WHERE intStatus = 1 and intGetterID = #intGetterID#
+		<isNotEmpty prepend="AND" property="strPopDate">
+			<![CDATA[ strPopDate <= #strPopDate# ]]>
+		</isNotEmpty>
+		ORDER BY intID asc
+	</select>
+	<delete id="getAction_MsgOtherDel" parameterClass="messageOtherModel">
+		update message_other
+		set intStatus = 2
+		WHERE intStatus = 1 and intGetterID = #intGetterID#
+		<isNotEmpty prepend="AND" property="strPopDate">
+			<![CDATA[ strPopDate <= #strPopDate# ]]>
+		</isNotEmpty>
+	</delete>
+
+	<select id="getOther_PageObjectList" resultClass="messageOtherModel" parameterClass="messageOtherModel">
+
+		SELECT intID,intInfoID,intStatus,intGetterID,strGetterName,strContent,intSourceType,dtmSentTime,intIsDelete,strPopDate
+		from message_other
+		WHERE intGetterID = #intGetterID#
+		ORDER BY intID DESC
+		LIMIT #intStart#,#intOffset#
+
+	</select>
+	<select id="getOther_RecordCount" resultClass="int" parameterClass="messageOtherModel">
+		SELECT count(intID) AS intTotalNumber
+		from message_other
+		WHERE intGetterID = #intGetterID#
+	</select>
+	<delete id="delete_OtherObject" parameterClass="string">
+		DELETE FROM message_other WHERE intID IN ( $strIDs$ )
+	</delete>
+	<!-- 2010-02-07 15:12 OK end -->
+</sqlMap>

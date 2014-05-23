@@ -1,0 +1,216 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+#hodeSysBean_checkInArr(11010100 $!permissionIDs $allow_11)	##三级培训班查看员
+#hodeSysBean_checkInArr(11010200 $!permissionIDs $allow_12)	##三级培训班填报员
+
+#hodeSysBean_checkInArr(11020100 $!permissionIDs $allow_21)	##省中心查看员
+#hodeSysBean_checkInArr(11020200 $!permissionIDs $allow_22)	##省中心审批员
+
+#hodeSysBean_checkInArr(11030100 $!permissionIDs $allow_31)	##公章管理员
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#if($intSelectType == 1)
+		#param( "title" "待上报人员信息" )
+	#end
+	#if($intSelectType == 2)
+		#param( "title" "已上报人员信息" )
+	#end
+#end
+
+
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >年份：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<select name='objSearch.strCreateDate'>
+		<option value=''>全部</option>
+		#foreach($i in [2013..2017])
+			<option value="$i" #if($!objSearch.strCreateDate=="$i") selected #end>&nbsp;$i 年</option>
+		#end
+		</select>
+
+		<!-- <INPUT TYPE="text" NAME="objSearch.strApplyDate" id="objSearch.strApplyDate" CLASS="inputText" maxlength="4" size="4"   VALUE="$!objSearch.strApplyDate" >年 -->
+	</TD>
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >培训期次：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strTrainCount" id="objSearch.strTrainCount" CLASS="inputText" maxlength="20" size="20"   VALUE="$!objSearch.strTrainCount" >
+	</TD>
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($rtnList = $trainUtil.getTrainUnitByGroupID($user.intGroupID))
+	<TD width="120" class="tdEditContentLeft" >培训机构：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		##<INPUT TYPE="text" NAME="objSearch.strTrainUnitName" id="objSearch.strTrainUnitName" CLASS="inputText" maxlength="20" size="20"   VALUE="$!objSearch.strTrainUnitName" >
+		<select NAME="objSearch.strTrainUnitName" id="objSearch.strTrainUnitName">
+			#if($user.intGroupID == 1)
+				<option value="" selected>全部</option>
+			#end
+			#foreach($trainUnit in $rtnList)
+			<option value="$trainUnit.strName" #if($objSearch.strTrainUnitName==$trainUnit.strName) selected #end>$trainUnit.strName</option>
+		#end
+		</select>
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >培训类别：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<select name="objSearch.strTrainType">
+			<option value="" selected >全部</option>
+			<option value="培训" #if("培训" == $objSearch.strTrainType) selected #end >培训</option>
+			<option value="再培训" #if("再培训" == $objSearch.strTrainType) selected #end >再培训</option>
+		</select>
+	</TD>
+
+	<td></td>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showStudentList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	#if($intSelectType == 1)
+		<td colspan="2" align="center">$action.getText('global.operation')</td>
+		#hodeSysUI_TdMainBody("上报" "center" "80" 0)
+	#else
+		#hodeSysUI_TdMainBody("状态" "center" "80" 0)
+		#if($allow_22)
+			#hodeSysUI_TdMainBody("撤销" "center" "80" 0)
+		#end
+	#end
+
+
+	#hodeSysUI_TdMainBody("培训机构" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训时间" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训期次" "center" "" 0)
+	#hodeSysUI_TdMainBody("班级" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训类别" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训对象" "center" "" 0)
+	#hodeSysUI_TdMainBody("计划人数" "center" "80" 0)
+	#hodeSysUI_TdMainBody("实际人数" "center" "" 0)
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+		#if($intSelectType == 1)
+			#hodeSysUI_TdMainOpt("edit" "$action.getText('global.operation.edit')" "editImportForm.action" "" $objInfo.intID "")
+			#hodeSysUI_TdMainOpt("delete" "$action.getText('global.operation.del')" "del2.action" "$action.getText('global.operation.delmsg2')" $objInfo.intID "")
+			<td width="40" align='center'><img src="$action.getText('config.prjName')/images/operator/opt_checked.gif" onclick="submitStudentInfo($objInfo.intID)" style="cursor:hand" alt="提交"></td>
+		#else
+			#hodeSysUI_TdMainBody("已上报" "center" "" 0)
+			#if($allow_22)
+			<td align="center"><input type="button" value="撤销" onclick="revokeStudentInfo($objInfo.intID)"></td>
+			#end
+		#end
+		#hodeSysUI_TdMainBody("<a href='viewForm.action?objInfo.intID=$objInfo.intID'>$!objInfo.strTrainUnitName" "center" "" 0)
+		#hodeSysUI_TdMainBody("<a href='viewForm.action?objInfo.intID=$objInfo.intID'>$!{objInfo.strTrainStartDate}到$!{objInfo.strTrainEndDate}" "center" "" 0)
+		#hodeSysUI_TdMainBody("<a href='viewForm.action?objInfo.intID=$objInfo.intID'>$!objInfo.strTrainCount" "center" "" 0)
+		#hodeSysUI_TdMainBody("<a href='viewForm.action?objInfo.intID=$objInfo.intID'>$!objInfo.strTrainCountClass</a>" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainType" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainObjectDesc" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainUserNum 人" "center" "" 0)
+
+		#hodeSysUI_TdMainBody("$!objInfo.intTotalUserNum 人" "center" "" 0)
+
+    #hodeSysUI_TrEnd()
+#end
+
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showStudentList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript
+<script type="text/javascript">
+	function submitStudentInfo(intID) {
+		//alert(intID);
+		if(confirm("确认上报人员信息？")) {
+			editDoc(document.frmMainList,'submitStudentInfo.action',intID,'','','','')
+		}
+	}
+	
+	function revokeStudentInfo(intID) {
+		//alert(intID);
+		if(confirm("撤销已经上报的人员信息？")) {
+			editDoc(document.frmMainList,'revokeStudentInfo.action',intID,'','','','')
+		}
+	}
+</script>

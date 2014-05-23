@@ -1,0 +1,66 @@
+#rbac_getSessionUser($user)
+#set($permissionIDs = $user.intPrivilegeIDs)
+
+<!-- 
+	##根据 部门的id 获取部门信息
+	<br>user.strUserAccount				=  $user.strUserAccount
+	<br>user.strUserPassword			=  $user.strUserPassword
+	<br>user.intAccountModel			=  $user.intAccountModel
+	<br>user.intGroupID					=  $user.intGroupID
+	<br>user.intTemplate				=  $user.intTemplate
+	<br>user.intUserID					=  $user.intUserID
+	<br>user.intUnitID					=  $user.intUnitID
+	<br>user.strUnitName				=  $user.strUnitName
+	<br>user.strName					=  $user.strName
+	<br>user.strGroupName				=  $user.strGroupName
+	<br>user.intUserType				=  $user.intUserType
+	<br>user.intLineNum					=  $user.intLineNum
+	<br>user.strUserAccount				=  $user.strUserAccount
+
+	<br>user.intRoleIDs					=  $user.intRoleIDs
+	<br>user.strRoleNames				=  $user.strRoleNames
+	<br>user.intPrivilegeIDs			=  $user.intPrivilegeIDs
+
+	<br>user.intRoleIDs		=  
+		#foreach($gid in $user.intRoleIDs)
+			$gid | 
+		#end
+
+	<br>user.strRoleNames	=  
+		#foreach($gid in $user.strRoleNames)
+			$gid | 
+		#end
+	<br>user.intPrivilegeIDs	=  
+	#foreach($gid in $user.intPrivilegeIDs)
+			$gid | 
+		#end
+ -->
+<style>
+.bg_img_main1{
+#if($intLoginType == 2 )
+	background-image:url($action.getText('config.prjName')/images/hnmk/huanying2.gif);
+#else
+	background-image:url($action.getText('config.prjName')/images/hnmk/huanying.gif);
+#end
+	background-position:center middle ;
+	background-repeat:no-repeat;
+	background-color:#EAF8FF;
+}
+
+</style>
+<body style="background-color:#EAF8FF;" >
+<TABLE width="100%" height="100%" align='center' class="bg_img_main1" >
+<TR>
+	<TD align='center' >
+	&nbsp;</TD>
+</TR>
+</TABLE>
+<script type="text/javascript">
+
+	function stopMouse()
+	{
+		return false;
+	}
+	document.oncontextmenu=stopMouse;
+
+</script>

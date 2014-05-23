@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html"/>
+<title>河南煤矿安全培训中心补证、变更统计表</title>
+<script language="javascript" src="/hodeframe2012_hnmk/js/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+</head>
+<body>
+
+<TABLE BORDER="0" width="640" cellspacing="0" cellpadding="0" id='table_searchForm'  align="center" class='tableSearchColor' >
+<FORM METHOD="POST" NAME="frmSearch" ACTION="">
+#hodeSysUI_TrBeginMainBody(0)
+
+
+	<TD width="120" class="tdEditContentLeft" >时间范围：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strSearchStartDate" CLASS="inputText" maxlength="10" size="10" onclick="fPopUpCalendarDlg(this);"  VALUE="$!objSearch.strSearchStartDate" readonly>
+		~
+		<INPUT TYPE="text" NAME="objSearch.strSearchEndDate" CLASS="inputText" maxlength="10" size="10" onclick="fPopUpCalendarDlg(this);"  VALUE="$!objSearch.strSearchEndDate" readonly>
+	</TD>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+<div id="printInfo">
+<style>
+body{
+	margin-left: 00px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+td{
+	font-size: 14px;
+	color: #000000;
+	line-height:36px;
+
+}
+.STYLE1 {font-size: 28px; font-weight:bold;}
+.STYLE3 {font-size: 18px;}
+.STYLE4 {text-decoration: underline;font-weight:bold;}
+</style>
+<table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center" colspan=2 style="line-height:65px;"><span class="STYLE1">河南煤矿安全培训中心补证、变更统计表</span></td>
+	</tr>
+	<tr>
+		<td align="left" width=50%><span class="STYLE3">&nbsp;</td>
+		<td align="right" width=50%><span class="STYLE3">时间：$!objSearch.strSearchStartDate 到 $!objSearch.strSearchEndDate </span></td>
+	</tr>
+</table>
+<TABLE width="640" align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" colspan=2 width=320>补证</td>
+		<td align="center" colspan=2 width=320>变更</td>
+	</tr>
+	<tr>
+		<td align="center" width=200>批次</td>
+		<td align="center" width=120>人数</td>
+		<td align="center" width=200>批次</td>
+		<td align="center" width=120>人数</td>
+	</tr>
+
+
+
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($rtnList1 = $trainUtil.getUserApplyAndChangeList("$!objSearch.strSearchStartDate",$!objSearch.strSearchEndDate))
+	#set ($totalBZ=0)
+	#set ($totalBG=0)
+	#set ($myStringUtil = $webwork.bean("com.hode.train.util.MyStringUtil"))
+	#foreach($objInfo1 in $rtnList1)
+		#set($intNowCount=$velocityCount)
+		<tr>
+			<TD align='center'>$objInfo1.get("1")</TD>
+			<TD align='center'>$objInfo1.get("2")</TD>
+			<TD align='center'>$objInfo1.get("11")</TD>
+			<TD align='center'>$objInfo1.get("12")</TD>
+			#set ($totalBZ=$totalBZ+$myStringUtil.stringToInt($objInfo1.get("2")))
+			#set ($totalBG=$totalBG+$myStringUtil.stringToInt($objInfo1.get("12")))
+		</TR>
+	#end
+		#set ($stringUtil = $webwork.bean("com.hode.framework.commons.util.StringUtil"))
+		<tr>
+			<TD align='center'>合计</TD>
+			<TD align='center'>$totalBZ</TD>
+			<TD align='center'>合计</TD>
+			<TD align='center'>$totalBG</TD>
+		</TR>
+</table>
+</div>
+<TABLE width="640" align="center"  border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_print.gif" style="cursor:hand" onclick="javascript:print()">&nbsp;&nbsp;
+	</TD>
+	</TR>
+</TABLE>
+
+<script type="text/javascript">
+
+function fPopUpCalendarDlg(ctrlobj)
+{
+	showx = event.screenX - event.offsetX - 4 - 210 ; // + deltaX;
+	showy = event.screenY - event.offsetY + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	retval = window.showModalDialog("/hodeframe2012_hnmk/js/calendardlg.htm", "", "dialogWidth:200px; dialogHeight:230px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null ) {
+		ctrlobj.value = retval;
+	}
+}
+
+function print() {
+	LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+	LODOP.PRINT_INIT("补证变更统计表打印");
+	LODOP.SET_PRINT_PAGESIZE (1, 0, 0,"A4");
+	LODOP.ADD_PRINT_HTML(0,0,"100%","100%",document.getElementById("printInfo").innerHTML);
+	LODOP.PREVIEW();
+}
+</script>

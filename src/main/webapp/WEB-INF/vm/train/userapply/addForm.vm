@@ -1,0 +1,218 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "人员补证管理" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "yes")
+#set($showWidth = "20%")
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("受理编号" 3 0 "objInfo.strCode" "$!objInfo.strCode" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">受理日期：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objInfo.strApplyDate" id="objInfo.strApplyDate" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!objInfo.strApplyDate"  >
+	</TD>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("受理人数" 1 0 "objInfo.intApplyNum" "$!objInfo.intApplyNum" 20 20 "")
+#hodeSysUI_TrEnd()
+
+     <TR  class="trEditContent"><TD colspan=4>
+				<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableMainColor' id="table_1">
+					 <TR class="trMainBodyTitle"  id="lawper" >
+						 #hodeSysUI_TdMainBody("序号" "center" "" 0)
+						 #hodeSysUI_TdMainBody("证书号码" "center" "" 0)
+						 #hodeSysUI_TdMainBody("身份证" "center" "" 0)
+						 #hodeSysUI_TdMainBody("姓名" "center" "" 0)
+						 #hodeSysUI_TdMainBody("补证日期" "center" "" 0)
+						 #hodeSysUI_TdMainBody("单位名称" "center" "" 0)
+						 #hodeSysUI_TdMainBody("职务" "center" "" 0)
+						 #hodeSysUI_TdMainBody("补证理由" "center" "" 0)
+						 #hodeSysUI_TdMainBody("删除" "center" "" 0)
+					 </TR>
+
+			#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+			#set ($rtnList3 = $trainUtil.getUserApplyDetailListByMainID($objInfo.intID))
+			#foreach($objInfo3 in $rtnList3)
+				#set($intNowCount=$velocityCount)
+				<TR class="trMainBodyContent"  >
+					<TD align='center'><INPUT TYPE="text" CLASS="inputText" size="5" value="$intNowCount" readonly="true"></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strCertCodeArr" CLASS="inputText" value="$!objInfo3.strCertCode" size="10"></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserCodeArr" CLASS="inputText" value="$!objInfo3.strUserCode" size="10"></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserNameArr" CLASS="inputText" value="$!objInfo3.strUserName" size="10"></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserDateArr" CLASS="inputText" value="$!objInfo3.strUserDate" size="10" onclick="fPopUpCalendarDlg(this);" readonly></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserUnitNameArr" CLASS="inputText" value="$!objInfo3.strUserUnitName" size="10"></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserPostArr" CLASS="inputText" value="$!objInfo3.strUserPost" size="10"></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strApplyReasonArr" CLASS="inputText" value="$!objInfo3.strApplyReason" size="10"></TD>
+					<TD align='center'><input type='button' value='删除' onclick='delRow()' class='inputButton'></TD>
+				 </TR>
+			#end
+					<TR class="trMainBodyContent"  >
+						<TD colspan="10"  align="left"><input type="button" onClick="addRow()" class=inputButton value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" style="height:20"></TD>
+					</TR>
+				</table>
+	</td></tr>
+
+
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+// form fields description structure
+var a_fields = {
+         'objInfo.strCode': {
+                'l': '受理编号',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strApplyDate': {
+                'l': '受理日期',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.intApplyNum': {
+                'l': '受理人数',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        }
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+//验证信息
+function checknum()
+{
+	event.srcElement.value=event.srcElement.value.replace(/[^0-9.]/gi,"");
+}
+
+//添加序列号
+function seralNum()
+{
+	var tableObj=document.getElementById("table_1");
+	var tdstart=document.getElementById("lawper");
+	var tdRow=tdstart.rowIndex + 1;
+	var tableRows=tableObj.rows.length;
+	var tdlast=tableRows - 2;
+	var sunnum=0;
+	for( ; tdRow <= tableRows - 2;  tdRow++)
+	{
+		tableObj.rows[tdRow].cells[0].childNodes(0).value=(tdRow);
+	}
+
+}
+
+function addRow()
+{
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//对象表格总行数
+	var tableRows=tableObj.rows.length;
+
+	//增加开始
+	newRow=tableObj.insertRow(tableRows - 1);
+	newRow.className="trMainBodyContent";
+
+	//开始1
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" CLASS="inputText" size="5" readonly="true" align="middle ">';
+	newRow.appendChild(col);
+	//2
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strCertCodeArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+	//2
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserCodeArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+	//3
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserNameArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+
+	//4
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserDateArr" CLASS="inputText" size="10" onclick="fPopUpCalendarDlg(this);" readonly>';
+	newRow.appendChild(col);
+
+	//5
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserUnitNameArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	//6
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strUserPostArr" CLASS="inputText" size="10" >';
+	newRow.appendChild(col);
+
+	//7
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainUserApplyDetailInfo.strApplyReasonArr" CLASS="inputText" size="10">';
+	newRow.appendChild(col);
+
+	//8
+	var col= document.createElement("<TD align='center'>");
+	col.innerHTML="<input type='button' value='删除' onclick='delRow()' class='inputButton'>";
+	newRow.appendChild(col);
+	seralNum();
+}
+
+//删除行
+function delRow()
+{
+
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//当前是第几行
+	var nowRowobj=event.srcElement.parentElement.parentElement;
+	var nowRow=nowRowobj.rowIndex;
+	if(confirm("确定删除此条记录吗？"))
+	{
+		tableObj.deleteRow(nowRow);
+		seralNum();
+	}
+}
+
+</script>
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

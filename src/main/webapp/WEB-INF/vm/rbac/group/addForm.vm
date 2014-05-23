@@ -1,0 +1,102 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+#rbac_getGroupModelById($objSearch.intFatherID $groupObj)
+#rbac_getGroupModelById($groupObj.intFatherID $fatherGroupObj)
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.group.operation.add')" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("add.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strName')"  1 1 "objInfo.strName" "$!objInfo.strName"   20 20 "1")
+#hodeSysUI_TrEnd()
+
+
+#if($!objSearch.intFatherID == 1)
+	<input type="hidden" name="objInfo.intGroupType" value=1>
+#else
+	<input type="hidden" name="objInfo.intGroupType" value=2>
+#end
+
+<!-- 
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strTel')"  1 0 "objInfo.strTel" "$!objInfo.strTel"   20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strFax')"  1 0 "objInfo.strFax" "$!objInfo.strFax"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strMobile')"  1 0 "objInfo.strMobile" "$!objInfo.strMobile"   20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strAddress')"  1 0 "objInfo.strAddress" "$!objInfo.strAddress"   20 100 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strZipCode')"  1 0 "objInfo.strZipCode" "$!objInfo.strZipCode"   20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.strEmail')"  1 0 "objInfo.strEmail" "$!objInfo.strEmail"   20 100 "")
+#hodeSysUI_TrEnd()
+ -->
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("$!action.getText('rbac.group.form.intOrderID')"  1 0 "objInfo.intOrderID" "$!objInfo.intOrderID"   20 5 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showTextArea("$!action.getText('rbac.group.form.strDescribe')"  1 0 "objInfo.strDescribe" "$!objInfo.strDescribe" 4 65 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("培训机构资质"  1 0 "objInfo.strTel" "$!objInfo.strTel"   40 200 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("资质证书号码"  1 0 "objInfo.strFax" "$!objInfo.strFax"   40 200 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(4)
+	#hodeSysUI_showText("级别"  1 0 "objInfo.strAddress" "$!objInfo.strAddress"   20 100 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+		#hodeSysUI_showPassword("公章密码"  1 0 "objInfo.strMobile" "$!objInfo.strMobile"  "")
+#hodeSysUI_TrEnd()
+<TR class="trEditContent"  height='30'>
+	<TD class="tdEditContentLeft">公章图片</TD>
+	<TD class="tdEditContentRight" >
+		<INPUT  type="file"  CLASS="inputText" NAME="fileAttrUploadModel.strAddFiles" size="60" onchange="showImage(this)"/><br>
+		<INPUT type="hidden" id="imgHasChange" name="objInfo.intImgHasChange" value="0"/>
+
+		<img  style="#if($!objInfo.strAttrContent == '' || !$!objInfo.strAttrContent) display:none #end" height="80" width="80"  id="img" name="img" src="$action.getText('config.prjName')/$!{objInfo.strAttrContent}"/>
+	</TD>
+</TR>
+
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intFatherID" "$!objSearch.intFatherID")
+#hodeSysHTMLUI_htmlHidden("objInfo.intGroupFlag" "1")
+#set($intLevel = $!groupObj.intLevel + 1 )
+#hodeSysHTMLUI_htmlHidden("objInfo.intLevel" "$intLevel")
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

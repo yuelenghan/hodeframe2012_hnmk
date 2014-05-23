@@ -1,0 +1,73 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="message.mobile" extends="index" namespace="/message/mobile">
+		<action name="leftTree" class="messageMobileAction" >
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/leftTree.vm</result>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="readme" class="messageInfoAction">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/readme.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="addForm" class="messageMobileAction" >
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/addForm.vm</result>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="add" class="messageMobileAction" method="add">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/afterAdd.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+		</action>
+
+		<action name="showList" class="messageMobileAction" method="showPageList">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/showList.vm</result>
+			<param name="hiddenParameter">objSearch.strToMobile,objSearch.strContent,objSearch.strCreateDate</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewForm" class="messageMobileAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/viewForm.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewList" class="messageMobileAction" method="viewList">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/viewList.vm</result>
+			<param name="hiddenParameter">objSearch.strToMobile,objSearch.strContent,objSearch.strSendDate</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="editForm" class="messageMobileAction" method="showUpdateFrm">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/editForm.vm</result>
+			<param name="hiddenParameter">objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="edit" class="messageMobileAction" method="update">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/afterEdit.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="del" class="messageMobileAction" method="delete">
+			<result name="success" type="velocity">/WEB-INF/vm/message/mobile/afterDel.vm</result>
+			<param name="hiddenParameter">objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+    </package>
+
+</xwork>

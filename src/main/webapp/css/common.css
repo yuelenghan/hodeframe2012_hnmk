@@ -1,0 +1,445 @@
+/*****默认链接*******/
+A:link		{	COLOR: #000000;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+A:visited	{	COLOR: #000000;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+A:active	{	COLOR: #ff9900;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+A:hover		{	COLOR: #ff9900;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+table,tr		{	FONT-SIZE: 14px;LINE-HEIGHT: 150%}
+
+/*主区域链接颜色*/
+a.linkBody:link	{	COLOR: #000000;TEXT-DECORATION: underline;FONT-SIZE: 14px	}
+a.linkBody:visited	{	COLOR: #000000;TEXT-DECORATION: underline;FONT-SIZE: 14px	}
+a.linkBody:active	{	COLOR: #000000;TEXT-DECORATION: underline;FONT-SIZE: 14px	}
+a.linkBody:hover	{	COLOR: #000000;TEXT-DECORATION: underline;FONT-SIZE: 14px	}
+
+BODY
+{
+	FONT-SIZE: 12px;
+	SCROLLBAR-FACE-COLOR: #F8fcff;
+	MARGIN: 0px;
+	SCROLLBAR-HIGHLIGHT-COLOR: #F8fcff;
+	SCROLLBAR-SHADOW-COLOR: #999999;
+	SCROLLBAR-3DLIGHT-COLOR: #999999;
+	SCROLLBAR-ARROW-COLOR: #999999;
+	SCROLLBAR-TRACK-COLOR: #cccccc;
+	SCROLLBAR-DARKSHADOW-COLOR: #F8fcff;
+	topmargin: 0;
+	leftmargin: 0;
+	rightmargin: 0;
+	bottommargin: 0;
+	background:#F8fcff;
+}
+
+/***输入框*****/
+.inputText
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #B0C9DF;
+	border-right-color: #B0C9DF;
+	border-bottom-color: #B0C9DF;
+	border-left-color: #B0C9DF;
+}
+
+/***输入框*****/
+.inputFile
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+/***按钮*****/
+.inputButton
+{
+	BORDER-RIGHT: #3366cc 1px inset;
+	BORDER-TOP: #3366cc 1px inset;
+	VERTICAL-ALIGN: text-bottom;
+	BORDER-LEFT: #3366cc 1px inset;
+	COLOR: black;
+	BORDER-BOTTOM: #3366cc 1px inset;
+	HEIGHT: 18px;
+	BACKGROUND-COLOR: #efefef
+}
+
+/***提交按钮*****/
+.inputSubmitButton
+{
+	VERTICAL-ALIGN: text-bottom;
+	BACKGROUND-COLOR: #efefef
+	COLOR: black;
+	font-size:18px
+}
+
+/***单选*****/
+.inputRadio
+{
+}
+
+/***多选*****/
+.inputCheckbox
+{
+}
+
+/***多行文本框*****/
+.inputArea
+{
+	BORDER-RIGHT: #336699 1px solid;
+	BORDER-TOP: #336699 1px solid;
+	BORDER-LEFT: #336699 1px solid;
+	BORDER-BOTTOM: #336699 1px solid
+}
+/***下拉选择*****/
+.inputSelect
+{
+}
+.iframe
+ {
+	scrollbar-face-color: #b5daff;
+	scrollbar-highlight-color: #ffffff;
+	scrollbar-shadow-color: #000000;
+	scrollbar-arrow-color: #0000ff;
+	scrollbar-base-color: #6699ff;
+	scrollbar-dark-shadow-color: #6699ff;
+ }
+/****分页****/
+.trPageContent {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 170%;
+	BACKGROUND-COLOR:/*#F6F6F6*/ /*#99CCCC*/#F8fcff;
+}
+
+/********导航颜色*****/
+.trBannerContent {
+	font-family: "宋体";
+	font-size: 14px;
+	font-weight: normal;
+	color: #000000;
+	letter-spacing: 1.5px;
+	line-height: 25px;
+	background-color:#F8fcff;
+}
+
+
+
+
+/************************************************************主区域检索颜色          start ******************/
+/*******表格线颜色*********/
+.tableSearchColor {
+	font-family: "宋体";
+	font-size: 14px;
+	font-weight: normal;
+	color: #000000;
+	letter-spacing: 0px;
+	line-height: 25px;
+	background-color:#E7F5FF;
+}
+.trSearchContent {
+	height:25px;
+	font-size: 14px;
+	color: #004187;
+	font-weight:bold;
+	letter-spacing:2px;
+	background-color:#E7F5FF;
+}
+.tdSearchContentLeft {
+	height:25px;
+	font-size: 14px;
+	color: #004187;
+	font-weight:bold;
+	letter-spacing:2px;
+	text-align:right;
+}
+.tdSearchContentRight {
+	height:25px;
+	font-size: 14px;
+	color: #004187;
+	font-weight:bold;
+	letter-spacing:2px;
+	text-align:left;
+}
+/************************************************************主区域检索颜色 end ******************/
+
+/************************************************************主区域内容 start ******************/
+/*******表格线颜色*********/
+.tableMainColor {
+	font-family: "宋体";
+	font-size: 14px;
+	font-weight: normal;
+	color: #000000;
+	letter-spacing: 0px;
+	line-height: 25px;
+	background-color:#9DA5A8;
+}
+/********主区域标题***********/
+.trMainBodyTitle {
+	FONT-SIZE: 14px;
+	font-weight:bold;
+	color: #0F4373;
+	LINE-HEIGHT: 200%;
+	letter-spacing: 2px;
+	BACKGROUND-COLOR: #f2f2f2;
+}
+/*********主区域内容*******/
+.trMainBodyContent {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 23px;
+	BACKGROUND-COLOR: #F8fcff;
+	color: #000000;
+}
+
+/************************************************************主区域内容 与 trMainBodyContent 进行颜色渐变 */
+.trMainBodyContent2 {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 23px;
+	BACKGROUND-COLOR: #F8fcff;
+	/*BACKGROUND-COLOR: #EDF6FB; 原来的*/
+	color: #000000;
+}
+/************************************************************主区域内容          end ******************/
+
+
+
+/************************************************************主区域维护操作         start ******************/
+/****添加、修改 TR ****/
+/*******表格线颜色*********/
+.tableEditColor {
+	font-family: "宋体";
+	font-size: 14px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	line-height: 25px;
+
+	letter-spacing: 0px;
+	line-height: 25px;
+	background-color:#F8fcff;
+
+
+}
+.trEditContent {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+}
+/********修改，左边框子 */
+.tdEditContentLeft {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+	text-align:right;
+	/*padding-right:20px;*/
+}
+/********修改，右边框子 */
+.tdEditContentRight {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+	text-align:left;
+	/*padding-left:20px;*/
+}
+
+/********修改，右边框子 */
+.tdEditContentCenter {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+	text-align:center;
+	/*padding-left:20px;*/
+}
+
+/************************************************************维护操作         end ******************/
+
+/************************************************************主区域查看         start ******************/
+/****查看 TR****/
+.tableViewColor {
+	font-family: "宋体";
+	font-size: 14px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	line-height: 25px;
+}
+.trViewContent {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+}
+/********查看，左边框子 */
+.tdViewContentLeft {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+	text-align:right;
+}
+/********查看，左边框子 */
+.tdViewContentRight {
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+	text-align:left;
+}
+/************************************************************查看         end ******************/
+
+
+
+/**************************** 自定义样式 开始 ****************************/
+.td1Style{
+   filter: Alpha(style=1,opacity=50,finishOpacity=100,startX=50,finishX=100,startY=50,finishY=100);
+   background-color: #E8F6FF;
+   z-index:0;
+}
+.td2Style{
+	filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#E0ECF8", endColorStr="#FFFFFF", gradientType="0");
+	color: #003798;
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 180%;
+}/*0:上下；1：左右*/
+
+.td3Style{
+	filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#D3E3FE", endColorStr="#F3F9FF", gradientType="1");
+}/*0:上下；1：左右*/
+
+.tableMainTop{
+	background:url(/hodeframe2012_hnmk/images/myjd/main_1_84.gif);
+	height:29px;
+	font-size:14px;
+	font-weight:bold;
+	color:004187;
+	letter-spacing:2px;
+}
+
+
+.bg_img_left{
+	background-image:url(/hodeframe2012_hnmk/images/myjd/main_1_91.gif);
+	background-position:right bottom ;
+	background-repeat:no-repeat;
+}
+.table2Style{
+	margin-top:5px;
+}
+
+/*系统加粗样式*/
+.textBlue{
+	font-size: 14px;
+	color: #004187;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+.footSystem{
+	font-size: 14px;
+	color: #004187;
+}
+.leftMenuB{
+	font-size: 14px;
+	color: #323232;
+	font-weight:bold;
+	letter-spacing:2px
+}
+
+
+.title_1 A:hover {TEXT-DECORATION: none;}
+.title_2 A:hover {TEXT-DECORATION: none;  COLOR: #000000;}
+
+.title_1 A {DISPLAY: block; COLOR: #0F216A; font-weight:bold; TEXT-DECORATION: none;}
+.title_2 A {DISPLAY: block; COLOR: #0F216A; TEXT-DECORATION: none;}
+
+.title_1 {COLOR: #000000; background-image:url(../images/myjd/menu_4_07.gif); height:25px; width:100px; TEXT-DECORATION: none;}
+.title_2 {COLOR: #000000; background-image:url(../images/myjd/menu_4_09.gif); height:25px; width:100px; TEXT-DECORATION: none;}
+
+#info_1 {
+	FONT-SIZE: 14px;
+	Z-INDEX: 99;
+	WIDTH: 100%;
+	HEIGHT: 200px;
+	COLOR: #000000;
+	POSITION: absolute;
+}
+#info_2 {
+	FONT-SIZE: 14px;
+	Z-INDEX: 99;
+	WIDTH: 100%;
+	HEIGHT: 200px;
+	COLOR: #000000;
+	POSITION: absolute;
+}
+#info_3 {
+	FONT-SIZE: 14px;
+	Z-INDEX: 99;
+	WIDTH: 100%;
+	HEIGHT: 200px;
+	COLOR: #000000;
+	POSITION: absolute;
+}
+
+
+#tit_1 {
+	DISPLAY: block;
+	FONT-WEIGHT: normal;
+	Z-INDEX: 100;
+	MARGIN: 0px;
+	POSITION: relative;
+}
+#tit_2 {
+	DISPLAY: block;
+	FONT-WEIGHT: normal;
+	Z-INDEX: 100;
+	MARGIN: 0px;
+	POSITION: relative;
+}
+#tit_3 {
+	DISPLAY: block;
+	FONT-WEIGHT: normal;
+	Z-INDEX: 100;
+	MARGIN: 0px;
+	POSITION: relative;
+}
+
+/****************************************************************************************************************/
+.textIndexStyle{
+	color: #003798;
+	FONT-SIZE: 13px;
+	LINE-HEIGHT: 30px;
+	letter-spacing:3px;
+}
+.textIndexStyle1{
+	font-size:15px;
+	font-weight:bold;
+	color:#003798;
+	letter-spacing:3px;
+	line-height:30px;
+}
+.textIndexStyle2{
+	font-size:15px;
+	color:#003798;
+	letter-spacing:2px;
+	line-height:30px;
+}
+
+ .gray {
+	filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)；
+    }
+
+
+.user{ background:url(/hodeframe2012_hnmk/images/hnmk/ico.gif) no-repeat; height:24px; width:247px; line-height:24px; color:#FFFFFF;}
+.user a:link,.user a:visited,.user a:hover,.user a:active{ color:#FFFFFF; text-decoration:none; padding-left:35px;}
+.left{ background:url(/hodeframe2012_hnmk/images/hnmk/left_bt.gif) no-repeat top #e2f5ff;font-size:12px;color:#FFFFFF;}
+.left_bt{ line-height:34px; font-size:14px; font-weight:bold; text-align:center;color:#FFFFFF;}
+.dqwz{ background:url(/hodeframe2012_hnmk/images/hnmk/dqwz_bj.gif) repeat-x; height:34px; line-height:34px; color:#0378c3; text-indent:10px;}
+.border-left{ border-left:1px solid #0ca3e7; color:#000000;}
+.footer{ background-color:#299ae2; color:#FFFFFF; text-align:center; line-height:24px;}
+.buttom{ background:url(/hodeframe2012_hnmk/images/hnmk/buttom1_bj.gif) no-repeat; width:92px; height:26px; color:#0378c3; margin:0px; padding:0px; border:none; line-height:26px;}
+.buttom2{ background:url(/hodeframe2012_hnmk/images/hnmk/buttom2_bj.gif) no-repeat; width:119px; height:34px; color:#ffffff; margin:0px; padding:0px; border:none; font-size:14px; line-height:34px;}
+.redwz{ color:#FF0000;}
+.td_title{ background-color:#f2f2f2; text-align:right;font-size:12px; }
+.border-left a:link,.border-left a:visited,.border-left a:hover,.border-left a:active{ color:#0378c3; text-decoration:underline;font-size:12px; }
+
+.yelwz{ color:#ffea00;}
+.whitewz{ color:#ffffff;}
+.blackwz{color:#FFFFFF;}
+.blackwz2{color:#000000;}
+.top{width:100%; background-color:#138ddc; height:89px;}

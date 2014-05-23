@@ -1,0 +1,90 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('workflownormal.main.operation.add')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "no")
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$action.getText('workflownormal.main.form.strName')" 1 1 "objInfo.strName" "" 80 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$action.getText('workflownormal.main.form.strFlowCode')" 1 1 "objInfo.strFlowCode" "" 80 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$action.getText('workflownormal.main.form.strTableName')" 1 1 "objInfo.strTableName" "" 80 20 "")
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$action.getText('workflownormal.main.form.intDealWithDay')" 1 1 "objInfo.intDealWithDay" "$!objInfo.intDealWithDay" 80 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showCheckbox("$!action.getText('workflownormal.main.form.intIsUse')" 1 0 "objInfo.intIsUse" "1" "1" 0)
+#hodeSysUI_TrEnd()
+
+
+<!-- #hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showCheckbox("$!action.getText('workflownormal.main.form.intIsSelectOnly')" 1 0 "objInfo.intIsSelectOnly" "1" "1" 0)
+#hodeSysUI_TrEnd()
+ -->
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showCheckbox("$!action.getText('workflownormal.main.form.intIsDefault')" 1 0 "objInfo.intIsDefault" "1" "0" 0)
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$action.getText('workflownormal.main.form.intOrderID')" 1 0 "objInfo.intOrderID" "" 20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+<SCRIPT LANGUAGE="JavaScript">
+
+// form fields description structure
+var a_fields = {
+         'objInfo.strName': {
+                'l': '$action.getText('workflownormal.main.form.strName')',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx': 50       // maximum length
+        }
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

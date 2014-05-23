@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- message -->
+	<bean id="messageInfoIbatisService" class="com.hode.message.service.MessageInfoService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>message</value>
+		</property>
+	</bean>
+
+	<bean id="messageInfoIbatisServiceProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="messageInfoIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+
+    <!-- message_mobile -->
+	<bean id="messageMobileIbatisService" class="com.hode.message.service.MessageMobileService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>message.mobile</value>
+		</property>
+	</bean>
+
+	<bean id="messageMobileIbatisServiceProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="messageMobileIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,68 @@
+#set ($content = $parameters.get('content'))
+#if((!$content)||($content==""))
+	#set($content="&nbsp;")
+#end
+
+
+#set ($preimg = $parameters.get('preimg'))
+#set ($preimg1 = $parameters.get('preimg1'))
+#set ($preSpace = $parameters.get('preSpace'))
+#set ($preSpace1 = $parameters.get('preSpace1'))
+
+#set ($content = $parameters.get('content'))
+#if((!$content)||($content==""))
+	#set($content="&nbsp;")
+#end
+
+
+#set ($preimg = $parameters.get('preimg'))
+#set ($preimg1 = $parameters.get('preimg1'))
+#set ($preSpace = $parameters.get('preSpace'))
+#set ($preSpace1 = $parameters.get('preSpace1'))
+
+#set ($url = $parameters.get('url'))
+
+#set ($target = $parameters.get('target'))
+#if((!$target)||($target==""))
+	#set($target="mainFrame")
+#end
+
+#set ($titleInfo = $parameters.get('titleInfo'))
+  <style>
+     a{
+	margin-left:9;
+	}
+  </style>
+
+<tr height=30 bgcolor="#E7F5FF">
+
+		<td class='leftFrameTD' width="100%" align='left' bgcolor="#E7F5FF">
+
+			#if($preimg.length()>5)
+			<img src="$preimg"/>
+			#end
+
+			#if(($preSpace)&&($preSpace!=""))
+					##$!preSpace
+			#end
+
+			#if($preimg1.length()>5)
+				<img src="$preimg1">
+			#end
+
+			#if(($preSpace1)&&($preSpace1!=""))
+				##$!preSpace1
+			#end
+
+			#if(($url)&&($url!=""))
+<a href="$!url" target="$!target" #if(($titleInfo)&&($titleInfo!="")) title="$titleInfo" #end>$!content</a></span>
+			#else
+				$!content
+			#end
+
+	</td>
+	<td class='leftFrameTD' width='1' align='left'>
+	&nbsp;
+	</td>
+
+</tr>

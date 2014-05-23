@@ -1,0 +1,116 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "参培人员信息" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+
+<TABLE width="800" border="0" cellspacing="1" cellpadding="1" align="center" class='tableEditColor'>
+#set($showWidth = "15%")
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "姓名" 1 0 "$!trainStudentDetailInfo.strStudentName" 5)
+	#hodeSysUI_showMsg("" "性别" 1 0 "$!trainStudentDetailInfo.strStudentSex" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "身份证号码" 1 0 "$!trainStudentDetailInfo.strStudentIDCode" 5)
+	#hodeSysUI_showMsg("" "单位及部门" 1 0 "$!trainStudentDetailInfo.strStudentPost" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "职务" 1 0 "$!trainStudentDetailInfo.strStudentTitles" 5)
+	#hodeSysUI_showMsg("" "文化程度" 1 0 "$!trainStudentDetailInfo.strStudentDegree" 5)
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "年龄" 1 0 "$!trainStudentDetailInfo.intStudentAge" 5)
+	#hodeSysUI_showMsg("" "违章作业情况" 1 0 "$!trainStudentDetailInfo.strStudentViolate" 5)
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "身体状况" 1 0 "$!trainStudentDetailInfo.strStudentHealth" 5)
+	#hodeSysUI_showMsg("" "联系方式" 1 0 "$!trainStudentDetailInfo.strStudentRelation" 5)
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(5)
+	#hodeSysUI_showMsg("" "证书编号" 3 0 "$!trainStudentDetailInfo.strStudentCertCode" 5)
+#hodeSysUI_TrEnd()
+
+
+
+#hodeSysUI_TrBeginMainBody(5)
+<table>
+<table align="center">
+<tr height=300>
+	 <td width=300>
+			#if($!trainStudentDetailInfo.strStudentPic1 != "")
+				<a href="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic1" target="_blank"><img src="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic1" width=250 border=0 ></a>
+			#else
+				无相片照片
+			#end
+		</td>
+		<td width=300>
+			#if($!trainStudentDetailInfo.strStudentPic2 != "")
+				<a href="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic2" target="_blank"><img src="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic2" width=250 border=0></a>
+			#else
+				无学历照片
+			#end
+		</td>
+</tr><tr height=300>
+
+		<td width=300>
+			#if($!trainStudentDetailInfo.strStudentPic3 != "")
+				<a href="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic3" target="_blank"><img src="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic3" width=250 border=0></a>
+			#else
+				无体检表照片
+			#end
+		</td>
+		<td width=300>
+			#if($!trainStudentDetailInfo.strStudentPic4 != "")
+				<a href="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic4" target="_blank"><img src="/train/student/$objInfo.intID/$!trainStudentDetailInfo.strStudentPic4" width=250 border=0></a>
+			#else
+				无相关工作经历证明照片
+			#end
+		</td>
+</tr>
+
+
+
+
+
+	<TR  class="trEditContent"  >
+	<TD colspan="2">
+	<TABLE width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_close.gif" style="cursor:hand" onclick="window.close()"/>&nbsp;&nbsp;
+	</TD>
+	</TR>
+	</TABLE>
+	</TD></TR>
+	</form>	</TABLE>
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

@@ -1,0 +1,141 @@
+<HTML><HEAD>
+<TITLE>$action.getText('global.prj.title')</TITLE>
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<link href="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.css')}/editor.css" type="text/css" rel="stylesheet">
+
+<SCRIPT LANGUAGE="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/global.js.vm")
+	#parse("${action.getText('webeditorConfig.path.js')}/editor.js.vm")
+	#parse("${action.getText('webeditorConfig.path.js')}/table.js.vm")
+	#parse("${action.getText('webeditorConfig.path.js')}/menu.js.vm")
+</SCRIPT>
+<SCRIPT language=javascript event="onerror(msg, url, line)" for=window>
+</SCRIPT>
+
+<META content="MSHTML 6.00.3790.218" name=GENERATOR></HEAD>
+<BODY oncontextmenu=event.returnValue=false; SCROLLING="no">
+<TABLE height="100%" cellSpacing=0 cellPadding=0 width="100%" border=0>
+<TBODY>
+<TR>
+<TD>
+<TABLE class=Toolbar id=eWebEditor_Toolbar cellSpacing=0 cellPadding=0
+width="100%" border=0>
+<TBODY>
+<TR>
+<TD>
+<DIV class=yToolbar>
+<DIV class=TBHandle></DIV>
+<SELECT class=TBGen onchange="format('FormatBlock',this[this.selectedIndex].value);this.selectedIndex=0">
+#webEditor_paragraphList()
+</SELECT>
+<SELECT class=TBGen onchange="format('fontname',this[this.selectedIndex].value);this.selectedIndex=0">
+#webEditor_fontnameList()
+</SELECT>
+<SELECT class=TBGen onchange="doFontSize(this[this.selectedIndex].value);this.selectedIndex=1">
+#webEditor_fontsizeList()
+</SELECT>
+<SELECT class=TBGen onchange="doLineHeight(this[this.selectedIndex].value);this.selectedIndex=1">
+#webEditor_doZoomList()
+</SELECT>
+<DIV class=TBSep></DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.editmenu')" onclick="showToolMenu('edit')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/editmenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.fontmenu')" onclick="showToolMenu('font')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/fontmenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.paragraphMenu')" onclick="showToolMenu('paragraph')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/ParagraphMenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.componentMenu')" onclick="showToolMenu('component')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/ComponentMenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.object')" onclick="showToolMenu('object')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/objectmenu.gif">
+</DIV>
+
+
+<DIV class=Btn title="$action.getText('webeditor.iface.toolmenu')" onclick="showToolMenu('tool')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/toolmenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.formmenu')" onclick="showToolMenu('form')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/formmenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.tablemenu')" onclick="showToolMenu('table')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/tablemenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.filemenu')" onclick="showToolMenu('file')">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/filemenu.gif">
+</DIV>
+<DIV class=Btn title="$action.getText('webeditor.iface.maximize')" onclick="Maximize()" id="MaxArea">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/maximize.gif">
+</DIV>
+<!-- <DIV class=Btn title="$action.getText('webeditor.iface.minimize')" onclick="Minimize()" id="MinArea">
+<IMG class=Ico src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/minimize.gif">
+</DIV>
+ -->
+</DIV></TD></TR></TBODY></TABLE></TD></TR>
+	<TR><TD height="100%">
+		<TABLE height="100%" cellSpacing=0 cellPadding=0 width="100%" border=0>
+			<TR><TD height="100%">
+				<INPUT id=ContentEdit type=hidden>
+				<INPUT id=ModeEdit type=hidden>
+				<INPUT id=ContentLoad type=hidden>
+				<INPUT id=ContentFlag type=hidden value=0>
+				<IFRAME class=Composition id=eWebEditor marginWidth=1 marginHeight=1 src="about:blank" width="100%" scrolling=yes height="100%"></IFRAME>
+			</TD></TR>
+		</TABLE>
+	</TD></TR>
+	<TR><TD height=25>
+		<TABLE class=StatusBar height=25 cellSpacing=0 cellPadding=0 width="100%" border=0>
+			<TR vAlign=center><TD>
+				<TABLE height=20 cellSpacing=0 cellPadding=0 border=0>
+					<TR>
+						<TD width=10></TD>
+						<TD class=StatusBarBtnOff id=eWebEditor_CODE onclick="setMode('CODE')"><IMG height=15 src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/modecode.gif" width=50 align=absMiddle border=0></TD>
+						<TD width=5></TD>
+						<TD class=StatusBarBtnOff id=eWebEditor_EDIT onclick="setMode('EDIT')"><IMG height=15 src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/modeedit.gif" width=50 align=absMiddle border=0></TD>
+						<TD width=5></TD>
+						<TD class=StatusBarBtnOff id=eWebEditor_TEXT onclick="setMode('TEXT')"><IMG height=15 src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/modetext.gif" width=50 align=absMiddle border=0></TD>
+						<TD width=5></TD>
+						<TD class=StatusBarBtnOff id=eWebEditor_VIEW onclick="setMode('VIEW')"><IMG height=15 src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/modepreview.gif" width=50 align=absMiddle border=0></TD></TR></TABLE></TD>
+						<TD id=eWebEditor_License style="FONT-SIZE: 9pt" align=middle></TD>
+						<TD align=right>
+							<TABLE height=20 cellSpacing=0 cellPadding=0 border=0>
+								<TR>
+									<TD style="CURSOR: pointer" onclick=sizeChange(150)><IMG height=20 alt="$action.getText('webeditor.sizeplus')" src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/sizeplus.gif" width=20 border=0></TD>
+									<TD width=5></TD>
+									<TD style="CURSOR: pointer" onclick=sizeChange(-150)><IMG height=20 alt="$action.getText('webeditor.sizeminus')" src="${action.getText('config.prjName')}/${action.getText('webeditorConfig.path.img')}/iface/sizeminus.gif" width=20 border=0></TD>
+									<TD width=40></TD>
+								</TR>
+							</TABLE>
+						</TD>
+					</TR>
+				</TABLE>
+			</TD></TR>
+		</TABLE>
+		<DIV id=eWebEditor_Temp_HTML style="VISIBILITY: hidden; OVERFLOW: hidden; WIDTH: 1px; POSITION: absolute; HEIGHT: 1px"></DIV>
+		<IFRAME name=eWebEditor_UploadTarget src="about:blank" width=0 height=0></IFRAME>
+		<DIV id=divProcessing style="DISPLAY: none; WIDTH: 200px; POSITION: absolute; HEIGHT: 30px">
+			<TABLE height="100%" cellSpacing=1 cellPadding=0 width="100%" bgColor=#000000 border=0>
+				<TR><TD bgColor=#3a6ea5>
+					<MARQUEE style="FONT-SIZE: 9pt" scrollAmount=5 behavior=alternate align="middle"><FONT color=#ffffff>$action.getText('webeditor.watingInfo')</FONT></MARQUEE>
+				</TD></TR>
+			</TABLE>
+		</DIV>
+	</TD></TR>
+</TABLE>
+</BODY></HTML>
+
+<SCRIPT LANGUAGE="JavaScript">
+	if(sFullScreen)
+	{
+		if(sFullScreen==1)
+			document.getElementById("MaxArea").style.display="none";
+	}
+	else
+	{
+		//document.getElementById("MinArea").style.display="none";
+	}
+</SCRIPT>

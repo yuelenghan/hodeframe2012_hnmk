@@ -1,0 +1,196 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#if($intSelectType == 1)
+		#param( "title" "待上报考核申请" )
+	#elseif($intSelectType == 2)
+		#param( "title" "已上报考核申请" )
+	#elseif($intSelectType == 3)
+		#param( "title" "待审批考核申请" )
+	#elseif($intSelectType == 4)
+		#param( "title" "已审批考核申请" )
+	#else
+		#param( "title" "待上报考核申请" )
+	#end
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >培训期次：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objSearch.strTrainCount" id="objSearch.strTrainCount" CLASS="inputText" maxlength="20" size="20"   VALUE="$!objSearch.strTrainCount" >
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >培训类别：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<select name="objSearch.strTrainType">
+			<option value="" selected >全部</option>
+			<option value="培训" #if("培训" == $objSearch.strTrainType) selected #end >培训</option>
+			<option value="再培训" #if("再培训" == $objSearch.strTrainType) selected #end >再培训</option>
+		</select>
+	</TD>
+
+
+
+	<td></td>
+
+	<input type="hidden" name="objSearch.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showCheckList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	#if($intSelectType == 0 || $intSelectType == 1)
+		<td colspan="2" align="center">$action.getText('global.operation')</td>
+		#hodeSysUI_TdMainBody("申请" "center" "80" 0)
+	#end
+	#if($intSelectType == 2)
+		#hodeSysUI_TdMainBody("审核状态" "center" "80" 0)
+	#end
+	#if($intSelectType == 3)
+		#hodeSysUI_TdMainBody("审核" "center" "80" 0)
+		#hodeSysUI_TdMainBody("培训机构名称" "center" "" 0)
+	#end
+	#if($intSelectType == 4)
+		#hodeSysUI_TdMainBody("审核状态" "center" "80" 0)
+		#hodeSysUI_TdMainBody("培训机构名称" "center" "" 0)
+	#end
+
+	#hodeSysUI_TdMainBody("培训期次" "center" "" 0)
+	#hodeSysUI_TdMainBody("班级" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训类别" "center" "" 0)
+	#hodeSysUI_TdMainBody("培训对象" "center" "" 0)
+	#hodeSysUI_TdMainBody("计划人数" "center" "80" 0)
+	#hodeSysUI_TdMainBody("批准时间" "center" "80" 0)
+
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+
+
+		#if($intSelectType == 0 || $intSelectType == 1)
+			#hodeSysUI_TdMainOpt("edit" "$action.getText('global.operation.edit')" "editForm.action" "" $objInfo.intID "")
+			#hodeSysUI_TdMainOpt("delete" "$action.getText('global.operation.del')" "del.action" "$action.getText('global.operation.delmsg2')" $objInfo.intID "")
+
+			<td width="40" align='center'><img src="$action.getText('config.prjName')/images/operator/opt_checked.gif" onclick="editDoc(document.frmMainList,'checkForm.action','$!objInfo.intID','','','','')" style="cursor:hand" alt="提交"></td>
+		#elseif($intSelectType == 2)
+			<td width="80" align='center'>
+				#if($objInfo.intCheckFlag == 1)
+					待审核
+				#elseif($objInfo.intCheckFlag == 9)
+					审核通过
+				#end
+			</td>
+		#elseif($intSelectType == 3)
+			<td width="40" align='center'><img src="$action.getText('config.prjName')/images/operator/opt_checked.gif" onclick="editDoc(document.frmMainList,'checkForm.action','$!objInfo.intID','','','','')" style="cursor:hand" alt="提交"></td>
+			<td align='center'>&nbsp;<a href="viewForm.action?objInfo.intID=$objInfo.intID">$!objInfo.strTrainUnitName</a></td>
+		#elseif($intSelectType == 4)
+			<td width="80" align='center'>
+				#if($objInfo.intCheckFlag == 1)
+					待审核
+				#elseif($objInfo.intCheckFlag == 9)
+					审核通过
+				#end
+			</td>
+			<td align='center'>&nbsp;<a href="viewForm.action?objInfo.intID=$objInfo.intID">$!objInfo.strTrainUnitName</a></td>
+		#end
+
+
+		<td align='center'>&nbsp;<a href="viewForm.action?objInfo.intID=$objInfo.intID">$!objInfo.strTrainCount</a></td>
+		<td align='center'>&nbsp;<a href="viewForm.action?objInfo.intID=$objInfo.intID">$!objInfo.strTrainCountClass</a></td>
+
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainType" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainObjectDesc" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainUserNum" "center" "" 0)
+		#hodeSysUI_TdMainBody("$!objInfo.strTrainEndDate" "center" "" 0)
+
+
+
+    #hodeSysUI_TrEnd()
+#end
+
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showCheckList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "hiddenParams" "<INPUT TYPE='hidden' NAME='objSearch.intSysIsClearSearch' value=1>" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript

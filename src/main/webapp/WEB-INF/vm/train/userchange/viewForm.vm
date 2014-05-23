@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html"/>
+<title>人员变更信息表</title>
+<script language="javascript" src="/hodeframe2012_hnmk/js/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+</head>
+<body>
+<div id="printInfo" style="">
+
+<style>
+body{
+	margin-left: 00px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+td{
+	font-size: 14px;
+	color: #000000;
+	line-height:36px;
+
+}
+.STYLE1 {font-size: 28px; font-weight:bold;}
+.STYLE3 {font-size: 18px;}
+.STYLE4 {text-decoration: underline;font-weight:bold;}
+</style>
+
+<table width="800" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center" colspan=2 style="line-height:65px;"><span class="STYLE1">人员变更</span></td>
+	</tr>
+</table>
+<TABLE width="800" align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" width=20%>受理编号</td>
+		<td align="center" width=30%>$!objInfo.strCode</td>
+		<td align="center" width=20%>受理日期</td>
+		<td align="center" width=30%>$!objInfo.strApplyDate</td>
+	</tr>
+	<tr>
+		<td align="center">受理人数</td>
+		<td align="center" colspan=3>$!objInfo.intApplyNum</td>
+	</tr>
+</table>
+<TABLE width="800" align="center" borderColorDark=#000000 borderColorLight=#000000 style="border-collapse: collapse; line-height:20px" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="center" width=40>序号</td>
+		<td align="center" width=120>证书号码</td>
+		<td align="center" width=150>身份证</td>
+		<td align="center" width=100>姓名</td>
+		<td align="center" width=100>原职务</td>
+		<td align="center" width=100>现职务</td>
+		<td align="center" width=240>原单位</td>
+		<td align="center" width=240>现单位</td>
+
+		<td align="center" width=120 >变更日期</td>
+
+
+	</tr>
+	#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	#set ($rtnList3 = $trainUtil.getUserChangeDetailListByMainID($objInfo.intID))
+	#foreach($objInfo3 in $rtnList3)
+		#set($intNowCount=$velocityCount)
+				<tr>
+				<TD align='center'>$intNowCount</TD>
+				<TD align='center'>$!objInfo3.strCertCode</TD>
+				<TD align='center'>$!objInfo3.strUserCode</TD>
+				<TD align='center'>$!objInfo3.strUserName</TD>
+				<TD align='center'>$!objInfo3.strFromTitles</TD>
+				<TD align='center'>$!objInfo3.strToTitles</TD>
+				<TD align='center'>$!objInfo3.strFromUnit</TD>
+				<TD align='center'>$!objInfo3.strToUnit</TD>
+				<TD align='center'>$!objInfo3.strUserDate</TD>
+			 </TR>
+	#end
+</table>
+</div>
+
+
+
+
+	<TABLE width="640" align="center"  border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_print.gif" style="cursor:hand" onclick="javascript:print()">&nbsp;&nbsp;
+		<img src="/hodeframe2012_hnmk/images/operator/opt_return.gif" style="cursor:hand" onclick="history.back()"/>&nbsp;&nbsp;
+	</TD>
+	</TR>
+	</TABLE>
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+<script type="text/javascript">
+function printInfo()
+{
+	var intFlag = 3;
+	var openname = window.open("");;
+	var  printInfo= document.getElementById("printInfo");
+//openname.document.write('<style>\n table {	background-color:#000000}\n td { background-color:#FFFFFF}\n A{	COLOR: #000000;	TEXT-DECORATION: none;}\n</style>');
+	openname.document.write( printInfo.innerHTML);
+
+	openname.document.write( '<object id="PrintActiveX"   classid="clsid:3ede745c-4adb-42a6-ab25-5621edbdfd6b"   codebase="$action.getText('config.prjName')/js/QWPrint.cab#version=1,3,8,2" width=0 height=0></object>\n');
+
+	openname.document.write( "<script language=\"JavaScript\" type=\"text/javascript\">\n");
+	openname.document.write( "function printBase()\n");
+	openname.document.write( "{\n");
+	openname.document.write( "PrintActiveX.paddingTop=150;\n");
+	openname.document.write( "PrintActiveX.paddingBottom=0;\n");
+	openname.document.write( "PrintActiveX.paddingLeft=150;\n");
+	openname.document.write( "PrintActiveX.paddingRight=150;\n");
+	openname.document.write( "PrintActiveX.header=\"\";\n");
+	openname.document.write( "PrintActiveX.isHtmlHeadFoot=false;\n");
+	openname.document.write( "PrintActiveX.footer=\"\";\n");
+	openname.document.write( "PrintActiveX.pageWidth=2000;\n");
+	openname.document.write( "PrintActiveX.pageHeight=800;\n");
+	openname.document.write( "PrintActiveX.orientation=1;\n");
+	openname.document.write( "PrintActiveX.PrintView();\n");
+	openname.document.write( "}\n");
+	openname.document.write( "printBase();\n");
+	openname.document.write( "</sc"+"ript>\n");
+
+}
+
+function print() {
+	LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+	LODOP.PRINT_INIT("人员变更打印");
+	LODOP. SET_PRINT_PAGESIZE (2, 0, 0,"A4");
+	LODOP.ADD_PRINT_HTML(0,0,"100%","100%",document.getElementById("printInfo").innerHTML);
+	LODOP.PREVIEW();
+}
+
+</script>##加载过渡效果JavaScript
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

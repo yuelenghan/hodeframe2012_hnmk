@@ -1,0 +1,79 @@
+
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+
+#hodeSysBean_checkInArr(11010100 $!permissionIDs $allow_11)	##三级培训班查看员
+#hodeSysBean_checkInArr(11010200 $!permissionIDs $allow_12)	##三级培训班填报员
+
+#hodeSysBean_checkInArr(11020100 $!permissionIDs $allow_21)	##省中心查看员
+#hodeSysBean_checkInArr(11020200 $!permissionIDs $allow_22)	##省中心审批员
+
+#hodeSysBean_checkInArr(11030100 $!permissionIDs $allow_31)	##公章管理员
+
+##set($allow_11 = true)
+##set($allow_12 = true)
+##set($allow_21 = true)
+##set($allow_22 = true)
+
+
+##-------------------------------------------------------------
+#hodeSysUI_leftFrameHeader("10")
+<table width="181">
+
+	<tr><td width="181" valign="top" class="left">
+			<div class="left_bt">人员补证及变更</div>
+
+				<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td height="15"></td></tr></table>
+
+				<table width="146" border="0" align="center" cellpadding="0" cellspacing="0">
+						<tr><td height="10" colspan="3"></td></tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_left.gif" width="25" height="34" /></td>
+							<td width="145" background="/hodeframe2012_hnmk/images/hnmk/cdbj1_mid.gif" class="blackwz"><strong>人员补证</strong></td>
+							<td width="9"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_right.gif" width="9" height="34" /></td>
+						</tr>
+						#if($user.intUserID != 24)
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/userapply/showList.action" target="mainFrame">人员补证管理</td>
+						</tr>
+						#end
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/userapply/showSearchList.action" target="mainFrame">人员补证查询</td>
+						</tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/userapply/showSearchDetailList.action" target="mainFrame">人员查询</td>
+						</tr>
+
+
+						<tr><td height="10" colspan="3"></td></tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_left.gif" width="25" height="34" /></td>
+							<td width="145" background="/hodeframe2012_hnmk/images/hnmk/cdbj1_mid.gif" class="blackwz"><strong>人员变更</strong></td>
+							<td width="9"><img src="/hodeframe2012_hnmk/images/hnmk/cdbj1_right.gif" width="9" height="34" /></td>
+						</tr>
+						#if($user.intUserID != 24)
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/userchange/showList.action" target="mainFrame">人员变更管理</td>
+						</tr>
+						#end
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/userchange/showSearchList.action" target="mainFrame">人员变更查询</td>
+						</tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/userchange/showSearchDetailList.action" target="mainFrame">人员查询</td>
+						</tr>
+
+				</table>
+
+
+</td></tr></table>
+
+
+
+
+#parse("$action.getText('config.vmPath')/simple/Footer_left.vm")

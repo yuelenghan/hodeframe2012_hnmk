@@ -1,0 +1,324 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "培训机构提交考核申请" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+#hodeSysUI_EditBodyHeader("edit.action" "return doData(v.exec())" "post" "yes")
+#set($showWidth = "20%")
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("培训机构名称" 1 0 "objInfo.strTrainUnitName" "$!groupInfo.strName" 20 20 "readonly")
+	##hodeSysUI_showText("培训期次" 1 0 "objInfo.strTrainCount" "$!objInfo.strTrainCount" 20 20 "")
+	<TD class="tdEditContentLeft">培训期次：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList = $trainUtil.getTrainApplyListByGroupID($user.intGroupID))
+		<select name="objInfo.intTrainApplyID" onchange="changeThisVal(this)">
+			<option value="">请选择</option>
+			#foreach($objInfo3 in $rtnList)
+				<option value="$objInfo3.intID" #if($!objInfo.intTrainApplyID == $objInfo3.intID ) selected #end value1="$objInfo3.strTrainCount" value2="$objInfo3.strTrainTime1" value3="$objInfo3.strTrainTime2" value4="$objInfo3.strTrainObject" value5="$objInfo3.strTrainType" value6="">$objInfo3.strTrainCount</option>
+			#end
+		</select>
+		#foreach($objInfo3 in $rtnList)
+			<input type="hidden" id="strTrainCount_${objInfo3.intID}" value="$!objInfo3.strTrainCount">
+			<input type="hidden" id="strTrainTime1_${objInfo3.intID}" value="$!objInfo3.strTrainTime1">
+			<input type="hidden" id="strTrainTime2_${objInfo3.intID}" value="$!objInfo3.strTrainTime2">
+			<input type="hidden" id="strTrainObjectDesc_${objInfo3.intID}" value="$!objInfo3.strTrainObjectDesc">
+			<input type="hidden" id="strTrainType_${objInfo3.intID}" value="$!objInfo3.strTrainType">
+			<input type="hidden" id="strTrainUserNum_${objInfo3.intID}" value="$!objInfo3.strTrainUserNum">
+
+			#applyCourse_getTrainApplyCourseList_forEdit($objInfo3.intID $applyCourseList)
+			#foreach($applyCourse in $applyCourseList)
+				<input type="hidden" name="strCourseName_${objInfo3.intID}" value="$!applyCourse.strSubjectName">
+				<input type="hidden" name="strCourseTime_${objInfo3.intID}" value="$!applyCourse.strSubjectTime">
+			#end
+		#end
+	</TD>
+#hodeSysUI_TrEnd()
+	<input type="hidden" name="objInfo.strTrainCount" id="objInfo.strTrainCount" value="$!objInfo.strTrainCount">
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("培训机构资质" 1 0 "objInfo.strTrainRange" "$!groupInfo.strTel" 20 20 "")
+	#hodeSysUI_showText("资质证书号码" 1 0 "objInfo.strTrainCode" "$!groupInfo.strFax" 20 20 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("培训总学时数" 1 0 "objInfo.strTrainTime1" "$!objInfo.strTrainTime1" 20 20 "readonly")
+	#hodeSysUI_showText("培训大纲要求学时数" 1 0 "objInfo.strTrainTime2" "$!objInfo.strTrainTime2" 20 20 "readonly")
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("培训对象" 1 0 "objInfo.strTrainObjectDesc" "$!objInfo.strTrainObjectDesc" 20 20 "readonly")
+	#hodeSysUI_showText("培训类别" 1 0 "objInfo.strTrainType" "$objInfo.strTrainType" 20 20 "readonly")
+#hodeSysUI_TrEnd()
+
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">拟考试时间：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objInfo.strTrainStartDate" id="objInfo.strTrainStartDate" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!objInfo.strTrainStartDate">
+	</TD>
+
+	#hodeSysUI_showText("拟考试人数" 1 0 "objInfo.strTrainUserNum" "$!objInfo.strTrainUserNum" 20 20 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">填表日期：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="objInfo.strApplyDate" id="objInfo.strApplyDate" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!objInfo.strApplyDate"  >
+	</TD>
+	#hodeSysUI_showText("补考人数" 1 0 "objInfo.strMakeupUserNum" "$!objInfo.strMakeupUserNum" 20 20 "")
+#hodeSysUI_TrEnd()
+
+     <TR  class="trEditContent"><TD colspan=4>
+				<TABLE width="100%" border="0" cellspacing="1" cellpadding="1" align="center" class='tableMainColor' id="table_1">
+					 <TR class="trMainBodyTitle"  id="lawper" >
+						 #hodeSysUI_TdMainBody("序号" "center" "" 0)
+						 #hodeSysUI_TdMainBody("课程名称" "center" "" 0)
+						 #hodeSysUI_TdMainBody("学时数" "center" "" 0)
+						 #hodeSysUI_TdMainBody("删除" "center" "" 0)
+					 </TR>
+
+				#checkCourse_getTrainCheckCourseList_forEdit($objInfo.intID $checkCourseList)
+				#foreach($checkCourse in $checkCourseList)
+				#set($intNowCount=$velocityCount)
+				<TR class="trMainBodyContent"  >
+					<TD align='center'><INPUT TYPE="text" CLASS="inputText" size="5" value="$intNowCount" readonly="true"></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainCheckDetailInfo.strSubjectNameArr" CLASS="inputText" value="$!checkCourse.strSubjectName" size="20"  ></TD>
+					<TD align='center'><INPUT TYPE="text" NAME="trainCheckDetailInfo.strSubjectTimeArr" CLASS="inputText" value="$!checkCourse.strSubjectTime" size="10"  ></TD>
+					<TD align='center'><input type='button' value='删除' onclick='delRow()' class='inputButton' readonly="true"></TD>
+				</TR>
+				#end
+
+					<TR class="trMainBodyContent"  >
+						<TD colspan="10"  align="left"><input type="button" onClick="addRow()" class=inputButton value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" style="height:20"></TD>
+					</TR>
+				</table>
+	</td></tr>
+
+
+
+#hodeSysUI_optMultiFile("附件" "fileAttrUploadModel" $!fileAttrUpload.listAttachs 3 1 "attr" 0)
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$!objInfo.intID")
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+function changeThisVal(thisControl)
+{
+	if(thisControl.value < 0 )
+	{
+		document.getElementById("objInfo.strTrainCount").value = "";
+		document.getElementById("objInfo.strTrainTime1").value = "";
+		document.getElementById("objInfo.strTrainTime2").value = "";
+		document.getElementById("objInfo.strTrainObject").value = "";
+		document.getElementById("objInfo.strTrainType").value = "";
+		document.getElementById("objInfo.strTrainUserNum").value = "";
+	}
+	else
+	{
+		document.getElementById("objInfo.strTrainCount").value = document.getElementById("strTrainCount_"+thisControl.value).value;
+		document.getElementById("objInfo.strTrainTime1").value = document.getElementById("strTrainTime1_"+thisControl.value).value;
+		document.getElementById("objInfo.strTrainTime2").value = document.getElementById("strTrainTime2_"+thisControl.value).value;
+		document.getElementById("objInfo.strTrainObjectDesc").value = document.getElementById("strTrainObjectDesc_"+thisControl.value).value;
+		document.getElementById("objInfo.strTrainType").value = document.getElementById("strTrainType_"+thisControl.value).value;
+		document.getElementById("objInfo.strTrainUserNum").value = document.getElementById("strTrainUserNum_"+thisControl.value).value;
+
+		//alert(document.getElementsByName("strCourseName_"+thisControl.value)[1].value);
+		//alert(document.getElementsByName("strCourseName_"+thisControl.value).length);
+		var courseResultLength = document.getElementsByName("strCourseName_"+thisControl.value).length;
+		var courseTable = document.getElementById("table_1");
+		//alert(courseTable.rows.length);
+		for(var i = courseTable.rows.length-1; i > 0; i --) {
+			courseTable.deleteRow(i);
+		}
+
+		for(var i=0; i<courseResultLength; i++) {
+			var newRow = courseTable.insertRow(i+1);
+			var courseName = document.getElementsByName("strCourseName_"+thisControl.value)[i].value;
+			var courseTime = document.getElementsByName("strCourseTime_"+thisControl.value)[i].value;
+			newRow.className="trMainBodyContent";
+
+			var col= document.createElement('<TD align=center>');
+			col.innerHTML='<INPUT TYPE="text" CLASS="inputText" size="5" readonly="true" align="middle" value='+(i+1)+'>';
+			newRow.appendChild(col);
+
+			col= document.createElement('<TD align=center>');
+			col.innerHTML='<INPUT TYPE="text" NAME="trainCheckDetailInfo.strSubjectNameArr" CLASS="inputText" size="20" value='+courseName+' >';
+			newRow.appendChild(col);
+
+			col= document.createElement('<TD align=center>');
+			col.innerHTML='<INPUT TYPE="text" NAME="trainCheckDetailInfo.strSubjectTimeArr" CLASS="inputText" size="10" value='+courseTime+' >';
+			newRow.appendChild(col);
+
+			var col= document.createElement("<TD align='center'>");
+			col.innerHTML="<input type='button' value='删除' onclick='delRow()' class='inputButton'>";
+			newRow.appendChild(col);
+		}
+	}
+}
+// form fields description structure
+var a_fields = {
+         'objInfo.strTrainUnitName': {
+                'l': '培训机构名称',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainCount': {
+                'l': '培训期次',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainRange': {
+                'l': '培训机构资质',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainCode': {
+                'l': '资质证书号码',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainTime1': {
+                'l': '培训总学时数',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainTime2': {
+                'l': '培训大纲要求学时数',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strApplyDate': {
+                'l': '填表日期',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        }
+
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+//验证信息
+function checknum()
+{
+	event.srcElement.value=event.srcElement.value.replace(/[^0-9.]/gi,"");
+}
+
+//添加序列号
+function seralNum()
+{
+	var tableObj=document.getElementById("table_1");
+	var tdstart=document.getElementById("lawper");
+	var tdRow=tdstart.rowIndex + 1;
+	var tableRows=tableObj.rows.length;
+	var tdlast=tableRows - 2;
+	var sunnum=0;
+	for( ; tdRow <= tableRows - 2;  tdRow++)
+	{
+		tableObj.rows[tdRow].cells[0].childNodes(0).value=(tdRow);
+	}
+
+}
+
+function addRow()
+{
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//对象表格总行数
+	var tableRows=tableObj.rows.length;
+
+	//增加开始
+	newRow=tableObj.insertRow(tableRows - 1);
+	newRow.className="trMainBodyContent";
+
+	//开始1
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" CLASS="inputText" size="5" readonly="true" align="middle ">';
+	newRow.appendChild(col);
+	//2
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainCheckDetailInfo.strSubjectNameArr" CLASS="inputText" size="20"  >';
+	newRow.appendChild(col);
+	//3
+	var col= document.createElement('<TD align=center>');
+	col.innerHTML='<INPUT TYPE="text" NAME="trainCheckDetailInfo.strSubjectTimeArr" CLASS="inputText" size="10"  >';
+	newRow.appendChild(col);
+	//8
+	var col= document.createElement("<TD align='center'>");
+	col.innerHTML="<input type='button' value='删除' onclick='delRow()' class='inputButton'>";
+	newRow.appendChild(col);
+	seralNum();
+}
+
+//删除行
+function delRow()
+{
+
+	//得到当前操作表格对象
+	var tableObj=document.getElementById("table_1");
+	//当前是第几行
+	var nowRowobj=event.srcElement.parentElement.parentElement;
+	var nowRow=nowRowobj.rowIndex;
+	if(confirm("确定删除此条记录吗？"))
+	{
+		tableObj.deleteRow(nowRow);
+		seralNum();
+	}
+}
+
+</script>
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+</html>
+

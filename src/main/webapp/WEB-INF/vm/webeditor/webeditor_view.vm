@@ -1,0 +1,13 @@
+#hode_color($color)
+<HTML>
+<HEAD>
+<TITLE>$action.getText('global.prj.title')</TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/global.js.vm")
+</SCRIPT>
+<BODY oncontextmenu=event.returnValue=false; >
+</BODY></HTML>
+<SCRIPT LANGUAGE="JavaScript">
+	oLinkField = parent.document.getElementsByName(sLinkFieldName)[0];
+	document.body.innerHTML=oLinkField.value+"";
+</SCRIPT>

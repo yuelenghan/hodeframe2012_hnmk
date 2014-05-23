@@ -1,0 +1,210 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('workflownormal.menu')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("edit.action" "return doData(v.exec())" "post" "")
+#set($showWidth = "180")
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$!action.getText('workflownormal.step.form.strName')"  1 1 "objInfo.strName" "$!objInfo.strName" 18 23 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$!action.getText('workflownormal.step.form.strNodeID')"  1 0 "objInfo.strNodeID" "$!objInfo.strNodeID" 18 23 "")
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(3)
+	<TD width="180" class="tdEditContentLeft" id="t_objInfo.intDealWithDay"><font color="red">* </font>$!action.getText('workflownormal.step.form.intDealWithDay')：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+	<INPUT TYPE="text" NAME="objInfo.intDealWithDay" id="objInfo.strAccount" CLASS="inputText" maxlength="23" size="18"   VALUE="$!objInfo.intDealWithDay"  msg="处理期限"  require="true"  >天
+	</TD>
+
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>$!action.getText('workflownormal.step.form.strDealWithUserValue')$action.getText('global.interpunction.colon')</td>
+	<td class='tdEditContentRight'>
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strDealWithUserValue" "strDealWithUserValue" "$!objInfo.strDealWithUserValue" 2 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strDealWithUserID" "$!objInfo.strDealWithUserID")
+	 <input type="button" name="btnSelectUnit" class="inputButton" onclick="fPopUpSelectGroupUnitDlg('../../rbac/user/selectUser.action?intGroupID=1&intGroupType=0','objInfo.strDealWithUserID','strDealWithUserValue');" value=" ... ">
+	</td>
+#hodeSysUI_TrEnd()
+
+
+#*
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>$!action.getText('workflownormal.step.form.strDealWithRoleValue')$action.getText('global.interpunction.colon')</td>
+	<td class='tdEditContentRight'>
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strDealWithRoleValue" "strDealWithRoleValue" "$!objInfo.strDealWithRoleValue" 2 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strDealWithRoleID" "$!objInfo.strDealWithRoleID")
+	 <input type="button" name="btnSelectUnit" class="inputButton" onclick="fPopUpSelectGroupUnitDlg('../../rbac/role/selectRole.action?intGroupID=1&intGroupType=0','objInfo.strDealWithRoleID','strDealWithRoleValue');" value=" ... ">
+	</td>
+#hodeSysUI_TrEnd()
+*#
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>$!action.getText('workflownormal.step.form.strDealWithGroupValue')$action.getText('global.interpunction.colon')</td>
+	<td class='tdEditContentRight'>
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strDealWithGroupValue" "strDealWithGroupValue" "$!objInfo.strDealWithGroupValue" 2 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strDealWithGroupID" "$!objInfo.strDealWithGroupID")
+
+	 <input type="button" name="btnSelectUnit" class="inputButton" onclick="fPopUpSelectGroupUnitDlg('../../rbac/group/selectGroupUnit2.action?intGroupID=$user.intUnitID&intGroupType=0','objInfo.strDealWithGroupID','strDealWithGroupValue');" value=" ... ">
+	</td>
+#hodeSysUI_TrEnd()
+
+
+
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>$!action.getText('自定义')$action.getText('global.interpunction.colon')</td>
+	<td class='tdEditContentRight'>
+		#hodeSysHTMLUI_htmlTextArea("objInfo.strDealWithConditionValue" "strDealWithConditionValue" "$!objInfo.strDealWithConditionValue" 5 60 "readonly" 0)
+		#hodeSysHTMLUI_htmlHidden("objInfo.strDealWithConditionSQL" "$!objInfo.strDealWithConditionSQL")
+		##<TEXTAREA NAME="objInfo.strDealWithConditionSQL" id='objInfo.strDealWithConditionSQL' ROWS="5" COLS="60" ></TEXTAREA>
+	 <input type="button" name="btnSelectUnit" class="inputButton" onclick="fPopUpSelectDlgForWorkFlowIn('./selectDealWith.action','strDealWithConditionValue','objInfo.strDealWithConditionSQL');" value=" ... ">
+	</td>
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>默认人员选择</td>
+	<td class='tdEditContentRight'>
+
+
+		<INPUT TYPE="radio" NAME="objInfo.intSelectUserType" value="0" checked >以上设置选项<BR>
+		<INPUT TYPE="radio" NAME="objInfo.intSelectUserType" value="1" #if($!objInfo.intSelectUserType==1) checked #end>撰写人所管部门领导（处理人员、处理部门、自定义设置无效）<BR>
+		<INPUT TYPE="radio" NAME="objInfo.intSelectUserType" value="2" #if($!objInfo.intSelectUserType==2) checked #end>撰写人所管分管领导（处理人员、处理部门、自定义设置无效）<BR>
+		<INPUT TYPE="radio" NAME="objInfo.intSelectUserType" value="3" #if($!objInfo.intSelectUserType==3) checked #end>撰写人所管局领导（处理人员、处理部门、自定义设置无效）<BR>
+		<INPUT TYPE="radio" NAME="objInfo.intSelectUserType" value="9" #if($!objInfo.intSelectUserType==9) checked #end>撰写人（处理人员、处理部门、自定义设置无效）<BR><BR>
+
+	</td>
+#hodeSysUI_TrEnd()
+
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>同关卡多人时$action.getText('global.interpunction.colon')</td>
+	<td class='tdEditContentRight'>
+		<INPUT TYPE="radio" NAME="objInfo.intOptNextFlag" value="1" #if($!objInfo.intOptNextFlag==1) checked #end>所有人按无序处理完才继续下一关<BR>
+		<INPUT TYPE="radio" NAME="objInfo.intOptNextFlag" value="2" #if($!objInfo.intOptNextFlag==2) checked #end>所有人按有序处理完才继续下一关<BR>
+		<INPUT TYPE="radio" NAME="objInfo.intOptNextFlag" value="3" #if($!objInfo.intOptNextFlag==3) checked #end>任何一人处理即可进行下一关<BR>
+		<INPUT TYPE="radio" NAME="objInfo.intOptNextFlag" value="4" #if($!objInfo.intOptNextFlag==4) checked #end>只允许选择一人<BR><BR>
+	</td>
+#hodeSysUI_TrEnd()
+
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>流转临时改变下一处理者$action.getText('global.interpunction.colon')</td>
+	<td class='tdEditContentRight'>
+		<INPUT TYPE="checkbox" NAME="objInfo.intTmpIsJump" value="1"  #if($!objInfo.intTmpIsJump==1)  checked #end>可跳签<br>
+		<INPUT TYPE="checkbox" NAME="objInfo.intTmpIsBack" value="1" #if($!objInfo.intTmpIsBack==1)  checked #end>可退签
+			&nbsp;	<INPUT TYPE="radio" NAME="objInfo.intTmpBackType" value="1"  #if($!objInfo.intTmpBackType==1)  checked #end>逐级退回&nbsp;&nbsp;
+					<INPUT TYPE="radio" NAME="objInfo.intTmpBackType" value="2"  #if($!objInfo.intTmpBackType==2)  checked #end>退回撰写人
+			<br>
+
+
+		<INPUT TYPE="checkbox" NAME="objInfo.intTmpIsAdd"  value="1" #if($!objInfo.intTmpIsAdd==1)  checked #end>可加签<br>
+		<INPUT TYPE="checkbox" NAME="objInfo.intTmpIsBreak"  value="1" #if($!objInfo.intTmpIsBreak==1)  checked #end>可终止<br>
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td class='tdEditContentLeft'>绑定方式$action.getText('global.interpunction.colon')</td>
+	<td class='tdEditContentRight'>
+		<TABLE>
+		<TR>
+			<TD valign='top' colspan=2><input type='radio' value='0' checked name='objInfo.intBandSaveType'>无绑定</TD>
+		</TR>
+		<TR><TD colspan=2 height='1' bgcolor='#999900'></TD></TR>
+		<TR>
+			<TD valign='top'><input type='radio' value='1' #if($objInfo.intBandSaveType == 1) checked #end name='objInfo.intBandSaveType'>方式A<br>覆盖绑定</TD>
+			<TD><img src="$action.getText('config.prjName')/images/workflownormal/checktypea.jpg"><br></TD>
+		</TR>
+		<TR><TD colspan=2 height='1' bgcolor='#999900'></TD></TR>
+		<TR>
+			<TD valign='top'><input type='radio' value='2' #if($objInfo.intBandSaveType == 2) checked #end name='objInfo.intBandSaveType'>方式B<br>覆盖绑定</TD>
+			<TD><img src="$action.getText('config.prjName')/images/workflownormal/checktypeb.jpg"><br></TD>
+		</TR>
+		<TR><TD colspan=2 height='1' bgcolor='#999900'></TD></TR>
+		<TR>
+			<TD valign='top'><input type='radio' value='3' #if($objInfo.intBandSaveType == 3) checked #end  name='objInfo.intBandSaveType'>方式C<br>追加绑定</TD>
+			<TD><img src="$action.getText('config.prjName')/images/workflownormal/checktypec.jpg"><br></TD>
+		</TR>
+		<TR><TD colspan=2 height='1' bgcolor='#999900'></TD></TR>
+		</TABLE>
+		内容字段：<INPUT TYPE="text" NAME="objInfo.strFontForBandFieldA" CLASS="inputText" maxlength="30" size="18"   VALUE="$!objInfo.strFontForBandFieldA"><br>
+		姓名字段：<INPUT TYPE="text" NAME="objInfo.strFontForBandFieldB" CLASS="inputText" maxlength="30" size="18"   VALUE="$!objInfo.strFontForBandFieldB">(针对A有效)<br>
+		日期字段：<INPUT TYPE="text" NAME="objInfo.strFontForBandFieldC" CLASS="inputText" maxlength="30" size="18"   VALUE="$!objInfo.strFontForBandFieldC">(针对A有效)<br>
+
+<br>
+	</td>
+
+#hodeSysUI_TrEnd()
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$!objInfo.intID")
+
+
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+// form fields description structure
+var a_fields = {
+        'objInfo.strName': {
+                'l': '$action.getText('workflownormal.main.form.strName')',  // label
+                'r': true,    // required
+                't': 't_objInfo.strName',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'cn': "objInfo.strName" // 比较字段
+        }
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+
+
+function fPopUpSelectDlgForWorkFlowIn(url,strValue_1,strSql_1)
+{
+	var strSql = document.getElementById(strSql_1);
+	var strValue = document.getElementById(strValue_1);
+	url=url+"?strSql="+strSql.value;
+	url=url+"&strValue="+strValue.value;
+	//var k=showModalDialog(url,"","dialogWidth:465px;status:no;dialogHeight:380px");
+	var k=showModalDialog(url,"","dialogWidth:465px;status:no;dialogHeight:380px");
+	if((k)&&(k.length>0))
+	{
+		var strArr= k.split("$#@&!");
+		strSql.value=strArr[0];
+		strValue.value=strArr[1];
+	}
+}
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

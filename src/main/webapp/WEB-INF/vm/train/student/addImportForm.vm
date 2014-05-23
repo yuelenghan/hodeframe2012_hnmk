@@ -1,0 +1,120 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#if($objInfo.intID>0)
+		#param( "title" "基础信息维护" )
+	#else
+		#param( "title" "基础信息导入" )
+	#end
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("addImportPreFix.action" "return doData(v.exec())" "post" "yes")
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">培训期次和班级：</TD>
+	#if ($objInfo.intID>0)##基础信息维护
+		<TD class="tdEditContentRight">$objInfo.strTrainCount&nbsp&nbsp$!objInfo.strTrainCountClass</TD>
+		<input type="hidden" name="objInfo.intTrainApplyID" value="$objInfo.intTrainApplyID">
+	#else##基础信息导入
+		<TD colspan=1 class="tdEditContentRight">
+		#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+		#set ($rtnList = $trainUtil.getTrainApplyListByGroupID($user.intGroupID))
+		<select name="objInfo.intTrainApplyID">
+			<option value="">请选择</option>
+			#foreach($objInfo3 in $rtnList)
+				<option value="$objInfo3.intID" #if($!objInfo.intID == $objInfo3.intID ) selected #end >$objInfo3.strTrainCount&nbsp&nbsp$!objInfo3.strTrainCountClass</option>
+			#end
+		</select>
+		</TD>
+	#end
+
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<TD class="tdEditContentLeft">格式：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<a href='javascript:downloadFile3("information/example/student/index.xls","基础信息导入模板.xls")'>基础信息导入模板</a>
+	</TD>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_optSingleFile("文件" "fileAttrUploadModel" "" "" 1 1 0)
+
+
+#hodeSysUI_TrBeginMainBody(3)
+		#hodeSysUI_showTextArea("备注"  1 0 "objInfo.strRemark" "$!objInfo.strRemark" 4 65 "")
+#hodeSysUI_TrEnd()
+
+
+<input type="hidden" name="objInfo.intID" value="$!objInfo.intID">
+#hodeSysUI_TrBeginMainBody(3)
+	<td colspan="2" align="center">
+		<input type="button" value="下一步" class="inputButton" onclick="return(checkForm())">
+	</td>
+#hodeSysUI_TrEnd()
+
+
+<iframe id="downLoadFrame3A" name="downLoadFrame3A" src="" width="0" height="0"></iframe>
+<SCRIPT LANGUAGE="JavaScript">
+	function downloadFile3(strFileName,strFileTitle)
+	{//alert("strFileName = " + strFileName + "  strFileTitle = " + strFileTitle);
+		//var tempTitle = encodeURI(strFileTitle);
+
+		document.getElementById('downLoadFrame3A').src="$action.getText('config.prjName')/servlet/fileDownload?strFileName="+strFileName+"&strFileTitle="+strFileTitle;
+	}
+</SCRIPT>
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+function checkForm(){
+
+		var intTrainApplyID=document.all("objInfo.intTrainApplyID").value;
+		if(intTrainApplyID==""){
+			alert("请选择培训班!");
+			return false;
+		}
+
+
+		var file=document.all("fileAttrUploadModel.strAddFiles").value;
+		if(file==""){
+			alert("请选择上传文件!");
+			return false;
+		}
+		if(file!=""){
+			var str= file.substr(file.length-3).toUpperCase();
+			if(str=="XLS"){
+				frmOperation.submit();
+			}
+			else{
+				alert("请输入正确的xls文件!");
+				return false;
+			}
+		}
+
+
+}
+
+
+//-->
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

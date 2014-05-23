@@ -1,0 +1,23 @@
+
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##信息显示区
+##**********************
+
+##添加|修改|删除信息提示页Header
+#bodytag( Component "template=AfterOperationFormComponentHeader.vm" )
+	#param("operationType" "edit")
+	#param("actionName" "showList3.action")
+	#param("needHiddenParams" "true")
+	#param("afterOperationTitle" "证书生成完毕")
+#end
+
+##添加|修改|删除信息提示页Footer
+#include("$action.getText('config.vmPath')/simple/AfterOperationFormFooter.vm")
+
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

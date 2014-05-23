@@ -1,0 +1,49 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('dictionary.operation.edit')" )
+#end
+
+
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("edit.action" "return HodeSoftValidator.checkValidata(document.getElementById('frmOperation'),1)" "post" "")
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$!action.getText('dictionary.form.strValue')"  1 1 "objInfo.strValue" "$!objInfo.strValue"   40 120 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$!action.getText('dictionary.form.strKey')"  1 1 "objInfo.strKey" "$!objInfo.strKey"   20 20 "")
+
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showText("$!action.getText('dictionary.form.intOrderID')"  1 0 "objInfo.intOrderID" "$!objInfo.intOrderID"   20 4 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showTextArea("$!action.getText('dictionary.form.strMemo')"  1 0 "objInfo.strMemo" "$!objInfo.strMemo" 4 65 "")
+#hodeSysUI_TrEnd()
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$!objInfo.intID")
+#hodeSysUI_EditBodyFoot(['save','reset','cancel'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

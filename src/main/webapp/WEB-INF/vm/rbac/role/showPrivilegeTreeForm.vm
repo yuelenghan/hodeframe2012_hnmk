@@ -1,0 +1,62 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/dtree.css">
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/dtree.js"></SCRIPT>
+#hodeSysUI_EditBodyHeader("updatePrivilegeTreeForm.action" "" "post" "")
+
+	##���ò���
+	#set( $rootID  = 0 )
+    #set($rootName = "$action.getText('rbac.privilege.operation.list')")
+    #set($rootUrl = "")
+    #set($rootTitle = "")
+    #set($rootTarget = "mainFrame")
+#hodeSysUI_TrBeginMainBody(3)
+	<td >
+		<div class="dtree">
+		<script type="text/javascript">
+			jsName = new dTree('jsName');
+			jsName.add($rootID,-1,'$!rootName','$!rootUrl','$!rootTitle','$!rootTarget','$!rootIcon','$!rootIconOpen','$!rootOpen');
+
+			#foreach($node in $privilegesList)
+				##rbac_getPrivilegeLevelName($node.intPrivilegeLevel $rtn2)
+				#set($strAfterVal= "")
+
+				#if($node.intPrivilegeLevel == 1)
+					#hodeSysBean_checkInArr($node.intID $intPrivilegesByRoleID $rtn)
+					#if($rtn == true)
+						#set($strAfterVal="&nbsp;<input type=checkbox name=intPrivilegeID class=checkbox checked value=$node.intID>")
+					#else
+						#set($strAfterVal="&nbsp;<input type=checkbox name=intPrivilegeID class=checkbox value=$node.intID>")
+					#end
+				#end
+
+				jsName.add($node.intID,$node.intFatherID,'$!node.strName $!{strAfterVal}','','','','','');
+			#end
+			document.write(jsName);
+
+					</script>
+				</div>
+
+			</td>
+
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$objInfo.intID")
+#hodeSysUI_TrEnd()
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+jsName.openAll();
+//-->
+</SCRIPT>
+
+##hodeSysUI_leftTblFooter("200")
+#set($checkBoxName = "document.frmOperation.elements['intPrivilegeID']")
+
+#hodeSysUI_EditBodyFoot(['selectall','save','reset','cancel'] "1")
+
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##����JavaScript

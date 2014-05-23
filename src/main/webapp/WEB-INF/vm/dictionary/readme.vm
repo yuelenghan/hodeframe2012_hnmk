@@ -1,0 +1,11 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<br><br>
+<TABLE  border="0" cellpadding="0" cellspacing="0" width=92% align='center'>
+<TR  class='trMainBodyContent'>
+	<TD>
+			$action.getText('dictionary.readme')
+	</TD>
+</TR>
+</TABLE>
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

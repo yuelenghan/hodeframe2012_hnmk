@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.log">
+  <typeAlias alias="trainLogModel" type="com.hode.train.model.TrainLogModel"/>
+
+  <select id="getObjectList" resultClass="trainLogModel" parameterClass="trainLogModel">
+	select *
+	from train_log
+	where strTableName = #strTableName#
+		and intInfoID =#intInfoID#
+	ORDER BY intID asc
+  </select>
+  <insert id="insertObject" parameterClass="trainLogModel">
+    INSERT INTO train_log(
+		intInfoID,
+		intCheckFlag,
+		strTableName,
+		strOptDate,
+		strOptContent,
+
+		intOptUserID,
+		strOptUserName,
+		intOptGroupID,
+		strOptGroupName,
+		intOptUnitID,
+		strOptUnitName
+		)
+	VALUES (
+		#intInfoID#,
+		#intCheckFlag#,
+		#strTableName#,
+		#strOptDate#,
+		#strOptContent#,
+
+		#intOptUserID#,
+		#strOptUserName#,
+		#intOptGroupID#,
+		#strOptGroupName#,
+		#intOptUnitID#,
+		#strOptUnitName#
+		)
+  </insert>
+</sqlMap>

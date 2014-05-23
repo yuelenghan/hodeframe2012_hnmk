@@ -1,0 +1,68 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.user.operation.move')" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("moveUserGroup.action" "" "post" "")
+
+<input type="hidden" name="objInfo.intID" value="$objInfo.intID">
+<input type="hidden" name="objSearch.intGroupID" value="$!{objSearch.intGroupID}">
+
+#hodeSysUI_TrBeginMainBody(3)
+	#hodeSysUI_showMsg("objInfo.strAccount" "$!action.getText('rbac.user.form.strAccount')")</TD>
+	<INPUT TYPE="hidden" NAME="objInfo.strAccount" CLASS="inputText" maxlength="20" size="20"   VALUE="$!user.strUserAccount">
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_TrBeginMainBody(3)
+	<td align="right">$action.getText('rbac.form.moveto') ：</td>
+	<td><input type="hidden" name="objInfo.intGroupID" value=""><textarea class="inputArea" readonly name="strGroupName" cols="60" rows="4"></textarea>&nbsp;&nbsp;<input type="button" class="inputButton" name="btn" value=" ... " onclick="fPopUpSelectGroupUnitDlg('../group/selectGroupUnit2.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intGroupID','strGroupName');"></td>
+#hodeSysUI_TrEnd()
+
+#set($addBtn = "<input type='button' class='inputButton' value='&nbsp;保&nbsp;&nbsp;&nbsp;&nbsp;存&nbsp;' onclick='frmSubmit();'>")
+#hodeSysUI_EditBodyFoot([$addBtn,'reset','cancel'] "2")
+
+
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+##parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+	function frmSubmit()
+	{
+		if(document.all['objInfo.intGroupID'].value == "")
+		{
+			alert("请选择要移动到的部门");
+		}
+		else
+		{
+			if(confirm("确定要移动吗？"))
+			{
+				document.frmOperation.submit();
+			}
+		}
+
+	}
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

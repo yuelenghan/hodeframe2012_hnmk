@@ -1,0 +1,230 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "人员信息管理" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+
+#hodeSysUI_TableBeginSearch("" "searchForm" "")
+#hodeSysUI_TrBeginMainBody(0)
+	<TD width="120" class="tdEditContentLeft" >姓名：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainStudentDetailInfo.strStudentName" id="trainStudentDetailInfo.strStudentName" CLASS="inputText" maxlength="20" size="20"   VALUE="$!trainStudentDetailInfo.strStudentName" >
+	</TD>
+	<TD width="120" class="tdEditContentLeft" >身份证：</TD>
+	<TD colspan=1 class="tdEditContentRight">
+		<INPUT TYPE="text" NAME="trainStudentDetailInfo.strStudentIDCode" id="trainStudentDetailInfo.strStudentIDCode" CLASS="inputText" maxlength="20" size="20"   VALUE="$!trainStudentDetailInfo.strStudentIDCode" >
+	</TD>
+	<td></td>
+
+	<input type="hidden" name="trainStudentDetailInfo.intSysIsClearSearch" value="1">
+	#hodeSysUI_optImg("search" 2 "left")
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_MainBodyFoot(1)
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "no" )
+	#param( "hiddenSearchAreaCookie" "message_showReceiveListCookie" )
+#end
+
+
+
+##-------------------------------------------------------------
+##**********************
+##功能操作区与分页显示区
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('trainStudentDetailInfo.intID'),new Array('$!trainStudentDetailInfo.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showSignUpDetail.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+
+##主体列表区表头
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+##标题栏
+#hodeSysUI_TrBeginMainBody(1)
+	<td colspan="1" align="center" width=40>$action.getText('global.operation')</td>
+
+	#hodeSysUI_TdMainBody("姓名" "center" "60" 0)
+	#hodeSysUI_TdMainBody("性别" "center" "40" 0)
+	#hodeSysUI_TdMainBody("身份证号码" "center" "120" 0)
+	#hodeSysUI_TdMainBody("单位及部门" "center" "200" 0)
+	#hodeSysUI_TdMainBody("职务" "center" "80" 0)
+	#hodeSysUI_TdMainBody("文化程度" "center" "70" 0)
+	#hodeSysUI_TdMainBody("单位类型" "center" "70" 0)
+	#hodeSysUI_TdMainBody("培训类别" "center" "70" 0)
+	#hodeSysUI_TdMainBody("培训期次和班级" "center" "70" 0)
+#hodeSysUI_TrEnd()
+
+##列表显示主体信息
+#set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+#set ($rtnList4 = $trainUtil.getAllTrainCount($user.intGroupID))
+#set($intNowCount=0)
+#foreach($objInfo3 in $signUpDetailList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+		#hodeSysUI_TdMainOpt("delete" "$action.getText('global.operation.del')" "deleteSignUpDetail.action?trainStudentDetailInfo.intID=$objInfo3.intID" "$action.getText('global.operation.delmsg2')" $objInfo.intID "")
+		<input type="hidden" name="studentID" value="$objInfo3.intID">
+		<input type="hidden" id="culUser" value="$user.intUserID">
+		<td align="center" width="60"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentName</a></td>
+		<td align="center" width="40"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentSex</a></td>
+		<td align="center" width="120"><a href="viewDetailForm.action?trainStudentDetailInfo.intID=$objInfo3.intID" target='_blank'>$objInfo3.strStudentIDCode</a></td>
+		<td align="center" width="200">$objInfo3.strStudentPost</td>
+		<td align="center" width="80">$objInfo3.strStudentTitles</td>
+		<td align="center" width="70">$objInfo3.strStudentDegree</td>
+		<td align="center" width="70">$objInfo3.strStudentUnitType</td>
+		<td align="center" width="70">
+			#if ($objInfo3.strTrainType=='1')
+				再培训
+			#else
+				培训
+			#end
+		</td>
+
+		<td align="center" width="70">
+			<select id="trainApplyID" name="trainApplyID">
+				#foreach($objInfo4 in $rtnList4)
+					<option value="$objInfo4.intID">$objInfo4.strTrainCount&nbsp&nbsp$!objInfo4.strTrainCountClass</option>
+				#end
+			</select>
+		</td>
+
+    #hodeSysUI_TrEnd()
+#end
+
+
+<TABLE width="640" align="center"  border="0" cellspacing="0" cellpadding="0">
+	<TR>
+	<TD height="30" class="white10p"  align="center">
+		<img src="/hodeframe2012_hnmk/images/operator/opt_ok.gif" style="cursor:hand" onclick="prcessSignUp()">&nbsp;&nbsp;
+	</TD>
+	</TR>
+</TABLE>
+
+##主体列表区表尾
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##包含功能操作区与分页区
+#set( $addBtn = "no" )
+#set( $delBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('global.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('trainStudentDetailInfo.intID'),new Array('$!trainStudentDetailInfo.intID'))" )
+	#param( "delBtn" "$delBtn" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','','')" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showSignUpDetail.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "hiddenParams" "<INPUT TYPE='hidden' NAME='trainStudentDetailInfo.intSysIsClearSearch' value=1>" )
+	#param( "needPagination" 1)
+#end
+
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##加载JavaScript
+<script type="text/javascript">
+
+function fPopUpCalendarDlg(ctrlobj)
+{
+	showx = event.screenX - event.offsetX - 4 - 210 ; // + deltaX;
+	showy = event.screenY - event.offsetY + 18; // + deltaY;
+	newWINwidth = 210 + 4 + 18;
+
+	retval = window.showModalDialog("/hodeframe2012_hnmk/js/calendardlg.htm", "", "dialogWidth:200px; dialogHeight:230px; dialogLeft:"+showx+"px; dialogTop:"+showy+"px; status:no; directories:yes;scrollbars:no;Resizable=no; "  );
+	if( retval != null ) {
+		ctrlobj.value = retval;
+	}
+}
+
+function test() {
+	var ids = $("input[name='studentID']");
+	var trainApplyIDs = $("select[name='trainApplyID']");
+	//alert(ids[1].value);
+	//alert(trainCounts[1].value);
+	//alert(ids.length);
+	//alert(trainCounts.length);
+	var param = "ids=";
+	for(var i=0; i<ids.length; i++) {
+		param += ids[i].value + "#";
+	}
+	param += "&trainApplyIDs=";
+	for(var i=0; i<trainApplyIDs.length; i++) {
+		param += trainApplyIDs[i].value + "#";
+	}
+	//alert(param);
+}
+
+function prcessSignUp() {
+	 if(confirm("确认处理报名信息？")) {
+	 	var ids = $("input[name='studentID']");
+	    var trainApplyIDs = $("select[name='trainApplyID']");
+	    var idsStr = "";
+	    var trainApplyIDsStr = "";
+	    var culUser = $("#culUser").val();
+	   // alert(culUser);
+		for(var i=0; i<ids.length; i++) {
+			idsStr += ids[i].value + ",";
+		}
+		for(var i=0; i<trainApplyIDs.length; i++) {
+			trainApplyIDsStr += trainApplyIDs[i].value + ",";
+		}
+	 	jQuery.ajax({
+                url : "/hodeframe2012_hnmk/servlet/processSignUp",
+                dataType : "json",
+                type : "POST",
+                data : "ids="+idsStr+"&trainApplyIDs="+trainApplyIDsStr+"&culUser="+culUser,
+                success : function(data, textStatus, jqXHR) {
+               	    alert("报名信息处理成功！");
+               	    window.location.reload();
+                },
+                error : function() {
+                	alert("报名信息处理失败！");
+                	window.location.reload();
+                }
+          	});
+	 } else {
+	 	return;
+	 }
+}
+</script>

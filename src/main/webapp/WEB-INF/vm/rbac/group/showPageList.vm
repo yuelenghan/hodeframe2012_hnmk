@@ -1,0 +1,119 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+##���ò���
+##-------------------------------------------------------------
+##**********************
+##��ǰ������
+##**********************
+##��ʾ��ǰ����������
+
+#rbac_getGroupModelById($objSearch.intFatherID $groupObj)
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.group.operation.list') $action.getText('global.interpunction.right') $groupObj.strName" )
+#end
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##���ܲ��������ҳ��ʾ��
+##**********************
+
+##-------------------------------------------------------------
+##**********************
+##�����б���
+##**********************
+#set( $addBtn = "yes" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPageList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##�����б����ͷ
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+
+
+##������
+#hodeSysUI_TrBeginMainBody(1)
+##if($objSearch.intFatherID>0)
+	<td colspan="3" align="center">$action.getText('global.operation')</td>
+##end
+
+	#hodeSysUI_TdMainBody("$action.getText('rbac.group.form.strName')" "center" "center" 0)
+
+##hodeSysUI_TdMainBody("$action.getText('rbac.group.form.parentstrName')" "center" "" 0)
+#hodeSysUI_TdMainBody("$action.getText('rbac.group.form.strDescribe')" "center" "" 0)
+#hodeSysUI_TdMainBody("$action.getText('rbac.group.form.intOrderID')" "center" "" 0)
+#hodeSysUI_TrEnd()
+
+##�б���ʾ������Ϣ
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+		#if($intNowCount % 2 == 0)
+			#hodeSysUI_TrBeginMainBody(2)
+		#else
+			#hodeSysUI_TrBeginMainBody(3)
+		#end
+
+		#set($editTitle = $stack.findValue("getText('rbac.group.operation.updateTitle', {'$!objInfo.strName'})"))
+		#hodeSysUI_TdMainOpt("edit" "$editTitle" "editForm.action" "" $objInfo.intID "")
+		#set($delTitle = $stack.findValue("getText('rbac.group.operation.delTitle', {'$!objInfo.strName'})"))
+		#set($delAlert = $stack.findValue("getText('rbac.group.operation.delmsg', {'$!objInfo.strName'})"))
+		#hodeSysUI_TdMainOpt("delete" "$delTitle" "delForm.action" "$delAlert" $objInfo.intID "")
+	<td width="40" align='center'><img src="$action.getText('config.prjName')/images/operator/opt_checked.gif" onclick="editDoc(document.frmMainList,'moveGroupForm.action','$!objInfo.intID','','','','')" style="cursor:hand" alt="$action.getText('rbac.group.operation.move')"></td>
+
+	#set($strName = "$action.getText('global.interpunction.bracket1')#rbac_getGroupTypeName($!objInfo.intGroupType)$action.getText('global.interpunction.bracket2') $!objInfo.strName ")
+	#hodeSysUI_TdMainBody("$strName" "center" "" 15)
+	#hodeSysUI_TdMainBody("$!objInfo.strDescribe" "center" "" 20)
+	#hodeSysUI_TdMainBody("$!objInfo.intOrderID" "center" "" 0)
+
+    #hodeSysUI_TrEnd()
+#end
+
+##�����
+##hodeSysUI_fillMain(6)
+
+
+##�����б����β
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+ <br>
+##���ܲ��������ҳ��
+#set( $addBtn = "no" )
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "$!addBtn" )
+	#param( "addBtnTitle" "$action.getText('rbac.group.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPageList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##########��ҳ��
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##����JavaScript

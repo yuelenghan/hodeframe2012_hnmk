@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.checkMat">
+  <typeAlias alias="trainMaterialModel" type="com.hode.train.model.TrainMaterialModel"/>
+
+   <select id="getObjectList" resultClass="trainMaterialModel" parameterClass="trainMaterialModel">
+	select *
+	from train_material
+	where intCreateGroup=#intCreateGroup#
+	<isNotEqual prepend="AND" property="intDictionary" compareValue="0">
+	   intDictionary = #intDictionary#
+	</isNotEqual>
+	ORDER BY intID desc
+  </select>
+
+   <select id="selectMatId" resultClass="trainMaterialModel" parameterClass="int">
+	  select *
+	  from train_material
+	  where intID=#intID#
+   </select>
+
+  <update id="updateMat" parameterClass="trainMaterialModel">
+    UPDATE train_material
+	SET
+		strName = #strName#,
+		strVersion = #strVersion#,
+		strPublisherName = #strPublisherName#,
+		strPrice = #strPrice#,
+		intDictionary=#intDictionary#
+	WHERE intID = #intID#
+  </update>
+
+
+  <delete id="deleteMater" parameterClass="trainMaterialModel">
+		delete from train_material
+		WHERE intID = #intID#
+  </delete>
+
+  <insert id="insertObject" parameterClass="trainMaterialModel">
+    INSERT INTO train_material(
+			strName,
+			strVersion,
+			strPublisherName,
+			strPrice,
+			intDictionary,
+			intCreateUser,
+			intCreateGroup
+		)
+	VALUES (
+		#strName#,
+		#strVersion#,
+		#strPublisherName#,
+		#strPrice#,
+		#intDictionary#,
+		#intCreateUser#,
+		#intCreateGroup#
+		)
+  </insert>
+
+</sqlMap>

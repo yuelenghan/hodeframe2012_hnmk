@@ -1,0 +1,43 @@
+//var sPath = document.location.pathname;
+//sPath = sPath.substr(0, sPath.length-22);
+
+var URLParams = new Object() ;
+
+var aParams = document.location.search.substr(1).split('&') ;
+for (i=0 ; i < aParams.length ; i++)
+{
+	var aParam = aParams[i].split('=') ;
+	URLParams[aParam[0]] = aParam[1] ;
+}
+
+var sFullScreen = null;
+sFullScreen = URLParams['sFullScreen'] ;
+
+var sLinkFieldName = URLParams['sContentID'] ;
+var sLinkOriginalFileName = "" ;
+var sLinkSaveFileName = "" ;
+var sLinkSavePathFileName = "" ;
+
+// ȫ�����ö���
+var config = new Object() ;
+
+//config.StyleName = URLParams['sStyleName'];
+
+config.StyleName = "advance";
+config.StyleDir = "office";
+config.StyleUploadDir = "UploadFile/";
+config.InitMode = "EDIT";
+config.AutoDetectPasteFromWord = true;
+config.BaseUrl = "1";
+config.BaseHref = "";
+config.AutoRemote = "1";
+config.ShowBorder = "0";
+
+var sBaseHref = "";
+if(config.BaseHref!=""){
+	sBaseHref = "<base href=\"" + document.location.protocol + "//" + document.location.host + config.BaseHref + "\">";
+}
+
+config.StyleMenuHeader = "<head><link href=\"$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/menuarea.css\" type=\"text/css\" rel=\"stylesheet\"></head><body scroll=\"no\" onConTextMenu=\"event.returnValue=false;\">";
+
+config.StyleEditorHeader = "<head><link href=\"$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/editorarea.css\" type=\"text/css\" rel=\"stylesheet\">" + sBaseHref + "</head><body MONOSPACE>" ;

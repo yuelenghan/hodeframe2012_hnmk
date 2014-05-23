@@ -1,0 +1,54 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/dtree.css">
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/dtree.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+#hodeSysUI_EditBodyHeader("updateRoleTreeForm.action" "" "post" "")
+#hodeSysUI_TrBeginMainBody(3)
+##set($rootID  = $user.intGroupID )
+#set($rootID  = 1 )
+#set($rootName = "$action.getText('rbac.user.operation.setRole')")
+#set($rootUrl = "")
+#set($rootTitle = "")
+#set($rootTarget = "mainFrame")
+
+<td ><div class="dtree">
+<script type="text/javascript">
+	jsName = new dTree('jsName');
+	jsName.add($rootID,-1,'$!rootName','$!rootUrl','$!rootTitle','$!rootTarget','$!rootIcon','$!rootIconOpen','$!rootOpen');
+
+	##foreach($node in $groupList)
+		##jsName.add($node.intID,$node.intFatherID,'$!node.strName','','','','','');
+	###end
+
+	#foreach($node1 in $roleList)
+		#hodeSysBean_checkInArr($node1.intID $intRoleID $rtn)
+		#if($rtn == true)
+			#set($strAfterVal="&nbsp;<input type=checkbox name=intRoleID  class=checkbox checked value=$node1.intID>")
+		#else
+			#set($strAfterVal="&nbsp;<input type=checkbox name=intRoleID  class=checkbox  value=$node1.intID>")
+		#end
+
+
+		jsName.add("role_${node1.intID}",$node1.intGroupID,'$!node1.strName$!{strAfterVal}','','','','','');
+	#end
+	document.write(jsName);
+        	</script>
+		</div></td>
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$objInfo.intID")
+</tr>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+jsName.openAll();
+//-->
+</SCRIPT>
+#hodeSysUI_leftTblFooter("200")
+#set($checkBoxName = "document.frmOperation.elements['intRoleID']")
+#hodeSysUI_EditBodyFoot(['selectall','save','reset','cancel'] "1")
+
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##����JavaScript

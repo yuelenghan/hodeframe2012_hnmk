@@ -1,0 +1,139 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+    <package name="webeditor" extends="index" namespace="/webeditor">
+        <interceptors>
+            <interceptor-stack name="fileUploadStack">
+                <interceptor-ref name="fileUpload"/>
+				<interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="fileUploadStack"/>
+
+		<!-- webedit type -->
+        <action name="webeditorAdvance" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/webeditor_advance.vm</result>
+        </action>
+        <action name="webeditorStandard" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/webeditor_standard.vm</result>
+        </action>
+        <action name="webeditorEasy" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/webeditor_easy.vm</result>
+        </action>
+        <action name="webeditorMini" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/webeditor_mini.vm</result>
+        </action>
+        <action name="webeditorView" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/webeditor_view.vm</result>
+        </action>
+
+        <action name="webeditorDialogForAnchor" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/anchor.vm</result>
+        </action>
+        <action name="webeditorDialogForBackimage" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/backimage.vm</result>
+        </action>
+        <action name="webeditorDialogForEmot" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/emot.vm</result>
+        </action>
+        <action name="webeditorDialogForFieldset" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/fieldset.vm</result>
+        </action>
+        <action name="webeditorDialogForFile" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/file.vm</result>
+        </action>
+        <action name="webeditorDialogForReplace" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/findreplace.vm</result>
+        </action>
+        <action name="webeditorDialogForFlash" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/flash.vm</result>
+        </action>
+
+        <action name="webeditorDialogForFullScreen" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/fullscreen.vm</result>
+        </action>
+
+
+        <action name="webeditorDialogForHyperlink" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/hyperlink.vm</result>
+        </action>
+
+        <action name="webeditorDialogForIframe" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/iframe.vm</result>
+        </action>
+        <action name="webeditorDialogForImg" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/img.vm</result>
+        </action>
+        <action name="webeditorDialogForMap" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/map.vm</result>
+        </action>
+        <action name="webeditorDialogForMarquee" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/marquee.vm</result>
+        </action>
+
+        <action name="webeditorDialogForMedia" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/media.vm</result>
+        </action>
+
+
+        <action name="webeditorDialogForSelcolor" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/selcolor.vm</result>
+        </action>
+        <action name="webeditorDialogForSymbol" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/symbol.vm</result>
+        </action>
+        <action name="webeditorDialogForTable" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/table.vm</result>
+        </action>
+        <action name="webeditorDialogForTableCell" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/tablecell.vm</result>
+        </action>
+        <action name="webeditorDialogForTableCellSplit" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/tablecellsplit.vm</result>
+        </action>
+
+
+
+
+
+
+        <action name="showFlashUpload" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadflash.vm</result>
+        </action>
+        <action name="showImgUpload" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadimg.vm</result>
+        </action>
+        <action name="showMediaUpload" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadmedia.vm</result>
+        </action>
+        <action name="showFileUpload" class="webeditorAction">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadfile.vm</result>
+        </action>
+
+		<!-- extra -->
+        <action name="fileUpload" class="webeditorAction" method="fileUpload">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadfile.vm</result>
+            <result name="input" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadfile.vm</result>
+        </action>
+
+		<!-- flash -->
+        <action name="flashUpload" class="webeditorAction" method="flashUpload">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadflash.vm</result>
+            <result name="input" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadflash.vm</result>
+        </action>
+
+		<!-- pic -->
+        <action name="imgUpload" class="webeditorAction" method="imgUpload">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadimg.vm</result>
+            <result name="input" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadimg.vm</result>
+        </action>
+
+		<!-- media -->
+        <action name="mediaUpload" class="webeditorAction" method="mediaUpload">
+            <result name="success" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadmedia.vm</result>
+            <result name="input" type="velocity">/WEB-INF/vm/webeditor/dialog/uploadmedia.vm</result>
+        </action>
+
+
+	</package>
+</xwork>

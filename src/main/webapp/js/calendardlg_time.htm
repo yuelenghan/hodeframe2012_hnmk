@@ -1,0 +1,504 @@
+<!-- 
+Created By njjxd <njjxd@126.com> @ 2004-09-29
+-->
+<html>
+<head>
+<title>日历/时间 属性</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="Author" content="njjxd<njjxd@126.com>">
+<meta name="Keywords" content="日历/时间选择器,时间控件,Web日历,在线日历,njjxd<njjxd@126.com>">
+<meta name="Description" content="日历/时间选择器,Created By njjxd <njjxd@126.com> @ 2004-09-29">
+<style type="text/css">
+body {
+	background-color: #D4D0C8;
+}
+.button {
+	width: 75px;
+	font-size: 12px;
+	height: 20px;
+}
+.m_fieldset {
+	padding: 0,10,5,10;
+	text-align: center;
+	width: 150px;
+}
+.m_legend {
+	font-family: Tahoma;
+	font-size: 11px;
+	padding-bottom: 5px;
+}
+.m_frameborder {
+	border-left: 2px inset #D4D0C8;
+	border-top: 2px inset #D4D0C8;
+	border-right: 2px inset #FFFFFF;
+	border-bottom: 2px inset #FFFFFF;
+	width: 100px;
+	height: 19px;
+	background-color: #FFFFFF;
+	overflow: hidden;
+	text-align: right;
+	font-family: "Tahoma";
+	font-size: 10px;
+}
+.m_arrow {
+	width: 16px;
+	height: 8px;
+	font-family: "Webdings";
+	font-size: 7px;
+	line-height: 2px;
+	padding-left: 2px;
+	cursor: default;
+}
+.m_input {
+	width: 18px;
+	height: 14px;
+	border: 0px solid black;
+	font-family: "Tahoma";
+	font-size: 9px;
+	text-align: right;
+	ime-mode:disabled;
+}
+.c_fieldset {
+	padding: 0,10,5,10;
+	text-align: center;
+	width: 180px;
+}
+.c_legend {
+	font-family: Tahoma;
+	font-size: 11px;
+	padding-bottom: 5px;
+}
+.c_frameborder {
+	border-left: 2px inset #D4D0C8;
+	border-top: 2px inset #D4D0C8;
+	border-right: 2px inset #FFFFFF;
+	border-bottom: 2px inset #FFFFFF;
+	background-color: #FFFFFF;
+	overflow: hidden;
+	font-family: "Tahoma";
+	font-size: 10px;
+	width:160px;
+	height:120px;
+}
+.c_frameborder td {
+	width: 23px;
+	height: 16px;
+	font-family: "Tahoma";
+	font-size: 11px;
+	text-align: center;
+	cursor: default;
+}
+.c_frameborder .selected {
+	background-color:#0A246A;
+	width:12px;
+	height:12px;
+	color:white;
+}
+.c_frameborder span {
+	width:12px;
+	height:12px;
+}
+.c_arrow {
+	width: 16px;
+	height: 8px;
+	font-family: "Webdings";
+	font-size: 7px;
+	line-height: 2px;
+	padding-left: 2px;
+	cursor: default;
+}
+.c_year {
+	font-family: "Tahoma";
+	font-size: 11px;
+	cursor: default;
+	width:55px;
+	height:19px;
+}
+.c_month {
+	width:75px;
+	height:20px;
+	font:11px "Tahoma";
+}
+.c_dateHead {
+	background-color:#808080;
+	color:#D4D0C8;
+}
+</style>
+
+<script language="javascript">
+function minute(name,fName)
+{
+	this.name = name;
+	this.fName = fName || "m_input";
+	this.timer = null;
+	this.fObj = null;
+
+	this.fCol = '000000';	//face colour.
+	this.sCol = 'ff0000';	//seconds colour.
+	this.mCol = '000000';	//minutes colour.
+	this.hCol = '000000';	//hours colour.
+	this.H = '.....';
+	this.H = this.H.split('');
+	this.M = '.......';
+	this.M = this.M.split('');
+	this.S = '........';
+	this.S = this.S.split('');
+	this.dots = 12;			//the number of dots of clock
+	this.Ypos = 0;
+	this.Xpos = 58;
+	this.Ybase = 8;
+	this.Xbase = 8;
+
+	this.toString = function()
+	{
+		var objDate = new Date();
+		var sec	= -1.57 + Math.PI * parseInt(objDate.getSeconds())/30;
+		var min	= -1.57 + Math.PI * parseInt(objDate.getMinutes())/30;
+		var hr = -1.57 + Math.PI * parseInt(objDate.getHours())/6 + Math.PI*parseInt(objDate.getMinutes())/360;
+		var sMinute_Common = "class=\"m_input\" maxlength=\"2\" name=\""+this.fName+"\" onfocus=\""+this.name+".setFocusObj(this)\" onblur=\""+this.name+".setTime(this)\" onkeyup=\""+this.name+".prevent(this)\" onkeypress=\"if (!/[0-9]/.test(String.fromCharCode(event.keyCode)))event.keyCode=0\" onpaste=\"return false\" ondragenter=\"return false\"";
+		var sButton_Common = "class=\"m_arrow\" onfocus=\"this.blur()\" onmouseup=\""+this.name+".controlTime()\" disabled"
+		var str = "";
+		str += "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">"
+		//clock cartoon
+		str += "<tr>"
+		str += "<td height=130>";
+		str += "<div style=\"position:relative;top:0px;left:0px\"><div style=\"position:relative\">";
+		for (var i=1; i<=this.dots; i++)
+		{
+			divTop = this.Ypos - 15 + 55 * Math.sin(-0.49*2-0.05+this.dots+i/1.9);
+			divLeft = this.Xpos - 14 + 55 * Math.cos(-0.49*2-0.05+this.dots+i/1.9);
+
+			str += "<div id=\"ieDigits\" style=\"position:absolute;top:"+divTop+"px;left:"+divLeft+"px;width:30px;height:30px;font-family:Arial,Verdana;font-size:10px;color:"+this.fCol+";text-align:center;padding-top:10px;pixelTop:1411px;pixelLeft:1500px;visibility:visible\">"+i+"</div>";
+		}
+		str += "</div></div>";
+		str += "<div style=\"position:relative;top:0px;left:0px\"><div style=\"position:relative\">";
+		for (var i=0; i<this.M.length; i++)
+		{
+			divTop = this.Ypos + i * this.Ybase * Math.sin(min);
+			divLeft = this.Xpos + i * this.Xbase * Math.cos(min);
+
+			str += "<div id=y style=\"position:absolute;top:"+divTop+"px;left:"+divLeft+"px;width:2px;height:2px;font-size:2px;background:"+this.mCol+"\"></div>";
+		}
+		str += "</div></div>";
+		str += "<div style=\"position:relative;top:0px;left:0px\"><div style=\"position:relative\">";
+		for (var i=0; i<this.H.length; i++)
+		{
+			divTop = this.Ypos + i * this.Ybase*Math.sin(hr);
+			divLeft = this.Xpos + i * this.Xbase*Math.cos(hr);
+
+			str += "<div id=z style=\"position:absolute;top:"+divTop+"px;left:"+divLeft+"px;width:2px;height:2px;font-size:2px;background:"+this.hCol+"\"></div>";
+		}
+		str += "</div></div>";
+		str += "<div style=\"position:relative;top:0px;left:0px\"><div style=\"position:relative\">";
+		for (var i=0; i<this.S.length; i++)
+		{
+			divTop = this.Ypos + i * this.Ybase * Math.sin(sec);
+			divLeft = this.Xpos + i * this.Xbase * Math.cos(sec);
+
+			str += "<div id=x style=\"position:absolute;top:"+divTop+"px;left:"+divLeft+"px;width:2px;height:2px;font-size:2px;background:"+this.sCol+"\"></div>";
+		}
+		str += "</div></div>";
+		str += "</td>";
+		str += "</tr>";
+		//input text
+		str += "<tr>";
+		str += "<td>"
+		str += "<div class=\"m_frameborder\">"
+		str += "<input radix=\"24\" value=\""+this.formatTime(objDate.getHours())+"\" "+sMinute_Common+">"
+		str += ":<input radix=\"60\" value=\""+this.formatTime(objDate.getMinutes())+"\" "+sMinute_Common+">"
+		str += "<input style='display:none' radix=\"60\" value=\""+this.formatTime(objDate.getSeconds())+"\" "+sMinute_Common+">"
+		str += "</div>"
+		str += "</td>"
+		str += "<td>"
+		str += "<table border=\"0\" cellspacing=\"2\" cellpadding=\"0\">"
+		str += "<tr><td><button id=\""+this.fName+"_up\" "+sButton_Common+">5</button></td></tr>"
+		str += "<tr><td><button id=\""+this.fName+"_down\" "+sButton_Common+">6</button></td></tr>"
+		str += "</table>"
+		str += "</td>"
+		str += "</tr>"
+		str += "</table>"
+		return str;
+	}
+	this.play = function()
+	{
+		this.timer = setInterval(this.name+".playback()",1000);
+	}
+	this.formatTime = function(sTime)
+	{
+		sTime = ("0"+sTime);
+		return sTime.substr(sTime.length-2);
+	}
+	this.playback = function()
+	{
+		var objDate = new Date();
+		var arrDate = [objDate.getHours(),objDate.getMinutes(),objDate.getSeconds()];
+		var objMinute = document.getElementsByName(this.fName);
+
+		for (var i=0;i<objMinute.length;i++)
+		{
+			objMinute[i].value = this.formatTime(arrDate[i])
+		}
+		this.clock(objDate.getHours(),objDate.getMinutes(),objDate.getSeconds());
+	}
+	this.clock = function(hrs, mins, secs)
+	{
+		var objDate = new Date();
+		objDate.setHours(hrs, mins, secs);
+		var sec	= -1.57 + Math.PI * parseInt(objDate.getSeconds())/30;
+		var min	= -1.57 + Math.PI * parseInt(objDate.getMinutes())/30;
+		var hr = -1.57 + Math.PI * parseInt(objDate.getHours())/6 + Math.PI*parseInt(objDate.getMinutes())/360;
+
+		for (var i=0; i<this.S.length; i++)
+		{
+			x[i].style.pixelTop = this.Ypos + i * this.Ybase * Math.sin(sec);
+			x[i].style.pixelLeft = this.Xpos + i * this.Xbase * Math.cos(sec);
+		}
+		for (var i=0; i<this.M.length; i++)
+		{
+			y[i].style.pixelTop = this.Ypos + i * this.Ybase * Math.sin(min);
+			y[i].style.pixelLeft = this.Xpos + i * this.Xbase * Math.cos(min);
+		}
+		for (var i=0; i<this.H.length; i++)
+		{
+			z[i].style.pixelTop = this.Ypos + i * this.Ybase*Math.sin(hr);
+			z[i].style.pixelLeft = this.Xpos + i * this.Xbase*Math.cos(hr);
+		}
+	}
+	this.prevent = function(obj)
+	{
+		clearInterval(this.timer);
+		this.setFocusObj(obj);
+		var value = parseInt(obj.value,10);
+		var radix = parseInt(obj.radix,10)-1;
+		if (obj.value>radix||obj.value<0)
+		{
+			obj.value = obj.value.substr(0,1);
+		}
+
+		var hrs = document.getElementsByName(this.fName)[0].value;
+		var mins = document.getElementsByName(this.fName)[1].value;
+		var secs = document.getElementsByName(this.fName)[2].value;
+		this.clock(hrs, mins, secs);
+	}
+	this.controlTime = function(cmd)
+	{
+		event.cancelBubble = true;
+		if (!this.fObj) return;
+		clearInterval(this.timer);
+		var cmd = event.srcElement.innerText=="5"?true:false;
+		var i = parseInt(this.fObj.value,10);
+		var radix = parseInt(this.fObj.radix,10)-1;
+		if (i==radix&&cmd)
+		{
+			i = 0;
+		}
+		else if (i==0&&!cmd)
+		{
+			i = radix;
+		}
+		else
+		{
+			cmd?i++:i--;
+		}
+		this.fObj.value = this.formatTime(i);
+		this.fObj.select();
+	}
+	this.setTime = function(obj)
+	{
+		obj.value = this.formatTime(obj.value);
+	}
+	this.setFocusObj = function(obj)
+	{
+		eval(this.fName+"_up").disabled = eval(this.fName+"_down").disabled = false;
+		this.fObj = obj;
+	}
+	this.getTime = function()
+	{
+		var arrTime = new Array(2);
+		for (var i=0;i<document.getElementsByName(this.fName).length;i++)
+		{
+			arrTime[i] = document.getElementsByName(this.fName)[i].value;
+		}
+		return arrTime.join(":");
+	}
+}
+</script>
+
+
+<script language="javascript">
+function calendar(name,fName)
+{
+	this.name = name;
+	this.fName = fName || "calendar";
+	this.year = new Date().getFullYear();
+	this.month = new Date().getMonth();
+	this.date = new Date().getDate();
+	//private
+	this.toString = function()
+	{
+		var str = "";
+		str += "<table border=\"0\" cellspacing=\"3\" cellpadding=\"0\" onselectstart=\"return false\">";
+		str += "<tr>";
+		str += "<td>";
+		str += this.drawMonth();
+		str += "</td>";
+		str += "<td align=\"right\">";
+		str += this.drawYear();
+		str += "</td>";
+		str += "</tr>";
+		str += "<tr>";
+		str += "<td colspan=\"2\">";
+		str += "<div class=\"c_frameborder\">";
+		str += "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" class=\"c_dateHead\">";
+		str += "<tr>";
+		str += "<td>日</td><td>一</td><td>二</td><td>三</td><td>四</td><td>五</td><td>六</td>";
+		str += "</tr>";
+		str += "</table>";
+		str += this.drawDate();
+		str += "</div>";
+		str += "</td>";
+		str += "</tr>";
+		str += "</table>";
+		return str;
+	}
+	//private
+	this.drawYear = function()
+	{
+		var str = "";
+		str += "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+		str += "<tr>";
+		str += "<td>";
+		str += "<input class=\"c_year\" maxlength=\"4\" value=\""+this.year+"\" name=\""+this.fName+"\" id=\""+this.fName+"_year\" readonly>";
+		//DateField
+		str += "<input type=\"hidden\" name=\""+this.fName+"\" value=\""+this.date+"\" id=\""+this.fName+"_date\">";
+		str += "</td>";
+		str += "<td>";
+		str += "<table cellspacing=\"2\" cellpadding=\"0\" border=\"0\">";
+		str += "<tr>";
+		str += "<td><button class=\"c_arrow\" onfocus=\"this.blur()\" onclick=\"event.cancelBubble=true;document.getElementById('"+this.fName+"_year').value++;"+this.name+".redrawDate()\">5</button></td>";
+		str += "</tr>";
+		str += "<tr>";
+		str += "<td><button class=\"c_arrow\" onfocus=\"this.blur()\" onclick=\"event.cancelBubble=true;document.getElementById('"+this.fName+"_year').value--;"+this.name+".redrawDate()\">6</button></td>";
+		str += "</tr>";
+		str += "</table>";
+		str += "</td>";
+		str += "</tr>";
+		str += "</table>";
+		return str;
+	}
+	//priavate
+	this.drawMonth = function()
+	{
+		var aMonthName = ["一","二","三","四","五","六","七","八","九","十","十一","十二"];
+		var str = "";
+		str += "<select class=\"c_month\" name=\""+this.fName+"\" id=\""+this.fName+"_month\" onchange=\""+this.name+".redrawDate()\">";
+		for (var i=0;i<aMonthName.length;i++) {
+			str += "<option value=\""+(i+1)+"\" "+(i==this.month?"selected":"")+">"+aMonthName[i]+"月</option>";
+		}
+		str += "</select>";
+		return str;
+	}
+	//private
+	this.drawDate = function()
+	{
+		var str = "";
+		var fDay = new Date(this.year,this.month,1).getDay();
+		var fDate = 1-fDay;
+		var lDay = new Date(this.year,this.month+1,0).getDay();
+		var lDate = new Date(this.year,this.month+1,0).getDate();
+		str += "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" id=\""+this.fName+"_dateTable"+"\">";
+		for (var i=1,j=fDate;i<7;i++)
+		{
+			str += "<tr>";
+			for (var k=0;k<7;k++)
+			{
+				str += "<td><span"+(j==this.date?" class=\"selected\"":"")+" onclick=\""+this.name+".redrawDate(this.innerText)\">"+(isDate(j++))+"</span></td>";
+			}
+			str += "</tr>";
+		}
+		str += "</table>";
+		return str;
+
+		function isDate(n)
+		{
+			return (n>=1&&n<=lDate)?n:"";
+		}
+	}
+	//public
+	this.redrawDate = function(d)
+	{
+		this.year = document.getElementById(this.fName+"_year").value;
+		this.month = document.getElementById(this.fName+"_month").value-1;
+		this.date = d || this.date;
+		document.getElementById(this.fName+"_year").value = this.year;
+		document.getElementById(this.fName+"_month").selectedIndex = this.month;
+		document.getElementById(this.fName+"_date").value = this.date;
+		if (this.date>new Date(this.year,this.month+1,0).getDate()) this.date = new Date(this.year,this.month+1,0).getDate();
+		document.getElementById(this.fName+"_dateTable").outerHTML = this.drawDate();
+	}
+	this.formatDate = function(sDate)
+	{
+		sDate = ("0"+sDate);
+		return sDate.substr(sDate.length-2);
+	}
+	//public
+	this.getDate = function(delimiter)
+	{
+		if (!delimiter) delimiter = "-";
+		var aValue = [this.year,this.formatDate(this.month+1),this.formatDate(this.date)];
+		return aValue.join(delimiter);
+	}
+}
+</script>
+
+<script language="JavaScript">
+function getCalendarValue()
+{
+	window.returnValue = c.getDate() + ' ' + m.getTime();
+	closeWin();
+}
+function emptyCalendarValue()
+{
+	window.returnValue = "";
+	closeWin();
+}
+function closeWin()
+{
+	window.close();
+}
+</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</HEAD>
+
+<BODY>
+<table border="0" cellspacing=8 cellpadding=0>
+<tr><td>
+<fieldset class="c_fieldset"><legend class="c_legend">日期(D)</legend>
+<!-- 调用日历 -->
+<script>
+var c = new calendar("c");
+document.write(c);
+</script>
+<!-- 调用日历 -->
+</fieldset>
+</td>
+<td valign="top">
+<fieldset class="m_fieldset"><legend class="m_legend">时间(T)</legend>
+<!-- 调用时间钟 -->
+<script>
+var m = new minute("m");
+m.play();
+document.write(m);
+</script>
+<!-- 调用时间钟 -->
+</fieldset>
+</td></tr>
+<tr>
+<td colspan="2" align=right>
+<input name="submit" type="button" class="button" value="确定" onclick="getCalendarValue()">&nbsp;<input name="reset" type="button" class="button" value="取消" onclick="closeWin()">&nbsp;<input name="empty" type="button" class="button" value="清空" onclick="emptyCalendarValue()">
+</td></tr>
+</table>
+
+</BODY>
+</HTML>

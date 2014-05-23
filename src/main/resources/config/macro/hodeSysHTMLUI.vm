@@ -1,0 +1,147 @@
+#macro(hodeSysHTMLUI_htmlHidden $name $value)
+	#set($value2 = "$!value")
+	#if($value2 != "")
+		#hodeSysBean_htmlSpecChars($value2 $rtn)
+	#else
+		#set($rtn = "")
+	#end
+	<INPUT TYPE="hidden" NAME="$!name" ID="$!name" VALUE="$!rtn">
+#end
+
+#macro(hodeSysHTMLUI_htmlText $name $value $maxlength $size $readonly)
+	#set($rtn = $!value )
+	#if(( $value != "" ) && ( $!value ))
+		#hodeSysBean_htmlSpecChars($value $rtn)
+	#end
+	<INPUT TYPE="text" NAME="$!name" id="$!name" CLASS="inputText" #if($maxlength!="")maxlength="$maxlength"#end #if($size!="")size="$size"#end $readonly  VALUE="$!rtn">
+#end
+
+#macro(hodeSysHTMLUI_htmlText1 $name $value $maxlength $size $readonly)
+	#set($rtn = $!value )
+	#if(( $value != "" ) && ( $!value ))
+		#hodeSysBean_htmlSpecChars($value $rtn)
+	#end
+	<INPUT TYPE="text" NAME="$!name" id="$!name" CLASS="inputtext1" #if($maxlength!="")maxlength="$maxlength"#end #if($size!="")size="$size"#end $readonly  VALUE="$!rtn">
+#end
+
+#macro(hodeSysHTMLUI_htmlDate $name $value $isNeedLongTime)
+	#if($isNeedLongTime == 0)
+		<INPUT TYPE="text" NAME="$!name" id="$!name" CLASS="inputText" onclick="fPopUpCalendarDlg(this);" readonly size=7 VALUE="$!value">
+	#else
+		<INPUT TYPE="text" NAME="$!name" id="$!name" CLASS="inputText" onclick="fPopUpCalendarDlg_1(this);" readonly size=12 VALUE="$!value">
+	#end
+#end
+
+#macro(hodeSysHTMLUI_htmlFile $name $value)
+	<INPUT TYPE="file"  NAME="$!name" ID="$!name" CLASS="inputFile"  VALUE="$!value">
+#end
+
+#macro(hodeSysHTMLUI_htmlMediaFile $name $value)
+	<INPUT TYPE="file"  NAME="$!name" ID="$!name" CLASS="inputFile"  VALUE="$!value">
+#end
+
+#macro(hodeSysHTMLUI_htmlTextArea $name $idName $value $rows $cols $readonly $isHidden)
+	#set($rtn = $!value )
+	#if(( $value != "" ) && ( $!value ))
+
+		#hodeSysBean_htmlSpecChars($value $rtn)
+
+	#end
+	<TEXTAREA NAME="$!name"  ROWS="$!rows" COLS="$!cols" CLASS="inputArea" $readonly	#if($isHidden == 1) style="display:none" #end #if($!idName) id="$!idName" #end>$!rtn</TEXTAREA>
+#end
+
+#macro(hodeSysHTMLUI_htmlRadio $name $value $checkVal $titleVal $isDisabled $clickVal $lable)
+	<INPUT TYPE="radio"   CLASS="inputRadio"
+		#if($name!="")
+			NAME="$!name"
+		#end
+
+		#if("$!value"!="")
+			VALUE="$!value"
+		#end
+
+		#if(($checkVal==$value) && ("$value"!="") )
+			checked
+		#end
+
+		#if($titleVal!="")
+			TITLE="$titleVal"
+		#end
+
+		#if($isDisabled ==  0)
+			disabled
+		#end
+
+		#if($clickVal != "")
+			onclick =  "$clickVal"
+		#end
+	>$lable
+#end
+
+#macro(hodeSysHTMLUI_htmlCheckbox $name $value $checkVal $titleVal $isDisabled $clickVal $lable)
+	<INPUT TYPE="checkbox"  CLASS="inputCheckbox"
+		#if(($name!="") && ($isDisabled != 1 ))
+			NAME="$!name"
+		#end
+
+		#if($value!="")
+			VALUE="$!value"
+		#end
+
+		#if(($checkVal==$value) && ($value!="") )
+			checked
+		#end
+		#if($titleVal!="")
+			TITLE="$titleVal"
+		#end
+
+		#if($isDisabled ==  1)
+			disabled
+		#end
+
+		#if($clickVal != "")
+			onclick =  "$clickVal"
+		#end
+
+
+	>$!lable
+#end
+
+#macro(hodeSysHTMLUI_htmlButton $name $value $onclick)
+	<INPUT TYPE="button" NAME="$!name" VALUE="$!value" CLASS="inputButton" onclick="$onclick">
+#end
+
+#macro(hodeSysHTMLUI_htmlReset $name $value)
+	<INPUT TYPE="reset" NAME="$!name" VALUE="$!value" CLASS="inputButton">
+#end
+
+#macro(hodeSysHTMLUI_htmlSubmit $name $value)
+	<INPUT TYPE="submit" NAME="$!name" VALUE="$!value" CLASS="inputButton">
+#end
+
+#macro(hodeSysHTMLUI_htmlPassword $name $value)
+	<INPUT TYPE="password" NAME="$!name" size=20 maxlength=20 VALUE="$!value" CLASS="inputText">
+#end
+
+#macro(hodeSysHTMLUI_htmlImgBtn $name $src)
+	<INPUT TYPE="image" NAME="$!name" SRC="$!src">
+#end
+
+
+#macro(hodeSysHTMLUI_htmlImgBtn1 $imgURL $clickVal $titleVal $isNeedHandle)
+	<img src="$imgURL"  ALT="$!titleVal"
+
+	#if($clickVal != "")
+		onclick =  "$clickVal"
+	#end
+
+	#if($titleVal != "")
+		alt =  "$titleVal"
+	#end
+
+	#if($isNeedHandle == 1)
+		 style="cursor:hand"
+	#end
+	>
+#end
+

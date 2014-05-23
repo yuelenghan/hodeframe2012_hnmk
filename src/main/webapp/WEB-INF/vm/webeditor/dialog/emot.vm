@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<TITLE>$action.getText('webeditor.dialog.backimage.emote.title')</TITLE>
+
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.css')}/dialog.css">
+
+<script language="JavaScript">
+	#parse("${action.getText('webeditorConfig.path.js')}/dialog.js.vm")
+</script>
+
+<SCRIPT language=JavaScript>
+function emotclick(){
+	if ("IMG"==event.srcElement.tagName.toUpperCase()) {
+		//var url = relativePath2setPath(event.srcElement.getAttribute("src", 2).substr(3));
+		var url = relativePath2setPath(event.srcElement.getAttribute("src", 2));
+		dialogArguments.insertHTML("<IMG id=eWebEditor_TempElement_Img SRC=" + url + ">");
+
+		var oTempElement = dialogArguments.eWebEditor.document.getElementById("eWebEditor_TempElement_Img");
+		oTempElement.src = url;
+		oTempElement.removeAttribute("id");
+
+		window.returnValue = null;
+		window.close();
+	}
+}
+document.onclick=emotclick;
+</script>
+</HEAD>
+<BODY bgcolor="menu">
+<TABLE cellSpacing=5 border=0 align=center>
+  <TBODY>
+  <TR>
+    <TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/01.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/02.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/03.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/04.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/05.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/06.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/07.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/08.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/09.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/10.gif"></TD></TR>
+  <TR>
+    <TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/11.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/12.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/13.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/14.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/15.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/16.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/17.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/18.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/19.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/20.gif"></TD></TR>
+  <TR>
+    <TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/21.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/22.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/23.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/24.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/25.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/26.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/27.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/28.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/29.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/30.gif"></TD></TR>
+  <TR>
+    <TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/31.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/32.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/33.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/34.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/35.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/36.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/37.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/38.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/39.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/40.gif"></TD></TR>
+  <TR>
+    <TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/41.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/42.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/43.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/44.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/45.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/46.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/47.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/48.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/49.gif"></TD>
+	<TD><IMG src="$action.getText('config.prjName')/${action.getText('webeditorConfig.path.img')}/emot/50.gif"></TD></TR>
+</TBODY></TABLE></BODY></HTML>

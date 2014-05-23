@@ -1,0 +1,91 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+
+
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+
+	#param( "title" "$action.getText('workflownormal.menu')" )
+	#param( "noSearchArea" "yes" )
+	#param( "strSearchName" "" )
+	#param( "strSearchValue" "" )
+#end
+
+<TABLE  align='center' border=0>
+<TR>
+	<TD align='center'><div style='position: relative;color:#000000;width:120px;font-size:9pt;vertical-align:top'><img src="$action.getText('config.prjName')/images/workflownormal/begin.gif">&nbsp;　　　&nbsp;
+
+	<br><font color='#2F0BFB'>承办人 </font>
+	</div></TD>
+</TR>
+<TR>
+	<TD align='right' valign='top'>
+		<TABLE>
+		<TR>
+			<TD><img src="$action.getText('config.prjName')/images/workflownormal/drawpic.gif" border=0></TD>
+			<TD><img src="$action.getText('config.prjName')/images/workflownormal/drawpic1.gif" border=0><a href='addForm.action?intMainID=$intMainID'>$action.getText('global.operation.add')</a></TD>
+		</TR>
+		</TABLE>
+
+	</TD>
+</TR>
+
+#foreach($objInfo in $objInfoList)
+	<TR>
+		<TD align='center'>
+
+		<div style='position: relative;color:#000000;width:120px;font-size:9pt;vertical-align:top'>
+		#if($!objInfo.intWFNTmpIsBreak == 1)
+			<img src="$action.getText('config.prjName')/images/workflownormal/step.gif">&nbsp;&nbsp;&nbsp;
+		#else
+			<img src="$action.getText('config.prjName')/images/workflownormal/step.gif">&nbsp;&nbsp;&nbsp;
+		#end
+
+		#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_edit.gif" "document.location.href='editForm.action?objInfo.intID=$!objInfo.intID&intMainID=$intMainID'" "$action.getText('global.operation.edit')" 1)
+
+		#set($confirmInfo = "$action.getText('global.js.select.deleteconfirm')")
+		#hodeSysHTMLUI_htmlImgBtn1("$action.getText('config.prjName')/images/operator/opt_del.gif"  "if(confirm('$!confirmInfo')){ document.location.href='del.action?objInfo.intID=$!objInfo.intID&intMainID=$intMainID'}" "$action.getText('global.operation.delete')" 1)
+		<br><font color='#2F0BFB'>$!objInfo.strName </font>
+		</div>
+
+
+
+		</TD>
+	</TR>
+	<TR>
+		<TD align='right' valign='top'>
+			<TABLE>
+			<TR>
+				<TD><img src="$action.getText('config.prjName')/images/workflownormal/drawpic.gif" border=0></TD>
+				<TD><img src="$action.getText('config.prjName')/images/workflownormal/drawpic1.gif" border=0><a href='addForm.action?intParentID=$!objInfo.intID&intMainID=$intMainID'>$action.getText('global.operation.add')</a></TD>
+			</TR>
+			</TABLE>
+
+		</TD>
+	</TR>
+#end
+<TR>
+	<TD align='center'><div style='position: relative;color:#000000;width:120px;font-size:9pt;vertical-align:top'><img src="$action.getText('config.prjName')/images/workflownormal/end.gif">&nbsp;　　　&nbsp;
+	<br><font color='#2F0BFB'>流程结束 </font></div></TD>
+</TR>
+<tr>
+	<td height="20"></td>
+</tr>
+<tr>
+	<td><input type="button" class="inputButton" value="$action.getText('global.operation.return')" onclick="changeURL()"></td>
+</tr>
+</TABLE>
+<SCRIPT LANGUAGE="JavaScript">
+function changeURL()
+{
+	document.location.href="../main/showList.action";
+}
+</SCRIPT>
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+

@@ -1,0 +1,13 @@
+document.write("<object id=\"TANGER_OCX\" classid=\"clsid:C9BC4DFF-4248-4a3c-8A49-63A7D317F404\" codebase=\"iweboffice/OfficeControl.cab#version=5,0,1,0\" width=\"100%\" height=\"100%\">");
+    document.write("<param name=\"BorderStyle\" value=\"1\">");
+ 	document.write("<param name=\"BorderColor\" value=\"14402205\">");
+ 	document.write("<param name=\"TitlebarColor\" value=\"14402205\">");
+    document.write("<param name=\"TitlebarTextColor\" value=\"0\">");
+    document.write("<param name=\"Caption\" value=\"OFFICE文档\">");
+    document.write("<param name=\"IsShowToolMenu\" value=\"-1\">");
+    document.write("<param name=\"IsNoCopy\" value=\"-1\">");
+    //document.write("<param name='FilePrintPreview' value='0'>");
+	document.write("<param name=\"ProductCaption\" value=\"南京市物价局\">");
+	document.write("<param name=\"ProductKey\" value=\"FD32DE8E9194946B7CD664DD2239935D25947E42\">");
+	document.write("<SPAN STYLE=\"color:red\">不能装载文档控件。请在检查浏览器的选项中检查浏览器的安全设置。</SPAN>");
+document.write("</object>");

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- Dictionary -->
+	<bean id="dictionaryIbatisService" class="com.hode.dictionary.service.DictionaryService">
+		<property name="daoIbatis">
+			<ref bean="daoIbatis" />
+		</property>
+		<property name="sqlMapNameSpace">
+			<value>dictionary</value>
+		</property>
+	</bean>
+
+	<bean id="dictionaryIbatisServiceProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<property name="target">
+			<ref local="dictionaryIbatisService" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

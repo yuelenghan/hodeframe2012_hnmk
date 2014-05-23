@@ -1,0 +1,45 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+
+##设置参数
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "当前在线状态" )
+#end
+
+##-------------------------------------------------------------
+##**********************
+##主体列表区
+##**********************
+
+
+##主体列表区表头
+<div style="height:370">
+<table border="0" cellpadding="0" cellspacing="1" id="" class='tableColor' width="100%">
+	#hodeSysUI_TrBeginMainBody(1)
+	   <td colspan="6" align="left">目前共有&nbsp;$!intOnLineCount&nbsp;人在线，在线人员名单如下：</td>
+	</tr>
+
+	#hodeSysUI_TrBeginMainBody(2)
+		#set($intTotalNumber = 0)
+	   #foreach($objInfo in $!onLineUsers)
+			#set($intTotalNumber = $!velocityCount)
+				<td align="center" width="20%">$!objInfo.get(1)</td>
+			#if($!intTotalNumber % 5 == 0)
+				</tr>#hodeSysUI_TrBeginMainBody(2)
+			#end
+	   #end
+		#set($col = 5 - $intTotalNumber % 5)
+		#foreach($i in [1..$col])
+			<td align="center" width="20%">&nbsp;</td>
+		#end
+	</tr>
+</table>
+</div>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

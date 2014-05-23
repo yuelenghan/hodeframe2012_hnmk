@@ -1,0 +1,65 @@
+#parse("$action.getText('config.vmPath')/simple/Header_left.vm")
+
+
+#hodeSysBean_checkInArr(11010100 $!permissionIDs $allow_11)	##三级培训班查看员
+#hodeSysBean_checkInArr(11010200 $!permissionIDs $allow_12)	##三级培训班填报员
+
+#hodeSysBean_checkInArr(11020100 $!permissionIDs $allow_21)	##省中心查看员
+#hodeSysBean_checkInArr(11020200 $!permissionIDs $allow_22)	##省中心审批员
+
+#hodeSysBean_checkInArr(11030100 $!permissionIDs $allow_31)	##公章管理员
+##set($allow_11 = true)
+##set($allow_12 = true)
+##set($allow_21 = true)
+##set($allow_22 = true)
+
+##-------------------------------------------------------------
+#hodeSysUI_leftFrameHeader("10")
+<table width="181">
+
+	<tr><td width="181" valign="top" class="left">
+			<div class="left_bt">系统设置</div>
+
+				<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td height="15"></td></tr></table>
+
+				<table width="146" border="0" align="center" cellpadding="0" cellspacing="0">
+						<tr><td height="10" colspan="3"></td></tr>
+
+			##if($allow_31)
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../rbac/group/updateGroupSignForm.action" target="mainFrame">公章设置</td>
+						</tr>
+			##end
+			#if($user.intUserID == 1 || $allow_11||$allow_21)
+
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/student/showDetailList.action" target="mainFrame">人员信息管理</td>
+						</tr>
+
+			#end
+
+			#if($allow_11||$allow_21)
+
+						##<tr>
+						##	<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+						##	<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/institutions/showinstitutions.action" target="mainFrame">培训机构</td>
+						##</tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/course/showList.action" target="mainFrame">课程配置</td>
+						</tr>
+						<tr>
+							<td width="25"><img src="/hodeframe2012_hnmk/images/hnmk/ar.gif" width="13" height="13" /></td>
+							<td colspan=2 align='left' height=30 style="color:#000000;"><a href="../train/teacher/showList.action" target="mainFrame">教师配置</td>
+						</tr>
+			#end
+				</table>
+
+</td></tr></table>
+
+
+
+
+#parse("$action.getText('config.vmPath')/simple/Footer_left.vm")

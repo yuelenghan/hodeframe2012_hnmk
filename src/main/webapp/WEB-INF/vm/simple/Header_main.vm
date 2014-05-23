@@ -1,0 +1,109 @@
+<html>
+
+<HEAD>
+<TITLE>$action.getText('global.prj.title')</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<style>
+A:link		{	COLOR: #000000;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+A:visited	{	COLOR: #000000;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+A:active	{	COLOR: #ff9900;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+A:hover		{	COLOR: #ff9900;	TEXT-DECORATION: none;FONT-SIZE: 14px	}
+table,tr		{	FONT-SIZE: 12px;LINE-HEIGHT: 120%}
+
+BODY
+{
+	FONT-SIZE: 14px;
+	SCROLLBAR-FACE-COLOR: #F8fcff;
+	MARGIN: 0px;
+	SCROLLBAR-HIGHLIGHT-COLOR: #F8fcff;
+	SCROLLBAR-SHADOW-COLOR: #999999;
+	SCROLLBAR-3DLIGHT-COLOR: #999999;
+	SCROLLBAR-ARROW-COLOR: #999999;
+	SCROLLBAR-TRACK-COLOR: #cccccc;
+	SCROLLBAR-DARKSHADOW-COLOR: #cccccc;
+	topmargin: 0;
+	leftmargin: 0;
+	rightmargin: 0;
+	bottommargin: 0
+}
+
+.inputText
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+.inputFile
+{
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+.inputButton
+{
+	BORDER-RIGHT: #3366cc 1px inset;
+	BORDER-TOP: #3366cc 1px inset;
+	VERTICAL-ALIGN: text-bottom;
+	BORDER-LEFT: #3366cc 1px inset;
+	COLOR: black;
+	BORDER-BOTTOM: #3366cc 1px inset;
+	HEIGHT: 18px;
+	BACKGROUND-COLOR: #efefef
+}
+
+.inputSubmitButton
+{
+	VERTICAL-ALIGN: text-bottom;
+	BACKGROUND-COLOR: #efefef
+	COLOR: black;
+	font-size:18px
+}
+.inputRadio
+{
+}
+.inputCheckbox
+{
+}
+
+.inputArea
+{
+	BORDER-RIGHT: #F8fcff 1px solid;
+	BORDER-TOP: #F8fcff 1px solid;
+	BORDER-LEFT: #F8fcff 1px solid;
+	BORDER-BOTTOM: #F8fcff 1px solid
+}
+.inputSelect
+{
+}
+.iframe
+ {
+	scrollbar-face-color: #b5daff;
+	scrollbar-highlight-color: #F8fcff;
+	scrollbar-shadow-color: #000000;
+	scrollbar-arrow-color: #0000ff;
+	scrollbar-base-color: #6699ff;
+	scrollbar-dark-shadow-color: #6699ff;
+ }
+</style>
+</HEAD>
+#rbac_getSessionUser($user)
+#set($permissionIDs = $user.intPrivilegeIDs)
+<BODY  text="#000000" leftmargin="0" topmargin="0">

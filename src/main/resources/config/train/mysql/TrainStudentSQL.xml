@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.student">
+    <typeAlias alias="trainStudentModel" type="com.hode.train.model.TrainStudentModel"/>
+    <typeAlias alias="trainApplyModel" type="com.hode.train.model.TrainApplyModel"/>
+    <typeAlias alias="trainStudentDetailModel" type="com.hode.train.model.TrainStudentDetailModel"/>
+    <typeAlias alias="trainUserBlackModel" type="com.hode.train.model.TrainUserBlackModel"/>
+    <typeAlias alias="trainUnitModel" type="com.hode.train.model.TrainUnitModel"/>
+    <typeAlias alias="trainStudentDetailRepeatVO" type="com.hode.train.model.TrainStudentDetailRepeatVO"/>
+    <typeAlias alias="trainPersonModel" type="com.hode.train.model.TrainPersonModel"/>
+
+    <select id="getObjectInfo" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        SELECT *
+        FROM train_student
+        WHERE intID = #intID#
+    </select>
+    <select id="getRbacGroupByDesc" resultClass="string" parameterClass="string">
+        SELECT intID
+        FROM rbac_group
+        WHERE strName = #strName#
+    </select>
+
+    <select id="getTrainStudentDetailByUserCode" resultClass="trainStudentDetailModel"
+            parameterClass="trainStudentDetailModel">
+        SELECT *
+        FROM train_student_detail
+        WHERE strStudentIDCode = #strStudentIDCode#
+        order by intID desc
+        limit 1
+    </select>
+
+    <select id="getSignUpStudentDetailByUserCode" resultClass="trainStudentDetailModel"
+            parameterClass="trainStudentDetailModel">
+        SELECT *
+        FROM train_student_detail
+        WHERE strStudentIDCode = #strStudentIDCode#
+        and intIsSignUp = 1 and intIsProcess = 0
+        order by intID desc
+        limit 1
+    </select>
+
+    <select id="getAllTrainUnit" resultClass="trainUnitModel" parameterClass="trainUnitModel">
+        SELECT *
+        FROM rbac_group
+        WHERE 1=1
+        <isGreaterThan prepend="AND" property="intLevel" compareValue="0">
+            intLevel = #intLevel#
+        </isGreaterThan>
+        <isGreaterThan prepend="AND" property="intFatherID" compareValue="0">
+            intFatherID = #intFatherID#
+        </isGreaterThan>
+        <isGreaterThan prepend="AND" property="intIsDelete" compareValue="0">
+            intIsDelete = #intIsDelete#
+        </isGreaterThan>
+        order by intOrderID
+    </select>
+
+    <select id="getTrainUnitByGroupID" resultClass="trainUnitModel" parameterClass="trainUnitModel">
+        SELECT *
+        FROM rbac_group
+        WHERE 1=1
+        <isGreaterThan prepend="AND" property="intLevel" compareValue="0">
+            intLevel = #intLevel#
+        </isGreaterThan>
+        <isGreaterThan prepend="AND" property="intFatherID" compareValue="0">
+            intFatherID = #intFatherID#
+        </isGreaterThan>
+        <isGreaterThan prepend="AND" property="intIsDelete" compareValue="0">
+            intIsDelete = #intIsDelete#
+        </isGreaterThan>
+        <isGreaterThan prepend="AND" property="intID" compareValue="0">
+            intID = #intID#
+        </isGreaterThan>
+        order by intOrderID
+    </select>
+
+    <select id="getStudentDetailByIntID" resultClass="trainStudentDetailModel" parameterClass="int">
+        SELECT *
+        FROM train_student_detail
+        WHERE intID = $intID$
+    </select>
+
+    <select id="getStudentDetailByIntMainID" resultClass="trainStudentDetailModel" parameterClass="int">
+        SELECT *
+        FROM train_student_detail
+        WHERE intMainID = $intMainID$
+        order by intIndex,intID
+    </select>
+
+    <select id="getTrainStudentByIntMainID" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        SELECT *
+        FROM train_student
+        WHERE intID = #intID#
+    </select>
+
+    <select id="getPageObjectList" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        select *
+        from train_student
+        where 1 = 1
+        <isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+            intCreateGroupID = #intCreateGroupID#
+        </isGreaterThan>
+        <isNotEmpty prepend="AND" property="strTrainType">
+            strTrainType = #strTrainType#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainCount">
+            strTrainCount like '%$strTrainCount$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            strTrainUnitName like '%$strTrainUnitName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strCreateDate">
+            strCreateDate like '$strCreateDate$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainObjectDesc">
+            strTrainObjectDesc like '%$strTrainObjectDesc$'
+        </isNotEmpty>
+        ORDER BY intID desc
+        LIMIT #intStart#,#intOffset#
+    </select>
+    <select id="getRecordCount" resultClass="int" parameterClass="trainStudentModel">
+        SELECT count(intID) AS intTotalNumber
+        FROM train_student
+        where 1 = 1
+        <isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+            intCreateGroupID = #intCreateGroupID#
+        </isGreaterThan>
+        <isNotEmpty prepend="AND" property="strTrainType">
+            strTrainType = #strTrainType#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainCount">
+            strTrainCount like '%$strTrainCount$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            strTrainUnitName like '%$strTrainUnitName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strCreateDate">
+            strCreateDate like '$strCreateDate$%'
+        </isNotEmpty>
+    </select>
+
+    <select id="checkObjectExists" parameterClass="trainStudentModel" resultClass="int">
+        SELECT count(intID) AS intTotalNumber
+        FROM train_student
+        WHERE intTrainApplyID=#intTrainApplyID#
+        <isGreaterThan prepend="AND" property="intID" compareValue="0">
+            intID!=#intID#
+        </isGreaterThan>
+    </select>
+
+    <insert id="insertObjectAndGetID" parameterClass="trainStudentModel">
+        INSERT INTO train_student(
+        intTrainApplyID,
+        strTrainUnitName,
+        strTrainStartDate,
+        strTrainEndDate,
+        strTrainCount,
+        strTrainType,
+        strTrainObject,
+        strTrainRange,
+        strTrainCode,
+        strTrainUserNum,
+        strTrainTime1,
+        strTrainTime2,
+        intTotalUserNum,
+        intIsLeader,
+        strRemark ,
+        intCreateUserID,
+        strCreateUserName,
+        intCreateGroupID,
+        strCreateGroupName,
+        intCreateUnitID,
+        strCreateUnitName,
+        strCreateDate,
+        intTrainUnitID,
+        strTrainObjectDesc,
+        strTrainCountClass
+        )
+        VALUES (
+        #intTrainApplyID#,
+        #strTrainUnitName#,
+        #strTrainStartDate#,
+        #strTrainEndDate#,
+        #strTrainCount#,
+        #strTrainType#,
+        #strTrainObject#,
+        #strTrainRange#,
+        #strTrainCode#,
+        #strTrainUserNum#,
+        #strTrainTime1#,
+        #strTrainTime2#,
+        #intTotalUserNum#,
+        #intIsLeader#,
+        #strRemark#,
+        #intCreateUserID#,
+        #strCreateUserName#,
+        #intCreateGroupID#,
+        #strCreateGroupName#,
+        #intCreateUnitID#,
+        #strCreateUnitName#,
+        #strCreateDate#,
+        #intTrainUnitID#,
+        #strTrainObjectDesc#,
+        #strTrainCountClass#
+        )
+        <selectKey resultClass="int" keyProperty="intID">
+            SELECT max(intID) AS intID
+            FROM train_student
+        </selectKey>
+    </insert>
+    <update id="updateObject" parameterClass="trainStudentModel">
+        UPDATE train_student
+        SET
+        intTrainApplyID = #intTrainApplyID#,
+        strTrainUnitName =#strTrainUnitName#,
+        strTrainStartDate =#strTrainStartDate#,
+        strTrainEndDate =#strTrainEndDate#,
+        strTrainCount =#strTrainCount#,
+        strTrainType =#strTrainType#,
+        strTrainObject =#strTrainObject#,
+        strTrainRange =#strTrainRange#,
+        strTrainCode =#strTrainCode#,
+        strTrainUserNum =#strTrainUserNum#,
+        strTrainTime1 =#strTrainTime1#,
+        strTrainTime2 =#strTrainTime2#,
+        intTotalUserNum =#intTotalUserNum#,
+        strRemark =#strRemark#,
+        intIsLeader = 0
+        WHERE intID = #intID#
+    </update>
+    <delete id="deleteObject" parameterClass="string">
+        DELETE from train_student
+        WHERE intID IN ( $strIDList$ )
+    </delete>
+    <delete id="deleteDetailObject" parameterClass="int">
+        DELETE from train_student_detail
+        WHERE intMainID = #intMainID#
+    </delete>
+    <delete id="deleteSignUpDetailObject" parameterClass="int">
+        DELETE from train_student_detail
+        WHERE intID = #intID#
+    </delete>
+    <update id="updateCount" parameterClass="trainStudentModel">
+        UPDATE train_student
+        SET intTotalUserNum = #intTotalUserNum#
+        WHERE intID = #intID#
+    </update>
+
+
+    <insert id="insertExcelObject" parameterClass="trainStudentDetailModel">
+        INSERT INTO train_student_detail
+        (
+        intMainID,
+        strTrainCount,
+        intTrainYear,
+        strStudentUnitType,
+        strStudentIDCode,
+        strBirthDay,
+        strStudentName,
+        strStudentSex,
+        strStudentQualifications,
+        strStudentPost,
+        strStudentTitles,
+        strStudentDegree,
+        strStudentFirstDate,
+        strStudentHealth,
+        strStudentRelation,
+        strStudentCertCode,
+        strStudentIDAddr,
+        intStudentAge,
+        strStudentViolate,
+        strStudentPic1,
+        strStudentPic2,
+        strStudentPic3,
+        strStudentPic4,
+        intIndex
+        )
+        VALUES (
+        #intMainID#,
+        #strTrainCount#,
+        #intTrainYear#,
+        #strStudentUnitType#,
+        #strStudentIDCode#,
+        #strBirthDay#,
+        #strStudentName#,
+        #strStudentSex#,
+        #strStudentQualifications#,
+        #strStudentPost#,
+        #strStudentTitles#,
+        #strStudentDegree#,
+        #strStudentFirstDate#,
+        #strStudentHealth#,
+        #strStudentRelation#,
+        #strStudentCertCode#,
+        #strStudentIDAddr#,
+        #intStudentAge#,
+        #strStudentViolate#,
+        #strStudentPic1#,
+        #strStudentPic2#,
+        #strStudentPic3#,
+        #strStudentPic4#,
+        #intIndex#
+        )
+    </insert>
+
+
+    <insert id="insertBlackUser" parameterClass="trainUserBlackModel">
+        INSERT INTO train_user_black(
+        strStudentName,
+        strStudentIDCode,
+        strEndDate,
+        strRemark,
+        intCreateUserID,
+        strCreateUserName,
+        intCreateGroupID,
+        strCreateGroupName,
+        intCreateUnitID,
+        strCreateUnitName,
+        strCreateDate
+        )
+        VALUES (
+        #strStudentName#,
+        #strStudentIDCode#,
+        #strEndDate#,
+        #strRemark#,
+        #intCreateUserID#,
+        #strCreateUserName#,
+        #intCreateGroupID#,
+        #strCreateGroupName#,
+        #intCreateUnitID#,
+        #strCreateUnitName#,
+        #strCreateDate#
+        )
+    </insert>
+
+    <update id="updateDetailInfo" parameterClass="trainStudentDetailModel">
+        UPDATE train_student_detail
+        SET
+        intIsLeader = #intIsLeader#,
+        strStudentRemark = #strStudentRemark#
+        WHERE intID = #intID#
+    </update>
+    <update id="updateDetailInfo2" parameterClass="trainStudentDetailModel">
+        UPDATE train_student
+        SET
+        intIsLeader = 1
+        WHERE intID = #intMainID#
+    </update>
+
+    <select id="getStudentDetailListByMainID" resultClass="trainStudentDetailModel"
+            parameterClass="trainStudentDetailModel">
+        SELECT *
+        FROM train_student_detail
+        where intMainID = #intMainID# or strTrainCount = #strTrainCount#
+        order by intID asc
+    </select>
+    <select id="getStudentDetailListByMainIDView" resultClass="trainStudentDetailModel"
+            parameterClass="trainStudentDetailModel">
+        SELECT *
+        FROM train_student_detail
+        where (intMainID = #intMainID#)
+        <isGreaterThan prepend="AND" property="intIsLeader" compareValue="0">
+            intIsLeader != 0
+        </isGreaterThan>
+        order by intIndex,intID
+    </select>
+    <select id="getStudentListByGroupID" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        select *
+        from train_student
+        where intCreateGroupID = #intCreateGroupID#
+        ORDER BY intID desc
+    </select>
+    <select id="viewDetail" resultClass="trainStudentDetailModel" parameterClass="trainStudentDetailModel">
+        SELECT *
+        FROM train_student_detail
+        WHERE intID = #intID#
+    </select>
+
+
+    <select id="getStaticReportList" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        select
+        a.strTrainStartDate,
+        a.strTrainEndDate,
+        a.strTrainUnitName,
+        a.strTrainType,
+        b.strStudentPost as strStudentPost_search,
+        b.strStudentSex as strStudentSex_search,
+        b.strStudentDegree as strStudentDegree_search,
+        b.strStudentName as strStudentName_search,
+        b.strStudentIDCode as strStudentIDCode_search,
+        b.strBirthDay as strBirthDay_search,
+        b.strCertCode as strCertCode_search
+
+
+        from train_student a,train_student_detail b
+
+        where a.intID = b.intMainID
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            a.strTrainUnitName like '%$strTrainUnitName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainType">
+            a.strTrainType = #strTrainType#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainStartDate">
+            <![CDATA[  a.strTrainStartDate >= #strTrainStartDate# ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainEndDate">
+            <![CDATA[  a.strTrainEndDate <= #strTrainEndDate# ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentPost_search">
+            b.strStudentPost like '%$strStudentPost_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentSex_search">
+            b.strStudentSex like '%$strStudentSex_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentDegree_search">
+            b.strStudentDegree like '%$strStudentDegree_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentName_search">
+            b.strStudentName like '%$strStudentName_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentIDCode_search">
+            b.strStudentIDCode like '%$strStudentIDCode_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strCertCode_search">
+            b.strCertCode like '%$strCertCode_search$%' and b.intCertAllow =1
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strBirthDay1_search">
+            <![CDATA[  b.strBirthDay >= #strBirthDay1_search# ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strBirthDay2_search">
+            <![CDATA[  b.strBirthDay <= #strBirthDay2_search# ]]>
+        </isNotEmpty>
+        <isGreaterThan prepend="AND" property="intCertCode_search" compareValue="0">
+            b.intCertCode > 0 and b.intCertAllow =1
+        </isGreaterThan>
+        ORDER BY b.intID desc
+        LIMIT #intStart#,#intOffset#
+    </select>
+    <select id="getStaticReportCount" resultClass="int" parameterClass="trainStudentModel">
+        SELECT count(b.intID) AS intTotalNumber
+        from train_student a,train_student_detail b
+        where a.intID = b.intMainID
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            a.strTrainUnitName like '%$strTrainUnitName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainType">
+            a.strTrainType = #strTrainType#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainStartDate">
+            <![CDATA[  a.strTrainStartDate >= #strTrainStartDate# ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainEndDate">
+            <![CDATA[  a.strTrainEndDate <= #strTrainEndDate# ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentPost_search">
+            b.strStudentPost like '%$strStudentPost_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentSex_search">
+            b.strStudentSex like '%$strStudentSex_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentDegree_search">
+            b.strStudentDegree like '%$strStudentDegree_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentName_search">
+            b.strStudentName like '%$strStudentName_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentIDCode_search">
+            b.strStudentIDCode like '%$strStudentIDCode_search$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strCertCode_search">
+            b.strCertCode like '%$strCertCode_search$%' and b.intCertAllow =1
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strBirthDay1_search">
+            <![CDATA[  b.strBirthDay >= #strBirthDay1_search# ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strBirthDay2_search">
+            <![CDATA[  b.strBirthDay <= #strBirthDay2_search# ]]>
+        </isNotEmpty>
+        <isGreaterThan prepend="AND" property="intCertCode_search" compareValue="0">
+            b.intCertCode > 0 and b.intCertAllow =1
+        </isGreaterThan>
+    </select>
+
+    <select id="searchStaticReport3" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        select a.strTrainCount,a.strTrainType,a.strTrainObjectDesc,a.intCreateGroupID,b.intCertAllow as
+        intCertAllow_search,count(b.intID) as intID
+        from train_student a,
+        train_student_detail b
+        where a.intID = b.intMainID
+        <![CDATA[
+		and a.strTrainStartDate >= #strTrainStartDate#
+		and a.strTrainStartDate  <= #strTrainEndDate#
+		 ]]>
+        group by a.strTrainCount,a.strTrainType,b.intCertAllow,a.intCreateGroupID
+        order by a.strTrainCount asc
+    </select>
+
+    <select id="searchStaticReport4" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        select
+        a.strTrainType,a.intCreateGroupID,b.intCertAllow as intCertAllow_search,
+        count(b.intID) as intID,
+        (select ifnull( (select count(d.intIsLeader) from train_student c, train_student_detail d
+        where c.intID = d.intMainID
+        and d.intIsLeader!=0
+        <![CDATA[
+       		AND c.strTrainStartDate >= #strTrainStartDate#
+       		AND c.strTrainStartDate <= #strTrainEndDate#
+       		]]>
+        GROUP BY c.strTrainType, d.intCertAllow, c.intCreateGroupID),0)) AS intIsLeader,
+        sum(b.intCertBK) as intCertBK_search,
+        sum(b.intCertWJ1) as intCertWJ1_search,
+        sum(b.intCertWJ2) as intCertWJ2_search,
+        count(b.intCertDQ) as intCertDQ_search
+        from train_student a,
+        train_student_detail b
+        where a.intID = b.intMainID
+        <![CDATA[
+			and a.strTrainStartDate >= #strTrainStartDate#
+			and a.strTrainEndDate  <= #strTrainEndDate#
+		]]>
+        group by a.strTrainType,b.intCertAllow,a.intCreateGroupID
+        order by a.strTrainType asc
+    </select>
+
+    <select id="showDetailList" resultClass="trainStudentDetailModel" parameterClass="trainStudentDetailModel">
+        select *
+        from train_student_detail
+        where 1 = 1
+        <isNotEmpty prepend="AND" property="strStudentIDCode">
+            strStudentIDCode like '%$strStudentIDCode$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentName">
+            strStudentName like '%$strStudentName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainCount">
+            strTrainCount like '%$strTrainCount$%'
+        </isNotEmpty>
+        <isNotNull prepend="AND" property="mainIDList">
+            <![CDATA[ intMainID in ]]>
+            <iterate open="(" close=")" conjunction="," property="mainIDList">
+                #mainIDList[]#
+            </iterate>
+        </isNotNull>
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            strTrainUnitName = #strTrainUnitName#
+        </isNotEmpty>
+        ORDER BY intID desc
+        LIMIT #intStart#,#intOffset#
+    </select>
+    <select id="showDetailCount" resultClass="int" parameterClass="trainStudentDetailModel">
+        SELECT count(intID) AS intTotalNumber
+        FROM train_student_detail
+        where 1 = 1
+        <isNotEmpty prepend="AND" property="strStudentIDCode">
+            strStudentIDCode like '%$strStudentIDCode$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strStudentName">
+            strStudentName like '%$strStudentName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainCount">
+            strTrainCount like '%$strTrainCount$%'
+        </isNotEmpty>
+        <isNotNull prepend="AND" property="mainIDList">
+            <![CDATA[ intMainID in ]]>
+            <iterate open="(" close=")" conjunction="," property="mainIDList">
+                #mainIDList[]#
+            </iterate>
+        </isNotNull>
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            strTrainUnitName = #strTrainUnitName#
+        </isNotEmpty>
+    </select>
+    <select id="getObjectDetailInfo" resultClass="trainStudentDetailModel" parameterClass="trainStudentDetailModel">
+        SELECT *
+        FROM train_student_detail
+        WHERE intID = #intID#
+    </select>
+
+    <update id="updateDetailObject" parameterClass="trainStudentDetailModel">
+        UPDATE train_student_detail
+        SET
+        strStudentIDCode = #strStudentIDCode#,
+        strBirthDay = #strBirthDay#,
+        strStudentName = #strStudentName#,
+        strStudentSex = #strStudentSex#,
+        strStudentPost = #strStudentPost#,
+        strStudentTitles = #strStudentTitles#,
+        strStudentDegree = #strStudentDegree#,
+        strStudentUnitType = #strStudentUnitType#,
+        strStudentQualifications = #strStudentQualifications#,
+        strStudentHealth = #strStudentHealth#,
+        strStudentRelation = #strStudentRelation#,
+        strStudentCertCode = #strStudentCertCode#,
+        intIsLeader = #intIsLeader#,
+        intIsBlackUser = #intIsBlackUser#,
+        strStudentRemark = #strStudentRemark#
+        WHERE intID = #intID#
+    </update>
+
+    <select id="checkBlackObject" resultClass="int" parameterClass="trainStudentDetailModel">
+        SELECT count(intID) AS intTotalNumber
+        FROM train_user_black
+        where strStudentIDCode = #strStudentIDCode#
+        <![CDATA[ and strEndDate >= #strEndDate# ]]>
+    </select>
+
+    <insert id="signUp" parameterClass="trainStudentDetailModel">
+        insert into train_student_detail(
+        strStudentUnitType,
+        strStudentIDCode,
+        strBirthDay,
+        strStudentName,
+        strStudentSex,
+        strStudentPost,
+        strStudentTitles,
+        strStudentDegree,
+        strStudentFirstDate,
+        strStudentRelation,
+        strStudentCertCode,
+        strStudentIDAddr,
+        strStudentViolate,
+        intStudentAge,
+        intIsSignUp,
+        strTrainUnitName,
+        strStudentPic1,
+        strStudentPic2,
+        strStudentPic3,
+        strStudentPic4,
+        strTrainType
+        )
+        values(
+        #strStudentUnitType#,
+        #strStudentIDCode#,
+        #strBirthDay#,
+        #strStudentName#,
+        #strStudentSex#,
+        #strStudentPost#,
+        #strStudentTitles#,
+        #strStudentDegree#,
+        #strStudentFirstDate#,
+        #strStudentRelation#,
+        #strStudentCertCode#,
+        #strStudentIDAddr#,
+        #strStudentViolate#,
+        #intStudentAge#,
+        #intIsSignUp#,
+        #strTrainUnitName#,
+        #strStudentPic1#,
+        #strStudentPic2#,
+        #strStudentPic3#,
+        #strStudentPic4#,
+        #strTrainType#
+        )
+    </insert>
+
+    <select id="getGroupNameById" resultClass="string" parameterClass="int">
+        select strName from rbac_group
+        where intID = $intID$
+    </select>
+
+    <select id="getSignUpDetail" resultClass="trainStudentDetailModel" parameterClass="trainStudentDetailModel">
+        select * from train_student_detail
+        where intIsProcess=0
+        <isGreaterThan prepend="and" compareValue="0" property="intIsSignUp">
+            intIsSignUp = #intIsSignUp#
+        </isGreaterThan>
+        <isNotEmpty prepend="and" property="strTrainUnitName">
+            strTrainUnitName = #strTrainUnitName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="strStudentName">
+            strStudentName like '%$strStudentName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="strStudentIDCode">
+            strStudentIDCode like '%$strStudentIDCode$%'
+        </isNotEmpty>
+        order by intID
+        LIMIT #intStart#,#intOffset#
+    </select>
+
+    <select id="signUpDetailCount" resultClass="int" parameterClass="trainStudentDetailModel">
+        select count(*) from train_student_detail
+        where intIsProcess=0
+        <isGreaterThan prepend="and" compareValue="0" property="intIsSignUp">
+            intIsSignUp = #intIsSignUp#
+        </isGreaterThan>
+        <isNotEmpty prepend="and" property="strTrainUnitName">
+            strTrainUnitName = #strTrainUnitName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="strStudentName">
+            strStudentName like '%$strStudentName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="strStudentIDCode">
+            strStudentIDCode like '%$strStudentIDCode$%'
+        </isNotEmpty>
+    </select>
+
+    <select id="trainCountNum" resultClass="int" parameterClass="trainStudentModel">
+        select count(*) from train_student
+        where intTrainApplyID=#intTrainApplyID#
+    </select>
+
+    <select id="getTotalUserNum" resultClass="int" parameterClass="trainStudentModel">
+        select intTotalUserNum from train_student
+        where intTrainApplyID=#intTrainApplyID#
+    </select>
+
+    <update id="updateTotalUserNum" parameterClass="trainStudentModel">
+        update train_student set
+        intTotalUserNum = #intTotalUserNum#
+        where intTrainApplyID=#intTrainApplyID#
+    </update>
+
+    <insert id="insertSignUp" parameterClass="trainStudentModel">
+        INSERT INTO train_student(
+        intTrainApplyID,
+        strTrainUnitName,
+        strTrainStartDate,
+        strTrainEndDate,
+        strTrainCount,
+        strTrainType,
+        strTrainObject,
+        strTrainRange,
+        strTrainCode,
+        strTrainUserNum,
+        strTrainTime1,
+        strTrainTime2,
+        intTotalUserNum,
+        intIsLeader,
+        strRemark ,
+        intCreateUserID,
+        strCreateUserName,
+        intCreateGroupID,
+        strCreateGroupName,
+        intCreateUnitID,
+        strCreateUnitName,
+        strCreateDate,
+        intTrainUnitID,
+        strTrainObjectDesc,
+        strTrainCountClass
+        )
+        VALUES (
+        #intTrainApplyID#,
+        #strTrainUnitName#,
+        #strTrainStartDate#,
+        #strTrainEndDate#,
+        #strTrainCount#,
+        #strTrainType#,
+        #strTrainObject#,
+        #strTrainRange#,
+        #strTrainCode#,
+        #strTrainUserNum#,
+        #strTrainTime1#,
+        #strTrainTime2#,
+        #intTotalUserNum#,
+        #intIsLeader#,
+        #strRemark#,
+        #intCreateUserID#,
+        #strCreateUserName#,
+        #intCreateGroupID#,
+        #strCreateGroupName#,
+        #intCreateUnitID#,
+        #strCreateUnitName#,
+        #strCreateDate#,
+        #intTrainUnitID#,
+        #strTrainObjectDesc#,
+        #strTrainCountClass#
+        )
+    </insert>
+
+    <select id="getIntIDByTrainCount" resultClass="int" parameterClass="string">
+        select intID from train_student
+        where strTrainCount='$strTrainCount$'
+    </select>
+
+    <select id="getIntIDByTrainApplyID" resultClass="int" parameterClass="int">
+        select intID from train_student
+        where intTrainApplyID='$intTrainApplyID$'
+    </select>
+
+    <update id="updateSignUpInfo" parameterClass="trainStudentDetailModel">
+        update train_student_detail
+        set
+        strTrainCount = #strTrainCount#,
+        intMainID = #intMainID#,
+        intTrainYear = #intTrainYear#,
+        intIsProcess = 1
+        where intID = #intID#
+    </update>
+
+    <select id="getSignUpCountByIDCode" resultClass="int" parameterClass="string">
+        select count(*) from train_student_detail
+        where strStudentIDCode = '$strStudentIDCode$' and intMainID = 0
+        and intIsSignUp = 1 and intIsProcess = 0
+    </select>
+
+    <select id="getStudentModelByTrainApplyId" resultClass="trainStudentModel" parameterClass="int">
+        select * from train_student
+        where intTrainApplyID = $intTrainApplyID$
+    </select>
+
+    <update id="updateStudentPic" parameterClass="trainStudentDetailModel">
+        update train_student_detail
+        set strStudentPic1 = #strStudentPic1#,
+        strStudentPic2 = #strStudentPic2#,
+        strStudentPic3 = #strStudentPic3#,
+        strStudentPic4 = #strStudentPic4#
+        where intID = #intID#
+    </update>
+
+    <update id="updateStudentPicByIdCard" parameterClass="trainStudentDetailModel">
+        update train_student_detail
+        set strStudentPic1 = #strStudentPic1#,
+        strStudentPic2 = #strStudentPic2#,
+        strStudentPic3 = #strStudentPic3#,
+        strStudentPic4 = #strStudentPic4#
+        where strStudentIDCode = #strStudentIDCode#
+    </update>
+    <select id="getStudentDetailByTrainCount" parameterClass="trainStudentModel" resultClass="trainStudentDetailModel">
+        select * from train_student_detail
+        where intMainID = (select intID from train_student
+        where strTrainCount = #strTrainCount#
+        <isNotNull prepend="and" property="strTrainCountClass">
+            strTrainCountClass = #strTrainCountClass#
+        </isNotNull>
+        )
+        order by intID
+    </select>
+
+    <select id="getStudentByTrainCount" parameterClass="trainStudentModel" resultClass="trainStudentModel">
+        select * from train_student
+        where strTrainCount = #strTrainCount#
+        <isNotNull prepend="and" property="strTrainCountClass">
+            strTrainCountClass = #strTrainCountClass#
+        </isNotNull>
+    </select>
+
+    <select id="getMainIDByTrainApplyID" parameterClass="int" resultClass="int">
+        select intID from train_student where intTrainApplyID = $intTrainApplyID$
+    </select>
+
+    <select id="checkRepeatInfo" resultClass="trainStudentDetailRepeatVO" parameterClass="int">
+        select strStudentIDCode, count(strStudentIDCode) repeatNum from train_student_detail
+        where intMainID = $intMainID$
+        group by strStudentIDCode
+        having repeatNum > 1
+    </select>
+
+    <select id="getRepeatDetail" parameterClass="trainStudentDetailModel" resultClass="trainStudentDetailModel">
+        select * from train_student_detail
+        where strStudentIDCode = #strStudentIDCode#
+        and intMainID = #intMainID#
+        order by intID
+    </select>
+
+    <delete id="deleteStudentDetailByID" parameterClass="int">
+        delete from train_student_detail where intID = $intID$
+    </delete>
+
+    <update id="updateStudentRealCount" parameterClass="int">
+        update train_student set intTotalUserNum=(select count(*) from train_student_detail where intMainID=$intMainID$)
+        where intID = $intMainID$
+    </update>
+
+    <update id="clearPicInfo" parameterClass="int">
+        update train_student_detail set
+        strStudentPic1 = "",
+        strStudentPic2 = "",
+        strStudentPic3 = "",
+        strStudentPic4 = ""
+        where intMainID = $intMainID$
+    </update>
+
+    <delete id="deleteStudentDetail" parameterClass="trainStudentDetailModel">
+        delete from train_student_detail where intID = #intID#
+    </delete>
+
+    <select id="getIntMainIDListByGroupID" parameterClass="int" resultClass="int">
+        select intID from train_student where intCreateGroupID = '$groupID$'
+    </select>
+
+    <select id="getIntMainIDListByGroupID2" parameterClass="int" resultClass="int">
+        select intID from train_student where intCreateGroupID = '$groupID$'
+        and intStatus = 1
+    </select>
+
+    <select id="getAllTrainStudent" resultClass="trainStudentModel" parameterClass="trainStudentModel">
+        select * from train_student
+    </select>
+
+    <select id="checkPersonRecord" resultClass="trainPersonModel" parameterClass="trainStudentDetailModel">
+        select * from train_person where strPersonID = #strStudentIDCode#
+    </select>
+
+    <insert id="insertPersonRecord" parameterClass="trainPersonModel">
+        insert into train_person(
+        strPersonName,
+        strPersonID,
+        strSex,
+        intGroupID,
+        strEdu,
+        strWorkUnit,
+        strPost,
+        intAge,
+        intPic1,
+        intPic2,
+        intPic3,
+        intPic4
+        )
+        values(
+        #strPersonName#,
+        #strPersonID#,
+        #strSex#,
+        #intGroupID#,
+        #strEdu#,
+        #strWorkUnit#,
+        #strPost#,
+        #intAge#,
+        #intPic1#,
+        #intPic2#,
+        #intPic3#,
+        #intPic4#
+        )
+    </insert>
+
+    <select id="showPageStudentList" parameterClass="trainStudentModel" resultClass="trainStudentModel">
+        select * from train_student
+        where intStatus = #intStatus#
+        <isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+            intCreateGroupID = #intCreateGroupID#
+        </isGreaterThan>
+        <isNotEmpty prepend="AND" property="strTrainType">
+            strTrainType = #strTrainType#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainCount">
+            strTrainCount like '%$strTrainCount$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            strTrainUnitName like '%$strTrainUnitName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strCreateDate">
+            strCreateDate like '$strCreateDate$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainObjectDesc">
+            strTrainObjectDesc like '%$strTrainObjectDesc$'
+        </isNotEmpty>
+        ORDER BY intID desc
+        LIMIT #intStart#,#intOffset#
+    </select>
+
+    <select id="getStudentCount" parameterClass="trainStudentModel" resultClass="int">
+        SELECT count(intID) AS intTotalNumber
+        from train_student
+        where intStatus = #intStatus#
+        <isGreaterThan prepend="AND" property="intCreateGroupID" compareValue="0">
+            intCreateGroupID = #intCreateGroupID#
+        </isGreaterThan>
+        <isNotEmpty prepend="AND" property="strTrainType">
+            strTrainType = #strTrainType#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainCount">
+            strTrainCount like '%$strTrainCount$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainUnitName">
+            strTrainUnitName like '%$strTrainUnitName$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strCreateDate">
+            strCreateDate like '$strCreateDate$%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="strTrainObjectDesc">
+            strTrainObjectDesc like '%$strTrainObjectDesc$'
+        </isNotEmpty>
+    </select>
+
+    <update id="updateStatus" parameterClass="trainStudentModel">
+        update train_student set intStatus = #intStatus#
+        where intID = #intID#
+    </update>
+
+    <update id="updateStudentCount" parameterClass="trainStudentDetailModel">
+        update train_student set intTotalUserNum =
+        (select count(intID) from train_student_detail
+        where intMainID = #intMainID#)
+        where intID = #intMainID#
+    </update>
+
+    <select id="getStudentModelByTrainApply" parameterClass="trainApplyModel" resultClass="trainStudentModel">
+        select * from train_student where intTrainApplyID = #intID#
+    </select>
+
+    <select id="getSignUpDetailByIDCode" parameterClass="string" resultClass="trainStudentDetailModel">
+        select * from train_student_detail
+        where intIsSignUp = 1 and intIsProcess = 0
+        and strStudentIDCode = '$studentIDCode$'
+    </select>
+
+    <select id="revokeCheck" resultClass="int" parameterClass="trainStudentModel">
+        SELECT count(intID) AS intTotalNumber
+        FROM train_check
+        where intTrainApplyID = #intTrainApplyID#
+        and intCheckFlag = 9
+    </select>
+</sqlMap>

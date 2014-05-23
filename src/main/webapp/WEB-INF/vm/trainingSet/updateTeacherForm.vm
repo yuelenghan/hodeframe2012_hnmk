@@ -1,0 +1,195 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-1.8.3.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/jquery-form.js"></SCRIPT>
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+
+#rbac_getGroupModelById($user.intGroupID  $groupInfo)
+<form action="addTeac.action" method="post" id="postForm">
+#hodeSysUI_EditBodyHeader("add.action" "return doData(v.exec())" "post" "yes")
+#set($teac=$trainTeacher)
+#set($istrua=$istru)
+	<div id="popupcontent" style="align:center">
+     <strong style="width:100%;font-size:16px;text-align:center;height:60px">
+                                     教&nbsp;师&nbsp;信&nbsp;息&nbsp; 修&nbsp;改
+      </strong>
+       <input type="hidden" name="objInfo.intID" value="$teac.intID">
+	 <strong style="width:100%; text-align:center;height:27px">
+	 教师姓名：&nbsp;&nbsp;<input type="text" value="$teac.strName" name="objInfo.strName" style="width:210px;" >
+      </strong>
+
+       <strong style="width:100%; text-align:center;height:27px">
+         教师学历：&nbsp;&nbsp;<input type="text" value="$teac.strEducation" name="objInfo.strEducation" style="width:210px;" >
+      </strong>
+
+          <strong style="width:100%; text-align:center;height:27px">
+         教师专业：&nbsp;&nbsp;<input type="text" value="$teac.strMajor" name="objInfo.strMajor" style="width:210px;" >
+      </strong>
+
+              <strong style="width:100%; text-align:center;height:27px">
+        教师职称：&nbsp;&nbsp;<input type="text" value="$teac.strTitle" name="objInfo.strTitle" style="width:210px;" >
+      </strong>
+
+                  <strong style="width:100%; text-align:center;height:27px">
+        证书号码：&nbsp;&nbsp;<input type="text" value="$teac.strCertCode" name="objInfo.strCertCode" style="width:210px;" >
+      </strong>
+
+       <strong style="width:100%; text-align:center;height:27px">
+          培训对象：&nbsp;
+     #set ($trainUtil = $webwork.bean("com.hode.train.util.TrainUtil"))
+	 #set ($rtnList = $trainUtil.getAllTrainObject())
+          <select name="objInfo.strTrainObject" style="width:210px;" onchange="changeThisVal(this)">
+          <option value="0">==请选择==</option>
+          #foreach($trainObject in $rtnList)
+          	#<option value="$trainObject.strTrainObject">$trainObject.strTrainObjectDesc</option>
+          #end
+
+          #foreach($trainObject in $rtnList)
+			#set ($rtnList2 = $trainUtil.getCourseByTrainObject($trainObject.strTrainObject, $user.intGroupID))
+			#foreach($trainCourse in $rtnList2)
+				<input type="hidden" name="intCourseID_${trainObject.strTrainObject}" value="$trainCourse.intID">
+				<input type="hidden" name="strCourseName_${trainObject.strTrainObject}" value="$trainCourse.strCourseName">
+			#end
+		#end
+          </select>
+      </strong>
+
+       	<strong style="width:100%; text-align:center;height:27px">
+          教授课程：&nbsp;
+          <select name="objInfo.intCourseID" style="width:210px;" id="select_1">
+          <option value="0">==请选择培训对象==</option>
+          #foreach($trainCourse in $rtnList2)
+          	<option value="$trainCourse.intID">$trainCourse.strCourseName</option>
+          #end
+          </select>
+      </strong>
+
+	  <strong style="width:100%; text-align:center;height:80px">
+        <input type="submit" value=" 保  存 " name="submitButton">
+        <input type="button" value=" 取  消 " onClick="hidePopup();">
+
+      </strong>
+</div>
+</form>
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##加载过渡效果JavaScript
+<SCRIPT LANGUAGE="JavaScript">
+// form fields description structure
+var a_fields = {
+         'objInfo.strTrainUnitName': {
+                'l': '培训机构名称',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainRange': {
+                'l': '培训机构资质',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainCode': {
+                'l': '资质证书号码',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainStartDate': {
+                'l': '培训开始时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        },
+		'objInfo.strTrainEndDate': {
+                'l': '培训结束时间',  // label
+                'r': true,    // required
+                't': '',// id of the element to highlight if input not validated
+                'm': null,     // must match specified form field
+                'mn': 1,       // minimum length
+                'mx':250       // maximum length
+        }
+
+},
+o_config = {
+        'to_disable' : ['btnSubmit', 'btnReset','btnCancel'],
+        'alert' : 1
+}
+// validator constructor call
+var v = new validator('frmOperation', a_fields, o_config);
+
+</script>
+
+##-------------------------------------------------------------
+##页面尾
+##parse("$action.getText('config.vmPath')/simple/Footer.vm")
+</body>
+
+<style>
+</style>
+<script>
+$(document).ready(function() {
+    var options = {
+    	url: "updateTeac.action",
+        success: function() {
+        	window.close();
+        	window.opener.selectList()
+        }
+    };
+
+    $('#postForm').submit(function() {
+        $(this).ajaxSubmit(options);
+
+        return false;
+    });
+});
+
+function hidePopup(){
+    window.close();
+}
+
+ function updatess(){
+
+   document.forms[0].action="updateTeac.action";
+   document.forms[0].submit();
+  // window.close();
+   window.opener.selectList()
+ }
+
+ function changeThisVal(thisControl) {
+	var courseResultLength = document.getElementsByName("strCourseName_"+thisControl.value).length;
+	//var courseSelect = document.getElementById("select_1");
+	var courseSelect = $("#select_1");
+	courseSelect.empty();
+
+	var selectStr = "";
+	for(var i=0; i<courseResultLength; i++) {
+		var courseName = document.getElementsByName("strCourseName_"+thisControl.value)[i].value;
+		var courseID = document.getElementsByName("intCourseID_"+thisControl.value)[i].value;
+
+		selectStr += "<option value='"+courseID+"'>"+courseName+"</option>";
+	}
+	//alert(selectStr);
+	courseSelect.html(selectStr);
+}
+</script>
+</html>
+

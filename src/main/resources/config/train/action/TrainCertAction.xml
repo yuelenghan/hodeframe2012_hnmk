@@ -1,0 +1,101 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN"
+"http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+
+    <package name="train.cert" extends="index" namespace="/train/cert">
+
+		<action name="showList1" class="trainCertAction" method="showList1">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/showList1.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="optForm1" class="trainCertAction" method="optForm1">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/optForm1.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="optData1" class="trainCertAction" method="optData1">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/afterOptData1.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+
+		<action name="showList2" class="trainCertAction" method="showList2">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/showList2.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="optForm2" class="trainCertAction" method="optForm2">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/optForm2.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="optData2" class="trainCertAction" method="optData2">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/afterOptData2.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showList3" class="trainCertAction" method="showList3">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/showList3.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="optData3" class="trainCertAction" method="optData3">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/afterOptData3.vm</result>
+			<param name="hiddenParameter"></param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="fileUpload"/>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showList4" class="trainCertAction" method="showList4">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/showList4.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="showSearchList" class="trainCertAction" method="showSearchList">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/showSearchList.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewForm" class="trainCertAction" method="optForm2">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/viewForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+
+		<action name="showList5" class="trainCertAction" method="showList5">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/showList5.vm</result>
+			<param name="hiddenParameter">objSearch.strTrainType,objSearch.strTrainCount</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewCertForm" class="trainCertAction" method="viewCertForm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/viewCertForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+		<action name="viewCertDetailForm" class="trainCertAction" method="viewCertDetailForm">
+			<result name="success" type="velocity">/WEB-INF/vm/train/cert/viewCertDetailForm.vm</result>
+			<param name="hiddenParameter">,objInfo.intID</param>
+			<param name="permissionIDs"></param>
+			<interceptor-ref name="permissionStack"/>
+		</action>
+    </package>
+
+</xwork>

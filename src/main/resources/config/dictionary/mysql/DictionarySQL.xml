@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dictionary">
+  <typeAlias alias="dictionaryModel" type="com.hode.dictionary.model.DictionaryModel"/>
+
+  <select id="getObjectInfo" resultClass="dictionaryModel" parameterClass="dictionaryModel">
+     SELECT *
+	FROM dictionary
+	WHERE intIsDelete = 0 and intID=#intID#
+  </select>
+
+  <select id="getObjectList" resultClass="dictionaryModel" parameterClass="dictionaryModel">
+   SELECT *
+	FROM dictionary
+	WHERE intIsDelete = 0
+		and intType = #intType#
+		and intIsFirst = 0
+	ORDER BY intOrderID asc,strKey asc
+  </select>
+  <select id="getObjectLeftList" resultClass="dictionaryModel" parameterClass="dictionaryModel">
+   SELECT *
+	FROM dictionary
+	WHERE intIsDelete = 0
+		and intIsFirst = 1
+	ORDER BY intOrderID asc,strKey asc
+  </select>
+
+  <select id="getAllDictionList" resultClass="dictionaryModel">
+   SELECT *
+	FROM dictionary
+	WHERE intIsDelete = 0
+		  ORDER BY intOrderID asc,strKey asc
+  </select>
+
+
+
+  <select id="getPageObjectList" resultClass="dictionaryModel" parameterClass="dictionaryModel">
+   SELECT *
+	FROM dictionary
+	WHERE intIsDelete = 0
+		and intType=#intType#
+		and intIsFirst = 0
+	ORDER BY intOrderID asc,strKey asc
+	LIMIT #intStart#,#intOffset#
+  </select>
+
+  <select id="getRecordCount" resultClass="int" parameterClass="dictionaryModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM dictionary
+	WHERE intIsDelete = 0
+		and intType=#intType#
+		and intIsFirst = 0
+  </select>
+
+  <select id="checkObjectExists" resultClass="int" parameterClass="dictionaryModel">
+    SELECT count(intID) AS intTotalNumber
+	FROM dictionary
+	WHERE strKey=#strKey# and intType=#intType#
+	AND intIsDelete!=1
+	<dynamic >
+		<isGreaterThan prepend="AND" property="intID" compareValue="0">
+			intID!=#intID#
+		</isGreaterThan>
+	</dynamic>
+  </select>
+
+
+   <insert id="insertObject" parameterClass="dictionaryModel">
+    INSERT INTO dictionary(
+		strValue,
+		strKey,
+		intType,
+		intIsFirst,
+		intOrderID,
+		strMemo,
+		strField1,
+		strField2,
+		strField3,
+		strField4,
+		strField5,
+		strField6,
+		strField7,
+		strField8,
+		strField9
+		)
+	VALUES (
+		#strValue#,
+		#strKey#,
+		#intType#,
+		0,
+		#intOrderID#,
+		#strMemo#,
+		#strField1#,
+		#strField2#,
+		#strField3#,
+		#strField4#,
+		#strField5#,
+		#strField6#,
+		#strField7#,
+		#strField8#,
+		#strField9#
+		)
+  </insert>
+
+  <update id="updateObject" parameterClass="dictionaryModel">
+    UPDATE dictionary
+	SET strValue = #strValue#,
+		strKey = #strKey#,
+		intOrderID = #intOrderID#,
+		strMemo = #strMemo#,
+		strField1 = #strField1#,
+		strField2 = #strField2#,
+		strField3 = #strField3#,
+		strField4 = #strField4#,
+		strField5 = #strField5#,
+		strField6 = #strField6#,
+		strField7 = #strField7#,
+		strField8 = #strField8#,
+		strField9 = #strField9#
+	WHERE intID = #intID#
+  </update>
+
+  <delete id="deleteObject" parameterClass="string">
+	DELETE from dictionary
+	WHERE intID IN ( $strIDList$ )
+  </delete>
+</sqlMap>

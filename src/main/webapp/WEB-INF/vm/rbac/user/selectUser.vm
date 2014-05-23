@@ -1,0 +1,91 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header.vm")
+
+##-------------------------------------------------------------
+##加载JavaScript
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/nodetree.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/select.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">
+var unitListArr = new Array();
+#set($i = 0)
+#foreach($objInfo in $jsSelectModel.objList)
+	#rbac_getAllGroupIdsByFatherId($objInfo.intID 0 $strGroupID)
+	unitListArr[$i] = Array("$objInfo.intID","$objInfo.intFatherID","$objInfo.strName","$!strGroupID");
+	#set($i = $i + 1)
+#end
+#*
+$strHTMLInfo *#
+function changeGroupUnitID(optionControl)
+{
+	changeInfo(optionControl.value,unitListArr);
+}
+
+</SCRIPT>
+
+<TABLE width='100%' align=center border='0' cellspacing='1' borderColor=#000000  borderColorDark=#ffffff cellpadding='0' >
+	<tr>
+		<td align="left" colspan=4>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan=4 align='center'>
+			<select id="unitList" onchange="changeGroupUnitID(this.options[this.selectedIndex])">
+				<SCRIPT LANGUAGE="JavaScript">
+					showTreeMainInfo(unitListArr,"select",true);
+				</SCRIPT>
+			</select>
+		</td>
+	</tr>
+<form name='frmSelect'>
+	<tr>
+		<td align=center><b>$action.getText("rbac.componen.operation.selectUser")</b></td>
+		<td align=center> </td>
+		<td align=center colspan="2"><b>$action.getText("rbac.componen.operation.selectedUser")</b>$action.getText('rbac.componen.operation.order')</td>
+	</tr>
+	<tr>
+		<td align=center>
+			<select id=source name=source size="20" style=" width: 200" multiple ondblclick="move_select(this.form.source,this.form.target)"></select>
+		</td>
+		<td align=center valign='middle'>
+		<br>
+			<INPUT TYPE="button" value=" >> " class="inputButton" ONClick="moveAll_select(this.form.source,this.form.target)" NAME="B2"><BR><BR>
+			<INPUT TYPE="button" value="  >  " class="inputButton" ONClick="move_select(this.form.source,this.form.target)" NAME="B2"><BR><BR>
+			<INPUT TYPE="button" value="  <  " class="inputButton"  ONClick="move_select(this.form.target,this.form.source)" NAME="B1"><BR><BR>
+			<INPUT TYPE="button" value=" << " class="inputButton" ONClick="moveAll_select(this.form.target,this.form.source)" NAME="B1"><BR><BR>
+		</td>
+	  <td align=center>
+		<select id=target name=target size="20" style=" width: 200" multiple ondblclick="move_select(this.form.target,this.form.source)"></select></td>
+		<td><input type="button" value="∧" class="inputButton" onclick="moveUp_select(this.form.target)"><br><br><input type="button" value="∨" class="inputButton" onclick="moveDown_select(this.form.target)"></td>
+
+	</tr>
+	<tr>
+		<td align=center colspan=5>
+			<img src="$action.getText('config.prjName')/images/operator/opt_confirm.gif" style="cursor:hand" onclick=selectSubmit(document.frmSelect.target,'$!req.getParameter("isSelectOne")') />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="$action.getText('config.prjName')/images/operator/opt_close.gif" style="cursor:hand" onclick="window.close()" />
+		</td>
+	</tr>
+</form>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+var userListArr = new Array();
+#set($i = 0)
+#foreach($objInfo in $jsSelectModel.objList1)
+	userListArr[$i] = Array("$objInfo.intID","$objInfo.intGroupID","$objInfo.strName");
+	#set($i = $i + 1)
+#end
+
+function changeInfo(intID)
+{
+	var node =  getNodeInfoById(intID,unitListArr);
+	initSource1(userListArr,node[3].split(","),document.frmSelect.source,document.frmSelect.target);
+}
+initTarget(userListArr,"$!{jsSelectModel.strID}",document.frmSelect.target);
+//initSource1(userListArr,unitListArr[0][3].split(","),document.frmSelect.source,document.frmSelect.target);
+
+//页面加载完毕后，根据下拉框中选中的值，初始化source中的值
+//window.onLoad = changeGroupUnitID(document.all.unitList.options[document.all.unitList.selectedIndex]);
+</SCRIPT>
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

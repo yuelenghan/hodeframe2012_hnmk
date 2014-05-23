@@ -1,0 +1,132 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+##���ò���
+##-------------------------------------------------------------
+##**********************
+##��ǰ������
+##**********************
+##��ʾ��ǰ����������
+#rbac_getGroupModelById($objSearch.intGroupID $groupObj)
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "$action.getText('rbac.group.operation.list')$action.getText('global.interpunction.right')$!groupObj.strName" )
+#end
+
+
+#bodytag( Component "template=Tpl_BannerFooterCom.vm" )
+	#param( "noSearchArea" "yes" )
+#end
+
+#hodeSysBean_checkInArr(90020000 $!permissionIDs $allow_1)	##�Ƿ���ְ�����Ȩ��
+##-------------------------------------------------------------
+##**********************
+##�����б���
+##**********************
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "yes" )
+	#param( "addBtnTitle" "$action.getText('rbac.user.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPageList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 0)
+#end
+
+##�����б����ͷ
+#hodeSysUI_MainBodyHeader(1 "frmMainList" 0)
+
+
+##������
+#hodeSysUI_TrBeginMainBody(1)
+	<td colspan="3" align="center">$action.getText('global.operation')</td>
+	#hodeSysUI_TdMainBody("$action.getText('rbac.user.form.setPrivilege')" "center" "80" 0)
+	#hodeSysUI_TdMainBody("$action.getText('rbac.user.form.setRole')" "center" "80" 0)
+	#hodeSysUI_TdMainBody("$action.getText('rbac.user.form.strAccount')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('rbac.user.form.strName')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('rbac.user.form.strTel')" "center" "" 0)
+	#hodeSysUI_TdMainBody("$action.getText('rbac.user.form.strUserUnitName')" "center" "" 0)
+
+
+	#hodeSysUI_TdMainBody("$action.getText('rbac.user.form.intOrderID')" "center" "80" 0)
+#hodeSysUI_TrEnd()
+##�б���ʾ������Ϣ
+#set($intNowCount=0)
+#foreach($objInfo in $objInfoList)
+	#set($intNowCount=$velocityCount)
+	#if($intNowCount % 2 == 0)
+		#hodeSysUI_TrBeginMainBody(2)
+	#else
+		#hodeSysUI_TrBeginMainBody(3)
+	#end
+
+	#if($user.intUserID  == $objInfo.intID)
+		#hodeSysUI_TdMainBody("--" "center" "" 0)
+		#hodeSysUI_TdMainBody("--" "center" "" 0)
+		#hodeSysUI_TdMainBody("--" "center" "" 0)
+		#hodeSysUI_TdMainBody("--" "center" "" 0)
+	#else
+
+		#set($editTitle = $stack.findValue("getText('rbac.user.operation.updateTitle', {'$!objInfo.strName'})"))
+		#hodeSysUI_TdMainOpt("edit" "$editTitle" "editForm.action" "" $objInfo.intID "")
+		#set($delTitle = $stack.findValue("getText('rbac.user.operation.delTitle', {'$!objInfo.strName'})"))
+		#set($delAlert = $stack.findValue("getText('rbac.user.operation.delmsg', {'$!objInfo.strName'})"))
+		#hodeSysUI_TdMainOpt("delete" "$delTitle" "delForm.action" "$delAlert" $objInfo.intID "")
+		<td width="40" align='center'><img src="$action.getText('config.prjName')/images/operator/opt_checked.gif" onclick="editDoc(document.frmMainList,'moveUserGroupForm.action','$!objInfo.intID','','','','')" style="cursor:hand" alt="$action.getText('rbac.user.operation.move')"></td>
+
+		#hodeSysUI_TdMainOpt("$action.getText('rbac.user.form.setPrivilege')" "" "showPrivilegeTreeForm.action?objSearch.intGroupID=$groupObj.intID&objInfo.intID=$objInfo.intID" "" $objInfo.intID "")
+
+		#if($allow_1 )
+			#hodeSysUI_TdMainOpt("$action.getText('rbac.user.form.setRole')" "" "showRoleTreeForm.action?objSearch.intGroupID=$groupObj.intID&objInfo.intID=$objInfo.intID" "" $objInfo.intID "")
+		#else
+			#hodeSysUI_TdMainBody("--" "center" "" 0)
+		#end
+
+		#set($strName = "$action.getText('global.interpunction.bracket1')#rbac_getGroupTypeName($!objInfo.intGroupType)$action.getText('global.interpunction.bracket2') $!objInfo.strName ")
+	#end
+    #hodeSysUI_TdMainBody("$!objInfo.strAccount" "center" "" 0)
+    #hodeSysUI_TdMainBody("$!objInfo.strName" "center" "" 0)
+    #hodeSysUI_TdMainBody("$!objInfo.strTel" "center" "" 0)
+    #hodeSysUI_TdMainBody("$!objInfo.strUserUnitName" "center" "" 0)
+	#hodeSysUI_TdMainBody("$!objInfo.intOrderID" "center" "" 0)
+    #hodeSysUI_TrEnd()
+#end
+
+##�����
+##hodeSysUI_fillMain(9)
+
+
+##�����б����β
+#hodeSysUI_MainBodyFoot(1)
+
+##-------------------------------------------------------------
+<br>
+##���ܲ��������ҳ��
+
+#bodytag( Component "template=Tpl_MainBtnPageCom.vm" )
+	#param( "addBtn" "no" )
+	#param( "addBtnTitle" "$action.getText('rbac.user.operation.add')" )
+	#param( "addBtnOnClick" "addDoc(document.frmMainList,'addForm.action','',new Array('objSearch.intID'),new Array('$!objSearch.intID'))" )
+	#param( "delBtn" "no" )
+	#param( "returnBtn" "no" )
+	#param( "prtBtn" "no" )
+	#param( "delBtnTitle" "$action.getText('global.operation.delete')" )
+	#param( "delBtnOnClick" "deleteDoc(document.frmMainList,'del.action','',''" )
+	#param( "formName" "frmPaginationDown" )
+	#param( "actionName" "showPageList.action" )
+	#param( "needHiddenParams" "true" )
+	#param( "needPagination" 1)
+#end
+
+##########��ҳ��
+##hodeSysUI_showPage("showList.action" "frmPaginationDown1" $!addBtn "$action.getText('rbac.user.operation.add')" "no" "" 1)
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")
+##-------------------------------------------------------------
+##����JavaScript

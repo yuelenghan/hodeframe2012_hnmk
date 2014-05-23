@@ -1,0 +1,80 @@
+##ҳ��ͷ
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<LINK type="text/css" rel="stylesheet" href="$action.getText('config.prjName')/css/dtree.css">
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/dtree.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+#hodeSysUI_EditBodyHeader("updatePrivilegeTreeForm.action" "" "post" "")
+#set($rootID  = 0 )
+#set($rootName = "$action.getText('rbac.user.operation.setPrivilege')")
+#set($rootUrl = "")
+#set($rootTitle = "")
+#set($rootTarget = "mainFrame")
+#hodeSysUI_TrBeginMainBody(3)
+<td ><div class="dtree">
+<script type="text/javascript">
+	jsName = new dTree('jsName');
+	jsName.add($rootID,-1,'$!rootName','$!rootUrl','$!rootTitle','$!rootTarget','$!rootIcon','$!rootIconOpen','$!rootOpen');
+	#if($user.intUserID == 1)
+		#foreach($node in $privilegeList)
+			#set($strAfterVal= "")
+			#if($node.intPrivilegeLevel == 1)
+				#hodeSysBean_checkInArr($node.intID $intRolePrivilegeID $rtn)
+				#if($rtn == true)
+					#set($strAfterVal="&nbsp;$action.getText('global.interpunction.gou')")
+				#else
+					#hodeSysBean_checkInArr($node.intID $intDefinePrivilegeID $rtn1)
+					#if($rtn1 == true)
+						#set($strAfterVal="&nbsp;<input type=checkbox name=intDefinePrivilegeID checked class=checkbox  value=$node.intID>")
+					#else
+						#set($strAfterVal="&nbsp;<input type=checkbox name=intDefinePrivilegeID  class=checkbox  value=$node.intID>")
+					#end
+				#end
+			#end
+			jsName.add($node.intID,$node.intFatherID,'$!node.strName  $!{strAfterVal}','','','','','');
+		#end
+	#else
+		#foreach($node in $privilegeList)
+			#hodeSysBean_checkInArr($node.intID $!permissionIDs $allow_user)	##�Ƿ���ְ�����Ȩ��
+			#set($strAfterVal= "")
+			#if($node.intPrivilegeLevel == 1)
+				#hodeSysBean_checkInArr($node.intID $intRolePrivilegeID $rtn)
+				$node.intID
+				#if($rtn == true)
+					#set($strAfterVal="&nbsp;$action.getText('global.interpunction.gou')")
+				#else
+					#hodeSysBean_checkInArr($node.intID $intDefinePrivilegeID $rtn1)
+
+					#if($rtn1 == true)
+						#set($strAfterVal="&nbsp;<input type=checkbox name=intDefinePrivilegeID checked class=checkbox  value=$node.intID>")
+					#elseif($allow_user )
+						#set($strAfterVal="&nbsp;<input type=checkbox name=intDefinePrivilegeID  class=checkbox  value=$node.intID>")
+					#else
+						#set($strAfterVal="&nbsp;<input type=checkbox name=intDefinePrivilegeID disabled class=checkbox  value=$node.intID>")
+					#end
+				#end
+				jsName.add($node.intID,$node.intFatherID,'$!node.strName  $!{strAfterVal}','','','','','');
+			#else
+				jsName.add($node.intID,$node.intFatherID,'$!node.strName  $!{strAfterVal}','','','','','');
+			#end
+		#end
+	#end
+
+document.write(jsName);
+
+        	</script>
+		</div></td>
+
+#hodeSysHTMLUI_htmlHidden("objInfo.intID" "$objInfo.intID")
+</tr>
+<SCRIPT LANGUAGE="JavaScript">
+jsName.closeAll();
+</SCRIPT>
+#set($checkBoxName = "document.frmOperation.elements['intDefinePrivilegeID']")
+#hodeSysUI_EditBodyFoot(['selectall','save','reset','cancel'] "1")
+
+
+##-------------------------------------------------------------
+##ҳ��β
+#parse("$action.getText('config.vmPath')/simple/Footer_mainbody.vm")
+##-------------------------------------------------------------
+##����JavaScript

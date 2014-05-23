@@ -1,0 +1,81 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0; padding:0; font-size:12px; background-color:#FFFFFF; color:#FFFFFF; line-height:24px;}
+.login{ background:url(loginbj.gif) no-repeat center top #0065bf; color:#000000;}
+.login_srk{ width:151px; height:23px; line-height:23px; background:url(login_input_bj.gif) repeat-x; border:1px solid #b9b9b9;}
+.yelwz{ color:#ffea00;}
+.whitewz{ color:#ffffff;}
+.blackwz{color:#000000;}
+.top{width:100%; background-color:#138ddc; height:89px;}
+.dh1{
+	width:124px;
+	background-image: url(menu_1.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh1_current{
+	width:124px;
+	background-image: url(menu_1.gif);
+	background-repeat: no-repeat;
+
+}
+.dh2{
+	width:124px;
+	background-image: url(menu_2.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh2_current{
+	width:124px;
+	background-image: url(menu_2.gif);
+	background-repeat: no-repeat;
+
+}
+.dh3{
+	width:124px;
+	background-image: url(menu_3.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh3_current{
+	width:124px;
+	background-image: url(menu_3.gif);
+	background-repeat: no-repeat;
+
+}
+.dh4{
+	width:124px;
+	background-image: url(menu_4.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh4_current{
+	width:124px;
+	background-image: url(menu_4.gif);
+	background-repeat: no-repeat;
+
+}
+.dh5{
+	width:124px;
+	background-image: url(menu_5.gif);
+	background-repeat: no-repeat;
+	background-position: 0px -89px;
+}
+.dh5_current{
+	width:124px;
+	background-image: url(menu_5.gif);
+	background-repeat: no-repeat;
+
+}
+.user{ background:url(ico.gif) no-repeat; height:24px; width:247px; line-height:24px; color:#FFFFFF;}
+.user a:link,.user a:visited,.user a:hover,.user a:active{ color:#FFFFFF; text-decoration:none; padding-left:35px;}
+.left{ background:url(left_bt.gif) no-repeat top #e2f5ff;}
+.left_bt{ line-height:34px; font-size:14px; font-weight:bold; text-align:center;}
+.dqwz{ background:url(dqwz_bj.gif) repeat-x; height:34px; line-height:34px; color:#0378c3; text-indent:10px;}
+.border-left{ border-left:1px solid #0ca3e7; color:#000000;}
+.footer{ background-color:#299ae2; color:#FFFFFF; text-align:center; line-height:24px;}
+.buttom{ background:url(buttom1_bj.gif) no-repeat; width:92px; height:26px; color:#0378c3; margin:0px; padding:0px; border:none; line-height:26px;}
+.buttom2{ background:url(buttom2_bj.gif) no-repeat; width:119px; height:34px; color:#ffffff; margin:0px; padding:0px; border:none; font-size:14px; line-height:34px;}
+.redwz{ color:#FF0000;}
+.td_title{ background-color:#f2f2f2; text-align:right;}
+.border-left a:link,.border-left a:visited,.border-left a:hover,.border-left a:active{ color:#0378c3; text-decoration:underline;}

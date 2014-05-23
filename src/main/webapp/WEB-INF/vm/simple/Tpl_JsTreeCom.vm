@@ -1,0 +1,122 @@
+#set ($jsfile = $parameters.get('jsfile'))
+#if(!$jsfile)
+	#set($jsfile="dtree.js")
+#end
+
+#set ($jsName = $parameters.get('jsName'))
+#if(!$jsName)
+	#set($jsName="jsName")
+#end
+
+#set ($tableWidth = $parameters.get('tableWidth'))
+#if(!$tableWidth)
+	#set($jsName="100%")
+#end
+
+#set ($rootID = $parameters.get('rootID'))
+#if((!$rootID)||($rootID < 0))
+	#set($rootID = 0)
+#end
+
+#set ($rootName = $parameters.get('rootName'))
+
+#set ($rootUrl = $parameters.get('rootUrl'))
+
+#set ($rootTitle = $parameters.get('rootTitle'))
+#if((!$rootTitle)||($rootTitle==""))
+	#set($rootTitle="mainFrame")
+#end
+
+#set ($rootTarget = $parameters.get('rootTarget'))
+
+#set ($rootIcon = $parameters.get('rootIcon'))
+
+#set ($rootIconOpen = $parameters.get('rootIconOpen'))
+
+#set ($rootOpen = $parameters.get('rootOpen'))
+
+#set ($nodeUrl = $parameters.get('nodeUrl'))
+
+#set ($nodeTarget = $parameters.get('nodeTarget'))
+#if((!$nodeTarget)||($nodeTarget==""))
+	#set($nodeTarget="mainFrame")
+#end
+
+#if($jsfile != "")
+	<script src="$action.getText('config.prjName')/js/$jsfile"></script>
+#end
+
+#set ($parameterStrName = $parameters.get('parameterStrName'))
+
+#set ($parameterIntExtendID = $parameters.get('parameterIntExtendID'))
+
+#set ($jsTree = $parameters.get('jsTree'))
+#if(!$jsTree)
+	#set($jsTree = $jsTree)
+#end
+
+#set($keyInfo="objSearch.intID")
+#if($parameters.get('keyInfo')!="")
+	#set ($keyInfo = $parameters.get('keyInfo'))
+#end
+
+#set($actionURL="")
+#if($parameters.get('actionURL')!="")
+	#set ($actionURL = $parameters.get('actionURL'))
+#end
+
+
+#set($strFormName="frmMainList")
+#if($parameters.get('strFormName')!="")
+	#set ($strFormName = $parameters.get('strFormName'))
+#end
+
+<FORM METHOD="POST" NAME="$strFormName" ACTION="">
+<INPUT TYPE="hidden" NAME='objInfo.intID'>
+</form>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td>
+
+		<div class="dtree">
+        	<script type="text/javascript">
+        		<!--
+
+        		$jsName = new dTree('$jsName');
+
+        		${jsName}.add($rootID,-1,'$!rootName','$!rootUrl','$!rootTitle','$!rootTarget','$!rootIcon','$!rootIconOpen','$!rootOpen');
+
+#foreach($node in $jsTree)
+
+	#if($actionURL!="")
+		#set($keyArr="new Array('$!keyInfo'")
+		#set($valArr="new Array('$!node.intID'")
+
+		#if($parameterStrName!="")
+			#set($keyArr="$keyArr,'$parameterStrName'")
+			#set($valArr="$valArr,'$!node.strName'")
+		#end
+		#if($parameterIntExtendID!="")
+			#set($keyArr="$keyArr,'$parameterIntExtendID'")
+			#set($valArr="$valArr,'$!node.intExtendID'")
+		#end
+		#set($keyArr="${keyArr})")
+		#set($valArr="${valArr})")
+
+
+		${jsName}.add($node.intID,$node.intFatherID,"$!node.strName","javascript:showDoc(document.$strFormName,'$actionURL','',$keyArr,$valArr,'$!nodeTarget')","","","$!node.strIcon","$!node.strIconOpen");
+	#else
+		${jsName}.add($node.intID,$node.intFatherID,'$!node.strName','${nodeUrl}=$node.intID#if($parameterStrName!="")&${parameterStrName}=$!node.strName#end#if($parameterIntExtendID!="")&${parameterIntExtendID}=$!node.intExtendID#end','','$!nodeTarget','$!node.strIcon','$!node.strIconOpen');
+	#end
+#end
+
+        		document.write($jsName);
+
+        		//-->
+        	</script>
+		</div>
+
+	</td>
+</tr>
+</table>

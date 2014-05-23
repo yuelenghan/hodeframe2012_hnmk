@@ -1,0 +1,59 @@
+##页面头
+#parse("$action.getText('config.vmPath')/simple/Header_mainbody.vm")
+<SCRIPT LANGUAGE="JavaScript" src="$action.getText('config.prjName')/js/operation.js"></SCRIPT>
+
+##-------------------------------------------------------------
+##**********************
+##当前操作区
+##**********************
+
+##显示当前操作及检索
+#bodytag( Component "template=Tpl_BannerHeaderCom.vm" )
+	#param( "title" "代理设定" )
+#end
+
+
+
+
+##-------------------------------------------------------------
+##**********************
+##信息编辑区
+##**********************
+
+#hodeSysUI_EditBodyHeader("updateAllowUser.action" "" "post" "")
+
+#set($showWidth = "40%")
+
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft' width="$showWidth">授权用户$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		<INPUT TYPE="hidden" NAME="objInfo.strAccount" id="objInfo.strAccount" CLASS="inputText" value='$!user.strUserAccount' >
+		<INPUT TYPE="hidden" NAME="objInfo.intID" id="objInfo.intID" CLASS="inputText" value='$!user.intUserID' >
+		<INPUT TYPE="hidden" NAME="objInfo.intAllowUserID" id="objInfo.intAllowUserID" CLASS="inputText" value='$!objInfo.intAllowUserID' >
+		<INPUT TYPE="text" NAME="objInfo.strAllowUserName" id="objInfo.strAllowUserName" CLASS="inputText" value='$!objInfo.strAllowUserName' readonly >##msg="授权用户" require="true"
+		<img src="$action.getText('config.prjName')/images/operator/opt_select.gif" style="vertical-align:text-bottom" onclick="fPopUpSelectGroupUnitDlg('../user/selectUser.action?intGroupID=1&intGroupType=0&isSelectOne=1','objInfo.intAllowUserID','objInfo.strAllowUserName');" valign="bottom"/>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	<td class='tdEditContentLeft'>授权时间$action.getText('global.interpunction.colon')</td>
+	<td class="tdEditContentRight">
+		<input type="text" class="inputText" name="objInfo.strAllowStartDate" value="$!objInfo.strAllowStartDate" onclick="fPopUpCalendarDlg(this);" readonly  size="6"></input>
+		--
+		<input type="text" class="inputText" name="objInfo.strAllowEndDate" value="$!objInfo.strAllowEndDate" onclick="fPopUpCalendarDlg(this);" readonly   size="6"></input>
+	</td>
+#hodeSysUI_TrEnd()
+#hodeSysUI_TrBeginMainBody(4)
+	<td colspan="2" align="center">
+		<INPUT TYPE="hidden" NAME="objInfo.strAccount" CLASS="inputText" maxlength="20" size="20"   VALUE="$!user.strUserAccount">
+		<span style="color:red;">#if($!objInfo.intAllowUserID > 0) 您已设置【$!{objInfo.strAllowUserName}】为您的代理用户 #else 您尚未设置代理用户 #end</span>
+	</td>
+#hodeSysUI_TrEnd()
+
+#hodeSysUI_EditBodyFoot(['save'] "2")
+
+##JavaScript数据合法性校验
+##加载校验JavaScript
+#parse("$action.getText('config.vmPath')/jsvm/validator.js.vm")
+##-------------------------------------------------------------
+##页面尾
+#parse("$action.getText('config.vmPath')/simple/Footer.vm")

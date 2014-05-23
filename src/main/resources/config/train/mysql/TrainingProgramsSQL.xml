@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="train.checka">
+  <typeAlias alias="trainingProgramsModel" type="com.hode.train.model.TrainingProgramsModel"/>
+
+
+   <select id="trainPro" resultClass="trainingProgramsModel" parameterClass="int">
+	  select *
+	  from train_item
+	  where intID=#intID#
+   </select>
+
+  <update id="updatePro" parameterClass="trainingProgramsModel">
+    UPDATE train_item
+	SET
+		strItemName = #strItemName#,
+		strPrice = #strPrice#
+	WHERE intID = #intID#
+  </update>
+
+  <insert id="insertObject" parameterClass="trainingProgramsModel">
+    INSERT INTO train_item(
+			strItemName,
+			strPrice,
+			intCreateUser,
+			intCreateGroup
+		)
+	VALUES (
+		#strItemName#,
+		#strPrice#,
+		#intCreateUser#,
+		#intCreateGroup#
+
+		)
+  </insert>
+
+   <select id="getObjectList" resultClass="trainingProgramsModel" parameterClass="string">
+	select *
+	from train_item
+	where intCreateGroup =#intCreateGroup#
+	ORDER BY intID asc
+  </select>
+
+  <delete id="deleteObject" parameterClass="trainingProgramsModel">
+		DELETE from train_item
+		WHERE intID=#intID#
+  </delete>
+
+</sqlMap>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean name="rbac_groupAction" class="com.hode.rbac.action.GroupAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="rbac_groupIbatisServiceProxy"/>
+		</property>
+	</bean>
+
+	<bean name="rbac_userAction" class="com.hode.rbac.action.UserAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="rbac_userIbatisServiceProxy"/>
+		</property>
+		<property name="roleService">
+			<ref bean="rbac_roleIbatisServiceProxy"/>
+		</property>
+		<property name="groupService">
+			<ref bean="rbac_groupIbatisServiceProxy"/>
+		</property>
+		<property name="privilegeService">
+			<ref bean="rbac_privilegeIbatisServiceProxy"/>
+		</property>
+	</bean>
+
+	<bean name="rbac_roleAction" class="com.hode.rbac.action.RoleAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="rbac_roleIbatisServiceProxy"/>
+		</property>
+		<property name="privilegeService">
+			<ref bean="rbac_privilegeIbatisServiceProxy"/>
+		</property>
+		<property name="groupService">
+			<ref bean="rbac_groupIbatisServiceProxy"/>
+		</property>
+	</bean>
+
+	<bean name="rbac_privilegeAction" class="com.hode.rbac.action.PrivilegeAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="rbac_privilegeIbatisServiceProxy"/>
+		</property>
+	</bean>
+
+	<bean name="rbac_permissionAction" class="com.hode.rbac.action.PermissionAction" singleton="false">
+		<property name="ibatisService">
+			<ref bean="rbac_permissionService"/>
+		</property>
+	</bean>
+
+
+</beans>
